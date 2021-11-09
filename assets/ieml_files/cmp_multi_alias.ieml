@@ -1,0 +1,3 @@
+@component fr"test" fr"test2" en"test" en"test2" (
+    0 ~nom #"wa."
+) .

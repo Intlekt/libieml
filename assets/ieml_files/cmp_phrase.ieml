@@ -1,0 +1,7 @@
+@component fr"manger" (0 *nom #ieml"a.T:.-") .
+
+@node fr"le chien mange du paté" (
+    0 ~futur #manger,
+    1 #chien,
+    2 #paté
+) .
