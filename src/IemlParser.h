@@ -6,6 +6,8 @@
 
 #include "RecognitionError.h"
 
+#include "ast/IReferencable.h"
+
 namespace ieml {
 namespace parser {
 

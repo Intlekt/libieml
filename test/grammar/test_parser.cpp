@@ -27,7 +27,8 @@ TEST(ieml_grammar_test_case, validate_exemples)
 
     IEMLParser parser(exampleString);
     parser.parse();
-    std::cout << parser.getParseString() << std::endl << std::endl;
+
+    EXPECT_EQ(parser.getSyntaxErrors().size(), 0) << "Expected no errors on " << file.path() << " got " << parser.getSyntaxErrors().size();
 
   }
 }

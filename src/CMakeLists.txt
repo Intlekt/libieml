@@ -14,12 +14,14 @@ set(ANTLR_EXECUTABLE ${CMAKE_SOURCE_DIR}/thirdparty/antlr/antlr-4.9.2-complete.j
 
 find_package(ANTLR REQUIRED)
 
-antlr_target(IEMLParser ${CMAKE_CURRENT_SOURCE_DIR}/ieml.g4 
+antlr_target(IEMLParser ${CMAKE_CURRENT_LIST_DIR}/grammar/ieml.g4 
              PACKAGE ieml_generated)
 
 message(STATUS "Generated parser at ${ANTLR_IEMLParser_OUTPUT_DIR} ")
 
-include_directories(${ANTLR4_INCLUDE_DIRS} ${ANTLR_IEMLParser_OUTPUT_DIR})
+include_directories(${ANTLR4_INCLUDE_DIRS} 
+                    ${ANTLR_IEMLParser_OUTPUT_DIR}
+                    ${CMAKE_CURRENT_LIST_DIR})
 
 
 add_library (IEMLParser 
@@ -30,7 +32,9 @@ add_library (IEMLParser
 
 
 target_include_directories(IEMLParser 
-                           INTERFACE ${ANTLR4_INCLUDE_DIRS} ${ANTLR_IEMLParser_OUTPUT_DIR} ${CMAKE_CURRENT_LIST_DIR})
+                           INTERFACE ${ANTLR4_INCLUDE_DIRS} 
+                                     ${ANTLR_IEMLParser_OUTPUT_DIR} 
+                                     ${CMAKE_CURRENT_LIST_DIR})
 
 target_link_libraries(IEMLParser antlr4_static)
 
