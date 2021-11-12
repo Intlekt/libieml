@@ -6,7 +6,7 @@
 
 #include "RecognitionError.h"
 
-#include "ast/IReferencable.h"
+#include "IEMLGrammarVisitor.h"
 
 namespace ieml {
 namespace parser {

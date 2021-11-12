@@ -2,9 +2,7 @@ grammar ieml;
 
 declarations : declaration* EOF;
 
-declaration : DECLARATION_MARK declaration_component DECLARATION_END ;
-
-declaration_component : 'component' language_string+ phrase;
+declaration : DECLARATION_MARK 'component' language_string+ phrase DECLARATION_END # component;
 
 phrase : '(' phrase_line (',' phrase_line)* ')'
        | '(' jonction_phrase ')';
@@ -36,7 +34,8 @@ reference_value: identifier
                | STRING
                | phrase;
 
-language_string : ('fr' | 'en') '"' identifier '"' ;
+language_string : 'fr"' identifier '"' # french_language_string
+                | 'en"' identifier '"' # english_language_string;
 
 STRING : '\''(~'\''|'\\\'')*'\'';
 

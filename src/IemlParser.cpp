@@ -1,4 +1,7 @@
 #include "IemlParser.h"
+#include "IEMLGrammarVisitor.h"
+
+#include "ast/interfaces/AST.h"
 
 using namespace ieml::parser;
 
@@ -31,6 +34,13 @@ void IEMLParser::parse() {
     if (parseTree_ != NULL) 
         return;
     parseTree_ = parser_->declarations();
+    IEMLGrammarVisitor visitor;
+    std::vector<ieml::AST::ComponentDeclaration> res = visitor.visit(parseTree_).as<std::vector<ieml::AST::ComponentDeclaration>>();
+
+    for (auto cmp : res) {
+        std::cout << cmp.to_string() << std::endl;
+    }
+
 }
 
 const antlr4::tree::ParseTree* IEMLParser::getParseTree() const {

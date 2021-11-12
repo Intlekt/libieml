@@ -2,3 +2,4 @@ build
 gen
 .idea
 .vscode
+src/grammar/.antlr

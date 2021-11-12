@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "ast/Constants.h"
 #include "ast/Reference.h"
 
@@ -12,7 +14,7 @@ public:
     IReferencable(const std::vector<Reference>& references) : references_(references) {};
 
 private:
-    std::vector<Reference> references_;
+    const std::vector<Reference> references_;
 
 };
 
