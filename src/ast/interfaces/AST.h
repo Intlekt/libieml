@@ -12,6 +12,11 @@ public:
         char_idx_line_start_(char_idx_line_start), 
         char_idx_line_end_(char_idx_line_end) {};
 
+    size_t getLineStart() const {return line_start_;}
+    size_t getLineEnd() const {return line_end_;}
+    size_t getCharStart() const {return char_idx_line_start_;}
+    size_t getCharEnd() const {return char_idx_line_end_;}
+
 private:
     const size_t line_start_;
     const size_t line_end_;
@@ -24,6 +29,8 @@ public:
     AST(CharRange char_range) : char_range_(char_range) {};
 
     virtual std::string to_string() const = 0;
+
+    const CharRange& getCharRange() const {return char_range_;}
 
 private:
     const CharRange char_range_;

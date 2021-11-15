@@ -10,7 +10,11 @@ public:
     
     std::string to_string() const override {
         return name_;
-    };
+    }; 
+
+    const std::string& getName() const {
+        return name_;
+    }
 
 private:
     const std::string name_;

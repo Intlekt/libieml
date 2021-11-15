@@ -24,3 +24,8 @@ void IEMLParserErrorListener::reportContextSensitivity(Parser *recognizer, const
 
 };
 
+void IEMLParserErrorListener::visitorError(ieml::AST::CharRange char_range, const std::string &msg) {
+    error_manager_.registerError(new SyntaxError(char_range.getLineStart(), char_range.getCharStart(), msg));
+};
+
+

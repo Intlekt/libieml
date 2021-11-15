@@ -34,8 +34,7 @@ reference_value: identifier
                | STRING
                | phrase;
 
-language_string : 'fr"' identifier '"' # french_language_string
-                | 'en"' identifier '"' # english_language_string;
+language_string : language=identifier '"' value=identifier '"';
 
 STRING : '\''(~'\''|'\\\'')*'\'';
 

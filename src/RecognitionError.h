@@ -2,6 +2,7 @@
 
 #include "ANTLRErrorListener.h"
 
+#include "ast/interfaces/AST.h"
 
 
 namespace ieml {
@@ -63,6 +64,8 @@ namespace parser {
             void reportContextSensitivity(Parser *recognizer, const dfa::DFA &dfa, size_t startIndex, size_t stopIndex,
                                           size_t prediction, atn::ATNConfigSet *configs);
 
+            
+            void visitorError(ieml::AST::CharRange char_range, const std::string &msg);
 
             const std::vector<const SyntaxError*> getSyntaxErrors() const { return error_manager_.getSyntaxErrors(); }
 

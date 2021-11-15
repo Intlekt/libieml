@@ -1,9 +1,5 @@
 LIST( APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 
-# specify the C++ standard
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-
 # add external build for antlrcpp
 include( ExternalAntlr4Cpp )
 
@@ -37,6 +33,9 @@ target_include_directories(IEMLParser
                            INTERFACE ${ANTLR4_INCLUDE_DIRS} 
                                      ${ANTLR_IEMLParser_OUTPUT_DIR} 
                                      ${CMAKE_CURRENT_LIST_DIR})
+
+# target_compile_options(IEMLParser PRIVATE -Wall -Wextra -Wpedantic)
+
 
 target_link_libraries(IEMLParser antlr4_static)
 

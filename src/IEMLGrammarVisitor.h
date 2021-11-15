@@ -4,11 +4,11 @@
 #include <memory>
 
 #include "iemlBaseVisitor.h"
-#include "ast/ComponentDeclaration.h"
+#include "ast/Declaration.h"
 #include "ast/interfaces/AST.h"
 #include "ast/Constants.h"
 #include "ast/Identifier.h"
-
+#include "ast/Program.h"
 
 
 namespace ieml {
@@ -19,16 +19,21 @@ using namespace ieml::AST;
 
 
 class IEMLGrammarVisitor: public iemlBaseVisitor {
+private:
+  IEMLParserErrorListener* error_listener_;
+
 public:
+  IEMLGrammarVisitor(IEMLParserErrorListener* error_listener) : iemlBaseVisitor(), error_listener_(error_listener) {}
+
   virtual antlrcpp::Any visitDeclarations(iemlParser::DeclarationsContext *ctx) override {
     
-    auto declarations = std::make_unique<std::vector<std::unique_ptr<ComponentDeclaration>>>();
+    auto declarations = std::vector<std::unique_ptr<Declaration>>();
 
     for (auto children: ctx->declaration()) {
-        declarations->push_back(std::move(visit(children).as<std::unique_ptr<ComponentDeclaration>>()));
+        declarations.emplace_back(std::move(visit(children).as<std::unique_ptr<Declaration>>()));
     }
 
-    return std::move(declarations);
+    return std::make_unique<Program>(CharRange(1, 1, 1, 1), std::move(declarations));
   }
 
   antlrcpp::Any visitComponent(iemlParser::ComponentContext *ctx) override {
@@ -45,19 +50,49 @@ public:
         }
     }
 
-    return std::make_unique<ComponentDeclaration>(CharRange(1, 1, 1, 1), t_map);
+    return std::unique_ptr<Declaration>(new ComponentDeclaration(CharRange(1, 1, 1, 1), t_map));
   }
 
-  antlrcpp::Any visitFrench_language_string(iemlParser::French_language_stringContext *ctx) override {
-    const Identifier id = visit(ctx->identifier()).as<Identifier>();
+  antlrcpp::Any visitLanguage_string(iemlParser::Language_stringContext *ctx) override {
+    Identifier language = visitIdentifier(ctx->language).as<Identifier>();
+    
+    if( languageStr_to_LanguageType.count(language.getName()) < 1 ) {
+      const std::string msg = "Invalid language identifier '" + language.getName() + "'";
+      error_listener_->visitorError(language.getCharRange(), msg);
+    }
 
-    return std::make_pair<>(LanguageType(FR), id);
+    LanguageType ltype = languageStr_to_LanguageType.at(language.getName());
+
+    Identifier value = visitIdentifier(ctx->value).as<Identifier>();
+
+    return std::make_pair<>(ltype, value);
   }
 
   antlrcpp::Any visitIdentifier(iemlParser::IdentifierContext *ctx) override {
-    std::string name = "test";
-    
-    return Identifier(CharRange(1, 1, 1, 1), name);
+    std::ostringstream os;
+    bool first = true;
+
+    std::vector<antlr4::tree::TerminalNode *> identifiers = ctx->IDENTIFIER();
+
+    for (auto* id_part : identifiers) {
+      antlr4::Token* token = id_part->getSymbol();
+      
+      if (first)
+        first = false;
+      else
+        os << " ";
+      
+      os << token->getText();
+    }
+    antlr4::Token* start_token = identifiers[0]->getSymbol();
+    size_t l_start = start_token->getLine();
+    size_t c_start = start_token->getCharPositionInLine();
+
+    antlr4::Token* end_token = identifiers[identifiers.size() - 1]->getSymbol();
+    size_t l_end = end_token->getLine();
+    size_t c_end = end_token->getCharPositionInLine() + end_token->getText().size();
+
+    return Identifier(CharRange(l_start, l_end, c_start, c_end), os.str());
   }
 };
 
