@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <memory>
+
 
 namespace ieml::AST {
 
@@ -26,15 +29,14 @@ private:
 
 class AST {
 public:
-    AST(CharRange char_range) : char_range_(char_range) {};
+    AST(std::unique_ptr<CharRange>&& char_range) : char_range_(std::move(char_range)) {};
 
     virtual std::string to_string() const = 0;
 
-    const CharRange& getCharRange() const {return char_range_;}
+    const CharRange& getCharRange() const {return *char_range_;}
 
 private:
-    const CharRange char_range_;
-
+    std::unique_ptr<const CharRange> char_range_;
 
 };
 }

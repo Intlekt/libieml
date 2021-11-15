@@ -5,11 +5,7 @@
 using namespace ieml;
 
 int main(int , const char **) {
-  // std::string input;
-
-  // getline(std::cin, input);
-
-  std::string input = "@component fr\"test test\" pl\"test en\" (0 ~nom #wa) .";
+  std::string input = "@component fr\"test test\" en\"test en\" (0 ~nom #wa) .";
   parser::IEMLParser parser(input);
   parser.parse();
 

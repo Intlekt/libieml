@@ -1,12 +1,18 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "ast/interfaces/AST.h"
 
 
 namespace ieml::AST {
 class Identifier : public AST {
 public:
-    Identifier(CharRange char_range, std::string name) : AST(char_range), name_(name) {};
+    Identifier(std::unique_ptr<CharRange>&& char_range, 
+               std::string name) : 
+        AST(std::move(char_range)), 
+        name_(name) {};
     
     std::string to_string() const override {
         return name_;

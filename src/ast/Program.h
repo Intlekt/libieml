@@ -16,9 +16,10 @@ private:
 
 
 public:
-    Program(CharRange char_range,
+    Program(std::unique_ptr<CharRange> char_range,
             std::vector<std::unique_ptr<Declaration>>&& declarations) : 
-        AST(char_range), declarations_(std::move(declarations)) {}
+        AST(std::move(char_range)), 
+        declarations_(std::move(declarations)) {}
 
     std::string to_string() const override {
         std::ostringstream os;

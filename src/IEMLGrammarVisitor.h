@@ -9,6 +9,7 @@
 #include "ast/Constants.h"
 #include "ast/Identifier.h"
 #include "ast/Program.h"
+#include "ast/Phrase.h"
 
 
 namespace ieml {
@@ -22,50 +23,79 @@ class IEMLGrammarVisitor: public iemlBaseVisitor {
 private:
   IEMLParserErrorListener* error_listener_;
 
+
+  std::unique_ptr<CharRange> charRangeFromContext(antlr4::ParserRuleContext* ctx) const {
+    antlr4::Token* start = ctx->getStart();
+    antlr4::Token* end   = ctx->getStop();
+
+    size_t line_s, line_e, char_s, char_e;
+
+    // these tests are for the case if start is after end for a empty production rule (see documentation for Token.getStart())
+    if (start->getLine() < end->getLine()) {
+      line_s = start->getLine();
+      line_e = end->getLine();
+      char_s = start->getCharPositionInLine();
+      char_e = end->getCharPositionInLine();
+    } else if (start->getLine() > end->getLine()) {
+      line_e = start->getLine();
+      line_s = end->getLine();
+      char_e = start->getCharPositionInLine();
+      char_s = end->getCharPositionInLine();
+    } else {
+      line_s = line_e = start->getLine();
+      if (start->getCharPositionInLine() <= end->getCharPositionInLine()) {
+        char_s = start->getCharPositionInLine();
+        char_e = end->getCharPositionInLine();
+      } else {
+        char_e = start->getCharPositionInLine();
+        char_s = end->getCharPositionInLine();
+      }
+    } 
+    
+    return std::make_unique<CharRange>(line_s, line_e, char_s, char_e);
+  }
+
 public:
   IEMLGrammarVisitor(IEMLParserErrorListener* error_listener) : iemlBaseVisitor(), error_listener_(error_listener) {}
 
   virtual antlrcpp::Any visitDeclarations(iemlParser::DeclarationsContext *ctx) override {
-    
     auto declarations = std::vector<std::unique_ptr<Declaration>>();
 
     for (auto children: ctx->declaration()) {
         declarations.emplace_back(std::move(visit(children).as<std::unique_ptr<Declaration>>()));
     }
 
-    return std::make_unique<Program>(CharRange(1, 1, 1, 1), std::move(declarations));
+    return std::make_unique<Program>(charRangeFromContext(ctx), std::move(declarations));
   }
 
   antlrcpp::Any visitComponent(iemlParser::ComponentContext *ctx) override {
-    TranslationsMap t_map;
+    std::vector<std::unique_ptr<LanguageString>> translation_list;
 
-    for (auto lstr : ctx->language_string()) {
-        auto pair = visit(lstr).as<std::pair<LanguageType, Identifier>>();
-        if (t_map.count(pair.first) > 0) {
-            t_map[pair.first].push_back(pair.second);
-        } else {
-            TranslationList t_list;
-            t_list.push_back(pair.second);
-            t_map.insert(std::make_pair<>(pair.first, t_list));
-        }
+    for (auto children : ctx->language_string()) {
+      std::unique_ptr<LanguageString> language_string = std::move(visit(children).as<std::unique_ptr<LanguageString>>());
+      if (language_string) {
+        translation_list.emplace_back(std::move(language_string));
+      }
     }
 
-    return std::unique_ptr<Declaration>(new ComponentDeclaration(CharRange(1, 1, 1, 1), t_map));
+    return std::unique_ptr<Declaration>(new ComponentDeclaration(charRangeFromContext(ctx), std::move(translation_list)));
   }
 
   antlrcpp::Any visitLanguage_string(iemlParser::Language_stringContext *ctx) override {
-    Identifier language = visitIdentifier(ctx->language).as<Identifier>();
+    std::unique_ptr<Identifier> language = std::move(visitIdentifier(ctx->language).as<std::unique_ptr<Identifier>>());
     
-    if( languageStr_to_LanguageType.count(language.getName()) < 1 ) {
-      const std::string msg = "Invalid language identifier '" + language.getName() + "'";
-      error_listener_->visitorError(language.getCharRange(), msg);
+    if( languageStr_to_LanguageType.count(language->getName()) < 1 ) {
+      const std::string msg = "Invalid language identifier '" + language->getName() + "'";
+      error_listener_->visitorError(language->getCharRange(), msg);
+
+      return std::unique_ptr<LanguageString>(nullptr);  
     }
 
-    LanguageType ltype = languageStr_to_LanguageType.at(language.getName());
+    LanguageType ltype = languageStr_to_LanguageType.at(language->getName());
 
-    Identifier value = visitIdentifier(ctx->value).as<Identifier>();
+    auto value = std::move(visitIdentifier(ctx->value).as<std::unique_ptr<Identifier>>());
 
-    return std::make_pair<>(ltype, value);
+    return std::make_unique<LanguageString>(charRangeFromContext(ctx), ltype, std::move(value));
   }
 
   antlrcpp::Any visitIdentifier(iemlParser::IdentifierContext *ctx) override {
@@ -84,15 +114,8 @@ public:
       
       os << token->getText();
     }
-    antlr4::Token* start_token = identifiers[0]->getSymbol();
-    size_t l_start = start_token->getLine();
-    size_t c_start = start_token->getCharPositionInLine();
 
-    antlr4::Token* end_token = identifiers[identifiers.size() - 1]->getSymbol();
-    size_t l_end = end_token->getLine();
-    size_t c_end = end_token->getCharPositionInLine() + end_token->getText().size();
-
-    return Identifier(CharRange(l_start, l_end, c_start, c_end), os.str());
+    return std::make_unique<Identifier>(charRangeFromContext(ctx), os.str());
   }
 };
 

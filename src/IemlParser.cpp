@@ -17,10 +17,10 @@ IEMLParser::IEMLParser(const std::string& input_str)  {
 
     tokens_ = new antlr4::CommonTokenStream(lexer_);
 
-    tokens_->fill();
-    for (auto token : tokens_->getTokens()) {
-        std::cout << token->toString() << std::endl;
-    }
+    // tokens_->fill();
+    // for (auto token : tokens_->getTokens()) {
+    //     std::cout << token->toString() << std::endl;
+    // }
 
     parser_ = new ieml_generated::iemlParser(tokens_);
     parser_->removeErrorListeners();

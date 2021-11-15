@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "antlr4-runtime.h"
 #include "iemlLexer.h"
 #include "iemlParser.h"
@@ -15,14 +17,14 @@ namespace parser {
 
 class IEMLParser {
 private:
-    antlr4::ANTLRInputStream* input_ = NULL;
-    IEMLParserErrorListener* errorListener_ = NULL;
+    antlr4::ANTLRInputStream* input_ = nullptr;
+    IEMLParserErrorListener* errorListener_ = nullptr;
 
-    ieml_generated::iemlLexer* lexer_ = NULL;
-    ieml_generated::iemlParser* parser_ = NULL;
-    antlr4::CommonTokenStream* tokens_ = NULL;
+    ieml_generated::iemlLexer* lexer_ = nullptr;
+    ieml_generated::iemlParser* parser_ = nullptr;
+    antlr4::CommonTokenStream* tokens_ = nullptr;
 
-    antlr4::tree::ParseTree* parseTree_ = NULL;
+    antlr4::tree::ParseTree* parseTree_ = nullptr;
 
 public:
     explicit IEMLParser(const std::string& input_str);
