@@ -4,12 +4,16 @@
 #include <memory>
 
 #include "iemlBaseVisitor.h"
+
+#include "RecognitionError.h"
+
 #include "ast/Declaration.h"
 #include "ast/interfaces/AST.h"
 #include "ast/Constants.h"
 #include "ast/Identifier.h"
 #include "ast/Program.h"
 #include "ast/Phrase.h"
+#include "ast/InflexedCategory.h"
 
 
 namespace ieml {
@@ -23,7 +27,9 @@ class IEMLGrammarVisitor: public iemlBaseVisitor {
 private:
   IEMLParserErrorListener* error_listener_;
 
-
+  std::unique_ptr<CharRange> charRangeFromToken(antlr4::Token* token) const {
+    return std::make_unique<CharRange>(token->getLine(), token->getLine(), token->getCharPositionInLine(), token->getCharPositionInLine() + token->getText().size());
+  }
   std::unique_ptr<CharRange> charRangeFromContext(antlr4::ParserRuleContext* ctx) const {
     antlr4::Token* start = ctx->getStart();
     antlr4::Token* end   = ctx->getStop();
@@ -58,7 +64,7 @@ private:
 public:
   IEMLGrammarVisitor(IEMLParserErrorListener* error_listener) : iemlBaseVisitor(), error_listener_(error_listener) {}
 
-  virtual antlrcpp::Any visitDeclarations(iemlParser::DeclarationsContext *ctx) override {
+  antlrcpp::Any visitDeclarations(iemlParser::DeclarationsContext *ctx) override {
     auto declarations = std::vector<std::unique_ptr<Declaration>>();
 
     for (auto children: ctx->declaration()) {
@@ -78,7 +84,9 @@ public:
       }
     }
 
-    return std::unique_ptr<Declaration>(new ComponentDeclaration(charRangeFromContext(ctx), std::move(translation_list)));
+    std::unique_ptr<Phrase> phrase = std::move(visit(ctx->phrase()).as<std::unique_ptr<Phrase>>());
+
+    return std::unique_ptr<Declaration>(new ComponentDeclaration(charRangeFromContext(ctx), std::move(translation_list), std::move(phrase)));
   }
 
   antlrcpp::Any visitLanguage_string(iemlParser::Language_stringContext *ctx) override {
@@ -97,6 +105,58 @@ public:
 
     return std::make_unique<LanguageString>(charRangeFromContext(ctx), ltype, std::move(value));
   }
+
+  antlrcpp::Any visitPhrase_lines(iemlParser::Phrase_linesContext *ctx) override {
+    std::vector<std::unique_ptr<PhraseLine>> phrase_lines;
+
+    for (auto child : ctx->phrase_line()) {
+      auto phrase_line = std::move(visit(child).as<std::unique_ptr<PhraseLine>>());
+      phrase_lines.emplace_back(std::move(phrase_line));
+    }
+
+    return std::unique_ptr<Phrase>(new SimplePhrase(charRangeFromContext(ctx), std::move(phrase_lines)));
+  }
+
+  
+  antlrcpp::Any visitPhrase_line__sub_phrase_line_auxiliary(iemlParser::Phrase_line__sub_phrase_line_auxiliaryContext *ctx) override {
+    int role_type = std::stoi(ctx->INTEGER()->getSymbol()->getText());
+
+    if (role_type < 0 || role_type > 8) {
+      error_listener_->visitorError(*charRangeFromToken(ctx->INTEGER()->getSymbol()), "Invalid role number, must in the [0,8] range.");
+      return nullptr;
+    }
+
+    bool accentuation = ctx->accentuation;
+
+    std::unique_ptr<AuxiliarySubPhraseLine> aux_line = std::move(visit(ctx->sub_phrase_line_auxiliary()).as<std::unique_ptr<AuxiliarySubPhraseLine>>());
+
+    return std::unique_ptr<PhraseLine>(new SimplePhraseLine(charRangeFromContext(ctx), static_cast<RoleType>(role_type), accentuation, std::move(aux_line)));
+  }
+
+  antlrcpp::Any visitSub_phrase_line_auxiliary__sub_phrase_no_auxiliary(iemlParser::Sub_phrase_line_auxiliary__sub_phrase_no_auxiliaryContext *ctx) override {
+    std::unique_ptr<Identifier> auxiliary = nullptr;
+    if (ctx->auxiliary) {
+      auxiliary = std::move(visit(ctx->auxiliary).as<std::unique_ptr<Identifier>>());
+    }
+
+    std::unique_ptr<InflexedCategory> inflexed_category = std::move(visit(ctx->inflexed_category()).as<std::unique_ptr<InflexedCategory>>());
+
+    return std::unique_ptr<AuxiliarySubPhraseLine>(new SimpleAuxiliarySubPhraseLine(charRangeFromContext(ctx), std::move(auxiliary), std::move(inflexed_category)));
+  }
+
+  antlrcpp::Any visitInflexed_category(iemlParser::Inflexed_categoryContext *ctx) override {
+    std::vector<std::unique_ptr<Identifier>> inflexions;
+
+    for (auto & child : ctx->inflexions) {
+      std::unique_ptr<Identifier> inflexion = std::move(visit(child).as<std::unique_ptr<Identifier>>());
+      inflexions.emplace_back(std::move(inflexion)); 
+    }
+    
+    std::unique_ptr<Identifier> category = std::move(visit(ctx->category).as<std::unique_ptr<Identifier>>());
+
+    return std::make_unique<InflexedCategory>(charRangeFromContext(ctx), std::move(inflexions), std::move(category));
+  }
+
 
   antlrcpp::Any visitIdentifier(iemlParser::IdentifierContext *ctx) override {
     std::ostringstream os;

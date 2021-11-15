@@ -1,7 +1,9 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 #include <string>
+#include <sstream>
 
 #include "ast/interfaces/AST.h"
 #include "ast/Identifier.h"
@@ -9,11 +11,11 @@
 
 namespace ieml::AST {
 
-class FlexedCategory : public AST {
+class InflexedCategory : public AST {
 public:
-    FlexedCategory(std::unique_ptr<CharRange>&& char_range,
-                   std::vector<std::unique_ptr<Identifier>>&& inflexions,
-                   std::unique_ptr<Identifier>&& category) :
+    InflexedCategory(std::unique_ptr<CharRange>&& char_range,
+                     std::vector<std::unique_ptr<Identifier>>&& inflexions,
+                     std::unique_ptr<Identifier>&& category) :
         AST(std::move(char_range)),
         inflexions_(std::move(inflexions)),
         category_(std::move(category)) {}

@@ -15,13 +15,13 @@ phrase_line : INTEGER accentuation=SEMANTIC_ACCENT? sub_phrase_line_auxiliary   
             | INTEGER accentuation=SEMANTIC_ACCENT? jonction_auxiliary              # phrase_line__jonction_auxiliary
             ;
 
-flexed_category : (FLEXION_MARK inflection+=identifier)* CATEGORY_MARK category=identifier reference?;
+inflexed_category : (FLEXION_MARK inflexions+=identifier)* CATEGORY_MARK category=identifier reference?;
 
-sub_phrase_line_auxiliary : (AUXILIARY_MARK auxiliary=identifier)? flexed_category       # sub_phrase_line_auxiliary__sub_phrase_no_auxiliary
+sub_phrase_line_auxiliary : (AUXILIARY_MARK auxiliary=identifier)? inflexed_category       # sub_phrase_line_auxiliary__sub_phrase_no_auxiliary
                           | (AUXILIARY_MARK auxiliary=identifier)? jonction_no_auxiliary        # sub_phrase_line_auxiliary__jonction_no_auxiliary
                           ;
 
-jonction_no_auxiliary : JUNCTION_OPEN identifier JONCTION_OPEN flexed_category flexed_category+ JUNCTION_CLOSE 
+jonction_no_auxiliary : JUNCTION_OPEN identifier JONCTION_OPEN inflexed_category inflexed_category+ JUNCTION_CLOSE 
                       ;
 
 jonction_auxiliary : JUNCTION_OPEN identifier JONCTION_OPEN sub_phrase_line_auxiliary sub_phrase_line_auxiliary+ JUNCTION_CLOSE ;

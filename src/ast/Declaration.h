@@ -8,6 +8,7 @@
 #include "ast/interfaces/IDeclaration.h"
 #include "ast/interfaces/ITranslatable.h"
 #include "ast/Constants.h"
+#include "ast/Phrase.h"
 
 namespace ieml::AST {
 
@@ -26,16 +27,21 @@ public:
 class ComponentDeclaration: public Declaration {
 public:
     ComponentDeclaration(std::unique_ptr<CharRange>&& char_range, 
-                         std::vector<std::unique_ptr<LanguageString>>&& translations) : 
+                         std::vector<std::unique_ptr<LanguageString>>&& translations,
+                         std::unique_ptr<Phrase>&& phrase) : 
         Declaration(std::move(char_range), 
         std::move(translations), 
-        DeclarationType(Component)) {};
+        DeclarationType(Component)),
+        phrase_(std::move(phrase)) {};
 
     std::string to_string() const {
         std::ostringstream os;
-        os << "@component " << translations_to_string() << " " << " .";
+        os << "@component " << translations_to_string() << " " << phrase_->to_string() << " .";
         return os.str();
     };
+
+private:
+    std::unique_ptr<Phrase> phrase_;
 };
 
 }

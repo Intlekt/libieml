@@ -5,7 +5,7 @@
 using namespace ieml;
 
 int main(int , const char **) {
-  std::string input = "@component fr\"test test\" en\"test en\" (0 ~nom #wa) .";
+  std::string input = "@component fr\"test test\" en\"test en\" (0 ~nom #wa, 1 *tre ~test     #e133) .";
   parser::IEMLParser parser(input);
   parser.parse();
 
