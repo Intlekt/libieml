@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "ast/Identifier.h"
+
 namespace ieml {
 namespace AST {
 
@@ -15,7 +17,7 @@ const std::string languages_names[LanguageType::EN + 1] = {"fr", "en"};
 enum RoleType {};
 enum DeclarationType { Component, Node };
 
-typedef std::vector<std::string> TranslationList;
+typedef std::vector<Identifier> TranslationList;
 typedef std::map<LanguageType, TranslationList> TranslationsMap;
 
 }

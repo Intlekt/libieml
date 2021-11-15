@@ -27,8 +27,8 @@ public:
                 os << " ";
             }
             
-            for (const std::string& s: x.second) {
-                os << languages_names[x.first] << '"' << s << '"';
+            for (const Identifier& s: x.second) {
+                os << languages_names[x.first] << '"' << s.to_string() << '"';
             }
         }
         return os.str();

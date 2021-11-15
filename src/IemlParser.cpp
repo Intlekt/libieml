@@ -35,12 +35,11 @@ void IEMLParser::parse() {
         return;
     parseTree_ = parser_->declarations();
     IEMLGrammarVisitor visitor;
-    std::vector<ieml::AST::ComponentDeclaration> res = visitor.visit(parseTree_).as<std::vector<ieml::AST::ComponentDeclaration>>();
+    auto res = std::move(visitor.visit(parseTree_).as<std::unique_ptr<std::vector<std::unique_ptr<ieml::AST::AST>>>>());
 
-    for (auto cmp : res) {
-        std::cout << cmp.to_string() << std::endl;
+    for (const auto& cmp : *res) {
+        std::cout << cmp->to_string() << std::endl;
     }
-
 }
 
 const antlr4::tree::ParseTree* IEMLParser::getParseTree() const {

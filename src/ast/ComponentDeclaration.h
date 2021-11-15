@@ -20,7 +20,7 @@ public:
 
     std::string to_string() const {
         std::ostringstream os;
-        os << "@component " << translations_to_string();
+        os << "@component " << translations_to_string() << " " << " .";
         return os.str();
     };
 };
