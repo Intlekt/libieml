@@ -4,14 +4,15 @@
 
 #include "ast/interfaces/AST.h"
 #include "ast/interfaces/IJunction.h"
+#include "ast/interfaces/ICategory.h"
 
 #include "ast/PhraseLine.h"
 
 
 namespace ieml::AST {
-class Phrase: public AST {
+class Phrase: virtual public AST, public ICategory, public IReferenceValue {
 public:
-    Phrase(std::unique_ptr<CharRange> && char_range) : AST(std::move(char_range)) {}
+    Phrase() : ICategory(), IReferenceValue() {}
 
 };
 
@@ -20,7 +21,8 @@ class SimplePhrase : public Phrase {
 public:
     SimplePhrase(std::unique_ptr<CharRange> && char_range,
                  std::vector<std::unique_ptr<PhraseLine>> && phrase_lines) : 
-            Phrase(std::move(char_range)), 
+            AST(std::move(char_range)),
+            Phrase(), 
             phrase_lines_(std::move(phrase_lines)) {}
 
     std::string to_string() const override {
@@ -46,13 +48,18 @@ private:
 };
 
 
-class JunctionPhrase : public Phrase, public IJunction {
+class JunctionPhrase : public Phrase, public IJunction<Phrase> {
 public:
-    JunctionPhrase(std::unique_ptr<CharRange> && char_range,
-                   JunctionType junction_type) : 
-        Phrase(std::move(char_range)),
-        IJunction(junction_type) {}
+    JunctionPhrase(std::unique_ptr<CharRange>&& char_range,
+                   std::vector<std::unique_ptr<Phrase>>&& phrases,
+                   std::unique_ptr<Identifier>&& junction_identifier) : 
+        AST(std::move(char_range)),
+        Phrase(), 
+        IJunction<Phrase>(std::move(phrases), std::move(junction_identifier)) {}
 
+    std::string to_string() const override {
+        return "(" + junction_to_string() + ")";
+    }
 };
 
 }

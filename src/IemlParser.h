@@ -10,6 +10,8 @@
 
 #include "IEMLGrammarVisitor.h"
 
+#include "ast/Program.h"
+
 
 namespace ieml {
 namespace parser {
@@ -26,6 +28,8 @@ private:
 
     antlr4::tree::ParseTree* parseTree_ = nullptr;
 
+    std::unique_ptr<Program> ast_ = nullptr;
+
 public:
     explicit IEMLParser(const std::string& input_str);
 
@@ -38,6 +42,7 @@ public:
 
     const std::vector<const SyntaxError*> getSyntaxErrors() const { return errorListener_->getSyntaxErrors(); }
 
+    const std::string getASTString() const;
 
 };
 

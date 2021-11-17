@@ -1,0 +1,11 @@
+@component 
+    fr"le chien mange du paté sur le tapis" 
+    en"the dog eats paté on the carpet" 
+    (
+        0 #test,
+        1 &et [
+            ~singulier #chien
+            ~pluriel #chat 
+        ]
+    )
+.

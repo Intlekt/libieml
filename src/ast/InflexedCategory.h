@@ -11,11 +11,11 @@
 
 namespace ieml::AST {
 
-class InflexedCategory : public AST {
+class InflexedCategory : virtual public AST {
 public:
     InflexedCategory(std::unique_ptr<CharRange>&& char_range,
                      std::vector<std::unique_ptr<Identifier>>&& inflexions,
-                     std::unique_ptr<Identifier>&& category) :
+                     std::unique_ptr<ICategory>&& category) :
         AST(std::move(char_range)),
         inflexions_(std::move(inflexions)),
         category_(std::move(category)) {}
@@ -41,7 +41,7 @@ public:
 
 private:
     std::vector<std::unique_ptr<Identifier>> inflexions_;
-    std::unique_ptr<Identifier> category_;
+    std::unique_ptr<ICategory> category_;
 };
 
 

@@ -10,7 +10,7 @@
 
 
 namespace ieml::AST {
-class Program: public AST {
+class Program: virtual public AST {
 private:
     std::vector<std::unique_ptr<Declaration>> declarations_;
 

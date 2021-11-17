@@ -1,1 +1,1 @@
-@component fr"test" (0 ~nom #"wa.") .
+@component fr"test" (0 ~nom #'wa.') .

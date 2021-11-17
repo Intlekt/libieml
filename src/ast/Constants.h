@@ -8,7 +8,9 @@
 namespace ieml::AST {
 
 
-enum JunctionType {};
+enum JunctionType {
+    AND = 0
+};
 enum ReferenceType {};
 
 enum LanguageType {FR = 0, EN};

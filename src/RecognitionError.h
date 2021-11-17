@@ -20,7 +20,7 @@ namespace parser {
         public:
             SyntaxError(size_t line, size_t charPositionInLine, const std::string& msg): line_(line), charPositionInLine_(charPositionInLine), msg_(msg) {}
 
-            std::string to_str() const {
+            const std::string to_string() const {
                 return "l." + std::to_string(line_) + ":" + std::to_string(charPositionInLine_) + " " + msg_;
             }
     };

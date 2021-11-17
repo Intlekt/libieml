@@ -1,41 +1,38 @@
 grammar ieml;
 
-declarations : declaration* EOF;
+program : declaration* EOF;
 
 declaration : DECLARATION_MARK 'component' language_string+ phrase DECLARATION_END # component
             ;
 
-phrase : '(' phrase_line (',' phrase_line)* ')' # phrase_lines
-       | '(' junction_phrase ')'                # phrase_junction
+phrase : '(' phrase_line (',' phrase_line)* ')'                                          # phrase__lines
+       | '(' JUNCTION_MARK identifier JUNCTION_OPEN phrase phrase+ JUNCTION_CLOSE ')'    # phrase__junction
        ;
 
-junction_phrase : JUNCTION_OPEN identifier JONCTION_OPEN phrase phrase+ JUNCTION_CLOSE;
-
-phrase_line : INTEGER accentuation=SEMANTIC_ACCENT? sub_phrase_line_auxiliary       # phrase_line__sub_phrase_line_auxiliary
-            | INTEGER accentuation=SEMANTIC_ACCENT? jonction_auxiliary              # phrase_line__jonction_auxiliary
+// ambiguité : jonction auxialiary avec sub_phrase_line_auxiliary -> jonction_no_aux pour les cas ou pas du tout d'auxiliaires
+phrase_line : INTEGER accentuation=SEMANTIC_ACCENT? sub_phrase_line_auxiliary                      # phrase_line__sub_phrase_line_auxiliary
+            | INTEGER accentuation=SEMANTIC_ACCENT? JUNCTION_MARK identifier 
+              JUNCTION_OPEN sub_phrase_line_auxiliary sub_phrase_line_auxiliary+ JUNCTION_CLOSE    # phrase_line__jonction_auxiliary
             ;
 
-inflexed_category : (FLEXION_MARK inflexions+=identifier)* CATEGORY_MARK category=identifier reference?;
+category : identifier # category__identifier
+         | phrase     # category__phrase
+         | STRING     # category__word
+         ;
 
-sub_phrase_line_auxiliary : (AUXILIARY_MARK auxiliary=identifier)? inflexed_category       # sub_phrase_line_auxiliary__sub_phrase_no_auxiliary
-                          | (AUXILIARY_MARK auxiliary=identifier)? jonction_no_auxiliary        # sub_phrase_line_auxiliary__jonction_no_auxiliary
+inflexed_category : (FLEXION_MARK inflexions+=identifier)* CATEGORY_MARK category reference?;
+
+sub_phrase_line_auxiliary : (AUXILIARY_MARK auxiliary=identifier)? inflexed_category              # sub_phrase_line_auxiliary__sub_phrase_no_auxiliary
+                          | (AUXILIARY_MARK auxiliary=identifier)? JUNCTION_MARK junction_type=identifier 
+                            JUNCTION_OPEN inflexed_category inflexed_category+ JUNCTION_CLOSE     # sub_phrase_line_auxiliary__jonction_no_auxiliary
                           ;
 
-jonction_no_auxiliary : JUNCTION_OPEN identifier JONCTION_OPEN inflexed_category inflexed_category+ JUNCTION_CLOSE 
-                      ;
+reference : REFERENCE_OPEN ('id' INTEGER)? 'dt' IDENTIFIER 'va' reference_value REFERENCE_CLOSE;
 
-jonction_auxiliary : JUNCTION_OPEN identifier JONCTION_OPEN sub_phrase_line_auxiliary sub_phrase_line_auxiliary+ JUNCTION_CLOSE ;
-// ambiguité : jonction auxialiary avec sub_phrase_line_auxiliary -> jonction_no_aux pour les cas ou pas du tout d'auxiliaires
-
-reference : REFERENCE_OPEN
-            ('id' INTEGER)?
-            'dt' IDENTIFIER
-            'va' reference_value
-            REFERENCE_CLOSE;
-
-reference_value: identifier
-               | STRING
-               | phrase;
+reference_value: identifier  # reference_value__identifier
+               | STRING      # reference_value__STRING
+               | phrase      # reference_value__phrase
+               ;
 
 language_string : language=identifier '"' value=identifier '"';
 
@@ -45,14 +42,12 @@ identifier : IDENTIFIER+ ;
 
 IDENTIFIER : [a-zA-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ][0-9a-zA-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ]*;
 
-//SCRIPT : '"'[EUASBTOMFIacbedgfihkjmlonpsutwyx][EUASBTOMFIacbedgfihkjmlonpsutwyx.\-;:,'’_+]+'"';
-
 FLEXION_MARK : '~' ;
-JUNCTION_OPEN : '&' ;
+JUNCTION_MARK : '&' ;
 AUXILIARY_MARK : '*' ;
 CATEGORY_MARK : '#' ;
 
-JONCTION_OPEN : '[' ;
+JUNCTION_OPEN : '[' ;
 JUNCTION_CLOSE : ']' ;
 
 REFERENCE_OPEN : '<' ;

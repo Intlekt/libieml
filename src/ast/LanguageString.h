@@ -11,7 +11,7 @@
 
 namespace ieml::AST {
 
-class LanguageString: public AST {
+class LanguageString: virtual public AST {
 public:
     LanguageString(std::unique_ptr<CharRange>&& char_range, 
                    LanguageType language_type, 

@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <filesystem>
 
 #include "gtest/gtest.h"
@@ -28,7 +29,19 @@ TEST(ieml_grammar_test_case, validate_exemples)
     IEMLParser parser(exampleString);
     parser.parse();
 
-    EXPECT_EQ(parser.getSyntaxErrors().size(), 0) << "Expected no errors on " << file.path() << " got " << parser.getSyntaxErrors().size();
+
+    std::ostringstream os;
+    for (auto& error : parser.getSyntaxErrors()) {
+      os << error->to_string() << std::endl;
+    }
+
+    EXPECT_EQ(parser.getSyntaxErrors().size(), 0) << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl
+                                                  << "[FAILURE] " << file.path() 
+                                                  << " got " << parser.getSyntaxErrors().size() << " errors :" << std::endl
+                                                  << os.str() << std::endl
+                                                  << "file :" << std::endl 
+                                                  << exampleString << std::endl
+                                                  << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
 
   }
 }

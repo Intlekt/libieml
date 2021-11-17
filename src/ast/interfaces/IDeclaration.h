@@ -1,13 +1,17 @@
 #pragma once
 
+#include <memory>
+
 #include "ast/Constants.h"
+#include "ast/interfaces/AST.h"
 
 
 namespace ieml::AST {
 
-class IDeclaration {
+class IDeclaration : virtual public AST {
 public:
-    IDeclaration(DeclarationType declaration_type) : declaration_type_(declaration_type) {};
+    IDeclaration(DeclarationType declaration_type) : 
+        declaration_type_(declaration_type) {};
 
 
 private:
