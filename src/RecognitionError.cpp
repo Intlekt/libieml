@@ -8,7 +8,7 @@ using namespace ieml::parser;
 void IEMLParserErrorListener::syntaxError(Recognizer *recognizer, Token *offendingSymbol, size_t line,
                                           size_t charPositionInLine, const std::string &msg, std::exception_ptr e) {
 
-    error_manager_.registerError(new SyntaxError(line, charPositionInLine, msg));
+    error_manager_.registerError(new SyntaxError(std::make_unique<ieml::AST::CharRange>(line, line, charPositionInLine, charPositionInLine), msg));
 };
 void IEMLParserErrorListener::reportAmbiguity(Parser *recognizer, const dfa::DFA &dfa, size_t startIndex, size_t stopIndex, bool exact,
                                               const antlrcpp::BitSet &ambigAlts, atn::ATNConfigSet *configs) {
@@ -24,8 +24,8 @@ void IEMLParserErrorListener::reportContextSensitivity(Parser *recognizer, const
 
 };
 
-void IEMLParserErrorListener::visitorError(ieml::AST::CharRange char_range, const std::string &msg) {
-    error_manager_.registerError(new SyntaxError(char_range.getLineStart(), char_range.getCharStart(), msg));
+void IEMLParserErrorListener::visitorError(std::unique_ptr<ieml::AST::CharRange>&& char_range, const std::string &msg) {
+    error_manager_.registerError(new SyntaxError(std::move(char_range), msg));
 };
 
 

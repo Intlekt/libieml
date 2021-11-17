@@ -5,7 +5,7 @@
 using namespace ieml;
 
 int main(int , const char **) {
-  std::string input = "@component fr\"le chien mange du paté sur le tapis\" en\"the dog eats paté on the carpet\" (0 #test, 1 &et [~singulier #chien ~pluriel #chat ]) .";
+  std::string input = R"(@component fr"test" en"test" (0 ~ #test <id 1 dt int va 'test'>,1 !*r #test2) .)";
   parser::IEMLParser parser(input);
   parser.parse();
 

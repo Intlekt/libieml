@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <filesystem>
-
+#include <exception>
 #include "gtest/gtest.h"
 
 #include "IemlParser.h"
@@ -27,7 +27,12 @@ TEST(ieml_grammar_test_case, validate_exemples)
     exampleFile.close();
 
     IEMLParser parser(exampleString);
-    parser.parse();
+
+    try {
+      parser.parse();
+    } catch (std::exception& e) {
+      EXPECT_TRUE(false) << e.what();
+    }
 
 
     std::ostringstream os;

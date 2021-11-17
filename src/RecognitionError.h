@@ -12,26 +12,31 @@ namespace parser {
 
     class SyntaxError {
         private:
-            // Token *offendingSymbol_;
-            size_t line_;
-            size_t charPositionInLine_;
+            std::unique_ptr<ieml::AST::CharRange> char_range_;
             const std::string msg_;
 
         public:
-            SyntaxError(size_t line, size_t charPositionInLine, const std::string& msg): line_(line), charPositionInLine_(charPositionInLine), msg_(msg) {}
+            SyntaxError(std::unique_ptr<ieml::AST::CharRange>&& char_range, const std::string& msg): 
+                char_range_(std::move(char_range)), msg_(msg) {}
 
             const std::string to_string() const {
-                return "l." + std::to_string(line_) + ":" + std::to_string(charPositionInLine_) + " " + msg_;
+                return char_range_->to_string() + " " + msg_;
             }
     };
 
 
     class ErrorManager {
         private:
+            bool stdout_;
             std::vector<const SyntaxError*> errors_;
 
         public:
+            ErrorManager() : stdout_(true) {};
+            ErrorManager(bool print_stdout) : stdout_(print_stdout) {};
+
             void registerError(const SyntaxError* error) {
+                if (stdout_)
+                    std::cout << error->to_string() << std::endl;
                 errors_.push_back(error);
             }
 
@@ -65,7 +70,7 @@ namespace parser {
                                           size_t prediction, atn::ATNConfigSet *configs);
 
             
-            void visitorError(ieml::AST::CharRange char_range, const std::string &msg);
+            void visitorError(std::unique_ptr<ieml::AST::CharRange>&& char_range, const std::string &msg);
 
             const std::vector<const SyntaxError*> getSyntaxErrors() const { return error_manager_.getSyntaxErrors(); }
 

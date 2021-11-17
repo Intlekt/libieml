@@ -15,13 +15,13 @@ public:
         value_(unescape_value(value)) {}
 
     std::string to_string() const override {
-        return escaped_value();
+        return "'" + escaped_value() + "'";
     }
 
     std::string escaped_value() const {
         std::string s_ = value_;
-        s_ = std::regex_replace(s_, std::regex("\\"), "\\\\");
-        s_ = std::regex_replace(s_, std::regex("'"), "\\'");
+        s_ = std::regex_replace(s_, std::regex(R"(\\)"), R"(\\\\)");
+        s_ = std::regex_replace(s_, std::regex(R"(')"), R"(\\')");
         return s_;
     }
 

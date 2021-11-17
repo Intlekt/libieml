@@ -22,6 +22,46 @@
 #include "ast/interfaces/ICategory.h"
 
 
+#define CHECK_SYNTAX_ERROR(ErrorListener, Context, Attribute, Message, Required) \
+antlrcpp::Any t_##Attribute; \
+bool valid_##Attribute = true; \
+if (Context->Attribute) {\
+  t_##Attribute = visit(Context->Attribute); \
+  if (t_##Attribute.isNull()) { \
+    ErrorListener->visitorError(charRangeFromContext(Context), Message); \
+    valid_##Attribute = false; \
+  }\
+} else if (Required) { \
+  ErrorListener->visitorError(charRangeFromContext(Context), "Missing required " #Attribute " : " Message); \
+  valid_##Attribute = false; \
+}
+
+#define CHECK_SYNTAX_ERROR_LIST(ErrorListener, Context, Type, Attribute, Message) \
+std::vector<std::unique_ptr<Type>> Attribute;\
+bool valid_##Attribute = true; \
+for (auto child: Context->Attribute) { \
+  auto t_tmp = visit(child); \
+  if (t_tmp.isNull()) { \
+    ErrorListener->visitorError(charRangeFromContext(Context), Message); \
+    valid_##Attribute = false; \
+  } else { \
+    Attribute.emplace_back(std::move(t_tmp.as<std::unique_ptr<Type>>())); \
+  }\
+}
+
+
+#define CAST_OR_RETURN_IF_NULL(Context, Type, Attribute) \
+if (!valid_##Attribute) \
+  return nullptr; \
+std::unique_ptr<Type> Attribute;\
+if(Context->Attribute) \
+  Attribute = std::move(t_##Attribute.as<std::unique_ptr<Type>>());
+
+#define CAST_OR_RETURN_IF_NULL_LIST(Attribute) \
+if (!valid_##Attribute) \
+  return nullptr; 
+
+
 namespace ieml::parser {
 
 using namespace ieml_generated;
@@ -66,7 +106,6 @@ private:
     return std::make_unique<CharRange>(line_s, line_e, char_s, char_e);
   }
 
-
 public:
   IEMLGrammarVisitor(IEMLParserErrorListener* error_listener) : iemlVisitor(), error_listener_(error_listener) {}
 
@@ -76,11 +115,8 @@ public:
    */
 
   virtual antlrcpp::Any visitProgram(iemlParser::ProgramContext *ctx) override {
-    auto declarations = std::vector<std::unique_ptr<Declaration>>();
-
-    for (auto children: ctx->declaration()) {
-        declarations.emplace_back(std::move(visit(children).as<std::unique_ptr<Declaration>>()));
-    }
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Declaration, declarations, "Invalid declaration.");
+    CAST_OR_RETURN_IF_NULL_LIST(declarations);
 
     return std::make_unique<Program>(charRangeFromContext(ctx), std::move(declarations));
   }
@@ -91,18 +127,13 @@ public:
    */
 
   virtual antlrcpp::Any visitComponent(iemlParser::ComponentContext *ctx) override {
-    std::vector<std::unique_ptr<LanguageString>> translation_list;
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase definition in component declaration.", true);
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
-    for (auto children : ctx->language_string()) {
-      std::unique_ptr<LanguageString> language_string = std::move(visit(children).as<std::unique_ptr<LanguageString>>());
-      if (language_string) {
-        translation_list.emplace_back(std::move(language_string));
-      }
-    }
+    CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_);
+    CAST_OR_RETURN_IF_NULL_LIST(language_strings);
 
-    std::unique_ptr<Phrase> phrase = std::move(visit(ctx->phrase()).as<std::unique_ptr<Phrase>>());
-
-    return std::unique_ptr<Declaration>(new ComponentDeclaration(charRangeFromContext(ctx), std::move(translation_list), std::move(phrase)));
+    return std::unique_ptr<Declaration>(new ComponentDeclaration(charRangeFromContext(ctx), std::move(language_strings), std::move(phrase_)));
   }
 
 
@@ -111,26 +142,18 @@ public:
    */
 
   virtual antlrcpp::Any visitPhrase__lines(iemlParser::Phrase__linesContext *ctx) override {
-    std::vector<std::unique_ptr<PhraseLine>> phrase_lines;
-
-    for (auto child : ctx->phrase_line()) {
-      auto phrase_line = std::move(visit(child).as<std::unique_ptr<PhraseLine>>());
-      phrase_lines.emplace_back(std::move(phrase_line));
-    }
-
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, PhraseLine, phrase_lines, "Invalid phrase lines.");    
+    CAST_OR_RETURN_IF_NULL_LIST(phrase_lines);
     return std::unique_ptr<Phrase>(new SimplePhrase(charRangeFromContext(ctx), std::move(phrase_lines)));
   }
 
   virtual antlrcpp::Any visitPhrase__junction(iemlParser::Phrase__junctionContext *ctx) override {
-    std::vector<std::unique_ptr<Phrase>> phrases;
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Phrase, phrases, "Invalid phrases in phrase junction.");
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, junction_type, "Invalid junction identifier in phrase junction.", true);
 
-    for (auto child : ctx->phrase()) {
-      auto phrase = std::move(visit(child).as<std::unique_ptr<Phrase>>());
-      phrases.emplace_back(std::move(phrase));
-    }
-    
-    auto junction_type = std::move(visit(ctx->identifier()).as<std::unique_ptr<Identifier>>());
-    
+    CAST_OR_RETURN_IF_NULL_LIST(phrases);
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, junction_type);
+
     return std::unique_ptr<Phrase>(new JunctionPhrase(charRangeFromContext(ctx), std::move(phrases), std::move(junction_type)));
   }
 
@@ -139,43 +162,50 @@ public:
    * PHRASELINE
    */
 
-  virtual antlrcpp::Any visitPhrase_line__sub_phrase_line_auxiliary(iemlParser::Phrase_line__sub_phrase_line_auxiliaryContext *ctx) override {
-    int role_type = std::stoi(ctx->INTEGER()->getSymbol()->getText());
+  virtual antlrcpp::Any visitPhrase_line__sub_phrase_line_auxiliary(iemlParser::Phrase_line__sub_phrase_line_auxiliaryContext *ctx) override {   
+    
+    std::unique_ptr<int> role_type = nullptr;
+    if (!ctx->role_type)
+      error_listener_->visitorError(charRangeFromContext(ctx), "Invalid role number.");
+    else
+      role_type = std::make_unique<int>(std::stoi(ctx->INTEGER()->getSymbol()->getText()));
+    
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, sub_phrase, "Invalid sub phrase line : invalid auxiliary, inflexion, category or references.", true);
 
-    if (role_type < 0 || role_type > 8) {
-      error_listener_->visitorError(*charRangeFromToken(ctx->INTEGER()->getSymbol()), "Invalid role number, must in the [0,8] range.");
+    CAST_OR_RETURN_IF_NULL(ctx, AuxiliarySubPhraseLine, sub_phrase);
+    if (!role_type)
       return nullptr;
-    }
 
     bool accentuation = ctx->accentuation;
 
-    std::unique_ptr<AuxiliarySubPhraseLine> aux_line = std::move(visit(ctx->sub_phrase_line_auxiliary()).as<std::unique_ptr<AuxiliarySubPhraseLine>>());
-
-    return std::unique_ptr<PhraseLine>(new SimplePhraseLine(charRangeFromContext(ctx), static_cast<RoleType>(role_type), accentuation, std::move(aux_line)));
+    return std::unique_ptr<PhraseLine>(new SimplePhraseLine(charRangeFromContext(ctx), 
+                                       std::move(role_type), 
+                                       accentuation, 
+                                       std::move(sub_phrase)));
   }
 
   virtual antlrcpp::Any visitPhrase_line__jonction_auxiliary(iemlParser::Phrase_line__jonction_auxiliaryContext *ctx) override {
-    int role_type = std::stoi(ctx->INTEGER()->getSymbol()->getText());
+    std::unique_ptr<int> role_type = nullptr;
+    if (!ctx->role_type)
+      error_listener_->visitorError(charRangeFromContext(ctx), "Invalid role number.");
+    else
+      role_type = std::make_unique<int>(std::stoi(ctx->INTEGER()->getSymbol()->getText()));
 
-    if (role_type < 0 || role_type > 8) {
-      error_listener_->visitorError(*charRangeFromToken(ctx->INTEGER()->getSymbol()), "Invalid role number, must in the [0,8] range.");
-      return nullptr;
-    }
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, AuxiliarySubPhraseLine, sub_phrases, "Invalid sub phrase in phrase line junction.");
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, junction_type, "Invalid junction identifier in phrase line junction.", true);
 
-    std::vector<std::unique_ptr<AuxiliarySubPhraseLine>> sub_phrases;
-
-    for (auto& child : ctx->sub_phrase_line_auxiliary()) {
-      auto sub_phrase = std::move(visit(child).as<std::unique_ptr<AuxiliarySubPhraseLine>>());
-      sub_phrases.emplace_back(std::move(sub_phrase));
-    }
-
-    auto junction_type = std::move(visit(ctx->identifier()).as<std::unique_ptr<Identifier>>());
     bool accentuation = ctx->accentuation;
+
+    CAST_OR_RETURN_IF_NULL_LIST(sub_phrases);
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, junction_type);
+
+    if (!role_type)
+      return nullptr;
 
     return std::unique_ptr<PhraseLine>(new JunctionPhraseLine(charRangeFromContext(ctx),
                                                               std::move(sub_phrases),
                                                               std::move(junction_type),
-                                                              static_cast<RoleType>(role_type), 
+                                                              std::move(role_type), 
                                                               accentuation));
   }
 
@@ -185,35 +215,26 @@ public:
    */
 
   virtual antlrcpp::Any visitSub_phrase_line_auxiliary__sub_phrase_no_auxiliary(iemlParser::Sub_phrase_line_auxiliary__sub_phrase_no_auxiliaryContext *ctx) override {
-    std::unique_ptr<Identifier> auxiliary = nullptr;
-    if (ctx->auxiliary) {
-      auxiliary = std::move(visit(ctx->auxiliary).as<std::unique_ptr<Identifier>>());
-    }
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary, "Invalid auxiliary identifier.", true);
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, inflexed_category_, "Missing a category : an identifier, a phrase or a word.", true);
 
-    std::unique_ptr<InflexedCategory> inflexed_category = std::move(visit(ctx->inflexed_category()).as<std::unique_ptr<InflexedCategory>>());
+    CAST_OR_RETURN_IF_NULL(ctx, InflexedCategory, inflexed_category_);
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, auxiliary);
 
     return std::unique_ptr<AuxiliarySubPhraseLine>(
       new SimpleAuxiliarySubPhraseLine(charRangeFromContext(ctx), 
                                        std::move(auxiliary), 
-                                       std::move(inflexed_category)));
+                                       std::move(inflexed_category_)));
   }
 
   virtual antlrcpp::Any visitSub_phrase_line_auxiliary__jonction_no_auxiliary(iemlParser::Sub_phrase_line_auxiliary__jonction_no_auxiliaryContext *ctx) override {
-    std::unique_ptr<Identifier> auxiliary = nullptr;
-    if (ctx->auxiliary) {
-      auxiliary = std::move(visit(ctx->auxiliary).as<std::unique_ptr<Identifier>>());
-    } 
-    // else {
-    //   throw std::invalid_argument( "Invalid rule : no auxiliary in junction, wrong junction type used." ); 
-    // }
-
-    std::vector<std::unique_ptr<InflexedCategory>> inflexed_categories;
-    for (auto & child : ctx->inflexed_category()) {
-      auto inflexed_category = std::move(visit(child).as<std::unique_ptr<InflexedCategory>>());
-      inflexed_categories.emplace_back(std::move(inflexed_category)); 
-    }
-
-    auto junction_type = std::move(visit(ctx->junction_type).as<std::unique_ptr<Identifier>>());
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary, "Invalid auxiliary identifier.", true);
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, InflexedCategory, inflexed_categories, "Invalid inflexed categories in auxiliarized phrase line junction.");
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, junction_type, "Invalid junction type identifier.", true);
+    
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, auxiliary);
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, junction_type);
+    CAST_OR_RETURN_IF_NULL_LIST(inflexed_categories)
 
     return std::unique_ptr<AuxiliarySubPhraseLine>(
       new JunctionAuxiliarySubPhraseLine(charRangeFromContext(ctx), 
@@ -228,16 +249,15 @@ public:
    */
 
   virtual antlrcpp::Any visitInflexed_category(iemlParser::Inflexed_categoryContext *ctx) override {
-    std::vector<std::unique_ptr<Identifier>> inflexions;
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Identifier, inflexions, "Invalid inflexion in inflexed category.");
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a category : an identifier, a phrase or a word.", true);
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Reference, references, "Invalid reference.");
 
-    for (auto & child : ctx->inflexions) {
-      std::unique_ptr<Identifier> inflexion = std::move(visit(child).as<std::unique_ptr<Identifier>>());
-      inflexions.emplace_back(std::move(inflexion)); 
-    }
-    
-    std::unique_ptr<ICategory> category = std::move(visit(ctx->category()).as<std::unique_ptr<ICategory>>());
+    CAST_OR_RETURN_IF_NULL_LIST(inflexions);
+    CAST_OR_RETURN_IF_NULL(ctx, ICategory, category_);
+    CAST_OR_RETURN_IF_NULL_LIST(references);
 
-    return std::make_unique<InflexedCategory>(charRangeFromContext(ctx), std::move(inflexions), std::move(category));
+    return std::make_unique<InflexedCategory>(charRangeFromContext(ctx), std::move(inflexions), std::move(category_), std::move(references));
   }
 
 
@@ -246,16 +266,25 @@ public:
    */
 
   virtual antlrcpp::Any visitCategory__identifier(iemlParser::Category__identifierContext *ctx) override {
-    return std::unique_ptr<ICategory>(std::move(visit(ctx->identifier()).as<std::unique_ptr<Identifier>>()));
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, identifier_, "Invalid identifier for a category.", true);
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, identifier_);
+    return std::unique_ptr<ICategory>(std::move(identifier_));
   }
 
   virtual antlrcpp::Any visitCategory__phrase(iemlParser::Category__phraseContext *ctx) override {
-    return std::unique_ptr<ICategory>(std::move(visit(ctx->phrase()).as<std::unique_ptr<Phrase>>()));
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase for a category.", true);
+    CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_);
+    return std::unique_ptr<ICategory>(std::move(phrase_));
   }
 
   virtual antlrcpp::Any visitCategory__word(iemlParser::Category__wordContext *ctx) override {
-    std::string word_str_quotes = ctx->STRING()->getSymbol()->getText();
-    std::string word_str = word_str_quotes.substr(1, word_str_quotes.size() - 2);
+    if (!ctx->word) {
+      error_listener_->visitorError(charRangeFromContext(ctx), "Invalid word for a category.");
+      return nullptr;
+    }
+
+    std::string word_str_quoted = ctx->word->getText();
+    std::string word_str = word_str_quoted.substr(1, word_str_quoted.size() - 2);
     
     return std::unique_ptr<ICategory>(new Word(charRangeFromContext(ctx), word_str));
   }
@@ -266,20 +295,15 @@ public:
    */
 
   virtual antlrcpp::Any visitLanguage_string(iemlParser::Language_stringContext *ctx) override {
-    std::unique_ptr<Identifier> language = std::move(visitIdentifier(ctx->language).as<std::unique_ptr<Identifier>>());
-    
-    if( languageStr_to_LanguageType.count(language->getName()) < 1 ) {
-      const std::string msg = "Invalid language identifier '" + language->getName() + "'";
-      error_listener_->visitorError(language->getCharRange(), msg);
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, language, "Invalid language identifier for language string.", true);
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, value, "Invalid identifier value for language string.", true);
 
-      return std::unique_ptr<LanguageString>(nullptr);  
-    }
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, language)
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, value)
 
-    LanguageType ltype = languageStr_to_LanguageType.at(language->getName());
-
-    auto value = std::move(visitIdentifier(ctx->value).as<std::unique_ptr<Identifier>>());
-
-    return std::make_unique<LanguageString>(charRangeFromContext(ctx), ltype, std::move(value));
+    return std::make_unique<LanguageString>(charRangeFromContext(ctx), 
+                                            std::move(language), 
+                                            std::move(value));
   }
 
 
@@ -288,18 +312,16 @@ public:
    */
 
   virtual antlrcpp::Any visitIdentifier(iemlParser::IdentifierContext *ctx) override {
+    if (ctx->identifiers.empty()) {
+      error_listener_->visitorError(charRangeFromContext(ctx), "Invalid identifier : empty identifier.");
+      return nullptr;
+    }
+
     std::ostringstream os;
     bool first = true;
-
-    std::vector<antlr4::tree::TerminalNode *> identifiers = ctx->IDENTIFIER();
-
-    for (auto* id_part : identifiers) {
-      antlr4::Token* token = id_part->getSymbol();
-      
-      if (first)
-        first = false;
-      else
-        os << " ";
+    for (antlr4::Token* token : ctx->identifiers) {
+      if (first) first = false;
+      else os << " ";
       
       os << token->getText();
     }
@@ -314,17 +336,24 @@ public:
 
   virtual antlrcpp::Any visitReference(iemlParser::ReferenceContext *ctx) override {
     std::unique_ptr<int> ref_id = nullptr;
-    if (ctx->INTEGER()) {
-      int i = std::stoi(ctx->INTEGER()->getText());
+    if (ctx->id) {
+      int i = std::stoi(ctx->id->getText());
       ref_id = std::move(std::make_unique<int>(i));
     }
 
-    auto dtype = std::move(std::make_unique<Identifier>(charRangeFromToken(ctx->IDENTIFIER()->getSymbol()), ctx->IDENTIFIER()->getText()));
-    auto value = std::move(visit(ctx->reference_value()).as<std::unique_ptr<IReferenceValue>>());
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, value, "Invalid value in reference.", true);
+
+    if (!ctx->data_type) {
+      error_listener_->visitorError(charRangeFromContext(ctx), "Invalid datatype identifier.");
+      return nullptr;
+    }
+
+    CAST_OR_RETURN_IF_NULL(ctx, IReferenceValue, value);
+    auto data_type = std::move(std::make_unique<Identifier>(charRangeFromToken(ctx->data_type), ctx->data_type->getText()));
 
     return std::make_unique<Reference>(charRangeFromContext(ctx),
                                        std::move(ref_id),
-                                       std::move(dtype),
+                                       std::move(data_type),
                                        std::move(value));
   }
 
@@ -334,16 +363,24 @@ public:
    */
 
   virtual antlrcpp::Any visitReference_value__identifier(iemlParser::Reference_value__identifierContext *ctx) override {
-    return static_cast<std::unique_ptr<IReferenceValue>>(std::move(visit(ctx->identifier()).as<std::unique_ptr<Identifier>>()));
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, identifier_, "Invalid identifier for reference value.", true);
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, identifier_);
+
+    return static_cast<std::unique_ptr<IReferenceValue>>(std::move(identifier_));
   }
 
   virtual antlrcpp::Any visitReference_value__STRING(iemlParser::Reference_value__STRINGContext *ctx) override {
-    std::string value = ctx->STRING()->getSymbol()->getText();
-    return std::unique_ptr<IReferenceValue>(new ReferenceStringValue(charRangeFromContext(ctx), value));
+    if (!ctx->value) {
+      error_listener_->visitorError(charRangeFromContext(ctx), "Invalid string for reference value.");
+      return nullptr;
+    }
+    return std::unique_ptr<IReferenceValue>(new ReferenceStringValue(charRangeFromContext(ctx), ctx->value->getText()));
   }
 
   virtual antlrcpp::Any visitReference_value__phrase(iemlParser::Reference_value__phraseContext *ctx) override {
-    return static_cast<std::unique_ptr<IReferenceValue>>(std::move(visit(ctx->phrase()).as<std::unique_ptr<Phrase>>()));
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase for reference value.", true);
+    CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_);
+    return static_cast<std::unique_ptr<IReferenceValue>>(std::move(phrase_));
   }
 };
 

@@ -41,7 +41,12 @@ void IEMLParser::parse() {
     parseTree_ = parser_->program();
     IEMLGrammarVisitor visitor(errorListener_);
     
-    ast_ = std::move(visitor.visit(parseTree_).as<std::unique_ptr<Program>>());
+    auto ast_t = visitor.visit(parseTree_);
+    if (ast_t.isNull()) {
+        return;
+    }
+    
+    ast_ = std::move(ast_t.as<std::unique_ptr<Program>>());
 }
 
 const antlr4::tree::ParseTree* IEMLParser::getParseTree() const {
@@ -53,5 +58,8 @@ std::string IEMLParser::getParseString() const {
 }
 
 const std::string IEMLParser::getASTString() const {
-    return ast_->to_string();
+    if (ast_)
+        return ast_->to_string();
+    else
+        return "";
 }
