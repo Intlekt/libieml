@@ -11,6 +11,7 @@
 #include "IEMLGrammarVisitor.h"
 
 #include "ast/Program.h"
+#include <nlohmann/json.hpp>
 
 
 namespace ieml {
@@ -31,7 +32,8 @@ private:
     std::unique_ptr<Program> ast_ = nullptr;
 
 public:
-    explicit IEMLParser(const std::string& input_str);
+    // explicit IEMLParser(const std::string& input_str);
+    explicit IEMLParser(const std::string& input_str, bool error_stdout = false);
 
     ~IEMLParser();
 
@@ -44,6 +46,7 @@ public:
 
     const std::string getASTString() const;
 
+    nlohmann::json toJson() const;
 };
 
 }}

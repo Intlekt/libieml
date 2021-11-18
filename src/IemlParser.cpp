@@ -6,12 +6,12 @@
 using namespace ieml::parser;
 
 
-IEMLParser::IEMLParser(const std::string& input_str)  {
+IEMLParser::IEMLParser(const std::string& input_str, bool error_stdout) {
 
     input_ = new antlr4::ANTLRInputStream(input_str);
     lexer_ = new ieml_generated::iemlLexer(input_);
 
-    errorListener_ = new IEMLParserErrorListener;
+    errorListener_ = new IEMLParserErrorListener(error_stdout);
     lexer_->removeErrorListeners();
     lexer_->addErrorListener(errorListener_);
 
@@ -63,3 +63,7 @@ const std::string IEMLParser::getASTString() const {
     else
         return "";
 }
+
+nlohmann::json IEMLParser::toJson() const {
+    return errorListener_->toJson();
+};

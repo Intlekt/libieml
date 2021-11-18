@@ -16,5 +16,8 @@ configure_file(IEMLConfig.h.in IEMLConfig.h)
 add_executable(IEML main.cxx)
 target_link_libraries(IEML IEMLParser)
 
+add_executable(IEML_CHECK_ERRORS check_errors.cxx)
+target_link_libraries(IEML_CHECK_ERRORS IEMLParser)
+
 # test section
 add_subdirectory(test)

@@ -19,7 +19,8 @@ message(STATUS "Generated parser at ${ANTLR_IEMLParser_OUTPUT_DIR} ")
 
 include_directories(${ANTLR4_INCLUDE_DIRS} 
                     ${ANTLR_IEMLParser_OUTPUT_DIR}
-                    ${CMAKE_CURRENT_LIST_DIR})
+                    ${CMAKE_CURRENT_LIST_DIR}
+                    ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json)
 
 
 add_library (IEMLParser 
@@ -32,7 +33,8 @@ add_library (IEMLParser
 target_include_directories(IEMLParser 
                            INTERFACE ${ANTLR4_INCLUDE_DIRS} 
                                      ${ANTLR_IEMLParser_OUTPUT_DIR} 
-                                     ${CMAKE_CURRENT_LIST_DIR})
+                                     ${CMAKE_CURRENT_LIST_DIR}
+                                     ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json)
 
 # target_compile_options(IEMLParser PRIVATE -Wall -Wextra -Wpedantic)
 

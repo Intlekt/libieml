@@ -4,6 +4,8 @@
 
 #include "ast/interfaces/AST.h"
 
+#include <nlohmann/json.hpp>
+
 
 namespace ieml {
 namespace parser {
@@ -22,6 +24,8 @@ namespace parser {
             const std::string to_string() const {
                 return char_range_->to_string() + " " + msg_;
             }
+
+            nlohmann::json toJson() const;
     };
 
 
@@ -55,6 +59,8 @@ namespace parser {
 
     class IEMLParserErrorListener: public ANTLRErrorListener {
         public:
+            IEMLParserErrorListener(bool print_stdout = false) : error_manager_(print_stdout) {}
+
             void syntaxError(Recognizer *recognizer, Token *offendingSymbol, size_t line,
                              size_t charPositionInLine, const std::string &msg, std::exception_ptr e);
 
@@ -71,6 +77,8 @@ namespace parser {
             void visitorError(std::unique_ptr<ieml::AST::CharRange>&& char_range, const std::string &msg);
 
             const std::vector<const SyntaxError*> getSyntaxErrors() const { return error_manager_.getSyntaxErrors(); }
+
+            nlohmann::json toJson() const;
 
         private:
             ErrorManager error_manager_;

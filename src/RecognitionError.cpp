@@ -1,9 +1,11 @@
 #include "RecognitionError.h"
 
+
 #include <iostream>
 
 
 using namespace ieml::parser;
+using json = nlohmann::json;
 
 void IEMLParserErrorListener::syntaxError(Recognizer *recognizer, Token *offendingSymbol, size_t line,
                                           size_t charPositionInLine, const std::string &msg, std::exception_ptr e) {
@@ -28,4 +30,19 @@ void IEMLParserErrorListener::visitorError(std::unique_ptr<ieml::AST::CharRange>
     error_manager_.registerError(new SyntaxError(std::move(char_range), msg));
 };
 
+json SyntaxError::toJson() const {
+    return {
+        {"range", char_range_->toJson()},
+        {"message", msg_}
+    };
+}
 
+json IEMLParserErrorListener::toJson() const {
+    json error_list = json::array();
+    for (auto& error: error_manager_.getSyntaxErrors()) {
+        error_list.push_back(error->toJson());
+    }
+    json j;
+    j["errors"] = error_list;
+    return j;
+}
