@@ -1,11 +1,13 @@
 #include <iostream>
+#include <memory>
 
 #include "IemlParser.h"
 
 using namespace ieml;
 
+
 int main(int , const char **) {
-  std::string input = R"(@component fr"test" en"test" (0 ~ #test <id 1 dt int va 'test'>,1 !*r #test2) .)";
+  std::string input = R"(@component fr"test" en"test" (0 *jk #e2 ) .)";
   parser::IEMLParser parser(input);
   parser.parse();
 

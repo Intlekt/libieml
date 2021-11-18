@@ -12,7 +12,7 @@
 namespace ieml {
 namespace AST {
 
-class IReferencable: virtual public AST {
+class IReferencable {
 public:
     IReferencable(std::vector<std::unique_ptr<Reference>>&& references) : 
         references_(std::move(references)) {};

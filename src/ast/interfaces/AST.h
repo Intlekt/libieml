@@ -47,13 +47,28 @@ private:
 class AST {
 public:
     AST(std::unique_ptr<CharRange>&& char_range) : char_range_(std::move(char_range)) {};
+    virtual ~AST() = default;
 
     virtual std::string to_string() const = 0;
 
     const CharRange& getCharRange() const {return *char_range_;}
 
+    virtual bool isError() const {return false; }
 private:
     std::unique_ptr<const CharRange> char_range_;
 
 };
+
+class ASTError : public AST {
+public:
+    ASTError(std::unique_ptr<CharRange>&& char_range) : AST(std::move(char_range)) {};
+
+    virtual std::string to_string() const override {
+        return "ASTError@" + getCharRange().to_string();
+    }
+
+    virtual bool isError() const {return true; }
+
+};
+
 }

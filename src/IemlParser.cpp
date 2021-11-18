@@ -46,7 +46,7 @@ void IEMLParser::parse() {
         return;
     }
     
-    ast_ = std::move(ast_t.as<std::unique_ptr<Program>>());
+    ast_ = std::move(ast_t.as<IEMLGrammarVisitor::VisitorResult<Program>>().release());
 }
 
 const antlr4::tree::ParseTree* IEMLParser::getParseTree() const {

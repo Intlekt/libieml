@@ -26,34 +26,32 @@ namespace parser {
 
 
     class ErrorManager {
-        private:
-            bool stdout_;
-            std::vector<const SyntaxError*> errors_;
+    private:
+        bool stdout_;
+        std::vector<const SyntaxError*> errors_;
 
-        public:
-            ErrorManager() : stdout_(true) {};
-            ErrorManager(bool print_stdout) : stdout_(print_stdout) {};
+    public:
+        ErrorManager() : stdout_(true) {};
+        ErrorManager(bool print_stdout) : stdout_(print_stdout) {};
 
-            void registerError(const SyntaxError* error) {
-                if (stdout_)
-                    std::cout << error->to_string() << std::endl;
-                errors_.push_back(error);
-            }
+        void registerError(const SyntaxError* error) {
+            if (stdout_)
+                std::cout << error->to_string() << std::endl;
+            errors_.push_back(error);
+        }
 
-            void reset() {
-                for (auto * entry : errors_)
-                    delete entry;
-                errors_.clear();
-            }
+        void reset() {
+            for (auto * entry : errors_)
+                delete entry;
+            errors_.clear();
+        }
 
-            ~ErrorManager() {
-                reset();
-            }
+        ~ErrorManager() {
+            reset();
+        }
 
-            const std::vector<const SyntaxError*> getSyntaxErrors() const { return errors_; }
+        const std::vector<const SyntaxError*> getSyntaxErrors() const { return errors_; }
     };
-
-
 
     class IEMLParserErrorListener: public ANTLRErrorListener {
         public:

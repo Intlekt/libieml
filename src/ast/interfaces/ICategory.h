@@ -7,7 +7,7 @@
 namespace ieml {
 namespace AST {
 
-class ICategory : public virtual AST {
+class ICategory : virtual public AST{
 public:
     ICategory() {}
 };
