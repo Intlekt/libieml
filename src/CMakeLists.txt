@@ -4,7 +4,7 @@ LIST( APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 include( ExternalAntlr4Cpp )
 
 # required if linking to static library
-add_definitions(-DANTLR4CPP_STATIC)
+# add_definitions(-DANTLR4CPP_STATIC)
 
 
 message(STATUS "Found antlr4cpp includes: ${ANTLR4_INCLUDE_DIRS} ")
@@ -23,7 +23,7 @@ include_directories(${ANTLR4_INCLUDE_DIRS}
                     ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json)
 
 
-add_library (IEMLParser 
+add_library (IEMLParser SHARED
              ${ANTLR_IEMLParser_CXX_OUTPUTS}
              ${CMAKE_CURRENT_LIST_DIR}/RecognitionError.cpp
              ${CMAKE_CURRENT_LIST_DIR}/IemlParser.cpp
@@ -31,15 +31,15 @@ add_library (IEMLParser
 
 
 target_include_directories(IEMLParser 
-                           INTERFACE ${ANTLR4_INCLUDE_DIRS} 
-                                     ${ANTLR_IEMLParser_OUTPUT_DIR} 
-                                     ${CMAKE_CURRENT_LIST_DIR}
+                           INTERFACE ${CMAKE_CURRENT_LIST_DIR} 
+                                     ${ANTLR4_INCLUDE_DIRS}
+                                     ${ANTLR_IEMLParser_OUTPUT_DIR}
                                      ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json)
 
 # target_compile_options(IEMLParser PRIVATE -Wall -Wextra -Wpedantic)
 
 
-target_link_libraries(IEMLParser antlr4_static)
+target_link_libraries(IEMLParser antlr4_shared)
 
 
 
