@@ -9,7 +9,6 @@ phrase : '(' phrase_lines+=phrase_line (',' phrase_lines+=phrase_line)* ')'     
        | '(' JUNCTION_MARK junction_type=identifier JUNCTION_OPEN phrases+=phrase phrases+=phrase+ JUNCTION_CLOSE ')'    # phrase__junction
        ;
 
-// ambiguité : jonction auxialiary avec sub_phrase_line_auxiliary -> jonction_no_aux pour les cas ou pas du tout d'auxiliaires
 phrase_line : role_type=INTEGER accentuation=SEMANTIC_ACCENT? sub_phrase=sub_phrase_line_auxiliary                      # phrase_line__sub_phrase_line_auxiliary
             | role_type=INTEGER accentuation=SEMANTIC_ACCENT? JUNCTION_MARK junction_type=identifier 
               JUNCTION_OPEN sub_phrases+=sub_phrase_line_auxiliary sub_phrases+=sub_phrase_line_auxiliary+ JUNCTION_CLOSE    # phrase_line__jonction_auxiliary
@@ -23,7 +22,7 @@ category : identifier_=identifier # category__identifier
 inflexed_category : (FLEXION_MARK inflexions+=identifier)* CATEGORY_MARK category_=category references+=reference*;
 
 sub_phrase_line_auxiliary : (AUXILIARY_MARK auxiliary=identifier)? inflexed_category_=inflexed_category              # sub_phrase_line_auxiliary__sub_phrase_no_auxiliary
-                          | (AUXILIARY_MARK auxiliary=identifier)? JUNCTION_MARK junction_type=identifier 
+                          | AUXILIARY_MARK auxiliary=identifier JUNCTION_MARK junction_type=identifier 
                             JUNCTION_OPEN inflexed_categories+=inflexed_category inflexed_categories+=inflexed_category+ JUNCTION_CLOSE     # sub_phrase_line_auxiliary__jonction_no_auxiliary
                           ;
 

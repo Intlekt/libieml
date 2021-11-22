@@ -1,4 +1,5 @@
 #include "RecognitionError.h"
+#include "Token.h"
 
 
 #include <iostream>
@@ -10,7 +11,13 @@ using json = nlohmann::json;
 void IEMLParserErrorListener::syntaxError(Recognizer *recognizer, Token *offendingSymbol, size_t line,
                                           size_t charPositionInLine, const std::string &msg, std::exception_ptr e) {
 
-    error_manager_.registerError(new SyntaxError(std::make_unique<ieml::AST::CharRange>(line, line, charPositionInLine, charPositionInLine), msg));
+    error_manager_.registerError(new SyntaxError(
+        std::make_unique<ieml::AST::CharRange>(
+            line, 
+            line, 
+            charPositionInLine, 
+            charPositionInLine + offendingSymbol->getText().size()
+        ), msg));
 };
 void IEMLParserErrorListener::reportAmbiguity(Parser *recognizer, const dfa::DFA &dfa, size_t startIndex, size_t stopIndex, bool exact,
                                               const antlrcpp::BitSet &ambigAlts, atn::ATNConfigSet *configs) {
