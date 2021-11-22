@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <set>
 
 namespace ieml::structure {
 
@@ -15,7 +16,7 @@ namespace constants {
 
 class Name {
 public:
-    Name(std::vector<LanguageString> traductions) : traductions_(build_traductions(traductions)) {}
+    Name(std::set<LanguageString> traductions) : traductions_(build_traductions(traductions)) {}
 
 
 private:

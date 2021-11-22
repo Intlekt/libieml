@@ -2,6 +2,10 @@
 
 ## Installation
 
+```
+git clone --recurse-submodules git@github.com:Intlekt/libieml.git
+```
+
 ### Dependencies
 
 #### General dependencies

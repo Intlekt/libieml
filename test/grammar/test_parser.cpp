@@ -4,6 +4,7 @@
 #include <sstream>
 #include <filesystem>
 #include <exception>
+
 #include "gtest/gtest.h"
 
 #include "IemlParser.h"
@@ -18,35 +19,35 @@ namespace fs = std::filesystem;
 
 TEST(ieml_grammar_test_case, validate_exemples)
 {
-  for (const auto & file : fs::directory_iterator(TEST_IEML_GRAMMAR_EXAMPLES_FOLDER)) {
-    std::ifstream exampleFile(file.path());
-    std::string exampleString, line;
-    while (std::getline(exampleFile, line)) {
-      exampleString = exampleString + "\n" + line;
-    }
-    exampleFile.close();
+    for (const auto& file : fs::directory_iterator(TEST_IEML_GRAMMAR_EXAMPLES_FOLDER)) {
+      std::ifstream exampleFile(file.path());
+      std::string exampleString, line;
+      while (std::getline(exampleFile, line)) {
+        exampleString = exampleString + "\n" + line;
+      }
+      exampleFile.close();
 
-    IEMLParser parser(exampleString);
+      IEMLParser parser(exampleString);
 
-    try {
-      parser.parse();
-    } catch (std::exception& e) {
-      EXPECT_TRUE(false) << e.what();
-    }
+      try {
+        parser.parse();
+      } catch (std::exception& e) {
+        EXPECT_TRUE(false) << e.what();
+      }
 
 
-    std::ostringstream os;
-    for (auto& error : parser.getSyntaxErrors()) {
-      os << error->to_string() << std::endl;
-    }
+      std::ostringstream os;
+      for (auto& error : parser.getSyntaxErrors()) {
+        os << error->to_string() << std::endl;
+      }
 
-    EXPECT_EQ(parser.getSyntaxErrors().size(), 0) << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl
-                                                  << "[FAILURE] " << file.path() 
-                                                  << " got " << parser.getSyntaxErrors().size() << " errors :" << std::endl
-                                                  << os.str() << std::endl
-                                                  << "file :" << std::endl 
-                                                  << exampleString << std::endl
-                                                  << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
+      EXPECT_EQ(parser.getSyntaxErrors().size(), 0) << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl
+                                                    << "[FAILURE] " << file.path() 
+                                                    << " got " << parser.getSyntaxErrors().size() << " errors :" << std::endl
+                                                    << os.str() << std::endl
+                                                    << "file :" << std::endl 
+                                                    << exampleString << std::endl
+                                                    << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
 
   }
 }
