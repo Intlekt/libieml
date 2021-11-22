@@ -3,3 +3,6 @@ gen
 .idea
 .vscode
 src/grammar/.antlr
+dist
+pyieml.egg-info
+venv

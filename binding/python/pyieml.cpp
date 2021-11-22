@@ -1,4 +1,8 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+
+#include <string>
+#include <iostream>
 
 #include "IemlParser.h"
 #include "RecognitionError.h"
@@ -15,10 +19,20 @@ std::vector<const ieml::parser::SyntaxError *> parse(const std::string& input) {
 
 
 PYBIND11_MODULE(pyieml, m) {
+    py::class_<ieml::parser::IEMLParser>(m, "Parser")
+        .def(py::init<const std::string &>())
+        .def("parse", &ieml::parser::IEMLParser::parse)
+        .def("errors", &ieml::parser::IEMLParser::getSyntaxErrors, py::return_value_policy::reference);
+
+
     py::class_<ieml::parser::SyntaxError>(m, "SyntaxError")
-        .def("to_json", &ieml::parser::SyntaxError::toJson);
+        .def("__repr__", [](const ieml::parser::SyntaxError &e) {
+            return "<SyntaxError \"" + e.to_string() + "\">";
+        })
+        .def("to_json", [](const ieml::parser::SyntaxError &e) {
+            return e.toJson().dump();
+        });
 
 
     m.doc() = "Python wrapper for libieml";
-    m.def("parse", &parse, "Parse an IEML string and return the syntax errors.");
 }
