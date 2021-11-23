@@ -22,8 +22,10 @@ PYBIND11_MODULE(pyieml, m) {
     py::class_<ieml::parser::IEMLParser>(m, "Parser")
         .def(py::init<const std::string &>())
         .def("parse", &ieml::parser::IEMLParser::parse)
-        .def("errors", &ieml::parser::IEMLParser::getSyntaxErrors, py::return_value_policy::reference);
-
+        .def("errors", &ieml::parser::IEMLParser::getSyntaxErrors, py::return_value_policy::reference)
+        .def("to_json", [](const ieml::parser::IEMLParser &e) {
+            return e.toJson().dump();
+        });
 
     py::class_<ieml::parser::SyntaxError>(m, "SyntaxError")
         .def("__repr__", [](const ieml::parser::SyntaxError &e) {

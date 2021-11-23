@@ -10,22 +10,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # set(BUILD_TEST True)
 # set(BUILD_CHECK_ERRORS True)
-set(BUILD_PYBIND11 True)
+# set(BUILD_PYBIND11 True)
 
 configure_file(IEMLConfig.h.in IEMLConfig.h)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/src)
 
 
-if (DEFINED BUILD_TEST)
-    message("Building tests")
+if (${BUILD_TEST})
+    message("Building libieml ctest")
     add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/googletest-release-1.11.0)
     # test section
     add_subdirectory(test)
-
 endif()
 
-if (DEFINED BUILD_CHECK_ERRORS)
+if (${BUILD_CHECK_ERRORS})
     message("Building CHECK_ERRORS_EXECUTABLE")
 
     add_executable(IEML_CHECK_ERRORS check_errors.cxx)
@@ -37,7 +36,7 @@ endif()
 # target_link_libraries(IEML IEMLParser)
 
 
-if(DEFINED BUILD_PYBIND11)
+if(${BUILD_PYBIND11})
     message("Building python wrapper")
 
     add_subdirectory(thirdparty/pybind11)

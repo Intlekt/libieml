@@ -6,7 +6,7 @@
 namespace ieml::structure {
 
 BETTER_ENUM(JunctionType, char, AND = 0);
-BETTER_ENUM(InflexingType, char, PLURAL = 0)
+BETTER_ENUM(InflexingType, char, PLURAL, SINGULAR)
 BETTER_ENUM(AuxiliaryType, char, ABOVE = 0)
 
 // enum JunctionType {

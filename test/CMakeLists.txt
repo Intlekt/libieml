@@ -2,7 +2,8 @@ set(TEST_IEML_GRAMMAR_EXAMPLES_FOLDER ${CMAKE_SOURCE_DIR}/assets/ieml_files)
 
 configure_file(TestConfig.h.in TestConfig.h)
 
-add_executable(registerer_test grammar/test_parser.cpp)
+add_executable(registerer_test grammar/test_parser.cpp
+                               structure/test_path.cpp)
 
 add_dependencies(registerer_test gtest gtest_main IEMLParser)
 
