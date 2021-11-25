@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 
 
 #include "ast/interfaces/AST.h"
@@ -10,16 +11,16 @@
 
 #include "ParserContext.h"
 #include "structure/Phrase.h"
+#include "structure/Path.h"
 
 
-namespace ieml::AST {
+namespace ieml {
+namespace AST {
 class Phrase: virtual public AST, public ICategory, public IReferenceValue {
 public:
     Phrase() : ICategory(), IReferenceValue() {}
 
-    virtual structure::Phrase check_phrase(parser::ParserContext& ctx) const {
-        return structure::Phrase();
-    };
+    virtual std::shared_ptr<structure::Phrase> check_phrase(parser::ParserContext& ctx) const = 0;
 
 };
 
@@ -49,6 +50,19 @@ public:
         return os.str();
     }
 
+    std::shared_ptr<structure::Phrase> check_phrase(parser::ParserContext& ctx) const override {
+        std::map<structure::RootPathNode, std::shared_ptr<structure::PathTree>> children;
+        
+        for (const auto& line: phrase_lines_) {
+            auto tree = line->check_phrase_line(ctx);
+            // if (tree.count(tree->getNode())) {
+                
+            // }
+        }
+        
+        return nullptr;
+    };
+
 private:
     std::vector<std::unique_ptr<PhraseLine>> phrase_lines_;
 
@@ -67,6 +81,12 @@ public:
     std::string to_string() const override {
         return "(" + junction_to_string() + ")";
     }
-};
+    std::shared_ptr<structure::Phrase> check_phrase(parser::ParserContext& ctx) const override {
+        
+        // return structure::Phrase();
+        return nullptr;
+    };
 
+};
+}
 }

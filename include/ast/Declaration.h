@@ -46,8 +46,12 @@ public:
     void check_declaration(ieml::parser::ParserContext& ctx) override {
         auto phrase = phrase_->check_phrase(ctx);
         auto name = check_translatable(ctx);
-        ctx.getNamespace().define(name, phrase);
+
+        if (!phrase || !name) {
+            return;
+        }
         
+        ctx.getNamespace().define(name, phrase);
     };   
 
 private:

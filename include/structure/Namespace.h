@@ -18,7 +18,7 @@ namespace ieml::structure {
 class Name : public std::unordered_map<LanguageType, LanguageString> {
 public:
     Name(std::unordered_set<LanguageString> traductions) : 
-        std::unordered_map<LanguageType, LanguageString>(build_traductions(traductions)) {}
+         std::unordered_map<LanguageType, LanguageString>(build_traductions(traductions)) {}
     
 private:
     static std::unordered_map<LanguageType, LanguageString> build_traductions(std::unordered_set<LanguageString> traductions);
@@ -27,20 +27,27 @@ private:
 class Namespace {
 public:
 
-    void define(Name name, Phrase pharse) {
-        for (auto& n: name) {
+    void define(std::shared_ptr<Name> name, std::shared_ptr<Phrase> pharse) {
+        for (auto& n: *name) {
             store_.insert({n.second, pharse});
         }
         rev_store_.insert({pharse, name});
     } 
 
-    const Phrase& resolve(const LanguageString& ls) {
+    std::shared_ptr<Phrase> resolve(const LanguageString& ls) {
         // issue when ls not in store_ => call the default constructor of Phrase ...
         return store_[ls];
     };
 private:
-    std::unordered_map<LanguageString, Phrase> store_;
-    std::unordered_map<Phrase, Name> rev_store_;
+
+    template<class T> struct shared_ptr_hash {
+        size_t operator()(const std::shared_ptr<T>& e) const {
+            return std::hash<T>{}(*e);
+        }
+    };
+
+    std::unordered_map<LanguageString, std::shared_ptr<Phrase>> store_;
+    std::unordered_map<std::shared_ptr<Phrase>, std::shared_ptr<Name>, shared_ptr_hash<Phrase>> rev_store_;
 };
 
 }

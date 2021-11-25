@@ -17,8 +17,7 @@ using namespace ieml::parser;
 namespace fs = std::filesystem;
 
 
-TEST(ieml_grammar_test_case, validate_exemples)
-{
+TEST(ieml_grammar_test_case, validate_exemples) {
     for (const auto& file : fs::directory_iterator(TEST_IEML_GRAMMAR_EXAMPLES_FOLDER)) {
       std::ifstream exampleFile(file.path());
       std::string exampleString, line;
@@ -50,4 +49,18 @@ TEST(ieml_grammar_test_case, validate_exemples)
                                                     << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" << std::endl;
 
   }
+}
+
+TEST(ieml_grammar_test_case, invalid_context) {
+  {
+    IEMLParser parser(R"(@component rr"test" (0 ~noun #'wa.').)");
+    try {
+      parser.parse();
+    } catch (std::exception& e) {
+      EXPECT_TRUE(false) << e.what();
+    }
+
+    EXPECT_NE(parser.getSyntaxErrors().size(), 0);
+  }
+
 }

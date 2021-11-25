@@ -1,19 +1,14 @@
 #pragma once
 
+#include "structure/Path.h"
 
 namespace ieml::structure {
 
-class Phrase {
-public:
+class Phrase : public PathTree {
 
-    bool operator==(const Phrase& rhs) const {
-        return true;
-    }
 
 
 };
-
-
 }
 
 namespace std {
@@ -25,6 +20,4 @@ struct hash<ieml::structure::Phrase>
         return 0;
     }
 };
-
-
 }

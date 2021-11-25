@@ -9,6 +9,10 @@
 #include "ast/interfaces/AST.h"
 #include "ast/interfaces/IJunction.h"
 
+#include "structure/Path.h"
+#include "ParserContext.h"
+
+
 namespace ieml::AST {
 
 class PhraseLine : virtual public AST {
@@ -21,7 +25,30 @@ public:
     int getRoleType() const {return *role_type_;}
     bool getAccentuation() const {return accentuation_;}
 
+    std::shared_ptr<structure::PathTree> check_phrase_line(parser::ParserContext& ctx) const {
+        std::shared_ptr<structure::PathTree> child = _check_phrase_line(ctx);
+
+        auto type = structure::RoleType::_from_integral_nothrow(*role_type_);
+        if (!type) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(), "Invalid role number, got '" + std::to_string(*role_type_) + "'"
+            );
+        }
+
+        if (!child || !type) {
+            return nullptr;
+        }
+
+        return std::make_shared<structure::PathTree>(
+            std::make_shared<structure::RoleNumberPathNode>(*type), 
+            std::vector<std::shared_ptr<structure::PathTree>>{child});
+    };
+    
+
 protected:
+    virtual std::shared_ptr<structure::PathTree> _check_phrase_line(parser::ParserContext& ctx) const = 0;
+
+
     std::string phrase_line_to_string() const {
         std::ostringstream os;
 
@@ -50,6 +77,10 @@ public:
     std::string to_string() const override {
         return phrase_line_to_string() + auxiliary_subline_->to_string();
     }
+protected:
+    std::shared_ptr<structure::PathTree> _check_phrase_line(parser::ParserContext& ctx) const override {
+        return auxiliary_subline_->check_auxiliary_subline(ctx);
+    };
 
 private:
     std::unique_ptr<AuxiliarySubPhraseLine> auxiliary_subline_;
@@ -71,6 +102,10 @@ public:
         return phrase_line_to_string() + junction_to_string();
     }
 
+protected:
+    std::shared_ptr<structure::PathTree> _check_phrase_line(parser::ParserContext& ctx) const override {
+        return nullptr;
+    }
 };
 
 }

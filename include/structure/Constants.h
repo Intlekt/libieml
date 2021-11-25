@@ -5,7 +5,7 @@
 
 namespace ieml::structure {
 
-enum class PathType {
+BETTER_ENUM(PathType, char,
     ROOT,
     ROLE,
     JUNCTION_AUXILIARY,
@@ -17,7 +17,7 @@ enum class PathType {
     JUNCTION_CATEGORY,
     JUNCTION_CATEGORY_INDEX,
     WORD
-};
+);
 
 BETTER_ENUM(JunctionType, char, AND = 0, OR);
 BETTER_ENUM(InflexingType, char, PLURAL, SINGULAR);
@@ -36,7 +36,7 @@ BETTER_ENUM(LanguageType, char, FR, EN);
 // const std::map<std::string, LanguageType> languageStr_to_LanguageType = {{"fr", LanguageType(FR)}, {"en", LanguageType(EN)}};
 // const std::string languages_names[LanguageType::EN + 1] = {"fr", "en"};
 
-enum RoleType {
+BETTER_ENUM(RoleType, char,
     ROOT        = 0, 
     
     INITIATOR   = 1,
@@ -48,7 +48,7 @@ enum RoleType {
     LOCATION    = 6,
     INTENTION   = 7,
     MANNER      = 8
-};
+);
 
 }
 

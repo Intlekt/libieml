@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "ast/interfaces/AST.h"
 
 #include "ast/InflexedCategory.h"
@@ -12,7 +14,30 @@ public:
     AuxiliarySubPhraseLine(std::unique_ptr<Identifier>&& auxiliary) : 
         auxiliary_(std::move(auxiliary)) {}
 
+
+    std::shared_ptr<structure::PathTree> check_auxiliary_subline(parser::ParserContext& ctx) const {
+        auto auxiliary = ctx.resolve_auxiliary(auxiliary_->getName());
+        if (!auxiliary) {
+            ctx.getErrorManager().visitorError(
+                auxiliary_->getCharRange(),
+                "Undefined auxiliary identifier '" + auxiliary_->getName() + "'."
+            );
+        }
+        auto child = _check_auxiliary_subline(ctx);
+
+        if (!auxiliary || !child) {
+            return nullptr;
+        }
+
+        return std::make_shared<structure::PathTree>(
+            std::make_shared<structure::AuxiliaryPathNode>(auxiliary), 
+            std::vector<std::shared_ptr<structure::PathTree>>{child});
+    };  
+
+
 protected:
+    virtual std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx) const = 0;
+
     std::string auxiliary_to_string() const {
         if (auxiliary_)
             return "*" + auxiliary_->to_string() + " ";
@@ -38,6 +63,11 @@ public:
         return auxiliary_to_string() + flexed_category_->to_string();
     }
 
+protected:
+    std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx) const override {
+        return flexed_category_->check_flexed_category(ctx);
+    };
+
 
 private:
     std::unique_ptr<InflexedCategory> flexed_category_;
@@ -56,6 +86,11 @@ public:
     std::string to_string() const override {
         return auxiliary_to_string() + junction_to_string();
     }
+
+protected:
+    std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx) const override {
+        return nullptr;
+    };
 };
 
 }

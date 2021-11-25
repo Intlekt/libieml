@@ -10,6 +10,7 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <functional>
+#include <set>
 
 
 namespace ieml::structure {
@@ -24,6 +25,7 @@ public:
 
     bool operator==(const PathNode& a) const noexcept;
     bool operator!=(const PathNode& a) const noexcept;
+    // virtual bool operator<(const PathNode& a) const noexcept = 0;
 
     virtual std::string to_string() const = 0;
 };
@@ -33,6 +35,7 @@ public:
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
+
 };
 
 class RoleNumberPathNode : public PathNode {
@@ -41,6 +44,7 @@ public:
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
+
 
 private:
     const RoleType role_type_;
@@ -119,13 +123,13 @@ private:
 
 class InflexingPathNode : public PathNode {
 public:
-    InflexingPathNode(const std::vector<InflexingType>& inflexings) : inflexings_(inflexings) {}
+    InflexingPathNode(const std::set<InflexingType>& inflexings) : inflexings_(inflexings) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
 
 private:
-    const std::vector<InflexingType> inflexings_;
+    const std::set<InflexingType> inflexings_;
 };
 
 class WordPathNode : public PathNode {
@@ -173,6 +177,7 @@ public:
     static std::shared_ptr<PathTree> buildFromPaths(std::vector<std::shared_ptr<Path>> paths);
     std::shared_ptr<PathNode> getNode() const {return node_;}
     std::vector<std::shared_ptr<PathTree>> getChildren() const {return children_;}
+    
 
 private:
     const std::shared_ptr<PathNode> node_;
@@ -190,3 +195,4 @@ struct hash<ieml::structure::PathNode*>
     }
 };
 }
+

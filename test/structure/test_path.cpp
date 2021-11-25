@@ -1,4 +1,5 @@
 #include <vector>
+#include <set>
 #include <memory>
 #include <stdexcept>
 #include <functional>
@@ -13,8 +14,8 @@ using namespace ieml::structure;
 
 TEST(ieml_structure_test_case, path_serialization) {
 
-    std::vector<InflexingType> plr{InflexingType::PLURAL};
-    std::vector<InflexingType> plr_sing{InflexingType::PLURAL, InflexingType::SINGULAR};
+    std::set<InflexingType> plr{InflexingType::PLURAL};
+    std::set<InflexingType> plr_sing{InflexingType::PLURAL, InflexingType::SINGULAR};
     {
         auto path = std::make_shared<Path>(std::make_shared<WordPathNode>(Word("wa.")), nullptr);
         auto path1 = std::make_shared<Path>(std::make_shared<InflexingPathNode>(plr), path);
@@ -263,4 +264,15 @@ TEST(ieml_structure_test_case, path_tree_building_error) {
         
         EXPECT_THROW(PathTree::buildFromPaths({a, b}), std::invalid_argument);
     }
+    {
+
+        std::shared_ptr<Path> a = std::make_shared<Path>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), 
+            std::make_shared<Path>(std::make_shared<AuxiliaryPathNode>(AuxiliaryType::BELOW), nullptr));
+
+        std::shared_ptr<Path> b = std::make_shared<Path>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), 
+            std::make_shared<Path>(std::make_shared<WordPathNode>(Word("wa.")), nullptr));
+        
+        EXPECT_THROW(PathTree::buildFromPaths({a, b}), std::invalid_argument);
+    }
+
 }

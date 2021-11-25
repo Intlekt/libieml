@@ -185,8 +185,12 @@ namespace ieml::structure {
 
     std::shared_ptr<PathTree> PathTree::buildFromPaths(std::vector<std::shared_ptr<Path>> paths) {
         const auto node = paths[0]->getNode();
+        PathType path_type(PathType::ROOT);
+        if (paths[0]->getNext())
+            path_type = paths[0]->getNext()->getNode()->getPathType();
 
         std::unordered_map<PathNode*, std::vector<std::shared_ptr<Path>>> children_paths;
+
         for (auto path : paths) {
             // maybe change that to test equality by value ?
             // will have issues with junction 
@@ -195,6 +199,10 @@ namespace ieml::structure {
 
             auto subpath = path->getNext();
             if (subpath) {
+                if (subpath->getNode()->getPathType() != path_type)
+                    throw std::invalid_argument("All subpath does not share the same path type: had '" + std::string(path_type._to_string()) + "', got '" \
+                                                    + std::string(subpath->getNode()->getPathType()._to_string()) + "'.");
+
                 if (children_paths.count(subpath->getNode().get()) < 1) {
                     children_paths.insert({subpath->getNode().get(), {subpath}});
                 } else {

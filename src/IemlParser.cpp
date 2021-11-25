@@ -17,14 +17,13 @@ IEMLParser::IEMLParser(const std::string& input_str, bool error_stdout) {
 
     tokens_ = new antlr4::CommonTokenStream(lexer_);
 
-    // tokens_->fill();
-    // for (auto token : tokens_->getTokens()) {
-    //     std::cout << token->toString() << std::endl;
-    // }
-
     parser_ = new ieml_generated::iemlParser(tokens_);
     parser_->removeErrorListeners();
     parser_->addErrorListener(errorListener_);
+    
+    parser_->addErrorListener(errorListener_);
+
+    context = std::make_unique<ParserContext>(errorListener_);
 }
 
 IEMLParser::~IEMLParser() {
@@ -47,6 +46,8 @@ void IEMLParser::parse() {
     }
     
     ast_ = std::move(ast_t.as<IEMLGrammarVisitor::VisitorResult<Program>>().release());
+
+    ast_.get()->check_program(*context);
 }
 
 const antlr4::tree::ParseTree* IEMLParser::getParseTree() const {

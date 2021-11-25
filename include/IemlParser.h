@@ -28,8 +28,9 @@ private:
     antlr4::CommonTokenStream* tokens_ = nullptr;
 
     antlr4::tree::ParseTree* parseTree_ = nullptr;
-
+    
     std::unique_ptr<Program> ast_ = nullptr;
+    std::unique_ptr<ParserContext> context = nullptr;
 
 public:
     // explicit IEMLParser(const std::string& input_str);

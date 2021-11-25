@@ -39,23 +39,23 @@ public:
         return os.str();
     };
 
-    structure::Name check_translatable(parser::ParserContext& ctx) {
+    std::shared_ptr<structure::Name> check_translatable(parser::ParserContext& ctx) {
         std::unordered_set<structure::LanguageString> names;
         for (auto&& ls: translations_) {
             const Identifier& language = ls->language();
             
-            auto lt = structure::LanguageType::_from_string_nothrow(language.getName().c_str());
+            auto lt = structure::LanguageType::_from_string_nocase_nothrow(language.getName().c_str());
             if (!lt) {
                 ctx.getErrorManager().visitorError(
                     language.getCharRange(), 
                     "Invalid language identifier for language string, got: '" + language.getName() + "'."
                 );
             } else {
-                names.insert(structure::LanguageString((*lt), ls->identifier().getName()));
+                names.insert(structure::LanguageString(*lt, ls->identifier().getName()));
             }
         } 
 
-        return structure::Name(names);
+        return std::make_shared<structure::Name>(names);
     };   
 
 

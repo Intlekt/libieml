@@ -44,6 +44,10 @@ public:
         return os.str();
     }
 
+    std::shared_ptr<structure::PathTree> check_flexed_category(parser::ParserContext& ctx) const {
+        return nullptr;
+    }
+
 private:
     std::vector<std::unique_ptr<Identifier>> inflexions_;
     std::unique_ptr<ICategory> category_;
