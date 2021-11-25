@@ -41,7 +41,6 @@ public:
     const antlr4::tree::ParseTree* getParseTree() const;
     std::string getParseString() const;
 
-
     const std::vector<const SyntaxError*> getSyntaxErrors() const { return errorListener_->getSyntaxErrors(); }
 
     const std::string getASTString() const;

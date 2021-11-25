@@ -8,11 +8,18 @@
 
 #include "ast/PhraseLine.h"
 
+#include "ParserContext.h"
+#include "structure/Phrase.h"
+
 
 namespace ieml::AST {
 class Phrase: virtual public AST, public ICategory, public IReferenceValue {
 public:
     Phrase() : ICategory(), IReferenceValue() {}
+
+    virtual structure::Phrase check_phrase(parser::ParserContext& ctx) const {
+        return structure::Phrase();
+    };
 
 };
 

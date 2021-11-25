@@ -19,7 +19,7 @@ message(STATUS "Generated parser at ${ANTLR_IEMLParser_OUTPUT_DIR} ")
 
 include_directories(${ANTLR4_INCLUDE_DIRS} 
                     ${ANTLR_IEMLParser_OUTPUT_DIR}
-                    ${CMAKE_CURRENT_LIST_DIR}
+                    ${PROJECT_SOURCE_DIR}/include
                     ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json
                     ${PROJECT_SOURCE_DIR}/thirdparty/better_enums)
 
@@ -27,12 +27,16 @@ include_directories(${ANTLR4_INCLUDE_DIRS}
 add_library (IEMLParser SHARED
              ${ANTLR_IEMLParser_CXX_OUTPUTS}
              ${CMAKE_CURRENT_LIST_DIR}/RecognitionError.cpp
+             ${CMAKE_CURRENT_LIST_DIR}/IEMLGrammarVisitor.cpp
              ${CMAKE_CURRENT_LIST_DIR}/IemlParser.cpp
+             ${CMAKE_CURRENT_LIST_DIR}/ast/Program.cpp
+             ${CMAKE_CURRENT_LIST_DIR}/structure/Path.cpp
+             ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp
              )
 
 
 target_include_directories(IEMLParser 
-                           INTERFACE ${CMAKE_CURRENT_LIST_DIR} 
+                           INTERFACE ${PROJECT_SOURCE_DIR}/include
                                      ${ANTLR4_INCLUDE_DIRS}
                                      ${ANTLR_IEMLParser_OUTPUT_DIR}
                                      ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json

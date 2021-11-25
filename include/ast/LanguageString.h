@@ -24,6 +24,9 @@ public:
         return language_type_->getName() + "\"" + identifier_->to_string() + "\"";
     }
 
+    const Identifier& identifier() const {return *identifier_;};
+    const Identifier& language() const {return *language_type_;};
+
 private:
     std::unique_ptr<Identifier> language_type_;
     std::unique_ptr<Identifier> identifier_;

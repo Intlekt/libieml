@@ -1,16 +1,11 @@
 #pragma once
 
-#include <string>
-#include <memory>
-#include <sstream>
-
 #include <nlohmann/json.hpp>
 
 
 namespace ieml::AST {
 
 class CharRange {
-
 public:
     CharRange(size_t line_start, size_t line_end, size_t char_idx_line_start, size_t char_idx_line_end) : 
         line_start_(line_start), 
@@ -53,33 +48,6 @@ private:
     const size_t line_end_;
     const size_t char_idx_line_start_;
     const size_t char_idx_line_end_;
-};
-
-class AST {
-public:
-    AST(std::unique_ptr<CharRange>&& char_range) : char_range_(std::move(char_range)) {};
-    virtual ~AST() = default;
-
-    virtual std::string to_string() const = 0;
-
-    const CharRange& getCharRange() const {return *char_range_;}
-
-    virtual bool isError() const {return false; }
-private:
-    std::unique_ptr<const CharRange> char_range_;
-
-};
-
-class ASTError : public AST {
-public:
-    ASTError(std::unique_ptr<CharRange>&& char_range) : AST(std::move(char_range)) {};
-
-    virtual std::string to_string() const override {
-        return "ASTError@" + getCharRange().to_string();
-    }
-
-    virtual bool isError() const {return true; }
-
 };
 
 }

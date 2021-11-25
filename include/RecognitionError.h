@@ -14,15 +14,15 @@ namespace parser {
 
     class SyntaxError {
         private:
-            std::unique_ptr<ieml::AST::CharRange> char_range_;
+            const ieml::AST::CharRange char_range_;
             const std::string msg_;
 
         public:
-            SyntaxError(std::unique_ptr<ieml::AST::CharRange>&& char_range, const std::string& msg): 
-                char_range_(std::move(char_range)), msg_(msg) {}
+            SyntaxError(const ieml::AST::CharRange& char_range, const std::string& msg): 
+                char_range_(char_range), msg_(msg) {}
 
             const std::string to_string() const {
-                return char_range_->to_string() + " " + msg_;
+                return char_range_.to_string() + " " + msg_;
             }
 
             nlohmann::json toJson() const;
@@ -74,7 +74,7 @@ namespace parser {
                                           size_t prediction, atn::ATNConfigSet *configs);
 
             
-            void visitorError(std::unique_ptr<ieml::AST::CharRange>&& char_range, const std::string &msg);
+            void visitorError(const ieml::AST::CharRange& char_range, const std::string &msg);
 
             const std::vector<const SyntaxError*> getSyntaxErrors() const { return error_manager_.getSyntaxErrors(); }
 

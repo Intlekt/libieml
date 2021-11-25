@@ -12,7 +12,7 @@ void IEMLParserErrorListener::syntaxError(Recognizer *recognizer, Token *offendi
                                           size_t charPositionInLine, const std::string &msg, std::exception_ptr e) {
 
     error_manager_.registerError(new SyntaxError(
-        std::make_unique<ieml::AST::CharRange>(
+        ieml::AST::CharRange(
             line, 
             line, 
             charPositionInLine, 
@@ -33,13 +33,13 @@ void IEMLParserErrorListener::reportContextSensitivity(Parser *recognizer, const
 
 };
 
-void IEMLParserErrorListener::visitorError(std::unique_ptr<ieml::AST::CharRange>&& char_range, const std::string &msg) {
-    error_manager_.registerError(new SyntaxError(std::move(char_range), msg));
+void IEMLParserErrorListener::visitorError(const ieml::AST::CharRange& char_range, const std::string &msg) {
+    error_manager_.registerError(new SyntaxError(char_range, msg));
 };
 
 json SyntaxError::toJson() const {
     return {
-        {"range", char_range_->toJson()},
+        {"range", char_range_.toJson()},
         {"message", msg_}
     };
 }
