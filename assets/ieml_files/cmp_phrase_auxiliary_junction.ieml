@@ -2,10 +2,10 @@
     fr"le chien mange du paté sur le tapis" 
     en"the dog eats paté on the carpet" 
     (
-        0 #test,
+        0 #( 0 ~nom #'wa.'),
         1 &et [
-            ~singulier #chien
-            ~pluriel #chat 
+            ~singulier #( 0 ~nom #'we.')
+            ~pluriel #( 0 ~nom #'wo.') 
         ]
     )
 .

@@ -94,3 +94,16 @@ TEST(ieml_grammar_test_case, component_declaration) {
     EXPECT_EQ(parser.getSyntaxErrors().size(), 0) << os.str();
   }
 }
+TEST(ieml_grammar_test_case, extra_comma_in_phrase_line) {
+  {
+    IEMLParser parser(R"(@component fr"test" (0 #(0 ~noun #'wa.'),) .)");
+    try {
+      parser.parse();
+    } catch (std::exception& e) {
+      EXPECT_TRUE(false) << e.what();
+    }
+
+
+    EXPECT_NE(parser.getSyntaxErrors().size(), 0);
+  }
+}

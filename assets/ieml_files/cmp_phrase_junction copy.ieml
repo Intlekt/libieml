@@ -1,5 +1,5 @@
 @component 
     fr"le chien mange du paté sur le tapis" 
     en"the dog eats paté on the carpet" 
-    (&et [(0 ~nom #'wa.', 1 *tre ~test #e133) (0 ~nom #'we.')])
+    (&et [(0 ~nom #'wa.') (0 ~nom #'we.')])
 .

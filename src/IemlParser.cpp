@@ -47,7 +47,9 @@ void IEMLParser::parse() {
     
     ast_ = std::move(ast_t.as<IEMLGrammarVisitor::VisitorResult<Program>>().release());
 
-    ast_.get()->check_program(*context);
+    if (ast_) {
+        ast_.get()->check_program(*context);
+    }
 }
 
 const antlr4::tree::ParseTree* IEMLParser::getParseTree() const {

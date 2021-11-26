@@ -56,7 +56,10 @@ public:
   /**
    * DECLARATION
    */
-  virtual antlrcpp::Any visitComponent(iemlParser::ComponentContext *ctx) override;
+  virtual antlrcpp::Any visitComponentDeclaration(iemlParser::ComponentDeclarationContext *ctx) override;
+  virtual antlrcpp::Any visitNodeDeclaration(iemlParser::NodeDeclarationContext *context) override;
+  virtual antlrcpp::Any visitWordDeclaration(iemlParser::WordDeclarationContext *context) override;
+  virtual antlrcpp::Any visitLanguageDeclaration(iemlParser::LanguageDeclarationContext *context) override;
 
   /**
    * PHRASE

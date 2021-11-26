@@ -22,7 +22,7 @@ public:
         ITranslatable(std::move(translations)) {};
 
     virtual void check_declaration(ieml::parser::ParserContext& ctx) = 0;
-        
+
 private:
     const DeclarationType declaration_type_;
 
@@ -37,9 +37,15 @@ public:
         Declaration(std::move(translations), DeclarationType(Component)), 
         phrase_(std::move(phrase)) {};
 
+    virtual bool isNode() const {return false;}
+
     std::string to_string() const {
         std::ostringstream os;
-        os << "@component " << translations_to_string() << " " << phrase_->to_string() << " .";
+        if (isNode())
+            os << "@node ";
+        else
+            os << "@component ";
+        os << translations_to_string() << " " << phrase_->to_string() << " .";
         return os.str();
     };
 
@@ -51,11 +57,24 @@ public:
             return;
         }
         
-        ctx.define_category(name, phrase, false);
+        ctx.define_category(name, phrase, isNode());
     };   
 
 private:
     std::unique_ptr<Phrase> phrase_;
 };
+
+
+class NodeDeclaration: public ComponentDeclaration {
+public:
+    NodeDeclaration(std::unique_ptr<CharRange>&& char_range, 
+                    std::vector<std::unique_ptr<LanguageString>>&& translations,
+                    std::unique_ptr<Phrase>&& phrase) : 
+        AST(std::move(char_range)),          
+        ComponentDeclaration(nullptr, std::move(translations), std::move(phrase)) {};
+
+    virtual bool isNode() const {return true;}
+};
+
 
 }

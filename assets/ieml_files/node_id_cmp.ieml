@@ -1,0 +1,7 @@
+@component fr"test" en"test" (
+    0 ~nom #'wa.'
+) .
+
+@node fr"test2" en"test2" (
+    0  #test
+) .

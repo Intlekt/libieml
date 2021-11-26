@@ -2,7 +2,10 @@ grammar ieml;
 
 program : declarations+=declaration* EOF;
 
-declaration : DECLARATION_MARK 'component' language_strings+=language_string+ phrase_=phrase DECLARATION_END # component
+declaration : DECLARATION_MARK 'component' language_strings+=language_string+ phrase_=phrase DECLARATION_END # componentDeclaration
+            | DECLARATION_MARK 'node' language_strings+=language_string+ phrase_=phrase DECLARATION_END      # nodeDeclaration
+            | DECLARATION_MARK 'word' word=STRING DECLARATION_END                                            # wordDeclaration
+            | DECLARATION_MARK 'language' language=identifier DECLARATION_END                                # languageDeclaration
             ;
 
 phrase : '(' phrase_lines+=phrase_line (',' phrase_lines+=phrase_line)* ')'                                              # phrase__lines

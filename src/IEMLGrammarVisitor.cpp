@@ -122,7 +122,7 @@ namespace ieml::parser {
    * DECLARATION
    */
 
-  antlrcpp::Any IEMLGrammarVisitor::visitComponent(iemlParser::ComponentContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitComponentDeclaration(iemlParser::ComponentDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase definition in component declaration.", true);
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
@@ -132,6 +132,23 @@ namespace ieml::parser {
     RETURN_VISITOR_RESULT(Declaration, ComponentDeclaration, std::move(language_strings), std::move(phrase_));
   }
 
+  antlrcpp::Any IEMLGrammarVisitor::visitNodeDeclaration(iemlParser::NodeDeclarationContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase definition in node declaration.", true);
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
+
+    CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, Declaration);
+    CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
+
+    RETURN_VISITOR_RESULT(Declaration, NodeDeclaration, std::move(language_strings), std::move(phrase_));
+  }
+
+  antlrcpp::Any IEMLGrammarVisitor::visitWordDeclaration(iemlParser::WordDeclarationContext *ctx) {
+
+  }
+
+  antlrcpp::Any IEMLGrammarVisitor::visitLanguageDeclaration(iemlParser::LanguageDeclarationContext *ctx) {
+
+  }
 
   /**
    * PHRASE
