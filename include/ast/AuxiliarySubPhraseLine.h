@@ -16,22 +16,34 @@ public:
 
 
     std::shared_ptr<structure::PathTree> check_auxiliary_subline(parser::ParserContext& ctx) const {
-        auto auxiliary = ctx.resolve_auxiliary(auxiliary_->getName());
-        if (!auxiliary) {
-            ctx.getErrorManager().visitorError(
-                auxiliary_->getCharRange(),
-                "Undefined auxiliary identifier '" + auxiliary_->getName() + "'."
-            );
-        }
         auto child = _check_auxiliary_subline(ctx);
 
-        if (!auxiliary || !child) {
-            return nullptr;
+        if (auxiliary_) {
+            auto auxiliary = ctx.resolve_auxiliary(auxiliary_->getName());
+            if (!auxiliary) {
+                ctx.getErrorManager().visitorError(
+                    auxiliary_->getCharRange(),
+                    "Undefined auxiliary identifier '" + auxiliary_->getName() + "'."
+                );
+                return nullptr;
+            }
+            if(!child) {
+                return nullptr;
+            }
+            
+            return std::make_shared<structure::PathTree>(
+                std::make_shared<structure::AuxiliaryPathNode>(auxiliary), 
+                std::vector<std::shared_ptr<structure::PathTree>>{child});
+        } else {
+            if(!child) {
+                return nullptr;
+            }
+
+            return child;
         }
 
-        return std::make_shared<structure::PathTree>(
-            std::make_shared<structure::AuxiliaryPathNode>(auxiliary), 
-            std::vector<std::shared_ptr<structure::PathTree>>{child});
+
+
     };  
 
 
