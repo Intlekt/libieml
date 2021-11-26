@@ -27,17 +27,22 @@ private:
 class Namespace {
 public:
 
-    void define(std::shared_ptr<Name> name, std::shared_ptr<Phrase> pharse) {
+    void define(std::shared_ptr<Name> name, std::shared_ptr<Phrase> phrase, bool is_node) {
         for (auto& n: *name) {
-            store_.insert({n.second, pharse});
+            store_.insert({n.second, phrase});
         }
-        rev_store_.insert({pharse, name});
+        rev_store_.insert({phrase, name});
+        is_node_.insert({phrase, is_node});
     } 
 
     std::shared_ptr<Phrase> resolve(const LanguageString& ls) {
-        // issue when ls not in store_ => call the default constructor of Phrase ...
-        return store_[ls];
+        auto res = store_.find(ls);
+        if (res != store_.end()) {
+            return res->second;
+        }
+        return nullptr;
     };
+    
 private:
 
     template<class T> struct shared_ptr_hash {
@@ -48,6 +53,7 @@ private:
 
     std::unordered_map<LanguageString, std::shared_ptr<Phrase>> store_;
     std::unordered_map<std::shared_ptr<Phrase>, std::shared_ptr<Name>, shared_ptr_hash<Phrase>> rev_store_;
+    std::unordered_map<std::shared_ptr<Phrase>, bool, shared_ptr_hash<Phrase>> is_node_;
 };
 
 }

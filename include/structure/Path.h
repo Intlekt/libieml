@@ -45,7 +45,7 @@ public:
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
 
-
+    RoleType getRoleType() const {return role_type_;}
 private:
     const RoleType role_type_;
 };
@@ -173,6 +173,7 @@ class PathTree {
 public:
     PathTree(std::shared_ptr<PathNode> node, std::vector<std::shared_ptr<PathTree>> children) : 
         node_(std::move(node)), children_(std::move(children)) {}
+    PathTree(std::shared_ptr<PathNode> node) : node_(std::move(node)), children_() {}
 
     static std::shared_ptr<PathTree> buildFromPaths(std::vector<std::shared_ptr<Path>> paths);
     std::shared_ptr<PathNode> getNode() const {return node_;}

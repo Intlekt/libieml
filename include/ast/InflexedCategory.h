@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <set>
 #include <string>
 #include <sstream>
 
@@ -45,7 +46,40 @@ public:
     }
 
     std::shared_ptr<structure::PathTree> check_flexed_category(parser::ParserContext& ctx) const {
-        return nullptr;
+        auto category = category_->check_category(ctx);
+
+        if (inflexions_.size()) {
+            std::set<structure::InflexingType> inflexions;
+
+            for (auto&& inflexion_id: inflexions_) {
+                auto inflexion = ctx.resolve_inflexion(inflexion_id->getName());
+
+                if (!inflexion) {
+                    ctx.getErrorManager().visitorError(
+                        inflexion_id->getCharRange(),
+                        "Undefined inflexion identifier '" + inflexion_id->getName() + "'."
+                    );
+                    return nullptr;
+                }
+
+                inflexions.insert(inflexion);
+
+            }
+            
+            if (!category)
+                return nullptr;
+
+            return std::make_shared<structure::PathTree>(
+                std::make_shared<structure::InflexingPathNode>(inflexions),
+                std::vector<std::shared_ptr<structure::PathTree>>{category}
+            );
+
+        } else {
+            if (!category)
+                return nullptr;
+            return category;
+        }
+        
     }
 
 private:

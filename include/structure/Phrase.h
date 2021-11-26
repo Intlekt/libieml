@@ -5,9 +5,9 @@
 namespace ieml::structure {
 
 class Phrase : public PathTree {
-
-
-
+public:
+    Phrase(std::vector<std::shared_ptr<PathTree>> children) : 
+        PathTree(std::make_shared<RootPathNode>(), children) {}
 };
 }
 

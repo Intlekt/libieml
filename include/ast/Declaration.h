@@ -51,7 +51,7 @@ public:
             return;
         }
         
-        ctx.getNamespace().define(name, phrase);
+        ctx.define_category(name, phrase, false);
     };   
 
 private:

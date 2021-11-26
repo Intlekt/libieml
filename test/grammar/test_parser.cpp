@@ -64,3 +64,33 @@ TEST(ieml_grammar_test_case, invalid_context) {
   }
 
 }
+TEST(ieml_grammar_test_case, invalid_identifier) {
+  {
+    IEMLParser parser(R"(@component fr"test" (0 ~noun #a).)");
+    try {
+      parser.parse();
+    } catch (std::exception& e) {
+      EXPECT_TRUE(false) << e.what();
+    }
+
+    EXPECT_NE(parser.getSyntaxErrors().size(), 0);
+  }
+}
+TEST(ieml_grammar_test_case, component_declaration) {
+  {
+    IEMLParser parser(R"(@component fr"test" (0 ~noun #'wa.'). @component fr"test2" (0 ~noun #test).)");
+    try {
+      parser.parse();
+    } catch (std::exception& e) {
+      EXPECT_TRUE(false) << e.what();
+    }
+
+    std::ostringstream os;
+    for (auto& error : parser.getSyntaxErrors()) {
+      os << error->to_string() << std::endl;
+    }
+
+
+    EXPECT_EQ(parser.getSyntaxErrors().size(), 0) << os.str();
+  }
+}

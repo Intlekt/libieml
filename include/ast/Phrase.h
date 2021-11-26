@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <memory>
 
 
 #include "ast/interfaces/AST.h"
@@ -21,6 +22,10 @@ public:
     Phrase() : ICategory(), IReferenceValue() {}
 
     virtual std::shared_ptr<structure::Phrase> check_phrase(parser::ParserContext& ctx) const = 0;
+
+    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContext& ctx) const {
+        return check_phrase(ctx);
+    };
 
 };
 
@@ -50,18 +55,43 @@ public:
         return os.str();
     }
 
-    std::shared_ptr<structure::Phrase> check_phrase(parser::ParserContext& ctx) const override {
-        std::map<structure::RootPathNode, std::shared_ptr<structure::PathTree>> children;
+    virtual std::shared_ptr<structure::Phrase> check_phrase(parser::ParserContext& ctx) const override {
+        std::unordered_set<structure::RoleType> seen_nodes;
         
+        std::vector<std::shared_ptr<structure::PathTree>> children;
+
         for (const auto& line: phrase_lines_) {
             auto tree = line->check_phrase_line(ctx);
-            // if (tree.count(tree->getNode())) {
-                
-            // }
+
+            if (!tree) {
+                continue;
+            }
+            
+            auto role_number = std::dynamic_pointer_cast<structure::RoleNumberPathNode>(tree->getNode());
+
+            if (!role_number) {
+                // should not occur, maybe raise an exception
+
+                ctx.getErrorManager().visitorError(
+                    line->getCharRange(),
+                    "Invalid phrase line"
+                );
+            } else {
+                if (seen_nodes.count(role_number->getRoleType()) > 0) {
+                    ctx.getErrorManager().visitorError(
+                        line->getCharRange(),
+                        "Duplicated phrase line number."
+                    );
+                } else {
+                    seen_nodes.insert(role_number->getRoleType());
+                    children.push_back(tree);
+                }
+            }
         }
         
-        return nullptr;
+        return std::make_shared<structure::Phrase>(children);
     };
+
 
 private:
     std::vector<std::unique_ptr<PhraseLine>> phrase_lines_;
