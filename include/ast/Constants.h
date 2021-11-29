@@ -1,13 +1,10 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include <map>
+#include <enum.h>
 
 
 namespace ieml::AST {
 
-
-enum DeclarationType { Component, Node };
+BETTER_ENUM(DeclarationType, char, Component, Node, Word, Inflexion, Auxiliary, Language);
 
 }

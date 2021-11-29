@@ -2,6 +2,7 @@
 
 #include "structure/Constants.h"
 #include "structure/Word.h"
+#include "utils.h"
 
 #include <string>
 #include <memory>
@@ -112,35 +113,35 @@ public:
 
 class AuxiliaryPathNode : public PathNode {
 public:
-    AuxiliaryPathNode(AuxiliaryType auxiliary_type) : auxiliary_type_(auxiliary_type) {}
+    AuxiliaryPathNode(std::shared_ptr<AuxiliaryWord> auxiliary_type) : auxiliary_type_(auxiliary_type) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
 
 private:
-    const AuxiliaryType auxiliary_type_;
+    const std::shared_ptr<AuxiliaryWord> auxiliary_type_;
 };
 
 class InflexingPathNode : public PathNode {
 public:
-    InflexingPathNode(const std::set<InflexingType>& inflexings) : inflexings_(inflexings) {}
+    InflexingPathNode(const std::set<std::shared_ptr<InflexingWord>>& inflexings) : inflexings_(inflexings) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
 
 private:
-    const std::set<InflexingType> inflexings_;
+    const std::set<std::shared_ptr<InflexingWord>> inflexings_;
 };
 
 class WordPathNode : public PathNode {
 public:
-    WordPathNode(Word word) : word_(word) {}
+    WordPathNode(std::shared_ptr<Word> word) : word_(word) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
 
 private:
-    const Word word_;
+    const std::shared_ptr<Word> word_;
 };
 
 class Path {
@@ -171,18 +172,23 @@ private:
 
 class PathTree {
 public:
-    PathTree(std::shared_ptr<PathNode> node, std::vector<std::shared_ptr<PathTree>> children) : 
+    PathTree(std::shared_ptr<PathNode> node, std::set<std::shared_ptr<PathTree>> children) : 
         node_(std::move(node)), children_(std::move(children)) {}
     PathTree(std::shared_ptr<PathNode> node) : node_(std::move(node)), children_() {}
 
     static std::shared_ptr<PathTree> buildFromPaths(std::vector<std::shared_ptr<Path>> paths);
     std::shared_ptr<PathNode> getNode() const {return node_;}
-    std::vector<std::shared_ptr<PathTree>> getChildren() const {return children_;}
+    std::vector<std::shared_ptr<PathTree>> getChildren() const;
     
+    std::string to_string() const;
+
+    bool operator==(const PathTree& rhs) const {
+        return to_string() == rhs.to_string();
+    }
 
 private:
     const std::shared_ptr<PathNode> node_;
-    const std::vector<std::shared_ptr<PathTree>> children_;
+    const std::set<std::shared_ptr<PathTree>> children_;
 };
 }
 

@@ -20,8 +20,8 @@ BETTER_ENUM(PathType, char,
 );
 
 BETTER_ENUM(JunctionType, char, AND = 1, OR);
-BETTER_ENUM(InflexingType, char, PLURAL = 1, SINGULAR);
-BETTER_ENUM(AuxiliaryType, char, ABOVE = 1, BELOW);
+// BETTER_ENUM(InflexingType, char, PLURAL = 1, SINGULAR);
+// BETTER_ENUM(AuxiliaryType, char, ABOVE = 1, BELOW);
 
 
 BETTER_ENUM(LanguageType, char, FR = 1, EN);
@@ -52,5 +52,7 @@ BETTER_ENUM(RoleType, char,
 
 }
 
-BETTER_ENUMS_DECLARE_STD_HASH(ieml::structure::RoleType);
+BETTER_ENUMS_DECLARE_STD_HASH(ieml::structure::PathType);
+BETTER_ENUMS_DECLARE_STD_HASH(ieml::structure::JunctionType);
 BETTER_ENUMS_DECLARE_STD_HASH(ieml::structure::LanguageType);
+BETTER_ENUMS_DECLARE_STD_HASH(ieml::structure::RoleType);

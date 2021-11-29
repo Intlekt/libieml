@@ -78,7 +78,7 @@ TEST(ieml_grammar_test_case, invalid_identifier) {
 }
 TEST(ieml_grammar_test_case, component_declaration) {
   {
-    IEMLParser parser(R"(@component fr"test" (0 ~noun #'wa.'). @component fr"test2" (0 ~noun #test).)");
+    IEMLParser parser(R"(@component fr"test" (0 #'wa.'). @component fr"test2" (0 #test).)");
     try {
       parser.parse();
     } catch (std::exception& e) {

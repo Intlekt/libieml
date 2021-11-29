@@ -131,7 +131,7 @@ namespace ieml::structure {
     };
     PathType AuxiliaryPathNode::getPathType() const {return PathType::AUXILIARY;};
     std::string AuxiliaryPathNode::to_string() const {
-        return "*" + std::string(auxiliary_type_._to_string());
+        return "*" + auxiliary_type_->to_string();
     }
 
     bool InflexingPathNode::accept_next(const PathNode& next) const {
@@ -153,7 +153,7 @@ namespace ieml::structure {
         for (auto& inflexing: inflexings_) {
             if (first) first = false;
             else os << ",";
-            os << inflexing._to_string();
+            os << inflexing->to_string();
         }
 
         return os.str();
@@ -164,7 +164,7 @@ namespace ieml::structure {
     };
     PathType WordPathNode::getPathType() const {return PathType::WORD;};
     std::string WordPathNode::to_string() const {
-        return "'" + word_.to_string() + "'";
+        return word_->to_string();
     }
 
     void Path::check() {
@@ -211,12 +211,31 @@ namespace ieml::structure {
             }
         }
         
-        std::vector<std::shared_ptr<PathTree>> children;
+        std::set<std::shared_ptr<PathTree>> children;
 
         for (auto paths: children_paths) {
-            children.push_back(buildFromPaths(paths.second));
+            children.insert(buildFromPaths(paths.second));
         }
 
         return std::make_shared<PathTree>(std::move(node), std::move(children));
     }
+
+    std::string PathTree::to_string() const {
+        std::stringstream os;
+
+        os << node_->to_string();
+
+        for (auto& child: children_) {
+            os << "(" << child->to_string() << ")";
+        }
+        return os.str();
+    }
+
+    std::vector<std::shared_ptr<PathTree>> PathTree::getChildren() const {
+        std::vector<std::shared_ptr<PathTree>> v;
+        v.reserve(children_.size());
+        std::copy(children_.begin(), children_.end(), v.begin());
+        return v;
+    };
+
 }

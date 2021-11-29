@@ -143,6 +143,24 @@ namespace ieml::parser {
   }
 
   antlrcpp::Any IEMLGrammarVisitor::visitWordDeclaration(iemlParser::WordDeclarationContext *ctx) {
+    if (!ctx->word) {
+      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid word for a word declaration.");
+      RETURN_VISITOR_RESULT_ERROR(Declaration);
+    }
+
+    std::string word_str_quoted = ctx->word->getText();
+    std::string word_str = word_str_quoted.substr(1, word_str_quoted.size() - 2);
+    
+    RETURN_VISITOR_RESULT(Declaration, 
+                          WordDeclaration, 
+                          std::make_unique<Word>(charRangeFromToken(ctx->word), word_str));
+  }
+
+  antlrcpp::Any IEMLGrammarVisitor::visitInflexingDeclaration(iemlParser::InflexingDeclarationContext *context) {
+    
+  }
+
+  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliaryDeclaration(iemlParser::AuxiliaryDeclarationContext *context) {
 
   }
 

@@ -5,6 +5,8 @@ program : declarations+=declaration* EOF;
 declaration : DECLARATION_MARK 'component' language_strings+=language_string+ phrase_=phrase DECLARATION_END # componentDeclaration
             | DECLARATION_MARK 'node' language_strings+=language_string+ phrase_=phrase DECLARATION_END      # nodeDeclaration
             | DECLARATION_MARK 'word' word=STRING DECLARATION_END                                            # wordDeclaration
+            | DECLARATION_MARK 'inflexing' language_strings+=language_string+ word=STRING DECLARATION_END    # inflexingDeclaration
+            | DECLARATION_MARK 'auxiliary' language_strings+=language_string+ word=STRING DECLARATION_END    # auxiliaryDeclaration
             | DECLARATION_MARK 'language' language=identifier DECLARATION_END                                # languageDeclaration
             ;
 

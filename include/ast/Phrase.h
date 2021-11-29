@@ -2,6 +2,7 @@
 
 #include <map>
 #include <memory>
+#include <set>
 
 
 #include "ast/interfaces/AST.h"
@@ -58,7 +59,7 @@ public:
     virtual std::shared_ptr<structure::Phrase> check_phrase(parser::ParserContext& ctx) const override {
         std::unordered_set<structure::RoleType> seen_nodes;
         
-        std::vector<std::shared_ptr<structure::PathTree>> children;
+        std::set<std::shared_ptr<structure::PathTree>> children;
 
         for (const auto& line: phrase_lines_) {
             auto tree = line->check_phrase_line(ctx);
@@ -84,7 +85,7 @@ public:
                     );
                 } else {
                     seen_nodes.insert(role_number->getRoleType());
-                    children.push_back(tree);
+                    children.insert(tree);
                 }
             }
         }

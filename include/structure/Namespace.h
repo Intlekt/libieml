@@ -5,37 +5,40 @@
 #include <unordered_set>
 #include <vector>
 #include <set>
+#include <map>
 #include <memory>
 #include <stdexcept>
 
-#include "ast/interfaces/AST.h"
+#include "utils.h"
 #include "structure/Constants.h"
-#include "structure/Phrase.h"
 #include "structure/LanguageString.h"
 
 namespace ieml::structure {
 
-class Name : public std::unordered_map<LanguageType, LanguageString> {
+class Name : public std::map<LanguageType, LanguageString> {
 public:
     Name(std::unordered_set<LanguageString> traductions) : 
-         std::unordered_map<LanguageType, LanguageString>(build_traductions(traductions)) {}
+         std::map<LanguageType, LanguageString>(build_traductions(traductions)) {}
     
+    bool operator==(const Name& rhs) const {
+        return size() == rhs.size() && std::equal(begin(), end(), rhs.begin());
+    }
 private:
-    static std::unordered_map<LanguageType, LanguageString> build_traductions(std::unordered_set<LanguageString> traductions);
+    static std::map<LanguageType, LanguageString> build_traductions(std::unordered_set<LanguageString> traductions);
 };
 
+template<typename V>
 class Namespace {
 public:
 
-    void define(std::shared_ptr<Name> name, std::shared_ptr<Phrase> phrase, bool is_node) {
+    void define(std::shared_ptr<Name> name, std::shared_ptr<V> value) {
         for (auto& n: *name) {
-            store_.insert({n.second, phrase});
+            store_.insert({n.second, value});
         }
-        rev_store_.insert({phrase, name});
-        is_node_.insert({phrase, is_node});
+        rev_store_.insert({value, name});
     } 
 
-    std::shared_ptr<Phrase> resolve(const LanguageString& ls) {
+    std::shared_ptr<V> resolve(const LanguageString& ls) const {
         auto res = store_.find(ls);
         if (res != store_.end()) {
             return res->second;
@@ -44,16 +47,9 @@ public:
     };
     
 private:
-
-    template<class T> struct shared_ptr_hash {
-        size_t operator()(const std::shared_ptr<T>& e) const {
-            return std::hash<T>{}(*e);
-        }
-    };
-
-    std::unordered_map<LanguageString, std::shared_ptr<Phrase>> store_;
-    std::unordered_map<std::shared_ptr<Phrase>, std::shared_ptr<Name>, shared_ptr_hash<Phrase>> rev_store_;
-    std::unordered_map<std::shared_ptr<Phrase>, bool, shared_ptr_hash<Phrase>> is_node_;
+    std::unordered_map<LanguageString, std::shared_ptr<V>> store_;
+    std::unordered_map<std::shared_ptr<V>, 
+                       std::shared_ptr<Name>> rev_store_;
 };
 
 }

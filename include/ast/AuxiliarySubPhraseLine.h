@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <set>
 
 #include "ast/interfaces/AST.h"
 
@@ -33,7 +34,7 @@ public:
             
             return std::make_shared<structure::PathTree>(
                 std::make_shared<structure::AuxiliaryPathNode>(auxiliary), 
-                std::vector<std::shared_ptr<structure::PathTree>>{child});
+                std::set<std::shared_ptr<structure::PathTree>>{child});
         } else {
             if(!child) {
                 return nullptr;

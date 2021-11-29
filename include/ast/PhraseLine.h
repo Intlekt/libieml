@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <sstream>
+#include <set>
 
 #include "ast/Constants.h"
 #include "ast/AuxiliarySubPhraseLine.h"
@@ -41,7 +42,7 @@ public:
 
         return std::make_shared<structure::PathTree>(
             std::make_shared<structure::RoleNumberPathNode>(*type), 
-            std::vector<std::shared_ptr<structure::PathTree>>{child});
+            std::set<std::shared_ptr<structure::PathTree>>{child});
     };
     
 

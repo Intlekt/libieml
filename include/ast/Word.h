@@ -30,9 +30,12 @@ public:
             return nullptr;
         }
 
-        return std::make_shared<structure::PathTree>(word);
+        return std::make_shared<structure::PathTree>(std::make_shared<structure::WordPathNode>(word));
     };
 
+    virtual std::shared_ptr<structure::Word> check_word(parser::ParserContext& ctx) const {
+        return std::make_shared<structure::Word>(word_str_);
+    };
 
 private:
     const std::string word_str_;
