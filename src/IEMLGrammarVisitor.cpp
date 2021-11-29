@@ -163,6 +163,10 @@ namespace ieml::parser {
   antlrcpp::Any IEMLGrammarVisitor::visitAuxiliaryDeclaration(iemlParser::AuxiliaryDeclarationContext *context) {
 
   }
+  
+  antlrcpp::Any IEMLGrammarVisitor::visitJunctionDeclaration(iemlParser::JunctionDeclarationContext *context) {
+
+  }
 
   antlrcpp::Any IEMLGrammarVisitor::visitLanguageDeclaration(iemlParser::LanguageDeclarationContext *ctx) {
 

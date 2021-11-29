@@ -65,6 +65,7 @@ private:
 
     structure::Namespace<structure::AuxiliaryWord> namespace_auxiliary_;
     structure::Namespace<structure::InflexingWord> namespace_inflexing_;
+    structure::Namespace<structure::JunctionWord> namespace_junction_;
 
     std::unordered_map<std::string, std::shared_ptr<structure::Word>> defined_words_;
     

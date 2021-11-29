@@ -28,24 +28,38 @@ private:
 
 class AuxiliaryWord: public Word {
 public:
-    AuxiliaryWord(const std::string& s, std::unordered_set<RoleType> accepted_roles) : 
-        Word(s), accepted_roles_(accepted_roles) {}
+    AuxiliaryWord(const std::string& s, RoleType accepted_role) : 
+        Word(s), accepted_role_(accepted_role) {}
 
     bool accept_role(RoleType role_type) const {
-        return accepted_roles_.count(role_type) > 0;
+        return accepted_role_ == role_type;
     }
 
 private:
-    const std::unordered_set<RoleType> accepted_roles_;
+    const RoleType accepted_role_;
 };
 
 class InflexingWord: public Word {
 public:
-    InflexingWord(const std::string& s) : 
-        Word(s) {}
+    InflexingWord(const std::string& s, InflexingType type) : 
+        Word(s), type_(type) {}
+
+    /**
+     * NOUN inflexion can be anywhere, but VERB inflexions can only be in ROOT. 
+     */
+    bool accept_role(RoleType role_type) {
+        return type_ == +InflexingType::NOUN || role_type == +RoleType::ROOT;
+    }
+
+private:
+    const InflexingType type_;
 };
 
-
+class JunctionWord: public Word {
+public:
+    JunctionWord(const std::string& s) : 
+        Word(s) {}
+};
 }
 
 namespace std {
@@ -72,6 +86,13 @@ struct hash<ieml::structure::InflexingWord> {
 };
 
 template<>
+struct hash<ieml::structure::JunctionWord> {
+    size_t operator()(const ieml::structure::JunctionWord& s) const noexcept {
+        return hash<std::string>{}(s.getScript());
+    }
+};
+
+template<>
 struct less<ieml::structure::Word> {
     size_t operator()(const ieml::structure::Word& l, const ieml::structure::Word& r) const noexcept {
         return less<std::string>{}(l.getScript(), r.getScript());
@@ -91,12 +112,22 @@ struct less<ieml::structure::InflexingWord> {
         return less<std::string>{}(l.getScript(), r.getScript());
     }
 };
+
+template<>
+struct less<ieml::structure::JunctionWord> {
+    size_t operator()(const ieml::structure::JunctionWord& l, const ieml::structure::JunctionWord& r) const noexcept {
+        return less<std::string>{}(l.getScript(), r.getScript());
+    }
+};
+
 STD_HASH_SHARED_PTR(ieml::structure::Word);
 STD_HASH_SHARED_PTR(ieml::structure::AuxiliaryWord);
 STD_HASH_SHARED_PTR(ieml::structure::InflexingWord);
+STD_HASH_SHARED_PTR(ieml::structure::JunctionWord);
 
 STD_LESS_SHARED_PTR(ieml::structure::Word);
 STD_LESS_SHARED_PTR(ieml::structure::AuxiliaryWord);
 STD_LESS_SHARED_PTR(ieml::structure::InflexingWord);
+STD_LESS_SHARED_PTR(ieml::structure::JunctionWord);
 
 }

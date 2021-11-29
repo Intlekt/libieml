@@ -1,5 +1,8 @@
 #include "structure/Path.h"
 
+#include <algorithm>
+
+
 namespace ieml::structure {
     
     bool PathNode::operator==(const PathNode& a) const noexcept {
@@ -13,6 +16,7 @@ namespace ieml::structure {
         switch (next.getPathType())
         {
         case PathType::ROLE:
+        case PathType::JUNCTION_PHRASE:
             return true;
         default:
             return false;
@@ -39,8 +43,19 @@ namespace ieml::structure {
     std::string RoleNumberPathNode::to_string() const {return std::to_string(role_type_);}
 
     std::string JunctionPathNode::to_string() const {
-        return "&" + std::string(junction_type_._to_string());
+        return "&" + std::string(junction_type_->to_string());
     }
+    
+    bool PhraseJunctionPathNode::accept_next(const PathNode& next) const {
+        switch (next.getPathType())
+        {
+        case PathType::JUNCTION_PHRASE_INDEX:
+            return true;
+        default:
+            return false;
+        }
+    };
+    PathType PhraseJunctionPathNode::getPathType() const {return PathType::JUNCTION_PHRASE;};
 
     bool AuxiliaryJunctionPathNode::accept_next(const PathNode& next) const {
         switch (next.getPathType())
@@ -234,7 +249,10 @@ namespace ieml::structure {
     std::vector<std::shared_ptr<PathTree>> PathTree::getChildren() const {
         std::vector<std::shared_ptr<PathTree>> v;
         v.reserve(children_.size());
-        std::copy(children_.begin(), children_.end(), v.begin());
+        for(auto it = children_.begin(); it != children_.end(); ++it ) {
+            v.push_back(*it);
+        }
+
         return v;
     };
 

@@ -53,30 +53,37 @@ private:
 
 class JunctionPathNode : public PathNode {
 public:
-    JunctionPathNode(JunctionType junction_type) : junction_type_(junction_type) {}
+    JunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : junction_type_(junction_type) {}
     virtual std::string to_string() const override;
 
 private:
-    const JunctionType junction_type_;
+    const std::shared_ptr<JunctionWord> junction_type_;
+};
+
+class PhraseJunctionPathNode : public JunctionPathNode {
+public:
+    PhraseJunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : JunctionPathNode(junction_type) {}
+    virtual bool accept_next(const PathNode& next) const override;
+    virtual PathType getPathType() const override;
 };
 
 class AuxiliaryJunctionPathNode : public JunctionPathNode {
 public:
-    AuxiliaryJunctionPathNode(JunctionType junction_type) : JunctionPathNode(junction_type) {}
+    AuxiliaryJunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : JunctionPathNode(junction_type) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
 };
 
 class InflexingJunctionPathNode : public JunctionPathNode {
 public:
-    InflexingJunctionPathNode(JunctionType junction_type) : JunctionPathNode(junction_type) {}
+    InflexingJunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : JunctionPathNode(junction_type) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
 };
 
 class CategoryJunctionPathNode : public JunctionPathNode {
 public:
-    CategoryJunctionPathNode(JunctionType junction_type) : JunctionPathNode(junction_type) {}
+    CategoryJunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : JunctionPathNode(junction_type) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
 };
@@ -88,6 +95,13 @@ public:
 
 private:
     const int index_;
+};
+
+class PhraseJunctionIndexPathNode : public JunctionIndexPathNode {
+public:
+    PhraseJunctionIndexPathNode(int index) : JunctionIndexPathNode(index) {}
+    virtual bool accept_next(const PathNode& next) const override;
+    virtual PathType getPathType() const override;
 };
 
 class AuxiliaryJunctionIndexPathNode : public JunctionIndexPathNode {
