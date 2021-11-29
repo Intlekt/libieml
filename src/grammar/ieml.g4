@@ -25,12 +25,13 @@ category : identifier_=identifier # category__identifier
          | word=STRING            # category__word
          ;
 
-inflexed_category : (FLEXION_MARK inflexions+=identifier)* CATEGORY_MARK category_=category references+=reference*;
 
 sub_phrase_line_auxiliary : (AUXILIARY_MARK auxiliary=identifier)? inflexed_category_=inflexed_category                                     # sub_phrase_line_auxiliary__sub_phrase_no_auxiliary
                           | AUXILIARY_MARK auxiliary=identifier JUNCTION_MARK junction_type=identifier 
                             JUNCTION_OPEN inflexed_categories+=inflexed_category inflexed_categories+=inflexed_category+ JUNCTION_CLOSE     # sub_phrase_line_auxiliary__jonction_no_auxiliary
                           ;
+
+inflexed_category : (FLEXION_MARK inflexions+=identifier)* CATEGORY_MARK category_=category references+=reference*;
 
 reference : REFERENCE_OPEN ('id' id=INTEGER)? 'dt' data_type=IDENTIFIER 'va' value=reference_value REFERENCE_CLOSE;
 

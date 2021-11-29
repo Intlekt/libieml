@@ -48,8 +48,7 @@ public:
     
 private:
     std::unordered_map<LanguageString, std::shared_ptr<V>> store_;
-    std::unordered_map<std::shared_ptr<V>, 
-                       std::shared_ptr<Name>> rev_store_;
+    std::unordered_map<std::shared_ptr<V>, std::shared_ptr<Name>> rev_store_;
 };
 
 }

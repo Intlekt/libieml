@@ -147,24 +147,42 @@ namespace ieml::parser {
       error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid word for a word declaration.");
       RETURN_VISITOR_RESULT_ERROR(Declaration);
     }
-
-    std::string word_str_quoted = ctx->word->getText();
-    std::string word_str = word_str_quoted.substr(1, word_str_quoted.size() - 2);
     
     RETURN_VISITOR_RESULT(Declaration, 
                           WordDeclaration, 
-                          std::make_unique<Word>(charRangeFromToken(ctx->word), word_str));
+                          Word::createFromQuotedString(charRangeFromToken(ctx->word), ctx->word->getText()));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitInflexingDeclaration(iemlParser::InflexingDeclarationContext *context) {
+  antlrcpp::Any IEMLGrammarVisitor::visitInflexingDeclaration(iemlParser::InflexingDeclarationContext *ctx) {
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
+
+    std::unique_ptr<Identifier> inflexing_type;
+    if(!ctx->inflexing_type) 
+      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid inflexing type for an inflexing declaration. Expected 'NOUN' or 'VERB'.");
+    else 
+      inflexing_type = std::make_unique<Identifier>(charRangeFromToken(ctx->inflexing_type), ctx->inflexing_type->getText());
     
+    if (!ctx->word) {
+      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid word for an inflexing declaration.");
+      RETURN_VISITOR_RESULT_ERROR(Declaration);
+    }
+
+    if (inflexing_type == nullptr) RETURN_VISITOR_RESULT_ERROR(Declaration);
+
+    CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
+
+    RETURN_VISITOR_RESULT(Declaration, 
+                          InflexingDeclaration,
+                          std::move(language_strings),
+                          std::move(inflexing_type),
+                          Word::createFromQuotedString(charRangeFromToken(ctx->word), ctx->word->getText()));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliaryDeclaration(iemlParser::AuxiliaryDeclarationContext *context) {
+  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliaryDeclaration(iemlParser::AuxiliaryDeclarationContext *ctx) {
 
   }
-  
-  antlrcpp::Any IEMLGrammarVisitor::visitJunctionDeclaration(iemlParser::JunctionDeclarationContext *context) {
+
+  antlrcpp::Any IEMLGrammarVisitor::visitJunctionDeclaration(iemlParser::JunctionDeclarationContext *ctx) {
 
   }
 

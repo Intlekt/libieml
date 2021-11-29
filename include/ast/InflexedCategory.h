@@ -55,7 +55,7 @@ public:
             std::set<std::shared_ptr<structure::InflexingWord>> inflexions;
 
             for (auto&& inflexion_id: inflexions_) {
-                auto inflexion = ctx.resolve_inflexion(inflexion_id->getName());
+                auto inflexion = ctx.resolve_inflexing(inflexion_id->getName());
 
                 if (!inflexion) {
                     ctx.getErrorManager().visitorError(
