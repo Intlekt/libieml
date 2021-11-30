@@ -200,6 +200,11 @@ public:
         return to_string() == rhs.to_string();
     }
 
+    bool operator<(const PathTree& rhs) const {
+        return node_ < rhs.node_;
+    }
+
+
 private:
     const std::shared_ptr<PathNode> node_;
     const std::set<std::shared_ptr<PathTree>> children_;

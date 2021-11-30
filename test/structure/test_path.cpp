@@ -230,7 +230,13 @@ TEST(ieml_structure_test_case, path_node_hash_eq) {
     }
 
 }
+TEST(ieml_structure_test_case, path_tree_comparison) {
+    std::shared_ptr<PathTree> tree1(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), {});
+    std::shared_ptr<PathTree> tree2(std::make_shared<RoleNumberPathNode>(RoleType::INITIATOR), {});
 
+    EXPECT_LT(tree1, tree2);
+    EXPECT_GT(tree2, tree1);
+}
 TEST(ieml_structure_test_case, path_tree_building) {
     {
         

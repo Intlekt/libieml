@@ -1,0 +1,30 @@
+{
+    "nodes" : [
+        {
+            "id": 0,
+            "label": "NODE",
+            "attributes": {
+                "translations": {"fr": ["nom0_a"], "en": ["name0_a", "name0_b"]},
+                "file": {"path": "/...", "line": 0}
+            }
+        },
+        {
+            "id": 1,
+            "label": "COMPONENT",
+            "attributes": {
+                "translations": {"fr": ["nom1_a"], "en": ["name1_a"]},
+                "file": {"path": "/...", "line": 0}
+            }
+        }
+    ],
+    "edges": [ 
+        {
+            "src": 0,
+            "tgt": 1,
+            "label": "COMPOSED_BY",
+            "attributes": {
+                "path": "/ROOT/0"
+            }
+        }
+    ]
+}
