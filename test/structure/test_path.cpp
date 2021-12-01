@@ -100,16 +100,20 @@ TEST(ieml_structure_test_case, path_invalid) {
 }
 
 TEST(ieml_structure_test_case, path_tree_comparison) {
-    std::shared_ptr<PathTree> tree1 = std::make_shared<PathTree>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT));
-    std::shared_ptr<PathTree> tree2 = std::make_shared<PathTree>(std::make_shared<RoleNumberPathNode>(RoleType::INITIATOR));
-    std::shared_ptr<PathTree> tree3 = std::make_shared<PathTree>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT));
+    PathTree tree1 = PathTree(std::make_shared<RoleNumberPathNode>(RoleType::ROOT));
+    PathTree tree2 = PathTree(std::make_shared<RoleNumberPathNode>(RoleType::INITIATOR));
+    PathTree tree3 = PathTree(std::make_shared<RoleNumberPathNode>(RoleType::ROOT));
 
+    EXPECT_EQ(tree1, tree3);
+    EXPECT_NE(tree1, tree2);
+
+    EXPECT_LE(tree1, tree3);
+    EXPECT_LE(tree1, tree2);
     EXPECT_LT(tree1, tree2);
+    
+    EXPECT_GE(tree1, tree3);
+    EXPECT_GE(tree2, tree1);
     EXPECT_GT(tree2, tree1);
-
-    EXPECT_LT(tree2, tree3);
-    EXPECT_GT(tree3, tree2);
-
 }
 TEST(ieml_structure_test_case, path_tree_building) {
     {
