@@ -33,7 +33,7 @@ TEST(ieml_structure_test_case, path_serialization) {
         auto path2 = std::make_shared<Path>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), path1);
 
         EXPECT_NO_THROW(path2->check()) << "Invalid argument should not have been thrown on path.";
-        EXPECT_EQ(path2->to_string(), "/0/~'wa.','we.'/'wa.'") << "Invalid path serialization";
+        EXPECT_EQ(path2->to_string(), "/0/~'wa.'~'we.'/'wa.'") << "Invalid path serialization";
 
     }
     {
@@ -44,7 +44,7 @@ TEST(ieml_structure_test_case, path_serialization) {
         auto path3 = std::make_shared<Path>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), path2);
 
         EXPECT_NO_THROW(path3->check()) << "Invalid argument should not have been thrown on path.";
-        EXPECT_EQ(path3->to_string(), "/0/*'wa.'/~'wa.','we.'/'wa.'") << "Invalid path serialization";
+        EXPECT_EQ(path3->to_string(), "/0/*'wa.'/~'wa.'~'we.'/'wa.'") << "Invalid path serialization";
     }
     {
         auto path = std::make_shared<Path>(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")), nullptr);

@@ -179,11 +179,36 @@ namespace ieml::parser {
   }
 
   antlrcpp::Any IEMLGrammarVisitor::visitAuxiliaryDeclaration(iemlParser::AuxiliaryDeclarationContext *ctx) {
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
+
+    int accepted_role_type = -1;
+    if (!ctx->role_type)
+      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid role number for auxiliary declaration.");
+    else
+      accepted_role_type = std::stoi(ctx->role_type->getText());
+
+    if (accepted_role_type == -1)
+      RETURN_VISITOR_RESULT_ERROR(Declaration);
+
+    CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
+
+    RETURN_VISITOR_RESULT(Declaration, 
+                          AuxiliaryDeclaration,
+                          std::move(language_strings),
+                          accepted_role_type,
+                          Word::createFromQuotedString(charRangeFromToken(ctx->word), ctx->word->getText()));
 
   }
 
   antlrcpp::Any IEMLGrammarVisitor::visitJunctionDeclaration(iemlParser::JunctionDeclarationContext *ctx) {
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
+    CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
+
+    RETURN_VISITOR_RESULT(Declaration, 
+                          JunctionDeclaration,
+                          std::move(language_strings),
+                          Word::createFromQuotedString(charRangeFromToken(ctx->word), ctx->word->getText()));
   }
 
   antlrcpp::Any IEMLGrammarVisitor::visitLanguageDeclaration(iemlParser::LanguageDeclarationContext *ctx) {
@@ -217,30 +242,30 @@ namespace ieml::parser {
    */
 
   antlrcpp::Any IEMLGrammarVisitor::visitPhrase_line__sub_phrase_line_auxiliary(iemlParser::Phrase_line__sub_phrase_line_auxiliaryContext *ctx) {
-    std::unique_ptr<int> role_type = nullptr;
+    int role_type = -1;
     if (!ctx->role_type)
       error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid role number.");
     else
-      role_type = std::make_unique<int>(std::stoi(ctx->INTEGER()->getSymbol()->getText()));
+      role_type = std::stoi(ctx->INTEGER()->getSymbol()->getText());
     
     CHECK_SYNTAX_ERROR(error_listener_, ctx, sub_phrase, "Invalid sub phrase line : invalid auxiliary, inflexion, category or references.", true);
 
     CAST_OR_RETURN_IF_NULL(ctx, AuxiliarySubPhraseLine, sub_phrase, PhraseLine);
     
-    if (!role_type)
+    if (role_type == -1)
       RETURN_VISITOR_RESULT_ERROR(PhraseLine);
 
     bool accentuation = ctx->accentuation;
 
-    RETURN_VISITOR_RESULT(PhraseLine, SimplePhraseLine, std::move(role_type), accentuation, std::move(sub_phrase))
+    RETURN_VISITOR_RESULT(PhraseLine, SimplePhraseLine, role_type, accentuation, std::move(sub_phrase))
   }
 
   antlrcpp::Any IEMLGrammarVisitor::visitPhrase_line__jonction_auxiliary(iemlParser::Phrase_line__jonction_auxiliaryContext *ctx) {
-    std::unique_ptr<int> role_type = nullptr;
+    int role_type = -1;
     if (!ctx->role_type)
       error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid role number.");
     else
-      role_type = std::make_unique<int>(std::stoi(ctx->role_type->getText()));
+      role_type = std::stoi(ctx->role_type->getText());
 
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, AuxiliarySubPhraseLine, sub_phrases, "Invalid sub phrase in phrase line junction.");
     CHECK_SYNTAX_ERROR(error_listener_, ctx, junction_type, "Invalid junction identifier in phrase line junction.", true);
@@ -250,10 +275,10 @@ namespace ieml::parser {
     CAST_OR_RETURN_IF_NULL_LIST(sub_phrases, PhraseLine);
     CAST_OR_RETURN_IF_NULL(ctx, Identifier, junction_type, PhraseLine);
 
-    if (!role_type)
+    if (role_type == -1)
       RETURN_VISITOR_RESULT_ERROR(PhraseLine);
     
-    RETURN_VISITOR_RESULT(PhraseLine, JunctionPhraseLine, std::move(sub_phrases), std::move(junction_type), std::move(role_type), accentuation);
+    RETURN_VISITOR_RESULT(PhraseLine, JunctionPhraseLine, std::move(sub_phrases), std::move(junction_type), role_type, accentuation);
   }
 
 

@@ -2,13 +2,13 @@ grammar ieml;
 
 program : declarations+=declaration* EOF;
 
-declaration : DECLARATION_MARK 'component' language_strings+=language_string+ phrase_=phrase                        DECLARATION_END    # componentDeclaration
-            | DECLARATION_MARK 'node'      language_strings+=language_string+ phrase_=phrase                        DECLARATION_END    # nodeDeclaration
-            | DECLARATION_MARK 'word'                                                                   word=STRING DECLARATION_END    # wordDeclaration
-            | DECLARATION_MARK 'inflexing' language_strings+=language_string+ inflexing_type=IDENTIFIER word=STRING DECLARATION_END    # inflexingDeclaration
-            | DECLARATION_MARK 'auxiliary' language_strings+=language_string+ role_type=INTEGER         word=STRING DECLARATION_END    # auxiliaryDeclaration
-            | DECLARATION_MARK 'junction'  language_strings+=language_string+                           word=STRING DECLARATION_END    # junctionDeclaration
-            | DECLARATION_MARK 'language'  language=identifier                                                      DECLARATION_END    # languageDeclaration
+declaration : DECLARATION_MARK 'component'  language_strings+=language_string+ phrase_=phrase                        DECLARATION_END    # componentDeclaration
+            | DECLARATION_MARK 'node'       language_strings+=language_string+ phrase_=phrase                        DECLARATION_END    # nodeDeclaration
+            | DECLARATION_MARK 'word'                                                                    word=STRING DECLARATION_END    # wordDeclaration
+            | DECLARATION_MARK 'inflection' language_strings+=language_string+ inflexing_type=IDENTIFIER word=STRING DECLARATION_END    # inflexingDeclaration
+            | DECLARATION_MARK 'auxiliary'  language_strings+=language_string+ role_type=INTEGER         word=STRING DECLARATION_END    # auxiliaryDeclaration
+            | DECLARATION_MARK 'junction'   language_strings+=language_string+                           word=STRING DECLARATION_END    # junctionDeclaration
+            | DECLARATION_MARK 'language'   language=identifier                                                      DECLARATION_END    # languageDeclaration
             ;
 
 phrase : '(' phrase_lines+=phrase_line (',' phrase_lines+=phrase_line)* ')'                                              # phrase__lines

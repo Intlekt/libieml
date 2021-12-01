@@ -1,9 +1,17 @@
-@component fr"composent1" (0 ~verb #'wa.') .
+@word 'wa.' .
+@word 'we.' .
+@word 'wu.' .
+
+@inflection fr"verb" VERB 'a.' .
+@inflection fr"nom"  VERB 'b.' .
+
+@component fr"manger" (0 ~verb #'wa.') .
 @component fr"composent2" (0 ~nom #'we.') .
+@component fr"composent1" (0 ~nom #'wu.') .
 
 
 @node fr"test"  (
-    0 ~verb #composent1,
+    0 ~nom #composent1,
     1 #(0 ~nom #'we.')
 ) .
 
@@ -12,10 +20,10 @@
     (
         0 ~verb #composent1,   
         2 #test
-    ),
+    )
     (
         0 ~verb #composent2,   
         2 #test
-    )]
-) .
+    )
+]) .
 

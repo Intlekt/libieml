@@ -1,3 +1,8 @@
+@word 'wa.' .
+@inflection fr"nom" NOUN 'a.' .
+@inflection fr"futur" NOUN 'c.' .
+@auxiliary fr"sur" 5 'b.' .
+
 @component 
     fr"le chien mange du paté sur le tapis" 
     en"the dog eats paté on the carpet" 

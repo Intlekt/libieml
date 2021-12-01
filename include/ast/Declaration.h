@@ -135,7 +135,7 @@ public:
         AST(std::move(char_range)),
         ToolWordDeclaration(nullptr, std::move(translations), std::move(word), DeclarationType::Inflexion),
         type_(std::move(type)) {}
-
+    
     std::string to_string() const {
         return "@inflexing " + translations_to_string() + " " + type_->to_string() + " " + word_->to_string() + " .";
     };
@@ -174,4 +174,85 @@ private:
     const std::unique_ptr<Identifier> type_;
 };
 
+class AuxiliaryDeclaration: public ToolWordDeclaration {
+public:
+    AuxiliaryDeclaration(std::unique_ptr<CharRange>&& char_range, 
+                         std::vector<std::unique_ptr<LanguageString>>&& translations,
+                         int accepted_role_type,
+                         std::unique_ptr<Word>&& word) : 
+        AST(std::move(char_range)),
+        ToolWordDeclaration(nullptr, std::move(translations), std::move(word), DeclarationType::Inflexion),
+        accepted_role_type_(accepted_role_type) {}
+    
+    std::string to_string() const {
+        return "@auxiliary " + translations_to_string() + " " + std::to_string(accepted_role_type_) + " " + word_->to_string() + " .";
+    };
+
+    void check_declaration(ieml::parser::ParserContext& ctx) override {
+        auto name = check_translatable(ctx);
+
+        auto role_type = structure::RoleType::_from_integral_nothrow(accepted_role_type_);
+        if (!role_type) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(), "Invalid role number for auxiliary declaration, got '" + std::to_string(accepted_role_type_) + "'"
+            );
+        }
+
+        auto word = word_->check_word(ctx);
+
+        if (!name | !word | !role_type) {
+            return;
+        }
+        
+        auto auxiliary_word = std::make_shared<structure::AuxiliaryWord>(word->getScript(), *role_type);
+
+        if (ctx.word_is_defined(auxiliary_word)) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(),
+                "Cannot redefine word " + word->to_string() + " as an auxiliary, it has already been defined before."
+            );
+            return;
+        }
+        ctx.define_auxiliary(name, auxiliary_word);
+    };
+
+private:
+    const int accepted_role_type_;
+};
+
+class JunctionDeclaration: public ToolWordDeclaration {
+public:
+    JunctionDeclaration(std::unique_ptr<CharRange>&& char_range, 
+                        std::vector<std::unique_ptr<LanguageString>>&& translations,
+                        std::unique_ptr<Word>&& word) : 
+        AST(std::move(char_range)),
+        ToolWordDeclaration(nullptr, std::move(translations), std::move(word), DeclarationType::Inflexion) {}
+    
+    std::string to_string() const {
+        return "@junction " + translations_to_string() + " " + word_->to_string() + " .";
+    };
+
+    void check_declaration(ieml::parser::ParserContext& ctx) override {
+        auto name = check_translatable(ctx);
+        auto word = word_->check_word(ctx);
+
+        if (!name | !word) {
+            return;
+        }
+        
+        auto junction_word = std::make_shared<structure::JunctionWord>(word->getScript());
+
+        if (ctx.word_is_defined(junction_word)) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(),
+                "Cannot redefine word " + word->to_string() + " as a junction, it has already been defined before."
+            );
+            return;
+        }
+        ctx.define_junction(name, junction_word);
+    };
+};
+
+
 }
+
