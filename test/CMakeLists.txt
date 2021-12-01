@@ -5,7 +5,9 @@ configure_file(TestConfig.h.in TestConfig.h)
 add_executable(registerer_test grammar/test_parser.cpp
                                grammar/test_declaration.cpp
                                structure/test_path.cpp
-                               structure/test_namespace.cpp)
+                               structure/test_path_node.cpp
+                               structure/test_namespace.cpp
+                               structure/test_word.cpp)
 
 add_dependencies(registerer_test gtest gtest_main IEMLParser)
 

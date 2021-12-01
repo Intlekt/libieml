@@ -39,10 +39,12 @@
 
 using namespace ieml::parser;
 
+TEST(ieml_grammar_test_case, categry_word_decl)                     TEST_PARSE_NO_ERRORS(R"(@word 'wa.'.)");
+
 TEST(ieml_grammar_test_case, inflexing_decl_valid_noun)             TEST_PARSE_NO_ERRORS(R"(@inflexing fr"test" NOUN 'wa.'.)");
 TEST(ieml_grammar_test_case, inflexing_decl_valid_verb)             TEST_PARSE_NO_ERRORS(R"(@inflexing fr"test" VERB 'wa.'.)");
 TEST(ieml_grammar_test_case, inflexing_decl_valid_multi_trad)       TEST_PARSE_NO_ERRORS(R"(@inflexing fr"test" fr"test2" VERB 'wa.'.)");
-TEST(ieml_grammar_test_case, component_decl)                        TEST_PARSE_NO_ERRORS(R"(@component fr"test" (0 #'wa.'). @component fr"test2" (0 #test).)");
+TEST(ieml_grammar_test_case, component_decl)                        TEST_PARSE_NO_ERRORS(R"(@word 'wa.'. @component fr"test" (0 #'wa.'). @component fr"test2" (0 #test).)");
 
 TEST(ieml_grammar_test_case, extra_comma_in_phrase_line)            TEST_PARSE_ERRORS(R"(@component fr"test" (0 #(0 ~noun #'wa.'),) .)");
 TEST(ieml_grammar_test_case, invalid_translation_id)                TEST_PARSE_ERRORS(R"(@component rr"test" (0 ~noun #'wa.').)");

@@ -33,8 +33,8 @@ public:
         return std::make_shared<structure::PathTree>(std::make_shared<structure::WordPathNode>(word));
     };
 
-    virtual std::shared_ptr<structure::Word> check_word(parser::ParserContext& ctx) const {
-        return std::make_shared<structure::Word>(word_str_);
+    virtual std::shared_ptr<structure::CategoryWord> check_word(parser::ParserContext& ctx) const {
+        return std::make_shared<structure::CategoryWord>(word_str_);
     };
 
     static std::unique_ptr<Word> createFromQuotedString(std::unique_ptr<CharRange>&& char_range, const std::string& s) {

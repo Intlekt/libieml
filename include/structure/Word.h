@@ -17,13 +17,25 @@ public:
 
     std::string getScript() const {return script_;};
 
-    bool operator==(const Word& word) const {
-        return script_ == word.script_;
-    }
+    virtual WordType getWordType() const = 0;
+
+    // total ordering on Word and subtypes
+    bool operator==(const Word& word) const {return getWordType() == word.getWordType() && script_ == word.script_;}
+    bool operator!=(const Word& word) const {return getWordType() != word.getWordType() || script_ != word.script_;}
+    bool operator< (const Word& word) const {return getWordType() <  word.getWordType() || script_ <  word.script_;}
+    bool operator> (const Word& word) const {return getWordType() >  word.getWordType() || script_ >  word.script_;}
+    bool operator<=(const Word& word) const {return getWordType() <= word.getWordType() && script_ <= word.script_;}
+    bool operator>=(const Word& word) const {return getWordType() >= word.getWordType() && script_ >= word.script_;}
 
 private:
     const std::string script_;
 
+};
+
+class CategoryWord: public Word {
+public:
+    CategoryWord(const std::string& s): Word(s) {}
+    virtual WordType getWordType() const {return WordType::CATEGORY;};
 };
 
 class AuxiliaryWord: public Word {
@@ -34,6 +46,7 @@ public:
     bool accept_role(RoleType role_type) const {
         return accepted_role_ == role_type;
     }
+    virtual WordType getWordType() const {return WordType::AUXILIARY;};
 
 private:
     const RoleType accepted_role_;
@@ -50,6 +63,7 @@ public:
     bool accept_role(RoleType role_type) {
         return type_ == +InflexingType::NOUN || role_type == +RoleType::ROOT;
     }
+    virtual WordType getWordType() const {return WordType::INFLECTION;};
 
 private:
     const InflexingType type_;
@@ -59,6 +73,8 @@ class JunctionWord: public Word {
 public:
     JunctionWord(const std::string& s) : 
         Word(s) {}
+
+    virtual WordType getWordType() const {return WordType::JUNCTION;};
 };
 }
 

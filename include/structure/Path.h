@@ -2,6 +2,7 @@
 
 #include "structure/Constants.h"
 #include "structure/Word.h"
+#include "structure/IWordRegister.h"
 #include "utils.h"
 
 #include <string>
@@ -24,9 +25,8 @@ public:
 
     virtual PathType getPathType() const = 0;
 
-    bool operator==(const PathNode& a) const noexcept;
-    bool operator!=(const PathNode& a) const noexcept;
-    // virtual bool operator<(const PathNode& a) const noexcept = 0;
+    bool operator==(const PathNode& a) const noexcept {return to_string() == a.to_string();};
+    bool operator!=(const PathNode& a) const noexcept {return to_string() != a.to_string();};
 
     virtual std::string to_string() const = 0;
 };
@@ -47,6 +47,11 @@ public:
     virtual std::string to_string() const override;
 
     RoleType getRoleType() const {return role_type_;}
+    
+    bool operator< (const RoleNumberPathNode& a) const noexcept {return role_type_ <  a.role_type_;};
+    bool operator> (const RoleNumberPathNode& a) const noexcept {return role_type_ >  a.role_type_;};
+    bool operator<=(const RoleNumberPathNode& a) const noexcept {return role_type_ <= a.role_type_;};
+    bool operator>=(const RoleNumberPathNode& a) const noexcept {return role_type_ >= a.role_type_;};
 private:
     const RoleType role_type_;
 };
@@ -56,6 +61,10 @@ public:
     JunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : junction_type_(junction_type) {}
     virtual std::string to_string() const override;
 
+    bool operator< (const JunctionPathNode& a) const noexcept {return *junction_type_ <  *a.junction_type_;};
+    bool operator> (const JunctionPathNode& a) const noexcept {return *junction_type_ >  *a.junction_type_;};
+    bool operator<=(const JunctionPathNode& a) const noexcept {return *junction_type_ <= *a.junction_type_;};
+    bool operator>=(const JunctionPathNode& a) const noexcept {return *junction_type_ >= *a.junction_type_;};
 private:
     const std::shared_ptr<JunctionWord> junction_type_;
 };
@@ -93,6 +102,10 @@ public:
     JunctionIndexPathNode(int index) : index_(index) {}
     virtual std::string to_string() const override;
 
+    bool operator< (const JunctionIndexPathNode& a) const noexcept {return index_ <  a.index_;};
+    bool operator> (const JunctionIndexPathNode& a) const noexcept {return index_ >  a.index_;};
+    bool operator<=(const JunctionIndexPathNode& a) const noexcept {return index_ <= a.index_;};
+    bool operator>=(const JunctionIndexPathNode& a) const noexcept {return index_ >= a.index_;};
 private:
     const int index_;
 };
@@ -132,6 +145,11 @@ public:
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
 
+    bool operator< (const AuxiliaryPathNode& a) const noexcept {return *auxiliary_type_ <  *a.auxiliary_type_;};
+    bool operator> (const AuxiliaryPathNode& a) const noexcept {return *auxiliary_type_ >  *a.auxiliary_type_;};
+    bool operator<=(const AuxiliaryPathNode& a) const noexcept {return *auxiliary_type_ <= *a.auxiliary_type_;};
+    bool operator>=(const AuxiliaryPathNode& a) const noexcept {return *auxiliary_type_ >= *a.auxiliary_type_;};
+
 private:
     const std::shared_ptr<AuxiliaryWord> auxiliary_type_;
 };
@@ -143,7 +161,26 @@ public:
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
 
+
+
+    bool operator< (const InflexingPathNode& a) const noexcept {return cmp(a) <  0;};
+    bool operator> (const InflexingPathNode& a) const noexcept {return cmp(a) >  0;};
+    bool operator<=(const InflexingPathNode& a) const noexcept {return cmp(a) <= 0;};
+    bool operator>=(const InflexingPathNode& a) const noexcept {return cmp(a) >= 0;};
+
 private:
+    int cmp(const InflexingPathNode& a) const noexcept {
+        if (inflexings_.size() != a.inflexings_.size()) return (inflexings_.size() < a.inflexings_.size() ? -1 : 1);
+
+        auto it_a = a.inflexings_.begin();
+        for (auto it_self = inflexings_.begin(); it_self != inflexings_.end(); it_self++) {
+            if (**it_self != **it_a) return (**it_self < **it_a ? -1 : 1);
+            it_a++;
+        }
+        // they are equal
+        return 0;
+    }
+
     const std::set<std::shared_ptr<InflexingWord>> inflexings_;
 };
 
@@ -153,6 +190,11 @@ public:
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
+
+    bool operator< (const WordPathNode& a) const noexcept {return *word_ <  *a.word_;};
+    bool operator> (const WordPathNode& a) const noexcept {return *word_ >  *a.word_;};
+    bool operator<=(const WordPathNode& a) const noexcept {return *word_ <= *a.word_;};
+    bool operator>=(const WordPathNode& a) const noexcept {return *word_ >= *a.word_;};
 
 private:
     const std::shared_ptr<Word> word_;
@@ -178,6 +220,8 @@ public:
     std::string to_string() const;
     std::shared_ptr<PathNode> getNode() const {return node_;}
     std::shared_ptr<Path> getNext() const {return next_;}
+
+    static std::shared_ptr<Path> from_string(const std::string& s, const IWordRegister& ctx);
 
 private:
     const std::shared_ptr<PathNode> node_;
@@ -211,14 +255,24 @@ private:
 };
 }
 
+
 namespace std {
 template<>
-struct hash<ieml::structure::PathNode*>
+struct hash<ieml::structure::PathNode>
 {
-    size_t operator()( ieml::structure::PathNode* const & s) const noexcept
+    size_t operator()(const ieml::structure::PathNode& s) const noexcept
     {
-        return hash<string>{}(s->to_string());
+        return hash<string>{}(s.to_string());
     }
 };
+
+// template<>
+// struct hash<ieml::structure::PathNode*>
+// {
+//     size_t operator()( ieml::structure::PathNode* const & s) const noexcept
+//     {
+//         return hash<ieml::structure::PathNode>{}(*s);
+//     }
+// };
 }
 
