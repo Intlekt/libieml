@@ -331,6 +331,7 @@ class Path {
 
 public:
     Path(std::shared_ptr<PathNode> node, std::shared_ptr<Path> next): node_(std::move(node)), next_(std::move(next)) {}
+    Path(std::shared_ptr<PathNode> node): node_(std::move(node)), next_(nullptr) {}
     void check();
     std::string to_string() const;
     std::shared_ptr<PathNode> getNode() const {return node_;}
@@ -357,6 +358,8 @@ public:
     
     std::string to_string() const;
 
+    bool is_phrase() const {return node_->getPathType() == +PathType::ROOT;};
+
     bool operator==(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) == 0;};
     bool operator!=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) != 0;};
 
@@ -364,6 +367,8 @@ public:
     bool operator> (const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) >  0;};
     bool operator<=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) <= 0;};
     bool operator>=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) >= 0;};
+
+
 
     class Register {
     public:
@@ -394,6 +399,23 @@ public:
         std::map<Key, std::shared_ptr<PathTree>, cmpKey> store_;
     };
 
+
+    typedef std::pair<std::shared_ptr<Path>, std::shared_ptr<PathTree>> SubPathTree;
+    std::vector<SubPathTree> find_sub_tree(std::function<bool(const std::shared_ptr<PathTree>&)> f) const {
+        std::vector<SubPathTree> res;
+        for (auto& child: children_) {
+            if (f(child)) res.push_back(SubPathTree{std::make_shared<Path>(node_), child});
+            
+            auto child_res = child->find_sub_tree(f);
+            res.reserve(res.size() + child_res.size());
+
+            for (auto& item: child_res) {
+                res.push_back(SubPathTree{std::make_shared<Path>(node_, item.first), item.second});
+            }
+        }
+        return res;
+    };
+
 private:
     PathTree(const std::shared_ptr<PathNode>& node, const std::set<std::shared_ptr<PathTree>>& children) : 
         node_(node), children_(children) {}
@@ -403,6 +425,7 @@ private:
 
     PathTree(const PathTree&) = delete;
     PathTree& operator=(const PathTree&) = delete;
+
 
     static int comp(const std::shared_ptr<PathNode>& nodeA, const std::set<std::shared_ptr<PathTree>>& childrenA, 
                     const std::shared_ptr<PathNode>& nodeB, const std::set<std::shared_ptr<PathTree>>& childrenB) {

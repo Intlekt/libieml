@@ -35,6 +35,5 @@ public:
      ***************************/
     virtual void define_word(std::shared_ptr<structure::CategoryWord> word) = 0;
     virtual std::shared_ptr<structure::Word> resolve_word(const std::string& s) const = 0;
-
 };
 }

@@ -28,14 +28,14 @@ private:
 };
 
 template<typename V>
-class Namespace {
+class Namespace : public std::unordered_map<std::shared_ptr<V>, std::shared_ptr<Name>> {
 public:
 
-    void define(std::shared_ptr<Name> name, std::shared_ptr<V> value) {
-        for (auto& n: *name) {
+    void define(const std::shared_ptr<Name>& name, const std::shared_ptr<V>& value) {
+        for (const auto& n: *name) {
             store_.insert({n.second, value});
         }
-        rev_store_.insert({value, name});
+        this->insert(std::pair<std::shared_ptr<V>, std::shared_ptr<Name>>{value, name});
     } 
 
     std::shared_ptr<V> resolve(const LanguageString& ls) const {
@@ -48,7 +48,6 @@ public:
     
 private:
     std::unordered_map<LanguageString, std::shared_ptr<V>> store_;
-    std::unordered_map<std::shared_ptr<V>, std::shared_ptr<Name>> rev_store_;
 };
 
 }

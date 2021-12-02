@@ -13,6 +13,7 @@
 #include "ast/Program.h"
 #include <nlohmann/json.hpp>
 
+#include "relation/Composition.h"
 
 namespace ieml {
 namespace parser {
@@ -30,7 +31,7 @@ private:
     antlr4::tree::ParseTree* parseTree_ = nullptr;
     
     std::unique_ptr<Program> ast_ = nullptr;
-    std::unique_ptr<ParserContext> context = nullptr;
+    std::shared_ptr<ParserContext> context_ = nullptr;
 
 public:
     // explicit IEMLParser(const std::string& input_str);
@@ -45,6 +46,8 @@ public:
     const std::vector<const SyntaxError*> getSyntaxErrors() const { return errorListener_->getSyntaxErrors(); }
 
     const std::string getASTString() const;
+    
+    std::shared_ptr<ParserContext> getContext() {return context_;};
 
     nlohmann::json toJson() const;
 };

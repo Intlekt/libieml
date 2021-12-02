@@ -23,7 +23,7 @@ IEMLParser::IEMLParser(const std::string& input_str, bool error_stdout) {
     
     parser_->addErrorListener(errorListener_);
 
-    context = std::make_unique<ParserContext>(errorListener_);
+    context_ = std::make_unique<ParserContext>(errorListener_);
 }
 
 IEMLParser::~IEMLParser() {
@@ -48,7 +48,7 @@ void IEMLParser::parse() {
     ast_ = std::move(ast_t.as<IEMLGrammarVisitor::VisitorResult<Program>>().release());
 
     if (ast_) {
-        ast_.get()->check_program(*context);
+        ast_.get()->check_program(*context_);
     }
 }
 

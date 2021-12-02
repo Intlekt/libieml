@@ -11,6 +11,8 @@
 #include "structure/Constants.h"
 #include "ParserContext.h"
 
+#include "test_utils.h"
+
 
 using namespace ieml::structure;
 
@@ -168,4 +170,27 @@ TEST(ieml_structure_test_case, path_tree_building_error) {
         EXPECT_THROW(reg.buildFromPaths({a, b}), std::invalid_argument);
     }
 
+}
+
+TEST(ieml_structure_test_case, path_tree_register) {
+    PathTree::Register reg;
+
+    auto a = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT));
+    auto b = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT));
+
+    EXPECT_EQ(a, b);
+
+    auto c = reg.get_or_create(std::make_shared<RootPathNode>(), {reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT))});
+    EXPECT_EQ(b, c->getChildren()[0]);
+
+    {
+        PARSE_NO_ERRORS(R"(@word 'wa.'. @inflection fr"nom" VERB 'e.'. @component fr"included" (0 ~nom #'wa.'). @component fr"container" (0 #(0 ~nom #'wa.')).)");
+        auto context = parser.getContext();
+
+        auto included = context->resolve_category("included");
+        auto container = context->resolve_category("container");
+
+        EXPECT_EQ(container->getChildren()[0]->getChildren()[0], included);
+
+    }
 }

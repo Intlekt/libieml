@@ -8,20 +8,25 @@
 #include "structure/Word.h"
 #include "structure/LanguageString.h"
 #include "structure/IWordRegister.h"
+#include "structure/ICategoryRegister.h"
 #include "RecognitionError.h"
 
 #include "utils.h"
 
 
 namespace ieml::parser {
-class ParserContext : public ieml::structure::IWordRegister {
+class ParserContext : public ieml::structure::IWordRegister, public ieml::structure::ICategoryRegister {
 public:
     ParserContext(ieml::parser::IEMLParserErrorListener* error_manager) : 
         error_manager_(error_manager), 
         default_language_(structure::LanguageType::FR) {}
 
-    // ieml::structure::Namespace& getNamespace() const {return *namespace_;};
     ieml::parser::IEMLParserErrorListener& getErrorManager() const {return *error_manager_;};
+    structure::PathTree::Register& getPathTreeRegister() {return path_tree_register_;};
+
+    /**********************************
+     * IWordRegister: Word
+     **********************************/
 
     virtual bool word_is_defined(std::shared_ptr<structure::Word> word) {
         return defined_words_.count(word->getScript()) > 0;
@@ -33,10 +38,9 @@ public:
         return r->second;
     }
 
-
-    /***************************
-     * Auxiliaries
-     ***************************/
+    /**********************************
+     * IWordRegister: Auxiliary Words
+     **********************************/
     virtual void define_auxiliary(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::AuxiliaryWord> word) {
         if (defined_words_.count(word->getScript()) > 0)
             throw std::invalid_argument("Word already defined.");
@@ -49,9 +53,9 @@ public:
     }
     
 
-    /***************************
-     * Inflexings
-     ***************************/
+    /**********************************
+     * IWordRegister: Inflexing Words
+     **********************************/
     virtual void define_inflexing(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::InflexingWord> word) {
         if (defined_words_.count(word->getScript()) > 0)
             throw std::invalid_argument("Word already defined.");
@@ -63,9 +67,9 @@ public:
         return namespace_inflexing_.resolve(structure::LanguageString(default_language_, s));
     }
     
-    /***************************
-     * Junctions
-     ***************************/
+    /**********************************
+     * IWordRegister: Junction Words
+     **********************************/
     virtual void define_junction(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::JunctionWord> word) {
         if (defined_words_.count(word->getScript()) > 0)
             throw std::invalid_argument("Word already defined.");
@@ -77,9 +81,9 @@ public:
         return namespace_junction_.resolve(structure::LanguageString(default_language_, s));
     }
 
-    /***************************
-     * Category Words
-     ***************************/
+    /**********************************
+     * IWordRegister: Category Words
+     **********************************/
     virtual void define_word(std::shared_ptr<structure::CategoryWord> word) {
         if (defined_words_.count(word->getScript()) > 0)
             throw std::invalid_argument("Word already defined.");
@@ -97,7 +101,7 @@ public:
     }
 
     /***************************
-     * Categories
+     * ICategoryRegister
      ***************************/
     virtual void define_category(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::PathTree> phrase, bool is_node) {
         if (category_is_node_.count(phrase) > 0) 
@@ -109,9 +113,14 @@ public:
     virtual std::shared_ptr<structure::PathTree> resolve_category(const std::string& s) const {
         return namespace_category_.resolve(structure::LanguageString(default_language_, s));
     }
+    virtual bool category_is_defined(const std::shared_ptr<structure::PathTree>& phrase) const {
+        return namespace_category_.find(phrase) != namespace_category_.end();
+    };
 
-    structure::PathTree::Register& getPathTreeRegister() {return path_tree_register_;};
+    virtual category_const_iterator categories_begin() const {return namespace_category_.begin();};
+    virtual category_const_iterator categories_end() const {return namespace_category_.end();};
 
+    
 private:
     structure::LanguageType default_language_;
 
