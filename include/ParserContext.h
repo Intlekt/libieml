@@ -5,7 +5,6 @@
 #include "structure/Namespace.h"
 #include "structure/Constants.h"
 #include "structure/Path.h"
-#include "structure/Phrase.h"
 #include "structure/Word.h"
 #include "structure/LanguageString.h"
 #include "structure/IWordRegister.h"
@@ -100,17 +99,18 @@ public:
     /***************************
      * Categories
      ***************************/
-    virtual void define_category(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::Phrase> phrase, bool is_node) {
+    virtual void define_category(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::PathTree> phrase, bool is_node) {
         if (category_is_node_.count(phrase) > 0) 
             throw std::invalid_argument("Phrase already defined.");
         
         category_is_node_.insert({phrase, is_node});
         namespace_category_.define(name, phrase);
     }
-    virtual std::shared_ptr<structure::Phrase> resolve_category(const std::string& s) const {
+    virtual std::shared_ptr<structure::PathTree> resolve_category(const std::string& s) const {
         return namespace_category_.resolve(structure::LanguageString(default_language_, s));
     }
 
+    structure::PathTree::Register& getPathTreeRegister() {return path_tree_register_;};
 
 private:
     structure::LanguageType default_language_;
@@ -123,9 +123,11 @@ private:
     
     std::unordered_map<std::string, std::shared_ptr<structure::CategoryWord>> caterory_words_;
     
-    structure::Namespace<structure::Phrase> namespace_category_;
-    std::unordered_map<std::shared_ptr<structure::Phrase>, bool> category_is_node_;
+    structure::Namespace<structure::PathTree> namespace_category_;
+    std::unordered_map<std::shared_ptr<structure::PathTree>, bool> category_is_node_;
 
     parser::IEMLParserErrorListener* error_manager_;
+
+    structure::PathTree::Register path_tree_register_;
 };
 }

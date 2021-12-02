@@ -12,7 +12,6 @@
 #include "ast/PhraseLine.h"
 
 #include "ParserContext.h"
-#include "structure/Phrase.h"
 #include "structure/Path.h"
 
 
@@ -22,7 +21,7 @@ class Phrase: virtual public AST, public ICategory, public IReferenceValue {
 public:
     Phrase() : ICategory(), IReferenceValue() {}
 
-    virtual std::shared_ptr<structure::Phrase> check_phrase(parser::ParserContext& ctx) const = 0;
+    virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContext& ctx) const = 0;
 
     virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContext& ctx) const {
         return check_phrase(ctx);
@@ -56,7 +55,7 @@ public:
         return os.str();
     }
 
-    virtual std::shared_ptr<structure::Phrase> check_phrase(parser::ParserContext& ctx) const override {
+    virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContext& ctx) const override {
         std::unordered_set<structure::RoleType> seen_nodes;
         
         std::set<std::shared_ptr<structure::PathTree>> children;
@@ -71,12 +70,8 @@ public:
             auto role_number = std::dynamic_pointer_cast<structure::RoleNumberPathNode>(tree->getNode());
 
             if (!role_number) {
-                // should not occur, maybe raise an exception
-
-                ctx.getErrorManager().visitorError(
-                    line->getCharRange(),
-                    "Invalid phrase line"
-                );
+                // should not occur
+                throw std::runtime_error("Not a role number path");
             } else {
                 if (seen_nodes.count(role_number->getRoleType()) > 0) {
                     ctx.getErrorManager().visitorError(
@@ -89,8 +84,7 @@ public:
                 }
             }
         }
-        
-        return std::make_shared<structure::Phrase>(children);
+        return ctx.getPathTreeRegister().get_or_create(std::make_shared<structure::RootPathNode>(), children);
     };
 
 
@@ -112,7 +106,7 @@ public:
     std::string to_string() const override {
         return "(" + junction_to_string() + ")";
     }
-    std::shared_ptr<structure::Phrase> check_phrase(parser::ParserContext& ctx) const override {
+    std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContext& ctx) const override {
         
         // return structure::Phrase();
         return nullptr;

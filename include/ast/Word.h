@@ -30,7 +30,7 @@ public:
             return nullptr;
         }
 
-        return std::make_shared<structure::PathTree>(std::make_shared<structure::WordPathNode>(word));
+        return ctx.getPathTreeRegister().get_or_create(std::make_shared<structure::WordPathNode>(word));
     };
 
     virtual std::shared_ptr<structure::CategoryWord> check_word(parser::ParserContext& ctx) const {

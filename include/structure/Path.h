@@ -337,7 +337,14 @@ public:
     std::shared_ptr<Path> getNext() const {return next_;}
 
     static std::shared_ptr<Path> from_string(const std::string& s, const IWordRegister& ctx);
+    
+    bool operator==(const Path& r) const {return *node_ == *r.node_ && *next_ == *r.next_;};
+    bool operator!=(const Path& r) const {return *node_ != *r.node_ || *next_ != *r.next_;};
 
+    bool operator< (const Path& r) const {return *node_ <  *r.node_ || (*node_ == *r.node_ && *next_ <  *r.next_);};
+    bool operator> (const Path& r) const {return *node_ >  *r.node_ || (*node_ == *r.node_ && *next_ >  *r.next_);};
+    bool operator<=(const Path& r) const {return *node_ <  *r.node_ || (*node_ == *r.node_ && *next_ <= *r.next_);};
+    bool operator>=(const Path& r) const {return *node_ >  *r.node_ || (*node_ == *r.node_ && *next_ >= *r.next_);};
 private:
     const std::shared_ptr<PathNode> node_;
     const std::shared_ptr<Path> next_;
@@ -345,47 +352,82 @@ private:
 
 class PathTree {
 public:
-    PathTree(std::shared_ptr<PathNode> node, std::set<std::shared_ptr<PathTree>> children) : 
-        node_(std::move(node)), children_(std::move(children)) {}
-    PathTree(std::shared_ptr<PathNode> node) : node_(std::move(node)), children_() {}
-
-    static std::shared_ptr<PathTree> buildFromPaths(std::vector<std::shared_ptr<Path>> paths);
     std::shared_ptr<PathNode> getNode() const {return node_;}
     std::vector<std::shared_ptr<PathTree>> getChildren() const;
     
     std::string to_string() const;
 
-    bool operator==(const PathTree& rhs) const {return comp(rhs) == 0;};
-    bool operator!=(const PathTree& rhs) const {return comp(rhs) != 0;};
+    bool operator==(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) == 0;};
+    bool operator!=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) != 0;};
 
-    bool operator< (const PathTree& rhs) const {return comp(rhs) <  0;};
-    bool operator> (const PathTree& rhs) const {return comp(rhs) >  0;};
-    bool operator<=(const PathTree& rhs) const {return comp(rhs) <= 0;};
-    bool operator>=(const PathTree& rhs) const {return comp(rhs) >= 0;};
+    bool operator< (const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) <  0;};
+    bool operator> (const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) >  0;};
+    bool operator<=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) <= 0;};
+    bool operator>=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) >= 0;};
+
+    class Register {
+    public:
+        typedef std::pair<std::shared_ptr<PathNode>, std::set<std::shared_ptr<PathTree>>> Key;
+
+        std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node, const std::set<std::shared_ptr<PathTree>>& children) {
+            auto key = Key(node, children);
+            auto it = store_.find(key);
+            if (it != store_.end()) return it->second;
+
+            auto item = std::shared_ptr<PathTree>(new PathTree(node, children));
+            store_.insert({key, item});
+            return item;
+        }
+        std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node) {
+            return get_or_create(node, std::set<std::shared_ptr<PathTree>>{});
+        }
+
+        std::shared_ptr<PathTree> buildFromPaths(std::vector<std::shared_ptr<Path>> paths);
+
+    private:
+        struct cmpKey {
+            bool operator()(const Key& a, const Key& b) const {
+                return comp(a.first, a.second, b.first, b.second);
+            }
+        };
+
+        std::map<Key, std::shared_ptr<PathTree>, cmpKey> store_;
+    };
 
 private:
-    int comp(const PathTree& r) const {
-        if (*node_ == *r.node_) {
-            auto it = children_.begin();
-            auto it_r = r.children_.begin();
+    PathTree(const std::shared_ptr<PathNode>& node, const std::set<std::shared_ptr<PathTree>>& children) : 
+        node_(node), children_(children) {}
 
-            for (;it != children_.end() && it_r != r.children_.end();) {
+    PathTree(const std::shared_ptr<PathNode>& node) : 
+        node_(node), children_() {}
+
+    PathTree(const PathTree&) = delete;
+    PathTree& operator=(const PathTree&) = delete;
+
+    static int comp(const std::shared_ptr<PathNode>& nodeA, const std::set<std::shared_ptr<PathTree>>& childrenA, 
+                    const std::shared_ptr<PathNode>& nodeB, const std::set<std::shared_ptr<PathTree>>& childrenB) {
+        if (*nodeA == *nodeB) {
+            auto it = childrenA.begin();
+            auto it_r = childrenB.begin();
+
+            for (;it != childrenA.end() && it_r != childrenB.end();) {
                 if (*it != *it_r) return *it < *it_r ? -1 : 1;
 
                 ++it;
                 ++it_r;
             }
 
-            if (it == children_.end() && it_r == r.children_.end()) return 0;
+            if (it == childrenA.end() && it_r == childrenB.end()) return 0;
 
-            return it == children_.end() ? -1 : 1;
+            return it == childrenA.end() ? -1 : 1;
         } else 
-            return *node_ < *r.node_ ? -1 : 1;
+            return *nodeA < *nodeB ? -1 : 1;
     }
 
     const std::shared_ptr<PathNode> node_;
     const std::set<std::shared_ptr<PathTree>> children_;
 };
+
 }
 
 
@@ -398,14 +440,5 @@ struct hash<ieml::structure::PathNode>
         return hash<string>{}(s.to_string());
     }
 };
-
-// template<>
-// struct hash<ieml::structure::PathNode*>
-// {
-//     size_t operator()( ieml::structure::PathNode* const & s) const noexcept
-//     {
-//         return hash<ieml::structure::PathNode>{}(*s);
-//     }
-// };
 }
 

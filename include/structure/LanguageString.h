@@ -31,8 +31,8 @@ struct hash<ieml::structure::LanguageString>
 {
     size_t operator()(const ieml::structure::LanguageString& s) const noexcept
     {
-        size_t a = std::hash<ieml::structure::LanguageType>{}(s.language());
-        size_t b = std::hash<std::string>{}(s.value());
+        size_t a = hash<ieml::structure::LanguageType>{}(s.language());
+        size_t b = hash<string>{}(s.value());
         return a ^ (b << 1);
     }
 };

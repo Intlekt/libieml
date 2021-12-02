@@ -14,6 +14,15 @@
 
 using namespace ieml::structure;
 
+#define PARSE_PATH_VALID(s, ctx) {                                      \
+    auto p = Path::from_string(s, ctx);                                 \
+    EXPECT_NE(p, nullptr) << "Unable to parse path : " << s;            \
+    if (p) {                                                            \
+        EXPECT_EQ(p->to_string(), s);                                   \
+        EXPECT_NO_THROW(p->check()) << "Invalid path parsed : " << s;   \
+    }                                                                   \
+}
+
 
 TEST(ieml_structure_test_case, path_serialization) {
 
@@ -59,15 +68,6 @@ TEST(ieml_structure_test_case, path_serialization) {
     
 }
 
-#define PARSE_PATH_VALID(s, ctx) {                                      \
-    auto p = Path::from_string(s, ctx);                                 \
-    EXPECT_NE(p, nullptr) << "Unable to parse path : " << s;            \
-    if (p) {                                                            \
-        EXPECT_EQ(p->to_string(), s);                                   \
-        EXPECT_NO_THROW(p->check()) << "Invalid path parsed : " << s;   \
-    }                                                                   \
-}
-
 TEST(ieml_structure_test_case, path_from_string) {
     ieml::parser::IEMLParserErrorListener error_listener;
     ieml::parser::ParserContext ctx(&error_listener);
@@ -99,25 +99,28 @@ TEST(ieml_structure_test_case, path_invalid) {
     }
 }
 
+
 TEST(ieml_structure_test_case, path_tree_comparison) {
-    PathTree tree1 = PathTree(std::make_shared<RoleNumberPathNode>(RoleType::ROOT));
-    PathTree tree2 = PathTree(std::make_shared<RoleNumberPathNode>(RoleType::INITIATOR));
-    PathTree tree3 = PathTree(std::make_shared<RoleNumberPathNode>(RoleType::ROOT));
+    PathTree::Register reg;
 
-    EXPECT_EQ(tree1, tree3);
-    EXPECT_NE(tree1, tree2);
+    auto tree1 = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT));
+    auto tree2 = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::INITIATOR));
+    auto tree3 = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT));
 
-    EXPECT_LE(tree1, tree3);
-    EXPECT_LE(tree1, tree2);
-    EXPECT_LT(tree1, tree2);
+    EXPECT_EQ(*tree1, *tree3);
+    EXPECT_NE(*tree1, *tree2);
+
+    EXPECT_LE(*tree1, *tree3);
+    EXPECT_LE(*tree1, *tree2);
+    EXPECT_LT(*tree1, *tree2);
     
-    EXPECT_GE(tree1, tree3);
-    EXPECT_GE(tree2, tree1);
-    EXPECT_GT(tree2, tree1);
+    EXPECT_GE(*tree1, *tree3);
+    EXPECT_GE(*tree2, *tree1);
+    EXPECT_GT(*tree2, *tree1);
 }
 TEST(ieml_structure_test_case, path_tree_building) {
     {
-        
+
         std::shared_ptr<Path> a;
         {
             auto path = std::make_shared<Path>(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")), nullptr);
@@ -130,8 +133,9 @@ TEST(ieml_structure_test_case, path_tree_building) {
             auto path1 = std::make_shared<Path>(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>("we.", RoleType::ROOT)), path);
             b = std::make_shared<Path>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), path1);
         }
-        
-        auto pathTree = PathTree::buildFromPaths({a, b});
+
+        PathTree::Register reg;
+        auto pathTree = reg.buildFromPaths({a, b});
 
         EXPECT_EQ(*pathTree->getNode(), *a->getNode());
         EXPECT_EQ(*pathTree->getNode(), *b->getNode());
@@ -149,8 +153,8 @@ TEST(ieml_structure_test_case, path_tree_building_error) {
     {
         std::shared_ptr<Path> a = std::make_shared<Path>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), nullptr);
         std::shared_ptr<Path> b = std::make_shared<Path>(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT)), nullptr);
-        
-        EXPECT_THROW(PathTree::buildFromPaths({a, b}), std::invalid_argument);
+        PathTree::Register reg;
+        EXPECT_THROW(reg.buildFromPaths({a, b}), std::invalid_argument);
     }
     {
 
@@ -160,7 +164,8 @@ TEST(ieml_structure_test_case, path_tree_building_error) {
         std::shared_ptr<Path> b = std::make_shared<Path>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), 
             std::make_shared<Path>(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")), nullptr));
         
-        EXPECT_THROW(PathTree::buildFromPaths({a, b}), std::invalid_argument);
+        PathTree::Register reg;
+        EXPECT_THROW(reg.buildFromPaths({a, b}), std::invalid_argument);
     }
 
 }

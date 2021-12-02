@@ -78,11 +78,11 @@ public:
 };
 }
 
+// define hash
 namespace std {
-
 template<>
-struct hash<ieml::structure::Word> {
-    size_t operator()(const ieml::structure::Word& s) const noexcept {
+struct hash<ieml::structure::CategoryWord> {
+    size_t operator()(const ieml::structure::CategoryWord& s) const noexcept {
         return hash<std::string>{}(s.getScript());
     }
 };
@@ -107,43 +107,19 @@ struct hash<ieml::structure::JunctionWord> {
         return hash<std::string>{}(s.getScript());
     }
 };
+}
 
-template<>
-struct less<ieml::structure::Word> {
-    size_t operator()(const ieml::structure::Word& l, const ieml::structure::Word& r) const noexcept {
-        return less<std::string>{}(l.getScript(), r.getScript());
-    }
-};
-
-template<>
-struct less<ieml::structure::AuxiliaryWord> {
-    size_t operator()(const ieml::structure::AuxiliaryWord& l, const ieml::structure::AuxiliaryWord& r) const noexcept {
-        return less<std::string>{}(l.getScript(), r.getScript());
-    }
-};
-
-template<>
-struct less<ieml::structure::InflexingWord> {
-    size_t operator()(const ieml::structure::InflexingWord& l, const ieml::structure::InflexingWord& r) const noexcept {
-        return less<std::string>{}(l.getScript(), r.getScript());
-    }
-};
-
-template<>
-struct less<ieml::structure::JunctionWord> {
-    size_t operator()(const ieml::structure::JunctionWord& l, const ieml::structure::JunctionWord& r) const noexcept {
-        return less<std::string>{}(l.getScript(), r.getScript());
-    }
-};
-
-STD_HASH_SHARED_PTR(ieml::structure::Word);
+STD_HASH_SHARED_PTR(ieml::structure::CategoryWord);
 STD_HASH_SHARED_PTR(ieml::structure::AuxiliaryWord);
 STD_HASH_SHARED_PTR(ieml::structure::InflexingWord);
 STD_HASH_SHARED_PTR(ieml::structure::JunctionWord);
 
-STD_LESS_SHARED_PTR(ieml::structure::Word);
+STD_LESS_SHARED_PTR(ieml::structure::CategoryWord);
 STD_LESS_SHARED_PTR(ieml::structure::AuxiliaryWord);
 STD_LESS_SHARED_PTR(ieml::structure::InflexingWord);
 STD_LESS_SHARED_PTR(ieml::structure::JunctionWord);
 
-}
+STD_EQUAL_TO_SHARED_PTR(ieml::structure::CategoryWord);
+STD_EQUAL_TO_SHARED_PTR(ieml::structure::AuxiliaryWord);
+STD_EQUAL_TO_SHARED_PTR(ieml::structure::InflexingWord);
+STD_EQUAL_TO_SHARED_PTR(ieml::structure::JunctionWord);

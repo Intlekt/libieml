@@ -32,19 +32,14 @@ public:
                 return nullptr;
             }
             
-            return std::make_shared<structure::PathTree>(
+            return ctx.getPathTreeRegister().get_or_create(
                 std::make_shared<structure::AuxiliaryPathNode>(auxiliary), 
                 std::set<std::shared_ptr<structure::PathTree>>{child});
         } else {
-            if(!child) {
-                return nullptr;
-            }
-
+            if(!child) return nullptr;
+            
             return child;
         }
-
-
-
     };  
 
 

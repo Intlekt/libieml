@@ -40,9 +40,10 @@ public:
             return nullptr;
         }
 
-        return std::make_shared<structure::PathTree>(
+        return ctx.getPathTreeRegister().get_or_create(
             std::make_shared<structure::RoleNumberPathNode>(*type), 
-            std::set<std::shared_ptr<structure::PathTree>>{child});
+            std::set<std::shared_ptr<structure::PathTree>>{child}
+        );
     };
     
 

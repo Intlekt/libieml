@@ -392,7 +392,7 @@ namespace ieml::structure {
         return c;
     }
 
-    std::shared_ptr<PathTree> PathTree::buildFromPaths(std::vector<std::shared_ptr<Path>> paths) {
+    std::shared_ptr<PathTree> PathTree::Register::buildFromPaths(std::vector<std::shared_ptr<Path>> paths) {
         const auto node = paths[0]->getNode();
         PathType path_type(PathType::ROOT);
         if (paths[0]->getNext())
@@ -426,7 +426,7 @@ namespace ieml::structure {
             children.insert(buildFromPaths(paths.second));
         }
 
-        return std::make_shared<PathTree>(std::move(node), std::move(children));
+        return get_or_create(std::move(node), std::move(children));
     }
 
     std::string PathTree::to_string() const {

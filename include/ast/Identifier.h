@@ -27,7 +27,7 @@ public:
     }
 
     virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContext& ctx) const {
-        std::shared_ptr<structure::Phrase> phrase = ctx.resolve_category(name_);
+        std::shared_ptr<structure::PathTree> phrase = ctx.resolve_category(name_);
 
         if (!phrase) {
             ctx.getErrorManager().visitorError(

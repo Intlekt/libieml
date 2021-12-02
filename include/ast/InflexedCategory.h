@@ -72,7 +72,7 @@ public:
             if (!category)
                 return nullptr;
 
-            return std::make_shared<structure::PathTree>(
+            return ctx.getPathTreeRegister().get_or_create(
                 std::make_shared<structure::InflexingPathNode>(inflexions),
                 std::set<std::shared_ptr<structure::PathTree>>{category}
             );
