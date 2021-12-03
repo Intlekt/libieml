@@ -14,6 +14,11 @@ Requires `GCC 8+` if building the tests (requires `<filesystem>`)
 sudo apt install pkg-config uuid-dev
 ```
 
+Java for generating the parser
+```
+sudo apt install default-jre
+```
+
 #### Python binding dependencies
 ```
 sudo apt install python3-dev

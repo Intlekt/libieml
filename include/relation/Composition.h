@@ -6,7 +6,7 @@
 #include "relation/BinaryRelation.h"
 
 #include "structure/Path.h"
-#include "structure/ICategoryRegister.h"
+#include "structure/CategoryRegister.h"
 
 namespace ieml::relation {
 
@@ -24,11 +24,10 @@ private:
 };
 
 
-
 class CompositionRelationGraph : public BinaryRelationGraph<structure::PathTree, CompositionRelation> {
 public:
 
-    static std::shared_ptr<CompositionRelationGraph> buildFromCategoryRegister(const structure::ICategoryRegister& reg) {
+    static std::shared_ptr<CompositionRelationGraph> buildFromCategoryRegister(const structure::CategoryRegister& reg) {
         auto graph = std::make_shared<CompositionRelationGraph>();
 
         for (auto it = reg.categories_begin(); it != reg.categories_end(); ++it) {
@@ -47,7 +46,5 @@ public:
     }
 private:
     static bool is_phrase(const std::shared_ptr<structure::PathTree>& t) {return t->is_phrase();};
-
-
 };
 }

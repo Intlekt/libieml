@@ -7,9 +7,8 @@
 #include "structure/Namespace.h"
 
 namespace ieml::structure {
-class ICategoryRegister {
+class CategoryRegister {
 public:
-
     virtual void define_category(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::PathTree> phrase, bool is_node) = 0;
     virtual std::shared_ptr<structure::PathTree> resolve_category(const std::string& s) const = 0;
 

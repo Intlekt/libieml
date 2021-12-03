@@ -15,6 +15,9 @@ public:
     bool operator==(const LanguageString& rhs) const {
         return language_ == rhs.language_ && value_ == rhs.value_;
     };
+    bool operator!=(const LanguageString& rhs) const {
+        return language_ != rhs.language_ || value_ != rhs.value_;
+    };
 
     LanguageType language() const {return language_;}
     const std::string& value() const {return value_;}

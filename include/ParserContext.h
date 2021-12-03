@@ -7,15 +7,15 @@
 #include "structure/Path.h"
 #include "structure/Word.h"
 #include "structure/LanguageString.h"
-#include "structure/IWordRegister.h"
-#include "structure/ICategoryRegister.h"
+#include "structure/WordRegister.h"
+#include "structure/CategoryRegister.h"
 #include "RecognitionError.h"
 
 #include "utils.h"
 
 
 namespace ieml::parser {
-class ParserContext : public ieml::structure::IWordRegister, public ieml::structure::ICategoryRegister {
+class ParserContext : public ieml::structure::WordRegister, public ieml::structure::CategoryRegister {
 public:
     ParserContext(ieml::parser::IEMLParserErrorListener* error_manager) : 
         error_manager_(error_manager), 
@@ -25,7 +25,7 @@ public:
     structure::PathTree::Register& getPathTreeRegister() {return path_tree_register_;};
 
     /**********************************
-     * IWordRegister: Word
+     * WordRegister: Word
      **********************************/
 
     virtual bool word_is_defined(std::shared_ptr<structure::Word> word) {
@@ -39,7 +39,7 @@ public:
     }
 
     /**********************************
-     * IWordRegister: Auxiliary Words
+     * WordRegister: Auxiliary Words
      **********************************/
     virtual void define_auxiliary(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::AuxiliaryWord> word) {
         if (defined_words_.count(word->getScript()) > 0)
@@ -54,7 +54,7 @@ public:
     
 
     /**********************************
-     * IWordRegister: Inflexing Words
+     * WordRegister: Inflexing Words
      **********************************/
     virtual void define_inflexing(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::InflexingWord> word) {
         if (defined_words_.count(word->getScript()) > 0)
@@ -68,7 +68,7 @@ public:
     }
     
     /**********************************
-     * IWordRegister: Junction Words
+     * WordRegister: Junction Words
      **********************************/
     virtual void define_junction(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::JunctionWord> word) {
         if (defined_words_.count(word->getScript()) > 0)
@@ -82,7 +82,7 @@ public:
     }
 
     /**********************************
-     * IWordRegister: Category Words
+     * WordRegister: Category Words
      **********************************/
     virtual void define_word(std::shared_ptr<structure::CategoryWord> word) {
         if (defined_words_.count(word->getScript()) > 0)
@@ -91,7 +91,7 @@ public:
         defined_words_.insert({word->getScript(), word});
         caterory_words_.insert({word->getScript(), word});
     }
-    virtual std::shared_ptr<structure::Word> resolve_word(const std::string& s) const {
+    virtual std::shared_ptr<structure::CategoryWord> resolve_category_word(const std::string& s) const {
         auto res = caterory_words_.find(s);
         if (res == caterory_words_.end()) {
             return nullptr;
@@ -101,7 +101,7 @@ public:
     }
 
     /***************************
-     * ICategoryRegister
+     * CategoryRegister
      ***************************/
     virtual void define_category(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::PathTree> phrase, bool is_node) {
         if (category_is_node_.count(phrase) > 0) 

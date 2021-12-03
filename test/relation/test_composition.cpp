@@ -15,10 +15,19 @@
 
 using namespace ieml::relation;
 
+#define HAS_RELATION(src, tgt, path) {\
+  auto it = graph->find(src); \
+  ASSERT_NE(it, graph->end());\
+  auto p = ieml::structure::Path::from_string(path, *context);\
+  EXPECT_EQ(*it->second->getPath(), *p) << "rel_path=" << it->second->getPath()->to_string() << " expect=" << p->to_string() << std::endl;\
+  EXPECT_EQ(it->second->getSubject(), src);\
+  EXPECT_EQ(it->second->getObject(), tgt);\
+}
+
 
 
 TEST(ieml_relation_test_case, basic_graph) {
-  PARSE_NO_ERRORS(R"(@word 'wa.'. @inflection fr"nom" VERB 'e.'. @component fr"included" (0 ~nom #'wa.'). @component fr"container" (0 #(0 ~nom #'wa.')).)");
+  PARSE_NO_ERRORS(R"(@word 'wa.'. @inflection fr"nom" VERB 'e.'. @component fr"included" (0 ~nom #'wa.'). @component fr"container" (0 #(0 ~nom #'wa.')).@component fr"topcontainer" (0 #(0 #(0 ~nom #'wa.'))).)");
 
   std::shared_ptr<CompositionRelationGraph> graph;
   std::shared_ptr<ieml::parser::ParserContext> context;
@@ -30,16 +39,13 @@ TEST(ieml_relation_test_case, basic_graph) {
     EXPECT_TRUE(false) << e.what();                               
   }
 
+  EXPECT_EQ(graph->size(), 3);
+
   auto included = context->resolve_category("included");
   auto container = context->resolve_category("container");
-  
-  auto it = graph->find(container);
-  ASSERT_NE(it, graph->end());
+  auto topcontainer = context->resolve_category("topcontainer");
 
-  auto path = ieml::structure::Path::from_string(R"(/#/0)", *context);
-
-  EXPECT_EQ(graph->size(), 1);
-  EXPECT_EQ(*it->second->getPath(), *path);
-  EXPECT_EQ(it->second->getSubject(), container);
-  EXPECT_EQ(it->second->getObject(), included);
+  HAS_RELATION(container, included, R"(/#/0)");
+  HAS_RELATION(topcontainer, container, R"(/#/0)");
+  HAS_RELATION(topcontainer, included, R"(/#/0/#/0)");
 }

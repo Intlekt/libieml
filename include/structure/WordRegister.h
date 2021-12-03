@@ -7,7 +7,7 @@
 #include "structure/Namespace.h"
 
 namespace ieml::structure {
-class IWordRegister {
+class WordRegister {
 public:
     virtual bool word_is_defined(std::shared_ptr<structure::Word> word) = 0;
     virtual std::shared_ptr<structure::Word> get_word(const std::string& s) const = 0;
@@ -34,6 +34,6 @@ public:
      * Category Words
      ***************************/
     virtual void define_word(std::shared_ptr<structure::CategoryWord> word) = 0;
-    virtual std::shared_ptr<structure::Word> resolve_word(const std::string& s) const = 0;
+    virtual std::shared_ptr<structure::CategoryWord> resolve_category_word(const std::string& s) const = 0;
 };
 }

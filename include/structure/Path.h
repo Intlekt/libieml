@@ -2,7 +2,7 @@
 
 #include "structure/Constants.h"
 #include "structure/Word.h"
-#include "structure/IWordRegister.h"
+#include "structure/WordRegister.h"
 #include "utils.h"
 
 #include <string>
@@ -286,9 +286,14 @@ private:
     const std::set<std::shared_ptr<InflexingWord>> inflexings_;
 };
 
+/*
+ * WordPathNode
+ *
+ * The terminal path to a category Word
+ */
 class WordPathNode : public PathNode {
 public:
-    WordPathNode(std::shared_ptr<Word> word) : word_(word) {}
+    WordPathNode(std::shared_ptr<CategoryWord> word) : word_(word) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
@@ -307,7 +312,7 @@ private:
         else                    return  1;
     };
 
-    const std::shared_ptr<Word> word_;
+    const std::shared_ptr<CategoryWord> word_;
 };
 
 class Path {
@@ -332,7 +337,7 @@ public:
     std::shared_ptr<PathNode> getNode() const {return node_;}
     std::shared_ptr<Path> getNext() const {return next_;}
 
-    static std::shared_ptr<Path> from_string(const std::string& s, const IWordRegister& ctx);
+    static std::shared_ptr<Path> from_string(const std::string& s, const WordRegister& ctx);
     
     bool operator==(const Path& r) const {
         return compare(r) == 0;

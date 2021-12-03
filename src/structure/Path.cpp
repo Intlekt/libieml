@@ -196,7 +196,7 @@ namespace ieml::structure {
         return node_s;
     }
 
-    std::shared_ptr<Path> Path::from_string(const std::string& s, const IWordRegister& ctx) {
+    std::shared_ptr<Path> Path::from_string(const std::string& s, const WordRegister& ctx) {
         if (s.size() == 0) throw std::invalid_argument("Invalid path string, empty string.");
         if (s[0] != '/') throw std::invalid_argument("Invalid starting character for path string.");
 
@@ -351,7 +351,7 @@ namespace ieml::structure {
                 case '\'': {
                     // category word
                     std::string word_script = sub_s[i].substr(1, sub_s[i].size() - 2);
-                    auto word = ctx.resolve_word(word_script);
+                    auto word = ctx.resolve_category_word(word_script);
 
                     if (word == nullptr) 
                         throw std::invalid_argument("Invalid category word path node, undefined category word: got '" + word_script + "'.");
