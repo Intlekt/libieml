@@ -190,8 +190,8 @@ TEST(ieml_structure_test_case, path_tree_register) {
         PARSE_NO_ERRORS(R"(@word 'wa.'. @inflection fr"nom" VERB 'e.'. @component fr"included" (0 ~nom #'wa.'). @component fr"container" (0 #(0 ~nom #'wa.')).)");
         auto context = parser.getContext();
 
-        auto included = context->resolve_category("included");
-        auto container = context->resolve_category("container");
+        auto included = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::FR, "included"));
+        auto container = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::FR, "container"));
 
         // assert that container['/#/0/#/0/~'e.'] == included['/#/0/~'e.']
         // value

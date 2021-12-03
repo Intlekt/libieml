@@ -27,6 +27,18 @@ public:
     const Identifier& identifier() const {return *identifier_;};
     const Identifier& language() const {return *language_type_;};
 
+    std::shared_ptr<structure::LanguageString> check_language_string(parser::ParserContext& ctx) const {    
+        auto language = structure::LanguageType::_from_string_nocase_nothrow(language_type_->getName().c_str());
+        if (!language) {
+            ctx.getErrorManager().visitorError(
+                language_type_->getCharRange(), 
+                "Invalid language identifier for language string, got: '" + language_type_->getName() + "'."
+            );
+        }
+
+        return std::make_shared<structure::LanguageString>(*language, identifier_->getName());
+    }
+
 private:
     std::unique_ptr<Identifier> language_type_;
     std::unique_ptr<Identifier> identifier_;

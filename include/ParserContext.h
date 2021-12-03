@@ -15,14 +15,18 @@
 
 
 namespace ieml::parser {
-class ParserContext : public ieml::structure::WordRegister, public ieml::structure::CategoryRegister {
+class ParserContext : public ieml::structure::WordRegister {
 public:
     ParserContext(ieml::parser::IEMLParserErrorListener* error_manager) : 
         error_manager_(error_manager), 
-        default_language_(structure::LanguageType::FR) {}
+        default_language_(std::make_shared<structure::LanguageType>(structure::LanguageType::FR)) {}
 
     ieml::parser::IEMLParserErrorListener& getErrorManager() const {return *error_manager_;};
     structure::PathTree::Register& getPathTreeRegister() {return path_tree_register_;};
+    
+    structure::CategoryRegister& getCategoryRegister() {return category_register_;};
+
+    std::shared_ptr<structure::LanguageType> getDefaultLanguage() const {return default_language_;};
 
     /**********************************
      * WordRegister: Word
@@ -49,7 +53,7 @@ public:
         namespace_auxiliary_.define(name, word);
     }
     virtual std::shared_ptr<structure::AuxiliaryWord> resolve_auxiliary(const std::string& s) const {
-        return namespace_auxiliary_.resolve(structure::LanguageString(default_language_, s));
+        return namespace_auxiliary_.resolve(structure::LanguageString(*default_language_, s));
     }
     
 
@@ -64,7 +68,7 @@ public:
         namespace_inflexing_.define(name, word);
     }
     virtual std::shared_ptr<structure::InflexingWord> resolve_inflexing(const std::string& s) const {
-        return namespace_inflexing_.resolve(structure::LanguageString(default_language_, s));
+        return namespace_inflexing_.resolve(structure::LanguageString(*default_language_, s));
     }
     
     /**********************************
@@ -78,7 +82,7 @@ public:
         namespace_junction_.define(name, word);
     }
     virtual std::shared_ptr<structure::JunctionWord> resolve_junction(const std::string& s) const {
-        return namespace_junction_.resolve(structure::LanguageString(default_language_, s));
+        return namespace_junction_.resolve(structure::LanguageString(*default_language_, s));
     }
 
     /**********************************
@@ -100,29 +104,9 @@ public:
         return res->second;
     }
 
-    /***************************
-     * CategoryRegister
-     ***************************/
-    virtual void define_category(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::PathTree> phrase, bool is_node) {
-        if (category_is_node_.count(phrase) > 0) 
-            throw std::invalid_argument("Phrase already defined.");
-        
-        category_is_node_.insert({phrase, is_node});
-        namespace_category_.define(name, phrase);
-    }
-    virtual std::shared_ptr<structure::PathTree> resolve_category(const std::string& s) const {
-        return namespace_category_.resolve(structure::LanguageString(default_language_, s));
-    }
-    virtual bool category_is_defined(const std::shared_ptr<structure::PathTree>& phrase) const {
-        return namespace_category_.find(phrase) != namespace_category_.end();
-    };
 
-    virtual category_const_iterator categories_begin() const {return namespace_category_.begin();};
-    virtual category_const_iterator categories_end() const {return namespace_category_.end();};
-
-    
 private:
-    structure::LanguageType default_language_;
+    std::shared_ptr<structure::LanguageType> default_language_;
 
     std::unordered_map<std::string, std::shared_ptr<structure::Word>> defined_words_;
 
@@ -132,8 +116,7 @@ private:
     
     std::unordered_map<std::string, std::shared_ptr<structure::CategoryWord>> caterory_words_;
     
-    structure::Namespace<structure::PathTree> namespace_category_;
-    std::unordered_map<std::shared_ptr<structure::PathTree>, bool> category_is_node_;
+    structure::CategoryRegister category_register_;
 
     parser::IEMLParserErrorListener* error_manager_;
 

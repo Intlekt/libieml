@@ -10,6 +10,7 @@
 #include "IemlParser.h"
 #include "relation/Composition.h"
 #include "structure/Path.h"
+#include "structure/LanguageString.h"
 
 #include "test_utils.h"
 
@@ -32,18 +33,19 @@ TEST(ieml_relation_test_case, basic_graph) {
   std::shared_ptr<CompositionRelationGraph> graph;
   std::shared_ptr<ieml::parser::ParserContext> context;
   context = parser.getContext();
+  auto category_register = context->getCategoryRegister();
 
   try {                                                           
-      graph = CompositionRelationGraph::buildFromCategoryRegister(*context);
+      graph = CompositionRelationGraph::buildFromCategoryRegister(context->getCategoryRegister());
   } catch (std::exception& e) {                                   
     EXPECT_TRUE(false) << e.what();                               
   }
 
   EXPECT_EQ(graph->size(), 3);
 
-  auto included = context->resolve_category("included");
-  auto container = context->resolve_category("container");
-  auto topcontainer = context->resolve_category("topcontainer");
+  auto included = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::FR, "included"));
+  auto container = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::FR,"container"));
+  auto topcontainer = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::FR,"topcontainer"));
 
   HAS_RELATION(container, included, R"(/#/0)");
   HAS_RELATION(topcontainer, container, R"(/#/0)");

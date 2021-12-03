@@ -48,7 +48,7 @@ public:
             return;
         }
         
-        ctx.define_category(name, phrase, false);
+        ctx.getCategoryRegister().define_category(name, phrase, false);
     };
 private:
     std::unique_ptr<Phrase> phrase_;
@@ -76,7 +76,7 @@ public:
             return;
         }
         
-        ctx.define_category(name, phrase, true);
+        ctx.getCategoryRegister().define_category(name, phrase, true);
     };   
 
 private:

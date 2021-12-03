@@ -42,16 +42,9 @@ public:
     std::shared_ptr<structure::Name> check_translatable(parser::ParserContext& ctx) {
         std::unordered_set<structure::LanguageString> names;
         for (auto&& ls: translations_) {
-            const Identifier& language = ls->language();
-            
-            auto lt = structure::LanguageType::_from_string_nocase_nothrow(language.getName().c_str());
-            if (!lt) {
-                ctx.getErrorManager().visitorError(
-                    language.getCharRange(), 
-                    "Invalid language identifier for language string, got: '" + language.getName() + "'."
-                );
-            } else {
-                names.insert(structure::LanguageString(*lt, ls->identifier().getName()));
+            auto lt = ls->check_language_string(ctx);
+            if (lt) {
+                names.insert(*lt);
             }
         } 
 
