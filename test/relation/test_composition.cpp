@@ -36,8 +36,10 @@ TEST(ieml_relation_test_case, basic_graph) {
   auto it = graph->find(container);
   ASSERT_NE(it, graph->end());
 
+  auto path = ieml::structure::Path::from_string(R"(/#/0)", *context);
+
   EXPECT_EQ(graph->size(), 1);
-  EXPECT_EQ(*it->second->getPath(), *ieml::structure::Path::from_string(R"(/#/0)", *context));
-  EXPECT_EQ(it->second->getSubject(), included);
-  EXPECT_EQ(it->second->getObject(), container);
+  EXPECT_EQ(*it->second->getPath(), *path);
+  EXPECT_EQ(it->second->getSubject(), container);
+  EXPECT_EQ(it->second->getObject(), included);
 }

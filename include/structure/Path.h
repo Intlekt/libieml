@@ -67,11 +67,6 @@ public:
     virtual std::string to_string() const override;
 
     RoleType getRoleType() const {return role_type_;}
-    
-    // bool operator< (const RoleNumberPathNode& a) const noexcept {return role_type_ <  a.role_type_;};
-    // bool operator> (const RoleNumberPathNode& a) const noexcept {return role_type_ >  a.role_type_;};
-    // bool operator<=(const RoleNumberPathNode& a) const noexcept {return role_type_ <= a.role_type_;};
-    // bool operator>=(const RoleNumberPathNode& a) const noexcept {return role_type_ >= a.role_type_;};
 private:
     virtual int comp(const PathNode& a) const {
         auto b = dynamic_cast<const RoleNumberPathNode&>(a);
@@ -298,10 +293,10 @@ public:
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
 
-    bool operator< (const WordPathNode& a) const noexcept {return *word_ <  *a.word_;};
-    bool operator> (const WordPathNode& a) const noexcept {return *word_ >  *a.word_;};
-    bool operator<=(const WordPathNode& a) const noexcept {return *word_ <= *a.word_;};
-    bool operator>=(const WordPathNode& a) const noexcept {return *word_ >= *a.word_;};
+    // bool operator< (const WordPathNode& a) const noexcept {return *word_ <  *a.word_;};
+    // bool operator> (const WordPathNode& a) const noexcept {return *word_ >  *a.word_;};
+    // bool operator<=(const WordPathNode& a) const noexcept {return *word_ <= *a.word_;};
+    // bool operator>=(const WordPathNode& a) const noexcept {return *word_ >= *a.word_;};
 
 private:
     virtual int comp(const PathNode& a) const {
@@ -339,16 +334,28 @@ public:
 
     static std::shared_ptr<Path> from_string(const std::string& s, const IWordRegister& ctx);
     
-    bool operator==(const Path& r) const {return *node_ == *r.node_ && *next_ == *r.next_;};
-    bool operator!=(const Path& r) const {return *node_ != *r.node_ || *next_ != *r.next_;};
+    bool operator==(const Path& r) const {
+        return compare(r) == 0;
+    };
+    bool operator!=(const Path& r) const {return compare(r) != 0;};
 
-    bool operator< (const Path& r) const {return *node_ <  *r.node_ || (*node_ == *r.node_ && *next_ <  *r.next_);};
-    bool operator> (const Path& r) const {return *node_ >  *r.node_ || (*node_ == *r.node_ && *next_ >  *r.next_);};
-    bool operator<=(const Path& r) const {return *node_ <  *r.node_ || (*node_ == *r.node_ && *next_ <= *r.next_);};
-    bool operator>=(const Path& r) const {return *node_ >  *r.node_ || (*node_ == *r.node_ && *next_ >= *r.next_);};
+    bool operator< (const Path& r) const {return compare(r) <  0;};
+    bool operator> (const Path& r) const {return compare(r) >  0;};
+    bool operator<=(const Path& r) const {return compare(r) <= 0;};
+    bool operator>=(const Path& r) const {return compare(r) >= 0;};
+
 private:
     const std::shared_ptr<PathNode> node_;
     const std::shared_ptr<Path> next_;
+
+    int compare(const Path& r) const {
+        if (*node_ == *r.node_) {
+            if (next_ == nullptr && r.next_ == nullptr) return 0;
+            if (next_ == nullptr) return -1;
+            if (r.next_ == nullptr) return 1;
+            return next_->compare(*r.next_);
+        } else return *node_ <  *r.node_ ? -1 : 1;
+    }
 };
 
 class PathTree {
@@ -392,7 +399,7 @@ public:
     private:
         struct cmpKey {
             bool operator()(const Key& a, const Key& b) const {
-                return comp(a.first, a.second, b.first, b.second);
+                return comp(a.first, a.second, b.first, b.second) < 0;
             }
         };
 

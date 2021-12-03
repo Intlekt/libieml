@@ -83,6 +83,9 @@ TEST(ieml_structure_test_case, path_from_string) {
     PARSE_PATH_VALID("/0", ctx);
     PARSE_PATH_VALID("/0/*'a.'/'wa.'", ctx);
     PARSE_PATH_VALID("/#/0/*'a.'/'wa.'", ctx);
+
+
+    EXPECT_EQ(*Path::from_string("/#/0", ctx), *Path::from_string("/#/0", ctx));
 }
 
 TEST(ieml_structure_test_case, path_invalid) {
@@ -190,6 +193,28 @@ TEST(ieml_structure_test_case, path_tree_register) {
         auto included = context->resolve_category("included");
         auto container = context->resolve_category("container");
 
+        // assert that container['/#/0/#/0/~'e.'] == included['/#/0/~'e.']
+        // value
+        EXPECT_EQ(*container->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0], *included->getChildren()[0]->getChildren()[0]->getChildren()[0]);
+        // pointer
+        EXPECT_EQ(container->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0], included->getChildren()[0]->getChildren()[0]->getChildren()[0]);
+ 
+        // assert that container['/#/0/#/0'] == included['/#/0']
+        // value
+        EXPECT_EQ(*container->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0], *included->getChildren()[0]->getChildren()[0]);
+        // pointer
+        EXPECT_EQ(container->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0], included->getChildren()[0]->getChildren()[0]);
+
+        // assert that container['/#/0/#'] == included['/#']
+        // value
+        EXPECT_EQ(*container->getChildren()[0]->getChildren()[0]->getChildren()[0], *included->getChildren()[0]);
+        // pointer
+        EXPECT_EQ(container->getChildren()[0]->getChildren()[0]->getChildren()[0], included->getChildren()[0]);
+
+        // assert that container['/#/0'] == included
+        // value
+        EXPECT_EQ(*container->getChildren()[0]->getChildren()[0], *included);
+        // pointer
         EXPECT_EQ(container->getChildren()[0]->getChildren()[0], included);
 
     }

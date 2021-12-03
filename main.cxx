@@ -9,7 +9,7 @@ using namespace ieml;
 
 
 int main(int , const char **) {
-  std::string input = R"(@component fr"test" en"test" (0 # ) .)";
+  std::string input = R"(@word 'wa.'. @inflection fr"nom" VERB 'e.'. @component fr"included" (0 #'wa.'). @component fr"container" (0 #(0 #'wa.')).)";
   
 
   parser::IEMLParser parser(input);
@@ -17,17 +17,14 @@ int main(int , const char **) {
   
   std::cout << parser.toJson().dump() << std::endl;
 
-  // std::cout << "Input:" << std::endl;
-  // std::cout << input << std::endl << std::endl;
+  auto context = parser.getContext();
+  auto p0 = structure::Path::from_string("/#/0", *context);
+  auto p1 = structure::Path::from_string("/#/0", *context);
 
-  // std::cout << "Ouput:" << std::endl;
-  // std::cout << parser.getASTString() << std::endl;
+  assert(*p0 == *p1);
+  auto included = context->resolve_category("included");
+  auto container = context->resolve_category("container");
 
-  // std::cout << std::endl << "Errors:" << std::endl;
-
-  // for (auto s : parser.getSyntaxErrors()) {
-  //   std::cout << s->to_string() << std::endl;
-  // }
 
   return 0;
 }
