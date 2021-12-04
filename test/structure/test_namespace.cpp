@@ -19,7 +19,7 @@ TEST(ieml_structure_test_case, namespace) {
     PathTree::Register reg;
 
     LanguageString l = LanguageString(LanguageType::FR, "test");
-    auto p = reg.get_or_create(std::make_shared<RootPathNode>(), std::set<shared_ptr<PathTree>>{});
+    auto p = reg.get_or_create(std::make_shared<RootPathNode>(), PathTree::Children{});
 
     n.define(
         std::make_shared<Name>(unordered_set<LanguageString>{l}),

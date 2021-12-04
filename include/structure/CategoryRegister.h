@@ -23,6 +23,14 @@ public:
         return namespace_category_.find(phrase) != namespace_category_.end();
     };
 
+    std::shared_ptr<structure::Name> getName(const std::shared_ptr<structure::PathTree>& phrase) const {
+        return namespace_category_.find(phrase)->second;
+    };
+
+    bool isNode(const std::shared_ptr<structure::PathTree>& phrase) const { 
+        return category_is_node_.find(phrase)->second;
+    };
+
     typedef std::unordered_map<std::shared_ptr<structure::PathTree>, std::shared_ptr<Name>>::const_iterator  const_iterator;
 
     const_iterator categories_begin() const {return namespace_category_.begin();};

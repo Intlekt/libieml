@@ -47,7 +47,7 @@ public:
 
     const std::string getASTString() const;
     
-    std::shared_ptr<ParserContext> getContext() {return context_;};
+    std::shared_ptr<ParserContext> getContext() const {return context_;};
 
     nlohmann::json toJson() const;
 };

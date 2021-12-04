@@ -6,6 +6,8 @@
 
 #include "IemlParser.h"
 #include "RecognitionError.h"
+#include "relation/Composition.h"
+#include "relation/GraphJsonSerializer.h"
 
 
 
@@ -25,6 +27,10 @@ PYBIND11_MODULE(pyieml, m) {
         .def("errors", &ieml::parser::IEMLParser::getSyntaxErrors, py::return_value_policy::reference)
         .def("to_json", [](const ieml::parser::IEMLParser &e) {
             return e.toJson().dump();
+        })
+        .def("composition_graph_json", [](const ieml::parser::IEMLParser &e) {
+            auto graph = ieml::relation::CompositionRelationGraph::buildFromCategoryRegister(e.getContext()->getCategoryRegister());
+            return graph_to_json(graph, e.getContext()->getCategoryRegister()).dump();
         });
 
     py::class_<ieml::parser::SyntaxError>(m, "SyntaxError")

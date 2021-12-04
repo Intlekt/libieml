@@ -42,7 +42,7 @@ public:
 
         return ctx.getPathTreeRegister().get_or_create(
             std::make_shared<structure::RoleNumberPathNode>(*type), 
-            std::set<std::shared_ptr<structure::PathTree>>{child}
+            structure::PathTree::Children{child}
         );
     };
     

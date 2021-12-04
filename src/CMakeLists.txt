@@ -32,6 +32,7 @@ add_library (IEMLParser SHARED
              ${CMAKE_CURRENT_LIST_DIR}/ast/Program.cpp
              ${CMAKE_CURRENT_LIST_DIR}/structure/Path.cpp
              ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp
+             ${CMAKE_CURRENT_LIST_DIR}/relation/Composition.cpp
              )
 
 

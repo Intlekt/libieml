@@ -420,14 +420,20 @@ namespace ieml::structure {
             }
         }
         
-        std::set<std::shared_ptr<PathTree>> children;
+        Children children;
 
         for (auto paths: children_paths) {
             children.insert(buildFromPaths(paths.second));
         }
 
-        return get_or_create(std::move(node), std::move(children));
+        return get_or_create(node, children);
     }
+
+
+    bool PathTree::CompareFunctor::operator()(const std::shared_ptr<PathTree>& l, const std::shared_ptr<PathTree>& r) const {
+        return comp(l->node_, l->children_, r->node_, r->children_) < 0;
+    };
+
 
     std::string PathTree::to_string() const {
         std::stringstream os;

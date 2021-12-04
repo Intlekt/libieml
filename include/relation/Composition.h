@@ -18,33 +18,18 @@ public:
         path_(path),
         BinaryRelation<structure::PathTree>(subject, object) {}
 
+    std::string to_string() const {
+        return getSubject()->to_string() + " -> " + getObject()->to_string() + " [" + path_->to_string() + "]";
+    }
+
     std::shared_ptr<structure::Path> getPath() const {return path_;};
+
+    Class getClass() const { return Class::COMPOSITION;};
+
 private:
     const std::shared_ptr<structure::Path> path_;
 };
 
+typedef BinaryRelationGraph<structure::PathTree, CompositionRelation> CompositionRelationGraph;
 
-class CompositionRelationGraph : public BinaryRelationGraph<structure::PathTree, CompositionRelation> {
-public:
-
-    static std::shared_ptr<CompositionRelationGraph> buildFromCategoryRegister(const structure::CategoryRegister& reg) {
-        auto graph = std::make_shared<CompositionRelationGraph>();
-
-        for (auto it = reg.categories_begin(); it != reg.categories_end(); ++it) {
-            // for all subphrase in phrase
-            for (auto& subphrase : it->first->find_sub_tree(is_phrase)) {
-                if (reg.category_is_defined(subphrase.second))
-                    graph->add_relation(std::make_shared<CompositionRelation>(
-                        it->first,
-                        subphrase.second,
-                        subphrase.first
-                    ));
-            }
-        }
-
-        return graph;
-    }
-private:
-    static bool is_phrase(const std::shared_ptr<structure::PathTree>& t) {return t->is_phrase();};
-};
 }

@@ -380,13 +380,16 @@ public:
     bool operator<=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) <= 0;};
     bool operator>=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) >= 0;};
 
-
+    struct CompareFunctor {
+        bool operator()(const std::shared_ptr<PathTree>& l, const std::shared_ptr<PathTree>& r) const; 
+    };
+    typedef std::set<std::shared_ptr<PathTree>, CompareFunctor> Children;
 
     class Register {
     public:
-        typedef std::pair<std::shared_ptr<PathNode>, std::set<std::shared_ptr<PathTree>>> Key;
+        typedef std::pair<std::shared_ptr<PathNode>, PathTree::Children> Key;
 
-        std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node, const std::set<std::shared_ptr<PathTree>>& children) {
+        std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node, const Children& children) {
             auto key = Key(node, children);
             auto it = store_.find(key);
             if (it != store_.end()) return it->second;
@@ -396,7 +399,7 @@ public:
             return item;
         }
         std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node) {
-            return get_or_create(node, std::set<std::shared_ptr<PathTree>>{});
+            return get_or_create(node, Children{});
         }
 
         std::shared_ptr<PathTree> buildFromPaths(std::vector<std::shared_ptr<Path>> paths);
@@ -428,8 +431,9 @@ public:
         return res;
     };
 
+
 private:
-    PathTree(const std::shared_ptr<PathNode>& node, const std::set<std::shared_ptr<PathTree>>& children) : 
+    PathTree(const std::shared_ptr<PathNode>& node, const Children& children) : 
         node_(node), children_(children) {}
 
     PathTree(const std::shared_ptr<PathNode>& node) : 
@@ -439,8 +443,12 @@ private:
     PathTree& operator=(const PathTree&) = delete;
 
 
-    static int comp(const std::shared_ptr<PathNode>& nodeA, const std::set<std::shared_ptr<PathTree>>& childrenA, 
-                    const std::shared_ptr<PathNode>& nodeB, const std::set<std::shared_ptr<PathTree>>& childrenB) {
+    const std::shared_ptr<PathNode> node_;
+    const Children children_;
+
+
+    static int comp(const std::shared_ptr<PathNode>& nodeA, const Children& childrenA, 
+                    const std::shared_ptr<PathNode>& nodeB, const Children& childrenB) {
         if (*nodeA == *nodeB) {
             auto it = childrenA.begin();
             auto it_r = childrenB.begin();
@@ -458,9 +466,6 @@ private:
         } else 
             return *nodeA < *nodeB ? -1 : 1;
     }
-
-    const std::shared_ptr<PathNode> node_;
-    const std::set<std::shared_ptr<PathTree>> children_;
 };
 
 }

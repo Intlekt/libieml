@@ -58,7 +58,7 @@ public:
     virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContext& ctx) const override {
         std::unordered_set<structure::RoleType> seen_nodes;
         
-        std::set<std::shared_ptr<structure::PathTree>> children;
+        structure::PathTree::Children children;
 
         for (const auto& line: phrase_lines_) {
             auto tree = line->check_phrase_line(ctx);

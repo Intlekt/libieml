@@ -34,7 +34,7 @@ public:
             
             return ctx.getPathTreeRegister().get_or_create(
                 std::make_shared<structure::AuxiliaryPathNode>(auxiliary), 
-                std::set<std::shared_ptr<structure::PathTree>>{child});
+                structure::PathTree::Children{child});
         } else {
             if(!child) return nullptr;
             

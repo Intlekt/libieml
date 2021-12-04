@@ -49,7 +49,5 @@ json IEMLParserErrorListener::toJson() const {
     for (auto& error: error_manager_.getSyntaxErrors()) {
         error_list.push_back(error->toJson());
     }
-    json j;
-    j["errors"] = error_list;
-    return j;
+    return error_list;
 }
