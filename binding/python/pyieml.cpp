@@ -39,7 +39,22 @@ PYBIND11_MODULE(pyieml, m) {
         })
         .def("to_json", [](const ieml::parser::SyntaxError &e) {
             return e.toJson().dump();
-        });
+        })
+        .def_property_readonly("message", &ieml::parser::SyntaxError::getMessage)
+        .def_property_readonly("range", &ieml::parser::SyntaxError::getCharRange, py::return_value_policy::reference);
+
+    py::class_<ieml::parser::CharRange>(m, "CharRange")
+        .def("__repr__", [](const ieml::parser::CharRange &e) {
+            return "<CharRange \"" + e.to_string() + "\">";
+        })
+        .def("to_json", [](const ieml::parser::CharRange &e) {
+            return e.toJson().dump();
+        })
+        .def_property_readonly("line_start", &ieml::parser::CharRange::getLineStart)
+        .def_property_readonly("line_end", &ieml::parser::CharRange::getLineEnd)
+        .def_property_readonly("char_start", &ieml::parser::CharRange::getCharStart)
+        .def_property_readonly("char_end", &ieml::parser::CharRange::getCharEnd);
+
 
 
     m.doc() = "Python wrapper for libieml";

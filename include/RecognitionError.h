@@ -25,6 +25,9 @@ namespace parser {
                 return char_range_.to_string() + " " + msg_;
             }
 
+            const std::string& getMessage() const {return msg_;};
+            const ieml::AST::CharRange& getCharRange() const {return char_range_;};
+            
             nlohmann::json toJson() const;
     };
 

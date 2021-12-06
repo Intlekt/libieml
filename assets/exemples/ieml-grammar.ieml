@@ -4,8 +4,8 @@
 //~INFLECTIONS
 
 //VERBS ~INFLECTIONS
-@inflection en"if" 					fr"si" 				ieml"E:S:A:."			.	
-@inflection en"then" 				fr"alors			ieml"E:T:U:."			.	
+@inflection en"if" 					fr"si" 				   'E:S:A:.;			.	
+@inflection en"then" 				fr"alors			'E:T:U:.'			.	
 @inflection en"not" 					fr"non"				ieml"E:U:A:."			.	
 
 @inflection en"passive" 				fr"passif" 			ieml"E:.-wo.-t.o.-'"		. 
