@@ -21,9 +21,9 @@ int main(int , const char **) {
     
   parser::IEMLParser parser(os.str());
   parser.parse();
-  
-  for (auto e : parser.getSyntaxErrors()) {
-    std::cout << e->to_string() << std::endl;
+  auto errors=  parser.getSyntaxErrors();
+  for ( auto it = errors.crbegin(); it != errors.crend(); ++it) {
+    std::cout << (*it)->to_string() << std::endl;
   }
 
 

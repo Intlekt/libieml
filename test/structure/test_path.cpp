@@ -77,7 +77,7 @@ TEST(ieml_structure_test_case, path_from_string) {
 
     PARSE_PATH_VALID("/'wa.'", ctx);
 
-    std::unordered_set<LanguageString> s{LanguageString(LanguageType::FR, "aux_a")};
+    std::unordered_multiset<LanguageString> s{LanguageString(LanguageType::FR, "aux_a")};
     ctx.define_auxiliary(std::make_shared<Name>(s), std::make_shared<AuxiliaryWord>("a.", RoleType::ROOT));
     PARSE_PATH_VALID("/*'a.'", ctx);
     PARSE_PATH_VALID("/0", ctx);
@@ -193,6 +193,8 @@ TEST(ieml_structure_test_case, path_tree_register) {
         auto included = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::FR, "included"));
         auto container = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::FR, "container"));
 
+        ASSERT_NE(included, nullptr);
+        ASSERT_NE(container, nullptr);
         // assert that container['/#/0/#/0/~'e.'] == included['/#/0/~'e.']
         // value
         EXPECT_EQ(*container->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0], *included->getChildren()[0]->getChildren()[0]->getChildren()[0]);

@@ -34,6 +34,7 @@ public:
                 language_type_->getCharRange(), 
                 "Invalid language identifier for language string, got: '" + language_type_->getName() + "'."
             );
+            return nullptr;
         }
 
         return std::make_shared<structure::LanguageString>(*language, identifier_->getName());

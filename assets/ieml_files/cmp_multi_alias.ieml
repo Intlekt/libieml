@@ -2,6 +2,8 @@
 @word 'we.' .
 @word 'wu.' .
 
+@junction fr"et" 'm.'.
+
 @inflection fr"verb" VERB 'a.' .
 @inflection fr"nom"  VERB 'b.' .
 

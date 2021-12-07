@@ -60,10 +60,12 @@ public:
         
         structure::PathTree::Children children;
 
+        bool valid = true;
         for (const auto& line: phrase_lines_) {
             auto tree = line->check_phrase_line(ctx);
 
             if (!tree) {
+                valid = false;
                 continue;
             }
             
@@ -78,12 +80,18 @@ public:
                         line->getCharRange(),
                         "Duplicated phrase line number."
                     );
+                    valid = false;
                 } else {
                     seen_nodes.insert(role_number->getRoleType());
                     children.insert(tree);
                 }
             }
         }
+
+        if (!valid)
+            return nullptr;
+        
+
         return ctx.getPathTreeRegister().get_or_create(std::make_shared<structure::RootPathNode>(), children);
     };
 
@@ -94,23 +102,26 @@ private:
 };
 
 
-class JunctionPhrase : public Phrase, public IJunction<Phrase> {
+class JunctionPhrase : public Phrase, public IJunction<Phrase, structure::PhraseJunctionIndexPathNode, structure::PhraseJunctionPathNode> {
 public:
     JunctionPhrase(std::unique_ptr<CharRange>&& char_range,
                    std::vector<std::unique_ptr<Phrase>>&& phrases,
                    std::unique_ptr<Identifier>&& junction_identifier) : 
         AST(std::move(char_range)),
         Phrase(), 
-        IJunction<Phrase>(std::move(phrases), std::move(junction_identifier)) {}
+        IJunction<Phrase, structure::PhraseJunctionIndexPathNode, structure::PhraseJunctionPathNode>(std::move(phrases), std::move(junction_identifier)) {}
 
     std::string to_string() const override {
         return "(" + junction_to_string() + ")";
     }
-    std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContext& ctx) const override {
-        
-        // return structure::Phrase();
-        return nullptr;
+    
+    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i) const override {
+        return items_[i]->check_phrase(ctx);
     };
+
+    virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContext& ctx) const override {
+        return check_junction(ctx);
+    }
 
 };
 }

@@ -3,6 +3,7 @@
 // WORDS
 //~INFLECTIONS
 
+@language en.
 
 // VERBS ~INFLECTIONS
 @inflection en"if" 					fr"si" 		VERB		   'E:S:A:.'			.	
@@ -25,6 +26,9 @@
 @inflection en"all"					fr"tous"		NOUN	'E:A:.-t.u.-\''		.
 
 @inflection en"non contiguous" 			fr"non contigu"	NOUN		'E:.-\',b.-S:.U:.-\'y.-\'A:.-\',_'.
+
+@inflection en"noun" VERB 'S:'.
+@inflection en"verb" VERB 'B:'.
 
 // *AUXILIARIES
 
@@ -60,87 +64,151 @@
 
 // WORDS
 @word 'u.' .
+@word 'b.' .
+@word 'd.' .
+@word 'l.' .
+@word 't.i.-' .
+@word 't.o.-' .
+@word 's.e.-' .
+@word 'b.o.-' .
+@word 'b.e.-' .
+@word 'n.y.-' .
+@word 't.wo.-' .
+@word 'g.we.-' .
+@word 'i.B:.-' .
+@word 'e.T:.-' .
+@word 'p.x.-' .
+@word 'S:.E:.n.-' .
+@word 'S:.A:.n.-' .
+@word 't.o.-t.o.-\'' .
+@word 's.o.-k.o-\'' .
+@word 's.x.we.-' .
+@word 's.h.wu.-' .
+@word 's.g.wo.-' .
+@word 's.p.we.-' .
+@word 'h.y.d.-' .
+@word 'h.e.d.-' .
+@word 'h.o.d.-' .
+@word 'h.o.d.-U:.-\'' .
+@word 'j.y.d.-A:.-\'' .
+@word 'h.o.-d.A:.-\'' .
+@word 'h.e.d.-U:.-\'' .
+@word 'n.-u.-\'' .
+@word 'n.-g.-\'' .
+@word 'g.-U:.-\'' .
+@word 'j.-A:.-\'' .
+@word 'b.u.-n.u.-\'' .
+@word 's.u.-n.u.-\'' .
+@word 'n.u.-b.u.-\'' .
+@word 's.u.-b.u.-\'' .
+@word 'b.u.-d.u.-\'' .
+@word 'k.u.-s.u.-d.u.-\'' .
+@word 's.u.-s.u.-d.u.-\'' .
+@word 'n.i.-l.i.-\'' .
+@word 't.i.-s.i.-t.u.-\'' .
+@word 'g.-U:.-\'s.o.-l.o.-\',' .
+@word 's.o.-wa.-\'S:.-\',' .
+@word 'u.-y.\'s.o.-k.o-\',' .
+@word 'B:.S:.n.-\'E:.-U:.d.-l.-\',' .
+@word 'B:.S:.n. \'E:.-U:.s.-l.-\',' .
 
 // ¶ #CATEGORIES
 
-@component en"express" en"say" en"expression" 	fr"exprimer" fr"dire" fr"expression"	'u.' .		.
+@component en"express" en"say" en"expression" 	fr"exprimer" fr"dire" fr"expression"	(0 ~verb #'u.').
 
-@component en"language"			fr"langage"			'b."			.
-@component en"is true""truth" 		fr"est vrai""vérité"		'd."			.
-@component en"space"			fr"espace"			'l."			.
+@component en"language"			fr"language"		(0 ~noun #'b.').
+@component en"is true" en"truth" 		fr"est vrai" fr"vérité"	(0 ~noun #'d.').
+@component en"space"			fr"espace"			(0 ~noun #'l.')		.
 
-@component en"contain"			fr"contenir"			't.i.-"			.
-@component en"time"				fr"temps"			't.o.-"			.
-@component en"grammar"			fr"grammaire"			's.e.-"			.
-@component en"word"				fr"mot"				'b.o.-"			.
-@component en"dialectic"			fr"dialectique"			'b.e.-"			.
-@component en"first principles"		fr"premiers principes"		'n.y.-"			.
+@component en"contain"			fr"contenir"			(0 ~verb #'t.i.-')			.
+@component en"time"				fr"temps"			(0 ~noun #'t.o.-')			.
+@component en"grammar"			fr"grammaire"			(0 ~noun #'s.e.-')			.
+@component en"word"				fr"mot"				(0 ~noun #'b.o.-')			.
+@component en"dialectic"			fr"dialectique"			(0 ~noun #'b.e.-')			.
+@component en"first principles"		fr"premiers principes"		(0 ~noun #'n.y.-')			.
 
-@component en"relation"			fr"relation"			't.wo.-"			.	
-@component en"context variation"		fr"variation du contexte" 	'g.we.-"			.
+@component en"relation"			fr"relation"			(0 ~noun #'t.wo.-')			.	
+@component en"context variation"		fr"variation du contexte" 	(0 ~noun #'g.we.-')			.
 
-@component en"jump"				fr"sauter"			'i.B:.-"			.
-@component en"combine" 			fr"combiner" 			'e.T:.-"			.
+@component en"jump"				fr"sauter"			(0 ~verb #'i.B:.-')		.
+@component en"combine" 			fr"combiner" 			(0 ~verb #'e.T:.-')			.
 
-@component en"exchange"			fr"échange"			'p.x.-"			.
+@component en"exchange"			fr"échange"			(0 ~noun #'p.x.-')		.
 
-@component en"vary""variable"		fr"varier""variable"		'S:.E:.n.-"			.
-@component en"atom"				fr"atome" 			'S:.A:.n.-"			.
+@component en"vary" en"variable"		fr"varier" fr"variable"		(0 ~verb #'S:.E:.n.-')			.
+@component en"atom"				fr"atome" 			(0 ~noun #'S:.A:.n.-')			.
 			
-@component en"change" 			fr"changement"			't.o.-t.o.-'"		.
-@component en"collective intelligence" 	fr"intelligence collective" 	's.o.-k.o-'"		.
+@component en"change" 			fr"changement"			(0 ~noun #'t.o.-t.o.-\'')		.
+@component en"collective intelligence" 	fr"intelligence collective" 	(0 ~noun #'s.o.-k.o-\'')		.
 
-@component en"causal determination"		fr"détermination causale"	's.x.we.-"			.
-@component en"quality"			fr"qualité"			's.h.wu.-"			.
-@component en"inference" 			fr"inférence"			's.g.wo.-"			.
-@component en"conditional determination" 	fr"détermination conditionnelle"'s.p.we.-"			.
+@component en"causal determination"		fr"détermination causale"	(0 ~noun #'s.x.we.-')			.
+@component en"quality"			fr"qualité"			(0 ~noun #'s.h.wu.-')			.
+@component en"inference" 			fr"inférence"			(0 ~noun #'s.g.wo.-')			.
+@component en"conditional determination" 	fr"détermination conditionnelle" (0 ~noun #'s.p.we.-')			.
 
-@component en"first actant"			fr"premier actant"		'h.y.d.-"			.  	
-@component en"second actant"		fr"second actant"		'h.e.d.-"			.	
-@component en"third actant"			fr"troisième actant"		'h.o.d.-"			.
+@component en"first actant"			fr"premier actant"		(0 ~noun #'h.y.d.-')			.  	
+@component en"second actant"		fr"second actant"		(0 ~noun #'h.e.d.-')			.	
+@component en"third actant"			fr"troisième actant"		(0 ~noun #'h.o.d.-')			.
 
-@component en"intention"			fr"intention"			'h.o.d.-U:.-'"		.
-@component en"text" 			fr"texte"			'j.y.d.-A:.-' "		.
-@component en"plays a move"			fr"jouer un coup"		'h.o.-d.A:.-'"		.
-@component en"role"				fr"rôle"			'h.e.d.-U:.-'"		.
+@component en"intention"			fr"intention"			(0 ~noun #'h.o.d.-U:.-\'')		.
+@component en"text" 			fr"texte"			(0 ~noun #'j.y.d.-A:.-\'')		.
+@component en"plays a move"			fr"jouer un coup"		(0 ~noun #'h.o.-d.A:.-\'')		.
+@component en"role"				fr"rôle"			(0 ~noun #'h.e.d.-U:.-\'')		.
 
-@component en"paradigm"			fr"paradigme"			'n.-u.-'"			.
-@component en"discursive content"		fr"contenu discursif"		'n.-g.-'"			.
+@component en"paradigm"			fr"paradigme"			(0 ~noun #'n.-u.-\'')			.
+@component en"discursive content"		fr"contenu discursif"		(0 ~noun #'n.-g.-\'')			.
 
-@component en"ternary"			fr"ternaire"			'g.-U:.-'"			.
-@component en"binary"			fr"binaire"			'j.-A:.-'"			.
+@component en"ternary"			fr"ternaire"			(0 ~noun #'g.-U:.-\'')			.
+@component en"binary"			fr"binaire"			(0 ~noun #'j.-A:.-\'')			.
 
-@component en"verb"				fr"verbe"			'b.u.-n.u.-'"		.
-@component en"noun""common name"		fr"nom commum"			's.u.-n.u.-'"		.
-@component en"proposition"			fr"proposition"			'n.u.-b.u.-'"		.
-@component en"phrase"			fr"phrase"			's.u.-b.u.-'"		.
-@component en"part"				fr"partie"			'b.u.-d.u.-'"		.
-@component en"symmetry""is symmetric of" 	fr"symétrie""est symétrique de"	'k.u.-s.u.-d.u.-'"	.
-@component en"reflexivity""is reflexive"	fr"réflexivité""est réflexif"	's.u.-s.u.-d.u.-'"	.
+@component en"verb"				fr"verbe"			(0 ~noun #'b.u.-n.u.-\'')		.
+@component en"noun" en"common name"		fr"name commum"			(0 ~noun #'s.u.-n.u.-\'')		.
+@component en"proposition"			fr"proposition"			(0 ~noun #'n.u.-b.u.-\'')		.
+@component en"phrase"			fr"phrase"			(0 ~noun #'s.u.-b.u.-\'')		.
+@component en"part"				fr"partie"			(0 ~noun #'b.u.-d.u.-\'')		.
+@component en"symmetry" en"is symmetric of" 	fr"symétrie" fr"est symétrique de"	(0 ~noun #'k.u.-s.u.-d.u.-\'')	.
+@component en"reflexivity" en"is reflexive"	fr"réflexivité" fr"est réflexif"	(0 ~noun #'s.u.-s.u.-d.u.-\'')	.
 
-@component en"glue" 			fr"colle"			'n.i.-l.i.-'"		.
-@component en"transitivity""is transitive"	fr"transitivité""est transitif"	't.i.-s.i.-t.u.-'"		.
+@component en"glue" 			fr"colle"			(0 ~noun #'n.i.-l.i.-\'')		.
+@component en"transitivity" en"is transitive"	fr"transitivité" fr"est transitif"	(0 ~noun #'t.i.-s.i.-t.u.-\'')		.
 
-@component en"third"			fr"troisième"			'g.-U:.-'s.o.-l.o.-',"	.
+@component en"third"			fr"troisième"			(0 ~noun #'g.-U:.-\'s.o.-l.o.-\',')	.
 
-@component en"concept"			fr"concept" 			's.o.-wa.-'S:.-',"		. 
+@component en"concept"			fr"concept" 			(0 ~noun #'s.o.-wa.-\'S:.-\',')		. 
 
-@component en"precise / specify"		fr"préciser / spécifier"	'u.-y.'s.o.-k.o-',"		.
+@component en"precise" en"specify"		fr"préciser" fr"spécifier"	(0 ~verb #'u.-y.\'s.o.-k.o-\',')		.
 
-@component en"root"				fr"racine"			'B:.S:.n.-'E:.-U:.d.-l.-',"	.
-@component en"leaf"				fr"feuille"			'B:.S:.n. 'E:.-U:.s.-l.-',"	.
+@component en"root"				fr"racine"			(0 ~noun #'B:.S:.n.-\'E:.-U:.d.-l.-\',')	.
+@component en"leaf"				fr"feuille"			(0 ~noun #'B:.S:.n. \'E:.-U:.s.-l.-\',')	.
+
+// MISSING
+@word 'o.o.-'.
+@word 'o.u.-'.
+@word 'o.i.-'.
+@word 'o.e.-'.
+@word 'o.y.-'.
+
+@component en"plays a role" (0 ~noun #'o.o.-') .
+@component en"express" (0 ~noun #'o.u.-') .
+@component en"starting point" (0 ~noun #'o.i.-').
+@component en"arrival point" (0 ~noun #'o.e.-').
+@component en"medium point" (0 ~noun #'o.y.-').
+
+
+
+@auxiliary en"with" 8 't.' .
 
 // ¶¶ PHRASES
 
 // ¶ IEML BASICS 
 
-@node en"' fr"'
+@node en"IEML" fr"IEML"
 (
 0 #language,
-8 *moral property possessed by #collective intelligence
+8 *moral feature possessed by #collective intelligence
 ).
 
-@node en"IEML grammar" fr"grammaire d'' 		
+@node en"IEML grammar" fr"grammaire d" 		
 (
 0 #grammar,
 4 *part of #IEML
@@ -156,9 +224,9 @@
 ]
 ).
 
-@node "IEML phrase" fr"phrase"
+@node en"IEML phrase"  fr"IEML phrase"
 (
-0 phrase,
+0 #phrase,
 4 *part of #IEML	
 ).
 
@@ -168,27 +236,27 @@
 4 *part of #IEML phrase
 ).
 
-¶ IEML DICTIONARY
+// ¶ IEML DICTIONARY
 
-@node en"IEML dictionary" fr"dictionnaire d''
+@node en"IEML dictionary" fr"dictionnaire d"
 (
 0 ~all #word,
 4 *part of #IEML
 ).
 
-@node en"IEML primitives" fr"primitives ' 	
+@node en"IEML primitives" fr"primitives"	
 (
 0 ~plural #first principles,
 4 *part of #IEML dictionary
 ).
 
-@node en"IEML primitive" fr"primitive ' 	
+@node en"IEML primitive" fr"primitive"	
 (
-0 ~singular first principles,
+0 ~singular #first principles,
 4 *part of #IEML dictionary
 ).	
 
-@node en"IEML element" fr"élément d''	
+@node en"IEML element" fr"élément d"	
 (
 0 ~singular #atom,
 4 *part of #IEML dictionary
@@ -196,19 +264,19 @@
 
 @node en"seme" fr"sème"					
 (
-0 #one third,	
+0 #third,	
 4 *part of #IEML element			
 ).
 
-@node en"IEML radical" fr"radical '
+@node en"IEML radical" fr"radical"
 (
 0 #glue,
 1 ! ~singular #word,
-2 &or inclusive [~two #atom ~three #atom],
+2 &inclusive or [~two #atom ~three #atom],
 4 *part of #IEML dictionary
 ).
 
-@node fr"IEML element paradigm" fr"paradigme d'éléments" 	
+@node en"IEML element paradigm" fr"paradigme d éléments" 	
 (
 0 #contain,
 1 ! #paradigm,
@@ -216,6 +284,7 @@
 ).
 
 @node en"IEML radical paradigm" fr"paradigme de radicaux"
+(
 0 #contain,
 1 ! #paradigm,
 2 ~plural #IEML radical		
@@ -223,13 +292,13 @@
 
 @node en"binary dialectic"		fr"dialectique binaire"		
 (
-0 #dialectic
+0 #dialectic,
 8 #binary
 ).
 
 @node en"ternary dialectic"		fr"dialectique ternaire"		
 (
-0 #dialectic
+0 #dialectic,
 8 #ternary
 ).
 
@@ -237,7 +306,7 @@
 
 // ¶ #SYNTACTIC CLASSES
 
-@node en"IEML category" fr"catégorie '
+@node en"IEML category" fr"catégorie"
 (
 0 	#express,
 1 ! 	#USL,
@@ -247,12 +316,12 @@
 
 
 // ¶¶¶¶¶¶ @node en"phrase category" fr"catégorie phrase" = phrase IEML 
-// ¶¶ CRÉER JUSTE UNE RELATION AU LIEU D'UN MOT
-(
-0 	#express			,
-1 ! 	#phrase IEML			,
-2 	#discursive content
-)					.
+// ¶¶ CRÉER JUSTE UNE RELATION AU LIEU d UN MOT
+//(
+//0 	#express			,
+//1 ! 	#phrase IEML			,
+//2 	#discursive content
+//)					.
 
 // ¶¶¶¶¶¶ par opposition aux particules grammaticales 
 @node en"elementary category"  fr"catégorie élémentaire"			
@@ -262,14 +331,14 @@
 2 #discursive content
 )					.
 
-@node en"IEML auxiliary" fr"auxiliaire '	
+@node en"IEML auxiliary" fr"auxiliaire"	
 (
 0 #precise,
 1 ! #IEML element,
 2 #phrase role
 ).
 
-@node en"IEML junction" fr"jonction '
+@node en"IEML junction" fr"jonction"
 (
 0 #glue,
 1 ! #IEML element,
@@ -278,29 +347,29 @@
 
 @node en"IEML inflection" fr"flexion"
 (
-0 express,
-1 ! #IEML element
+0 #express,
+1 ! #IEML element,
 2 #context variation,
 8 *with #IEML category		
 ).
 
-@node en"tool word" fr"mot outil""particule grammaticale"
+@node en"tool word" fr"mot outil" fr"particule grammaticale"
 (
-&inclusive or [#IEML inflection #IEMLjunction #IEMLauxiliary]
-)
+&inclusive or [(0 #IEML inflection) (0 #IEML junction) (0 #IEML auxiliary)]
+) .
 
 // ¶ PHRASE ROLES ¶
 
 @node en"grammatical root" fr"racine grammaticale"
 (
 0 #plays a role,
-1 expression,
-2 ! &inclusive or [verb	noun],
+1 #expression,
+2 ! &inclusive or [#verb	#noun],
 6 *at #root,
 7 *in context #phrase role					
 ).
 
-@node en"grammatical subject""initiator" fr"sujet grammatical""initiateur"
+@node en"grammatical subject" en"initiator" fr"sujet grammatical" fr"initiateur"
 (
 0 #plays a role,
 1 #expression,
@@ -309,7 +378,7 @@
 7 *in context #phrase role					
 ).
 
-@node en"grammatical object""interactant"  fr"objet gramatical""interactant"					
+@node en"grammatical object" en"interactant"  fr"objet gramatical" fr"interactant"					
 (
 0 #plays a role,	
 1 #expression,
@@ -327,20 +396,20 @@
 7 *in context #phrase role					
 ).
 
-@node en"grammatical cause""objective structure"  fr"causalité grammaticale""structure objective"	
+@node en"grammatical cause" en"objective structure"  fr"causalité grammaticale" fr"structure objective"	
 (
 0 #plays a role,
 1 #expression,
 2 ! #causal determination,
 6 *at #leaf,	
 7 *in context #phrase role					
-)
+).
 
 @node en"grammatical time" fr"temps grammatical"
 (
-0 plays	a role,
+0 #plays	a role,
 1 #expression,
-2 ! time,
+2 ! #time,
 6 *at #leaf,
 7 *in context #phrase role					
 )					.
@@ -355,9 +424,10 @@
 ).
 
 @node en"grammatical intention" fr"intention gramaticale"
+(
 0 #plays a role,
 1 #expression,
-2 ! intention,
+2 ! #intention,
 6 *at #leaf,
 7 *in context #phrase role					
 ).
@@ -366,80 +436,80 @@
 (
 0 #plays a role,
 1 #expression,
-2 ! quality,
+2 ! #quality,
 6 *at #leaf,
 7 *in context #phrase role					
 ).
 
-¶ ELEMENT ROLES ¶
+// ¶ ELEMENT ROLES ¶
 
 @node en"element role" fr"rôle d élément"
 (
-0 #role
+0 #role,
 4 *part of #IEML element
-)
-
-@node en"grammatical substance""is a grammatical substance of" fr"substance grammaticale""est une substance grammaticale de"
-(
-0 #seme,
-6 *at starting point 
 ).
 
-@node en"grammatical attribute""is a grammatical attribute of" fr"attribut grammatical""est un attribut grammatical de"
+@node en"grammatical substance" en"is a grammatical substance of" fr"substance grammaticale" fr"est une substance grammaticale de"
 (
 0 #seme,
-6 *at arrival point 
+6 *at #starting point 
 ).
 
-@node en"grammatical mode""is a grammatical mode of" fr"mode grammatical""est un mode grammatical de"
+@node en"grammatical attribute" en"is a grammatical attribute of" fr"attribut grammatical" fr"est un attribut grammatical de"
+(
+0 #seme,
+6 *at #arrival point 
+).
+
+@node en"grammatical mode" en"is a grammatical mode of" fr"mode grammatical" fr"est un mode grammatical de"
 (
 0 #seme,				
-6 *at medium point
+6 *at #medium point
 ).	
 
-@node en"substance of substance""is the substance of the substance of" fr"substance de substance""est la substance de la substance de"
+@node en"substance of substance" en"is the substance of the substance of" fr"substance de substance" fr"est la substance de la substance de"
 (
-0 # is grammatical substance,
+0 # is a grammatical substance of,
 1 ! #seme,
 4 *part of #grammatical substance
 ).
 
-@node en"attribute of the substance""is an attribute of the substance of" fr"attribut de la substance""est un attribut de la substance de"
+@node en"attribute of substance" en"is an attribute of the substance of" fr"attribut de la substance" fr"est un attribut de la substance de"
 (
-0 #is grammatical attribute,
-1 ! seme,
-4 *part of #grammatical substance
-).
-
-@node en"mode of substance""is the mode of the substance of" fr"mode de la substance""est le mode de la substance de"
-(
-0 #is grammatical mode,
+0 #is a grammatical attribute of,
 1 ! #seme,
 4 *part of #grammatical substance
 ).
 
-@node en"substance of attribute""is the substance of the attribute of" fr"substance de l'attribut""est la substance de l'attribut de"
+@node en"mode of substance" en"is the mode of the substance of" fr"mode de la substance" fr"est le mode de la substance de"
 (
-0 #is grammatical substance,
+0 #is a grammatical mode of,
+1 ! #seme,
+4 *part of #grammatical substance
+).
+
+@node en"substance of attribute" en"is the substance of the attribute of" fr"substance de l attribut" fr"est la substance de l attribut de"
+(
+0 #is a grammatical substance of,
 1 ! #seme,
 4 *part of #grammatical attribute
 ).
 
-@node en"attribute of attribute""is the attribute of the attribute of" fr"attribut de l'attribut""est l'attribut de l'attribut de"
+@node en"attribute of attribute" en"is the attribute of the attribute of" fr"attribut de l attribut" fr"est l attribut de l attribut de"
 (
-0 #is grammatical attribute,
+0 #is a grammatical attribute of,
 1 ! #seme,
 4 *part of #grammatical attribute
 ).
 
 @node en"mode of attribute" en"is the mode of the attribute of" fr"mode de l attribut" fr"est le mode de l attribut de"
 (
-0 #is grammatical mode,
+0 #is a grammatical mode of,
 1 ! #seme,
 4 *part of #grammatical attribute
 ).
 
-@node en"substance of mode""is the substance of the mode of" fr"substance du mode""est la substance du mode de"
+@node en"substance of mode" en"is the substance of the mode of" fr"substance du mode" fr"est la substance du mode de"
 (
 0 #grammatical substance,
 1 ! #seme,
@@ -453,14 +523,14 @@
 4 *part of #grammatical mode
 ).
 
-@node en"mode of mode""is the mode of the mode of" fr"mode du mode""est le mode du mode de"
+@node en"mode of mode" en"is the mode of the mode of" fr"mode du mode" fr"est le mode du mode de"
 (
 0 #grammatical mode,
 1 ! #seme ,
 4 *part of #grammatical mode
 ).
 
-¶ SAME PARADIGM RELATIONS ¶
+// ¶ SAME PARADIGM RELATIONS ¶
 
 @node en"is twin of" fr"est jumeau de"
 (
@@ -475,14 +545,14 @@
 0 #exchange,
 1 #grammatical substance,
 2 #grammatical attribute,
-8 *same [#grammatical mode #IEML element paradigm]
+8 *same &and [#grammatical mode #IEML element paradigm]
 ).
 
 @node en"is associated to" fr"est associé à"
 (
 0 #change,
 1 #grammatical mode,
-4 *same [#grammatical substance #grammatical attribute #IEML element paradigm]
+4 *same &and [#grammatical substance #grammatical attribute #IEML element paradigm]
 ).
 
 @node en"is in crossed relation with" fr"est en relation croisée avec"
@@ -506,18 +576,18 @@
 )						.
 
 
-@node en"is in leapfrog relation with" fr"est en relation de saute-mouton avec" 					
+//@node en"is in leapfrog relation with" fr"est en relation de saute mouton avec" 					
 //même paradigme ET non contigu dans la table ET alternance S/B/T OU BIEN U/A à même place//
- (
- 0 #vary,
- 1 #IEML primitive 
- 4 *cause formelle {#binary dialectic ; #ternary dialectic},
- 6 *inside ~non contiguous #IEML element,
- 8 *same  [#element role #IEML element paradigm]
- ).
+// (
+// 0 #vary,
+// 1 #IEML primitive ,
+// 4 *cause formelle {#binary dialectic ; #ternary dialectic},
+// 6 *inside ~non contiguous #IEML element,
+// 8 *same &and [#element role #IEML element paradigm]
+// ).
  
 
-MATHEMATICAL RELATIONS
+// MATHEMATICAL RELATIONS
 
 @node en"reflexivity relation" fr"relation réflexive"
 (
@@ -533,17 +603,17 @@ MATHEMATICAL RELATIONS
 
 @node en"symmetric relation" fr"relation symétrique"
 (
-0 #is symmetrical,			
+0 #is symmetric of,			
 1 #relation	
 ).				
 
 @node en"asymmetric relation" fr"relation asymétrique" 
 (
-0 ~not #is symmetical,				
+0 ~not #is symmetric of,				
 1 #relation 	
 ).				
 
-@node en"transitive relation" "relation transitive"
+@node en"transitive relation" fr"relation transitive"
 (
 0 #is transitive,					
 1 #relation
@@ -555,31 +625,31 @@ MATHEMATICAL RELATIONS
 1 #relation 
 ).
 
-@node en"equivalence relation" fr"relation d'équivalence"
+@node en"equivalence relation" fr"relation d équivalence"
 (
 0 ~reciprocal #combine,
-1 &and [#symmetric relation #transitive relation #reflexive relation]
+1 &and [#symmetric relation #transitive relation #reflexivity relation]
 ).
 
 @node en"proximity relation" fr"relation de proximité"
 (
 0 ~reciprocal #combine,
-1 &and [#symmetric relation #atransitive relation #reflexive relation])
+1 &and [#symmetric relation #atransitive relation #reflexivity relation]
 ).
 
 @node en"complementary relation" fr"relation complémentaire"
 (
 0 ~reciprocal #combine,
-1 &and [#asymmetric relation #atransitive relation #irreflexive relation]
+1 &and [#asymmetric relation #atransitive relation #irreflexivity relation]
 ).
 
-@node en"order relation" fr"relation d'ordre"
+@node en"order relation" fr"relation d ordre"
 (
 0 ~reciprocal #combine,
-1 &and [#asymmetric relation #transitive relation #irreflexive relation]
+1 &and [#asymmetric relation #transitive relation #irreflexivity relation]
 ).
 
-@node en"==>""logical implication""logically implies" fr"==>""implication logique""implique logiquement"						
+@node en"logical implication" en"logically implies" fr"implication logique" fr"implique logiquement"						
 (
 0 #inference,
 4 *by #conditional determination

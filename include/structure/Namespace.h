@@ -15,16 +15,16 @@
 
 namespace ieml::structure {
 
-class Name : public std::map<LanguageType, LanguageString> {
+class Name : public std::unordered_multimap<LanguageType, LanguageString> {
 public:
-    Name(std::unordered_set<LanguageString> traductions) : 
-         std::map<LanguageType, LanguageString>(build_traductions(traductions)) {}
+    Name(std::unordered_multiset<LanguageString> traductions) : 
+         std::unordered_multimap<LanguageType, LanguageString>(build_traductions(traductions)) {}
     
     bool operator==(const Name& rhs) const {
         return size() == rhs.size() && std::equal(begin(), end(), rhs.begin());
     }
 private:
-    static std::map<LanguageType, LanguageString> build_traductions(std::unordered_set<LanguageString> traductions);
+    static std::unordered_multimap<LanguageType, LanguageString> build_traductions(std::unordered_multiset<LanguageString> traductions);
 };
 
 template<typename V>

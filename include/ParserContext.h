@@ -18,15 +18,27 @@ namespace ieml::parser {
 class ParserContext : public ieml::structure::WordRegister {
 public:
     ParserContext(ieml::parser::IEMLParserErrorListener* error_manager) : 
-        error_manager_(error_manager), 
-        default_language_(std::make_shared<structure::LanguageType>(structure::LanguageType::FR)) {}
+        error_manager_(error_manager) {}
 
     ieml::parser::IEMLParserErrorListener& getErrorManager() const {return *error_manager_;};
     structure::PathTree::Register& getPathTreeRegister() {return path_tree_register_;};
     
     structure::CategoryRegister& getCategoryRegister() {return category_register_;};
 
-    std::shared_ptr<structure::LanguageType> getDefaultLanguage() const {return default_language_;};
+    structure::LanguageType getLanguage() const {
+        if (default_language_ == nullptr)
+            return structure::LanguageType::FR;
+        else 
+            return *default_language_;
+    };
+    
+    bool setLanguage(structure::LanguageType language_type) {
+        if (default_language_ != nullptr) {
+            return false;
+        }
+        default_language_ = std::make_shared<structure::LanguageType>(language_type);
+        return true;
+    };
 
     /**********************************
      * WordRegister: Word
@@ -53,7 +65,7 @@ public:
         namespace_auxiliary_.define(name, word);
     }
     virtual std::shared_ptr<structure::AuxiliaryWord> resolve_auxiliary(const std::string& s) const {
-        return namespace_auxiliary_.resolve(structure::LanguageString(*default_language_, s));
+        return namespace_auxiliary_.resolve(structure::LanguageString(getLanguage(), s));
     }
     
 
@@ -68,7 +80,7 @@ public:
         namespace_inflexing_.define(name, word);
     }
     virtual std::shared_ptr<structure::InflexingWord> resolve_inflexing(const std::string& s) const {
-        return namespace_inflexing_.resolve(structure::LanguageString(*default_language_, s));
+        return namespace_inflexing_.resolve(structure::LanguageString(getLanguage(), s));
     }
     
     /**********************************
@@ -82,7 +94,7 @@ public:
         namespace_junction_.define(name, word);
     }
     virtual std::shared_ptr<structure::JunctionWord> resolve_junction(const std::string& s) const {
-        return namespace_junction_.resolve(structure::LanguageString(*default_language_, s));
+        return namespace_junction_.resolve(structure::LanguageString(getLanguage(), s));
     }
 
     /**********************************

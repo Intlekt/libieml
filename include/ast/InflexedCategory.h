@@ -54,6 +54,7 @@ public:
         if (inflexions_.size()) {
             std::set<std::shared_ptr<structure::InflexingWord>> inflexions;
 
+            bool valid = true;
             for (auto&& inflexion_id: inflexions_) {
                 auto inflexion = ctx.resolve_inflexing(inflexion_id->getName());
 
@@ -62,14 +63,13 @@ public:
                         inflexion_id->getCharRange(),
                         "Undefined inflexion identifier '" + inflexion_id->getName() + "'."
                     );
-                    return nullptr;
+                    valid = false;
                 }
 
                 inflexions.insert(inflexion);
-
             }
             
-            if (!category)
+            if (!category || !valid)
                 return nullptr;
 
             return ctx.getPathTreeRegister().get_or_create(

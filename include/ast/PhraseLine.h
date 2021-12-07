@@ -34,6 +34,7 @@ public:
             ctx.getErrorManager().visitorError(
                 getCharRange(), "Invalid role number, got '" + std::to_string(role_type_) + "'"
             );
+            return nullptr;
         }
 
         if (!child || !type) {
@@ -89,7 +90,7 @@ private:
 
 };
 
-class JunctionPhraseLine : public PhraseLine, public IJunction<AuxiliarySubPhraseLine> {
+class JunctionPhraseLine : public PhraseLine, public IJunction<AuxiliarySubPhraseLine, structure::AuxiliaryJunctionIndexPathNode, structure::AuxiliaryJunctionPathNode> {
 public:
     JunctionPhraseLine(std::unique_ptr<CharRange>&& char_range,
                        std::vector<std::unique_ptr<AuxiliarySubPhraseLine>>&& sub_phrases,
@@ -98,15 +99,19 @@ public:
                        bool accentuation) : 
         AST(std::move(char_range)),
         PhraseLine(role_type, accentuation),
-        IJunction(std::move(sub_phrases), std::move(junction_identifier)) {}
+        IJunction<AuxiliarySubPhraseLine, structure::AuxiliaryJunctionIndexPathNode, structure::AuxiliaryJunctionPathNode>(std::move(sub_phrases), std::move(junction_identifier)) {}
 
     std::string to_string() const override {
         return phrase_line_to_string() + junction_to_string();
     }
 
 protected:
-    std::shared_ptr<structure::PathTree> _check_phrase_line(parser::ParserContext& ctx) const override {
-        return nullptr;
+    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i) const override {
+        return items_[i]->check_auxiliary_subline(ctx);
+    };
+
+    virtual std::shared_ptr<structure::PathTree> _check_phrase_line(parser::ParserContext& ctx) const override {
+        return check_junction(ctx);
     }
 };
 

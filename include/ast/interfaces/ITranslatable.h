@@ -40,13 +40,18 @@ public:
     };
 
     std::shared_ptr<structure::Name> check_translatable(parser::ParserContext& ctx) {
-        std::unordered_set<structure::LanguageString> names;
+        std::unordered_multiset<structure::LanguageString> names;
+
+        bool valid = true;
         for (auto&& ls: translations_) {
             auto lt = ls->check_language_string(ctx);
-            if (lt) {
+            if (lt)
                 names.insert(*lt);
-            }
+            else
+                valid = false;
         } 
+        if (!valid)
+            return nullptr;
 
         return std::make_shared<structure::Name>(names);
     };   

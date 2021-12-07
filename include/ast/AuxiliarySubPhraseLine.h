@@ -36,7 +36,8 @@ public:
                 std::make_shared<structure::AuxiliaryPathNode>(auxiliary), 
                 structure::PathTree::Children{child});
         } else {
-            if(!child) return nullptr;
+            if(!child) 
+                return nullptr;
             
             return child;
         }
@@ -81,7 +82,7 @@ private:
     std::unique_ptr<InflexedCategory> flexed_category_;
 };
 
-class JunctionAuxiliarySubPhraseLine : public AuxiliarySubPhraseLine, public IJunction<InflexedCategory> {
+class JunctionAuxiliarySubPhraseLine : public AuxiliarySubPhraseLine, public IJunction<InflexedCategory, structure::InflexingJunctionIndexPathNode, structure::InflexingJunctionPathNode> {
 public:
     JunctionAuxiliarySubPhraseLine(std::unique_ptr<CharRange>&& char_range,
                                    std::unique_ptr<Identifier>&& auxiliary,
@@ -89,7 +90,7 @@ public:
                                    std::unique_ptr<Identifier>&& junction_type) :
         AST(std::move(char_range)),
         AuxiliarySubPhraseLine(std::move(auxiliary)),
-        IJunction(std::move(flexed_categories), std::move(junction_type)) {}
+        IJunction<InflexedCategory, structure::InflexingJunctionIndexPathNode, structure::InflexingJunctionPathNode>(std::move(flexed_categories), std::move(junction_type)) {}
 
     std::string to_string() const override {
         return auxiliary_to_string() + junction_to_string();
@@ -97,7 +98,11 @@ public:
 
 protected:
     std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx) const override {
-        return nullptr;
+        return check_junction(ctx);
+    };
+
+    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i) const override {
+        return items_[i]->check_flexed_category(ctx);
     };
 };
 

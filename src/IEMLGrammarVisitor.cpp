@@ -212,7 +212,13 @@ namespace ieml::parser {
   }
 
   antlrcpp::Any IEMLGrammarVisitor::visitLanguageDeclaration(iemlParser::LanguageDeclarationContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, language, "Invalid language type.", true);
 
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, language, LanguageDeclaration);
+
+    RETURN_VISITOR_RESULT(Declaration, 
+                          LanguageDeclaration,
+                          std::move(language));
   }
 
   /**

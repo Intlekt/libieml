@@ -448,6 +448,10 @@ namespace ieml::structure {
 
     std::vector<std::shared_ptr<PathTree>> PathTree::getChildren() const {
         std::vector<std::shared_ptr<PathTree>> v;
+
+        if (children_.size() == 0)
+            return v;
+
         v.reserve(children_.size());
         for(auto it = children_.begin(); it != children_.end(); ++it ) {
             v.push_back(*it);
