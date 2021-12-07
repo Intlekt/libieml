@@ -33,119 +33,120 @@
 @auxiliary en"part of" 				fr"partie de"		4	'E:S:.x.-'			.
 @auxiliary en"formal cause" 			fr"cause formelle"	4	'E:T:.j.-'			.
 
-*AUXILIARIES ROLE6 places
-@auxiliary en"at starting point" 			fr"au point de départ"		ieml"E:.-S:.b.-l.-'"		.
-@auxiliary en"at arrival point" 			fr"au point d'arrivée"		ieml"E:.-S:.f.-l.-'"		.
-@auxiliary en"at medium point" 			fr"au point d'arrivée"		ieml"E:.-S:.m.-l.-'"		.
-@auxiliary en"inside" 				fr"dans"			ieml"E:.-T:.f.-l.-'"		.
-@auxiliary en"at"					fr"à"				ieml"E:.-B:.n.-l.-'"		.
+// *AUXILIARIES ROLE6 places
+@auxiliary en"at starting point" 			fr"au point de départ"	6	'E:.-S:.b.-l.-\''		.
+@auxiliary en"at arrival point" 			fr"au point d arrivée"	6	'E:.-S:.f.-l.-\''		.
+@auxiliary en"at medium point" 			fr"au point d arrivée"	6	'E:.-S:.m.-l.-\''		.
+@auxiliary en"inside" 				fr"dans"	6		'E:.-T:.f.-l.-\''		.
+@auxiliary en"at"					fr"à"		6		'E:.-B:.n.-l.-\''		.
 
-*AUXILIARIES ROLE7 intentions
-@auxiliary en"in context" 				fr"en contexte"		ieml"E:.-'h.o.d.-U:.-'x.-',"	.
+// *AUXILIARIES ROLE7 intentions
+@auxiliary en"in context" 				fr"en contexte"		7 'E:.-\'h.o.d.-U:.-\'x.-\','	.
+@auxiliary en"variable variable" 			fr"variable variable" 7	'E:.-b.o.-\'E:.-b.o.-\','	.
 
-@auxiliary en"variable-variable" 			fr"variable-variable"	ieml"E:.-b.o.-'E:.-b.o.-',"	.
+// *AUXILIARY ROLE8 manner
+@auxiliary 	en"same" 				fr"même"			8 'E:.A:.g.-'	.
+@auxiliary	en"name of" 				fr"nom de" 		8	'E:.A:.e.-'	.
+@auxiliary 	en"moral feature possessed by" 		fr"trait moral possédé par"	 8 'E:.A:.o.-'	. 	
 
-*AUXILIARY ROLE8 manner
-@auxiliary 	en"same" 				fr"même"			ieml"E:.A:.g.-"	.
-@auxiliary	en"name of" 				fr"nom de" 			ieml"E:.A:.e.-"	.
-@auxiliary 	en"moral feature possessed by" 		fr"trait moral possédé par"	ieml"E:.A:.o.-"	. 	
+// &JUNCTIONS [ ]
 
-¶ &JUNCTIONS [ ]
+@junction en"and" 					fr"et"					'E:S:.-k.u.-\''	.
+@junction en"inclusive or"				fr"ou inclusif"				'E:B:.-k.u.-\''	.
+@junction en"exclusive or"				fr"ou exclusif"				'E:T:.-k.u.-\''	.
 
-@alias en"and" 					fr"et"					ieml"E:S:.-k.u.-'"	.
-@alias en"inclusive or"				fr"ou inclusif"				ieml"E:B:.-k.u.-'"	.
-@alias en"exclusive or"				fr"ou exclusif"				ieml"E:T:.-k.u.-'"	.
+@junction en"equivalence"			fr"équivalence"			'E:.-s.a.-k.u.-\''	.	
+@junction en"reciprocal relations" 		fr"relations réciproques"		'E:.-m.u.-k.u.-\''	. 	
 
-@alias en"<==>""equivalence"			fr""<==>""équivalence"			ieml"E:.-s.a.-k.u.-'"	.	
-@alias en"=><=""reciprocal relations" 		fr"=><=""relations réciproques"		ieml"E:.-m.u.-k.u.-'"	. 	
-	
+// WORDS
+@word 'u.' .
 
-¶ #CATEGORIES
+// ¶ #CATEGORIES
 
-@alias en"express""say""expression" 	fr"exprimer""dire""expression"	ieml"u."			.
+@component en"express" en"say" en"expression" 	fr"exprimer" fr"dire" fr"expression"	'u.' .		.
 
-@alias en"language"			fr"langage"			ieml"b."			.
-@alias en"is true""truth" 		fr"est vrai""vérité"		ieml"d."			.
-@alias en"space"			fr"espace"			ieml"l."			.
+@component en"language"			fr"langage"			'b."			.
+@component en"is true""truth" 		fr"est vrai""vérité"		'd."			.
+@component en"space"			fr"espace"			'l."			.
 
-@alias en"contain"			fr"contenir"			ieml"t.i.-"			.
-@alias en"time"				fr"temps"			ieml"t.o.-"			.
-@alias en"grammar"			fr"grammaire"			ieml"s.e.-"			.
-@alias en"word"				fr"mot"				ieml"b.o.-"			.
-@alias en"dialectic"			fr"dialectique"			ieml"b.e.-"			.
-@alias en"first principles"		fr"premiers principes"		ieml"n.y.-"			.
+@component en"contain"			fr"contenir"			't.i.-"			.
+@component en"time"				fr"temps"			't.o.-"			.
+@component en"grammar"			fr"grammaire"			's.e.-"			.
+@component en"word"				fr"mot"				'b.o.-"			.
+@component en"dialectic"			fr"dialectique"			'b.e.-"			.
+@component en"first principles"		fr"premiers principes"		'n.y.-"			.
 
-@alias en"relation"			fr"relation"			ieml"t.wo.-"			.	
-@alias en"context variation"		fr"variation du contexte" 	ieml"g.we.-"			.
+@component en"relation"			fr"relation"			't.wo.-"			.	
+@component en"context variation"		fr"variation du contexte" 	'g.we.-"			.
 
-@alias en"jump"				fr"sauter"			ieml"i.B:.-"			.
-@alias en"combine" 			fr"combiner" 			ieml"e.T:.-"			.
+@component en"jump"				fr"sauter"			'i.B:.-"			.
+@component en"combine" 			fr"combiner" 			'e.T:.-"			.
 
-@alias en"exchange"			fr"échange"			ieml"p.x.-"			.
+@component en"exchange"			fr"échange"			'p.x.-"			.
 
-@alias en"vary""variable"		fr"varier""variable"		ieml"S:.E:.n.-"			.
-@alias en"atom"				fr"atome" 			ieml"S:.A:.n.-"			.
+@component en"vary""variable"		fr"varier""variable"		'S:.E:.n.-"			.
+@component en"atom"				fr"atome" 			'S:.A:.n.-"			.
 			
-@alias en"change" 			fr"changement"			ieml"t.o.-t.o.-'"		.
-@alias en"collective intelligence" 	fr"intelligence collective" 	ieml"s.o.-k.o-'"		.
+@component en"change" 			fr"changement"			't.o.-t.o.-'"		.
+@component en"collective intelligence" 	fr"intelligence collective" 	's.o.-k.o-'"		.
 
-@alias en"causal determination"		fr"détermination causale"	ieml"s.x.we.-"			.
-@alias en"quality"			fr"qualité"			ieml"s.h.wu.-"			.
-@alias en"inference" 			fr"inférence"			ieml"s.g.wo.-"			.
-@alias en"conditional determination" 	fr"détermination conditionnelle"ieml"s.p.we.-"			.
+@component en"causal determination"		fr"détermination causale"	's.x.we.-"			.
+@component en"quality"			fr"qualité"			's.h.wu.-"			.
+@component en"inference" 			fr"inférence"			's.g.wo.-"			.
+@component en"conditional determination" 	fr"détermination conditionnelle"'s.p.we.-"			.
 
-@alias en"first actant"			fr"premier actant"		ieml"h.y.d.-"			.  	
-@alias en"second actant"		fr"second actant"		ieml"h.e.d.-"			.	
-@alias en"third actant"			fr"troisième actant"		ieml"h.o.d.-"			.
+@component en"first actant"			fr"premier actant"		'h.y.d.-"			.  	
+@component en"second actant"		fr"second actant"		'h.e.d.-"			.	
+@component en"third actant"			fr"troisième actant"		'h.o.d.-"			.
 
-@alias en"intention"			fr"intention"			ieml"h.o.d.-U:.-'"		.
-@alias en"text" 			fr"texte"			ieml"j.y.d.-A:.-' "		.
-@alias en"plays a move"			fr"jouer un coup"		ieml"h.o.-d.A:.-'"		.
-@alias en"role"				fr"rôle"			ieml"h.e.d.-U:.-'"		.
+@component en"intention"			fr"intention"			'h.o.d.-U:.-'"		.
+@component en"text" 			fr"texte"			'j.y.d.-A:.-' "		.
+@component en"plays a move"			fr"jouer un coup"		'h.o.-d.A:.-'"		.
+@component en"role"				fr"rôle"			'h.e.d.-U:.-'"		.
 
-@alias en"paradigm"			fr"paradigme"			ieml"n.-u.-'"			.
-@alias en"discursive content"		fr"contenu discursif"		ieml"n.-g.-'"			.
+@component en"paradigm"			fr"paradigme"			'n.-u.-'"			.
+@component en"discursive content"		fr"contenu discursif"		'n.-g.-'"			.
 
-@alias en"ternary"			fr"ternaire"			ieml"g.-U:.-'"			.
-@alais en"binary"			fr"binaire"			ieml"j.-A:.-'"			.
+@component en"ternary"			fr"ternaire"			'g.-U:.-'"			.
+@component en"binary"			fr"binaire"			'j.-A:.-'"			.
 
-@alias en"verb"				fr"verbe"			ieml"b.u.-n.u.-'"		.
-@alias en"noun""common name"		fr"nom commum"			ieml"s.u.-n.u.-'"		.
-@alias en"proposition"			fr"proposition"			ieml"n.u.-b.u.-'"		.
-@alias en"phrase"			fr"phrase"			ieml"s.u.-b.u.-'"		.
-@alias en"part"				fr"partie"			ieml"b.u.-d.u.-'"		.
-@alias en"symmetry""is symmetric of" 	fr"symétrie""est symétrique de"	ieml"k.u.-s.u.-d.u.-'"	.
-@alias en"reflexivity""is reflexive"	fr"réflexivité""est réflexif"	ieml"s.u.-s.u.-d.u.-'"	.
+@component en"verb"				fr"verbe"			'b.u.-n.u.-'"		.
+@component en"noun""common name"		fr"nom commum"			's.u.-n.u.-'"		.
+@component en"proposition"			fr"proposition"			'n.u.-b.u.-'"		.
+@component en"phrase"			fr"phrase"			's.u.-b.u.-'"		.
+@component en"part"				fr"partie"			'b.u.-d.u.-'"		.
+@component en"symmetry""is symmetric of" 	fr"symétrie""est symétrique de"	'k.u.-s.u.-d.u.-'"	.
+@component en"reflexivity""is reflexive"	fr"réflexivité""est réflexif"	's.u.-s.u.-d.u.-'"	.
 
-@alias en"glue" 			fr"colle"			ieml"n.i.-l.i.-'"		.
-@alias en"transitivity""is transitive"	fr"transitivité""est transitif"	ieml"t.i.-s.i.-t.u.-'"		.
+@component en"glue" 			fr"colle"			'n.i.-l.i.-'"		.
+@component en"transitivity""is transitive"	fr"transitivité""est transitif"	't.i.-s.i.-t.u.-'"		.
 
-@alias en"third"			fr"troisième"			ieml"g.-U:.-'s.o.-l.o.-',"	.
+@component en"third"			fr"troisième"			'g.-U:.-'s.o.-l.o.-',"	.
 
-@alias en"concept"			fr"concept" 			ieml"s.o.-wa.-'S:.-',"		. 
+@component en"concept"			fr"concept" 			's.o.-wa.-'S:.-',"		. 
 
-@alias en"precise / specify"		fr"préciser / spécifier"	ieml"u.-y.'s.o.-k.o-',"		.
+@component en"precise / specify"		fr"préciser / spécifier"	'u.-y.'s.o.-k.o-',"		.
 
-@alias en"root"				fr"racine"			ieml"B:.S:.n.-'E:.-U:.d.-l.-',"	.
-@alias en"leaf"				fr"feuille"			ieml"B:.S:.n. 'E:.-U:.s.-l.-',"	.
+@component en"root"				fr"racine"			'B:.S:.n.-'E:.-U:.d.-l.-',"	.
+@component en"leaf"				fr"feuille"			'B:.S:.n. 'E:.-U:.s.-l.-',"	.
 
-¶¶ PHRASES
+// ¶¶ PHRASES
 
-¶ IEML BASICS 
+// ¶ IEML BASICS 
 
-@alias en"IEML" fr"IEML"
+@node en"' fr"'
 (
 0 #language,
 8 *moral property possessed by #collective intelligence
 ).
 
-@alias en"IEML grammar" fr"grammaire d'IEML" 		
+@node en"IEML grammar" fr"grammaire d'' 		
 (
 0 #grammar,
 4 *part of #IEML
 ).
 
-@alias en"USL" fr"USL" 	 			
+@node en"USL" fr"USL" 	 			
 (
 0 #expression,
 4 &and
@@ -155,13 +156,13 @@
 ]
 ).
 
-@alias "IEML phrase" fr"phrase IEML"
+@node "IEML phrase" fr"phrase"
 (
 0 phrase,
 4 *part of #IEML	
 ).
 
-@alias en"phrase role" fr"rôle de phrase"
+@node en"phrase role" fr"rôle de phrase"
 (
 0 #role,
 4 *part of #IEML phrase
@@ -169,37 +170,37 @@
 
 ¶ IEML DICTIONARY
 
-@alias en"IEML dictionary" fr"dictionnaire d'IEML"
+@node en"IEML dictionary" fr"dictionnaire d''
 (
 0 ~all #word,
 4 *part of #IEML
 ).
 
-@alias en"IEML primitives" fr"primitives IEML" 	
+@node en"IEML primitives" fr"primitives ' 	
 (
 0 ~plural #first principles,
 4 *part of #IEML dictionary
 ).
 
-@alias en"IEML primitive" fr"primitive IEML" 	
+@node en"IEML primitive" fr"primitive ' 	
 (
 0 ~singular first principles,
 4 *part of #IEML dictionary
 ).	
 
-@alias en"IEML element" fr"élément d'IEML"	
+@node en"IEML element" fr"élément d''	
 (
 0 ~singular #atom,
 4 *part of #IEML dictionary
 ).
 
-@alias en"seme" fr"sème"					
+@node en"seme" fr"sème"					
 (
 0 #one third,	
 4 *part of #IEML element			
 ).
 
-@alias en"IEML radical" fr"radical IEML"
+@node en"IEML radical" fr"radical '
 (
 0 #glue,
 1 ! ~singular #word,
@@ -207,36 +208,36 @@
 4 *part of #IEML dictionary
 ).
 
-@alias fr"IEML element paradigm" fr"paradigme d'éléments" 	
+@node fr"IEML element paradigm" fr"paradigme d'éléments" 	
 (
 0 #contain,
 1 ! #paradigm,
 2 ~plural #IEML element		
 ).
 
-@alias en"IEML radical paradigm" fr"paradigme de radicaux IEML" 	
+@node en"IEML radical paradigm" fr"paradigme de radicaux"
 0 #contain,
 1 ! #paradigm,
 2 ~plural #IEML radical		
 ).
 
-@alias en"binary dialectic"		fr"dialectique binaire"		
+@node en"binary dialectic"		fr"dialectique binaire"		
 (
 0 #dialectic
 8 #binary
 ).
 
-@alias en"ternary dialectic"		fr"dialectique ternaire"		
+@node en"ternary dialectic"		fr"dialectique ternaire"		
 (
 0 #dialectic
 8 #ternary
 ).
 
-+ autres dialectiques....
+// + autres dialectiques....
 
-¶ #SYNTACTIC CLASSES
+// ¶ #SYNTACTIC CLASSES
 
-@alias en"IEML category" fr"catégorie IEML"
+@node en"IEML category" fr"catégorie '
 (
 0 	#express,
 1 ! 	#USL,
@@ -245,37 +246,37 @@
 
 
 
-¶¶¶¶¶¶ @alias en"phrase category" fr"catégorie phrase" = phrase IEML 
-¶¶ CRÉER JUSTE UNE RELATION AU LIEU D'UN MOT
+// ¶¶¶¶¶¶ @node en"phrase category" fr"catégorie phrase" = phrase IEML 
+// ¶¶ CRÉER JUSTE UNE RELATION AU LIEU D'UN MOT
 (
 0 	#express			,
 1 ! 	#phrase IEML			,
 2 	#discursive content
 )					.
 
-¶¶¶¶¶¶ par opposition aux particules grammaticales 
-@alias en"elementary category"  fr"catégorie élémentaire"			
+// ¶¶¶¶¶¶ par opposition aux particules grammaticales 
+@node en"elementary category"  fr"catégorie élémentaire"			
 (
 0 #express				,
 1 ! #IEML element			,
 2 #discursive content
 )					.
 
-@alias en"IEML auxiliary" fr"auxiliaire IEML"	
+@node en"IEML auxiliary" fr"auxiliaire '	
 (
 0 #precise,
 1 ! #IEML element,
 2 #phrase role
 ).
 
-@alias en"IEML junction" fr"jonction IEML"
+@node en"IEML junction" fr"jonction '
 (
 0 #glue,
 1 ! #IEML element,
 2 ~plural #IEML category
 ).
 
-@alias en"IEML inflection" fr"flexion IEML"
+@node en"IEML inflection" fr"flexion"
 (
 0 express,
 1 ! #IEML element
@@ -283,14 +284,14 @@
 8 *with #IEML category		
 ).
 
-@alias en"tool word" fr"mot outil""particule grammaticale"
+@node en"tool word" fr"mot outil""particule grammaticale"
 (
 &inclusive or [#IEML inflection #IEMLjunction #IEMLauxiliary]
 )
 
-¶ PHRASE ROLES ¶
+// ¶ PHRASE ROLES ¶
 
-@alias en"grammatical root" fr"racine grammaticale"
+@node en"grammatical root" fr"racine grammaticale"
 (
 0 #plays a role,
 1 expression,
@@ -299,7 +300,7 @@
 7 *in context #phrase role					
 ).
 
-@alias en"grammatical subject""initiator" fr"sujet grammatical""initiateur"
+@node en"grammatical subject""initiator" fr"sujet grammatical""initiateur"
 (
 0 #plays a role,
 1 #expression,
@@ -308,7 +309,7 @@
 7 *in context #phrase role					
 ).
 
-@alias en"grammatical object""interactant"  fr"objet gramatical""interactant"					
+@node en"grammatical object""interactant"  fr"objet gramatical""interactant"					
 (
 0 #plays a role,	
 1 #expression,
@@ -317,7 +318,7 @@
 7 *in context #phrase role					
 )					.
 
-@alias en"grammatical recipient" fr"destinataire grammatical" 				
+@node en"grammatical recipient" fr"destinataire grammatical" 				
 (
 0 #plays a role,
 1 #expression,
@@ -326,7 +327,7 @@
 7 *in context #phrase role					
 ).
 
-@alias en"grammatical cause""objective structure"  fr"causalité grammaticale""structure objective"	
+@node en"grammatical cause""objective structure"  fr"causalité grammaticale""structure objective"	
 (
 0 #plays a role,
 1 #expression,
@@ -335,7 +336,7 @@
 7 *in context #phrase role					
 )
 
-@alias en"grammatical time" fr"temps grammatical"
+@node en"grammatical time" fr"temps grammatical"
 (
 0 plays	a role,
 1 #expression,
@@ -344,7 +345,7 @@
 7 *in context #phrase role					
 )					.
 
-@alias en"grammatical place"  fr"lieu grammatical"
+@node en"grammatical place"  fr"lieu grammatical"
 (
 0 #plays a role,
 1 #expression,
@@ -353,7 +354,7 @@
 7 *in context #phrase role					
 ).
 
-@alias en"grammatical intention" fr"intention gramaticale"
+@node en"grammatical intention" fr"intention gramaticale"
 0 #plays a role,
 1 #expression,
 2 ! intention,
@@ -361,7 +362,7 @@
 7 *in context #phrase role					
 ).
 
-@alias en"grammatical manner"  fr"manière grammaticale"
+@node en"grammatical manner"  fr"manière grammaticale"
 (
 0 #plays a role,
 1 #expression,
@@ -372,87 +373,87 @@
 
 ¶ ELEMENT ROLES ¶
 
-@alias en"element role" fr"rôle d'élément"
+@node en"element role" fr"rôle d élément"
 (
 0 #role
 4 *part of #IEML element
 )
 
-@alias en"grammatical substance""is a grammatical substance of" fr"substance grammaticale""est une substance grammaticale de"
+@node en"grammatical substance""is a grammatical substance of" fr"substance grammaticale""est une substance grammaticale de"
 (
 0 #seme,
 6 *at starting point 
 ).
 
-@alias en"grammatical attribute""is a grammatical attribute of" fr"attribut grammatical""est un attribut grammatical de"
+@node en"grammatical attribute""is a grammatical attribute of" fr"attribut grammatical""est un attribut grammatical de"
 (
 0 #seme,
 6 *at arrival point 
 ).
 
-@alias en"grammatical mode""is a grammatical mode of" fr"mode grammatical""est un mode grammatical de"
+@node en"grammatical mode""is a grammatical mode of" fr"mode grammatical""est un mode grammatical de"
 (
 0 #seme,				
 6 *at medium point
 ).	
 
-@alias en"substance of substance""is the substance of the substance of" fr"substance de substance""est la substance de la substance de"
+@node en"substance of substance""is the substance of the substance of" fr"substance de substance""est la substance de la substance de"
 (
 0 # is grammatical substance,
 1 ! #seme,
 4 *part of #grammatical substance
 ).
 
-@alias en"attribute of the substance""is an attribute of the substance of" fr"attribut de la substance""est un attribut de la substance de"
+@node en"attribute of the substance""is an attribute of the substance of" fr"attribut de la substance""est un attribut de la substance de"
 (
 0 #is grammatical attribute,
 1 ! seme,
 4 *part of #grammatical substance
 ).
 
-@alias en"mode of substance""is the mode of the substance of" fr"mode de la substance""est le mode de la substance de"
+@node en"mode of substance""is the mode of the substance of" fr"mode de la substance""est le mode de la substance de"
 (
 0 #is grammatical mode,
 1 ! #seme,
 4 *part of #grammatical substance
 ).
 
-@alias en"substance of attribute""is the substance of the attribute of" fr"substance de l'attribut""est la substance de l'attribut de"
+@node en"substance of attribute""is the substance of the attribute of" fr"substance de l'attribut""est la substance de l'attribut de"
 (
 0 #is grammatical substance,
 1 ! #seme,
 4 *part of #grammatical attribute
 ).
 
-@alias en"attribute of attribute""is the attribute of the attribute of" fr"attribut de l'attribut""est l'attribut de l'attribut de"
+@node en"attribute of attribute""is the attribute of the attribute of" fr"attribut de l'attribut""est l'attribut de l'attribut de"
 (
 0 #is grammatical attribute,
 1 ! #seme,
 4 *part of #grammatical attribute
 ).
 
-@alias en"mode of attribute""is the mode of the attribute of" fr"mode de l'attribut""est le mode de l'attribut de"
+@node en"mode of attribute" en"is the mode of the attribute of" fr"mode de l attribut" fr"est le mode de l attribut de"
 (
 0 #is grammatical mode,
 1 ! #seme,
 4 *part of #grammatical attribute
 ).
 
-@alias en"substance of mode""is the substance of the mode of" fr"substance du mode""est la substance du mode de"
+@node en"substance of mode""is the substance of the mode of" fr"substance du mode""est la substance du mode de"
 (
 0 #grammatical substance,
 1 ! #seme,
 4 *part of #grammatical mode
 ).
 
-@alias en"attribute of mode""is the attribute of the mode of" fr"attribut du mode""est l'attribut du mode de"
+@node en"attribute of mode" en"is the attribute of the mode of" fr"attribut du mode" fr"est l attribut du mode de"
 (
 0 #grammatical attribute,
 1 ! #seme,
 4 *part of #grammatical mode
 ).
 
-@alias en"mode of mode""is the mode of the mode of" fr"mode du mode""est le mode du mode de"
+@node en"mode of mode""is the mode of the mode of" fr"mode du mode""est le mode du mode de"
 (
 0 #grammatical mode,
 1 ! #seme ,
@@ -461,7 +462,7 @@
 
 ¶ SAME PARADIGM RELATIONS ¶
 
-@alias en"is twin of" fr"est jumeau de"
+@node en"is twin of" fr"est jumeau de"
 (
 0 #is symmetric of,
 1 #grammatical substance,
@@ -469,7 +470,7 @@
 8 *same &and [#grammatical mode #IEML element paradigm]
 ).
 
-@alias en"is opposed to" fr"est opposé à" 
+@node en"is opposed to" fr"est opposé à" 
 (
 0 #exchange,
 1 #grammatical substance,
@@ -477,14 +478,14 @@
 8 *same [#grammatical mode #IEML element paradigm]
 ).
 
-@alias en"is associated to" fr"est associé à"
+@node en"is associated to" fr"est associé à"
 (
 0 #change,
 1 #grammatical mode,
 4 *same [#grammatical substance #grammatical attribute #IEML element paradigm]
 ).
 
-@alias en"is in crossed relation with" fr"est en relation croisée avec"
+@node en"is in crossed relation with" fr"est en relation croisée avec"
 (
 &and 
 [
@@ -505,7 +506,7 @@
 )						.
 
 
-@alias en"is in leapfrog relation with" fr"est en relation de saute-mouton avec" 					
+@node en"is in leapfrog relation with" fr"est en relation de saute-mouton avec" 					
 //même paradigme ET non contigu dans la table ET alternance S/B/T OU BIEN U/A à même place//
  (
  0 #vary,
@@ -518,251 +519,68 @@
 
 MATHEMATICAL RELATIONS
 
-@alias en"reflexivity relation" fr"relation réflexive"
+@node en"reflexivity relation" fr"relation réflexive"
 (
 0 #is reflexive,				
 1 #relation	
 ).
 
-@alias en"irreflexivity relation" fr"relation irréflexive"
+@node en"irreflexivity relation" fr"relation irréflexive"
 (
 0 ~not #is reflexive,				
 1 #relation	
 ).
 
-@alias en"symmetric relation" fr"relation symétrique"
+@node en"symmetric relation" fr"relation symétrique"
 (
 0 #is symmetrical,			
 1 #relation	
 ).				
 
-@alias en"asymmetric relation" fr"relation asymétrique" 
+@node en"asymmetric relation" fr"relation asymétrique" 
 (
 0 ~not #is symmetical,				
 1 #relation 	
 ).				
 
-@alias en"transitive relation" "relation transitive"
+@node en"transitive relation" "relation transitive"
 (
 0 #is transitive,					
 1 #relation
 ).					
 
-@alias en"atransitive relation" fr"relation atransitive"
+@node en"atransitive relation" fr"relation atransitive"
 (
 0 ~not #is transitive,					
 1 #relation 
 ).
 
-@alias en"equivalence relation" fr"relation d'équivalence"
+@node en"equivalence relation" fr"relation d'équivalence"
 (
 0 ~reciprocal #combine,
 1 &and [#symmetric relation #transitive relation #reflexive relation]
 ).
 
-@alias en"proximity relation" fr"relation de proximité"
+@node en"proximity relation" fr"relation de proximité"
 (
 0 ~reciprocal #combine,
 1 &and [#symmetric relation #atransitive relation #reflexive relation])
 ).
 
-@alias en"complementary relation" fr"relation complémentaire"
+@node en"complementary relation" fr"relation complémentaire"
 (
 0 ~reciprocal #combine,
 1 &and [#asymmetric relation #atransitive relation #irreflexive relation]
 ).
 
-@alias en"order relation" fr"relation d'ordre"
+@node en"order relation" fr"relation d'ordre"
 (
 0 ~reciprocal #combine,
 1 &and [#asymmetric relation #transitive relation #irreflexive relation]
 ).
 
-@alias en"==>""logical implication""logically implies" fr"==>""implication logique""implique logiquement"						
+@node en"==>""logical implication""logically implies" fr"==>""implication logique""implique logiquement"						
 (
 0 #inference,
 4 *by #conditional determination
 ).
-
-¶¶¶ CHAPTER 1 IEML GRAMMAR SECTION 2: FUNCTIONS ¶¶¶ 
-
-
-¶¶ LOGICAL RELATIONS
-
-¶ LOGICAL IMPLICATION
-
-@function en"==>(%A, %B)""%A implies %B" fr"==>(%A, %B)""%A implique %B"						
-(	
-0 ~active #==>,
-1 	(
-	0 ~if #is true, 			
-	1 #proposition <%A>
-	),						
-2 	(
-	0 ~then #is true, 			
-	1 #proposition <%B>
-	),
-7 *variable-variable #complementary relation		
-).
-						
-¶ EQUIVALENT RELATION
-
-@function en"<==>(%A, %B)""$A is equivalent to $B" fr"<==>(%A, %B)""$A est équivalent à $B"
-(
-0 ~reciprocal #is true,						
-1 &<==> [relation<%A> relation<%B>],
-7 *variable-variable #equivalence relation		
-).
-
-¶ RECIPROCAL RELATION
-					
-@function en"=><=($A, $B)""$B is the reciprocal relation of $A" fr"=><=($A, $B)""$B est la relation réciproque de $A"
-(
-0 ~reciprocal #is true,
-1 &=><= [relation <$A> relation <$B>],						
-7 *variable-variable #proximity relation
-).
-
-¶¶ ELEMENT GENEALOGICAL RELATIONS
-
-¶ FIRST DEGREE 3 GENEALOGICAL ELEMENT RELATIONS
-
-@function en"grammatical substance($A, $B)""A is the grammatical substance of B" fr"substance grammaticale($A, $B)""$A est la substance grammaticale de $B"
-(
-0 ~active #is substance of,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #complementary relation
-).
-
-@function en"grammatical attribute($A, $B)""A is the grammatical attribute of B" fr"attribut grammatical($A, $B)""$A est l'attribut grammatical de $B"
-(
-0 ~active #is attribute of,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #complementary relation
-).
-
-@function en"grammatical mode($A, $B)""A is the grammatical mode of B" fr"mode grammatical($A, $B)""$A est le mode grammatical de $B"
-(
-0 ~active #is mode of,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable complementary relation
-).
-
-¶ SECOND DEGREE 9 GENEALOGICAL ELEMENT RELATIONS ¶
-
-@function en"substance of substance($A, $B)" fr"substance de substance($A, $B)"
-(
-0 ~active #is substance of substance of,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #complementary relation
-).
-
-@function en"attribute of substance($A, $B)" fr"attribut de substance($A, $B)"
-(
-0 ~active #is attribute of substance of,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #complementary relation
-).
-
-@function en"mode of substance($A, $B)" fr"mode de substance($A, $B)"
-(
-0 ~active #is mode of substance of,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #complementary relation
-).	
-
-@function en"substance of attribute($A, $B)" fr"substance de l'attribut($A, $B)"
-(
-0 ~active #is substance of attribute of,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #complementary relation
-).	
-
-@function en"attribute of attribute($A, $B)" fr"attribut de l'attribut($A, $B)"
-(
-0 ~active #is attribute of attribute of,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #complementary relation
-).
-
-@function en"mode of attribute($A, $B)" fr"mode de l'attribut($A, $B)"
-(
-0 ~active #is attribute of mode of,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #complementary relation
-).
-
-@function en"substance of the mode($A, $B)" fr"substance du mode($A, $B)"
-(
-0 ~active #is substance of mode,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #complementary relation
-).
-
-@function en "attribute of mode($A, $B)" fr"attribut du mode($A, $B)"
-(
-0 ~active #is mode of attribute of,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #complementary relation
-).
-
-@function en"mode of mode($A, $B)" fr"mode du mode($A, $B)"
-(
-0 ~active #is mode of mode of,
-1 #IEML element <$A>,
-2 #IEML seme <$B>,
-7 *variable-variable #complementary relation
-).
-
-¶¶ SAME PARADIGM INTER ELEMENT RELATIONS 
-
-@function en"is twin of($A, $B)" fr"est jumeau de($A, $B)"
-(
-0 ~reciprocal #is twin of,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #equivalence relation
-).
-		
-@function en"is opposed to($A, $B)" fr"est associé à($A, $B)" 
-(
-0 ~reciprocal #is opposed to,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #proximity relation
-).
-
-@function en"is associated to($A, $B)" fr"est associé à($A, $B)"
-(
-0 ~reciprocal #is associated to,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #proximity relation
-).
-
-@function en"is in crossed relation with($A, $B)" fr"est en relation croisée avec($A, $B)"
-(
-0 ~reciprocal #is crossed with,
-1 #IEML element <$A>,
-2 #IEML element <$B>,
-7 *variable-variable #proximity relation
-).
-
-@function en"is in leapfrog relation with($A, $B)" fr"est en relation de saute-mouton avec($A, $B)"					
- (
- 0 ~reciprocal #is leap frogged with,
- 1 #IEML element <$A>,
- 2 #IEML element <$B>,
- 7 *variable-variable #proximity relation
- ).
