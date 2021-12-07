@@ -10,13 +10,19 @@ using json = nlohmann::json;
 
 void IEMLParserErrorListener::syntaxError(Recognizer *recognizer, Token *offendingSymbol, size_t line,
                                           size_t charPositionInLine, const std::string &msg, std::exception_ptr e) {
+    
+    size_t char_len;
+    if (offendingSymbol != nullptr)
+        char_len = offendingSymbol->getText().size();
+    else
+        char_len = 1;
 
     error_manager_.registerError(new SyntaxError(
         ieml::AST::CharRange(
             line, 
             line, 
             charPositionInLine, 
-            charPositionInLine + offendingSymbol->getText().size()
+            charPositionInLine + char_len
         ), msg));
 };
 void IEMLParserErrorListener::reportAmbiguity(Parser *recognizer, const dfa::DFA &dfa, size_t startIndex, size_t stopIndex, bool exact,

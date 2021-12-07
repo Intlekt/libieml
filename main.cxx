@@ -10,7 +10,7 @@ using namespace ieml;
 
 int main(int , const char **) {
   std::ifstream file;
-  file.open ("/home/louis/code/ieml/libieml/assets/exemples/ieml-grammar.ieml");
+  file.open ("/home/louis/code/ieml2/libieml/assets/exemples/ieml-grammar.ieml");
   std::stringstream os;
   std::string line;
   while ( getline (file,line) )
@@ -19,11 +19,13 @@ int main(int , const char **) {
   }
   file.close();
     
-
   parser::IEMLParser parser(os.str());
   parser.parse();
   
-  std::cout << parser.toJson().dump() << std::endl;
+  for (auto e : parser.getSyntaxErrors()) {
+    std::cout << e->to_string() << std::endl;
+  }
+
 
   // auto context = parser.getContext();
   // auto category_register = context->getCategoryRegister();

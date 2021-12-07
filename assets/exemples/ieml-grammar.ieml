@@ -3,51 +3,52 @@
 // WORDS
 //~INFLECTIONS
 
-//VERBS ~INFLECTIONS
-@inflection en"if" 					fr"si" 				   'E:S:A:.;			.	
-@inflection en"then" 				fr"alors			'E:T:U:.'			.	
-@inflection en"not" 					fr"non"				ieml"E:U:A:."			.	
 
-@inflection en"passive" 				fr"passif" 			ieml"E:.-wo.-t.o.-'"		. 
-@inflection en"active" 				fr"actif"			ieml"E:.-wa.-t.o.-'"		.
-@inflection en"reciprocal" 				fr"réciproque"			ieml"E:.-we.-t.o.-'"		. 
-@inflection en"reflexive" 				fr"réflexif"			ieml"E:.-wu.-t.o.-'"		.
+// VERBS ~INFLECTIONS
+@inflection en"if" 					fr"si" 		VERB		   'E:S:A:.'			.	
+@inflection en"then" 				fr"alors"	VERB    		'E:T:U:.'			.	
+@inflection en"not" 					fr"non"		VERB		'E:U:A:.'			.	
 
-@alias en"participle / quasi adjective" 	fr"participe / quasi adjectif" 	ieml"E:.-'we.-T:.-'t.o.-'," 	.
+@inflection en"passive" 				fr"passif" 		VERB	'E:.-wo.-t.o.-\''	. 
+@inflection en"active" 				fr"actif"		VERB	'E:.-wa.-t.o.-\''		.
+@inflection en"reciprocal" 				fr"réciproque"	VERB		'E:.-we.-t.o.-\''		. 
+@inflection en"reflexive" 				fr"réflexif"	VERB		'E:.-wu.-t.o.-\''		.
 
-NOUNS ~INFLECTIONS
-@alias en"singular" 				fr"singulier"			ieml"E:.wo.-"			.
-@alias en"two" 					fr"deux"			ieml"E:.wa.-"			.
-@alias en"three" 				fr"trois"			ieml"E:.wu.-"			.
-@alias en"plural" 				fr"pluriel"			ieml"E:.we.-"			.
+@inflection en"participle" en"quasi adjective" 	fr"participe" fr"quasi adjectif" VERB	'E:.-\'we.-T:.-\'t.o.-\',' 	.
 
-@alias en"all"					fr"tous"			ieml"E:A:.-t.u.-'"		.
+// NOUNS ~INFLECTIONS
+@inflection en"singular" 				fr"singulier"	NOUN		'E:.wo.-'			.
+@inflection en"two" 					fr"deux"		NOUN	'E:.wa.-'			.
+@inflection en"three" 				fr"trois"		NOUN	'E:.wu.-'			.
+@inflection en"plural" 				fr"pluriel"		NOUN	'E:.we.-'			.
 
-@alias en"non contiguous" 			fr"non contigu"			ieml"E:.-',b.-S:.U:.-'y.-'A:.-',_".
+@inflection en"all"					fr"tous"		NOUN	'E:A:.-t.u.-\''		.
 
-¶ *AUXILIARIES
+@inflection en"non contiguous" 			fr"non contigu"	NOUN		'E:.-\',b.-S:.U:.-\'y.-\'A:.-\',_'.
 
-*AUXILIARIES ROLE4 causes, objective structures
-@alias en"by" 					fr"par"				ieml"E:T:.p.-"			.
-@alias en"part of" 				fr"partie de"			ieml"E:S:.x.-"			.
-@alias en"formal cause" 			fr"cause formelle"		ieml"E:T:.j.-"			.
+// *AUXILIARIES
+
+// *AUXILIARIES ROLE4 causes, objective structures
+@auxiliary en"by" 					fr"par"			4	'E:T:.p.-'			.
+@auxiliary en"part of" 				fr"partie de"		4	'E:S:.x.-'			.
+@auxiliary en"formal cause" 			fr"cause formelle"	4	'E:T:.j.-'			.
 
 *AUXILIARIES ROLE6 places
-@alias en"at starting point" 			fr"au point de départ"		ieml"E:.-S:.b.-l.-'"		.
-@alias en"at arrival point" 			fr"au point d'arrivée"		ieml"E:.-S:.f.-l.-'"		.
-@alias en"at medium point" 			fr"au point d'arrivée"		ieml"E:.-S:.m.-l.-'"		.
-@alias en"inside" 				fr"dans"			ieml"E:.-T:.f.-l.-'"		.
-@alias en"at"					fr"à"				ieml"E:.-B:.n.-l.-'"		.
+@auxiliary en"at starting point" 			fr"au point de départ"		ieml"E:.-S:.b.-l.-'"		.
+@auxiliary en"at arrival point" 			fr"au point d'arrivée"		ieml"E:.-S:.f.-l.-'"		.
+@auxiliary en"at medium point" 			fr"au point d'arrivée"		ieml"E:.-S:.m.-l.-'"		.
+@auxiliary en"inside" 				fr"dans"			ieml"E:.-T:.f.-l.-'"		.
+@auxiliary en"at"					fr"à"				ieml"E:.-B:.n.-l.-'"		.
 
 *AUXILIARIES ROLE7 intentions
-@alias en"in context" 				fr"en contexte"		ieml"E:.-'h.o.d.-U:.-'x.-',"	.
+@auxiliary en"in context" 				fr"en contexte"		ieml"E:.-'h.o.d.-U:.-'x.-',"	.
 
-@alias en"variable-variable" 			fr"variable-variable"	ieml"E:.-b.o.-'E:.-b.o.-',"	.
+@auxiliary en"variable-variable" 			fr"variable-variable"	ieml"E:.-b.o.-'E:.-b.o.-',"	.
 
 *AUXILIARY ROLE8 manner
-@alias 	en"same" 				fr"même"			ieml"E:.A:.g.-"	.
-@alias	en"name of" 				fr"nom de" 			ieml"E:.A:.e.-"	.
-@alias 	en"moral feature possessed by" 		fr"trait moral possédé par"	ieml"E:.A:.o.-"	. 	
+@auxiliary 	en"same" 				fr"même"			ieml"E:.A:.g.-"	.
+@auxiliary	en"name of" 				fr"nom de" 			ieml"E:.A:.e.-"	.
+@auxiliary 	en"moral feature possessed by" 		fr"trait moral possédé par"	ieml"E:.A:.o.-"	. 	
 
 ¶ &JUNCTIONS [ ]
 

@@ -32,8 +32,8 @@ if (${BUILD_CHECK_ERRORS})
 endif()
 
 # add the executable
-# add_executable(IEML main.cxx)
-# target_link_libraries(IEML IEMLParser)
+add_executable(IEML main.cxx)
+target_link_libraries(IEML IEMLParser)
 
 
 
