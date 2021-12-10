@@ -15,12 +15,12 @@ std::shared_ptr<CompositionRelationGraph> CompositionRelationGraph::buildFromCat
 
     for (auto it = reg.categories_begin(); it != reg.categories_end(); ++it) {
         // for all subphrase in phrase
-        for (auto& subphrase : it->first->find_sub_tree(is_phrase)) {
+        for (auto& subphrase : it->first->find_sub_tree(is_phrase, false)) {
             if (reg.category_is_defined(subphrase.second))
                 graph->add_relation(std::make_shared<CompositionRelation>(
                     it->first,
                     subphrase.second,
-                    subphrase.first
+                    std::make_shared<CompositionRelationAttribute>(subphrase.first)
                 ));
         }
     }

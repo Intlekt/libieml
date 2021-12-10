@@ -36,37 +36,37 @@ json graph_to_json(const std::shared_ptr<GraphType<NodeType, RelationType>> grap
     nlohmann::json nodes;
     nlohmann::json relations;
     for (auto it = graph->begin(); it != graph->end(); ++it) {
-        auto rel = it->second;
-        size_t sbj_id, obj_id;
+        for (auto it_r = it->second.begin(); it_r != it->second.end(); ++it_r) {
+            auto rel = *it_r;
+            size_t sbj_id, obj_id;
 
-        auto sbj_it = node_to_idx.find(rel->getSubject());
-        if (sbj_it == node_to_idx.end()) {
-            sbj_id = id;
-            node_to_idx.insert({rel->getSubject(), id});
-            nodes.push_back(serializeNode(categories, rel->getSubject(), id));
-            
-            id++;
-        } else sbj_id = sbj_it->second;
+            auto sbj_it = node_to_idx.find(rel->getSubject());
+            if (sbj_it == node_to_idx.end()) {
+                sbj_id = id;
+                node_to_idx.insert({rel->getSubject(), id});
+                nodes.push_back(serializeNode(categories, rel->getSubject(), id));
+                
+                id++;
+            } else sbj_id = sbj_it->second;
 
-        auto obj_it = node_to_idx.find(rel->getObject());
-        if (obj_it == node_to_idx.end()) {
-            obj_id = id;
-            node_to_idx.insert({rel->getObject(), id});
-            nodes.push_back(serializeNode(categories, rel->getObject(), id));
+            auto obj_it = node_to_idx.find(rel->getObject());
+            if (obj_it == node_to_idx.end()) {
+                obj_id = id;
+                node_to_idx.insert({rel->getObject(), id});
+                nodes.push_back(serializeNode(categories, rel->getObject(), id));
 
-            id++;
-        } else obj_id = obj_it->second;
+                id++;
+            } else obj_id = obj_it->second;
 
 
-        relations.push_back({
-            {"subject", sbj_id},
-            {"object", obj_id},
-            {"class", rel->getClass()._to_string()},
-            {"attributes", {
-                "path", rel->getPath()->to_string()
-            }}
-        });
-
+            relations.push_back({
+                {"subject", sbj_id},
+                {"object", obj_id},
+                {"attributes", {
+                    "path", rel->getAttributes()->getPath()->to_string()
+                }}
+            });
+        }
     }
 
     return {

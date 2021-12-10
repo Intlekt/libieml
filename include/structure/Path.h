@@ -414,18 +414,28 @@ public:
         std::map<Key, std::shared_ptr<PathTree>, cmpKey> store_;
     };
 
-
     typedef std::pair<std::shared_ptr<Path>, std::shared_ptr<PathTree>> SubPathTree;
-    std::vector<SubPathTree> find_sub_tree(std::function<bool(const std::shared_ptr<PathTree>&)> f) const {
+
+    /*
+     * Return all matching SubPathTree
+     *
+     * parameters:
+     *  - f : the matching function
+     *  - sub_occurence : if we return the match of children of matched tree
+     */
+    std::vector<SubPathTree> find_sub_tree(std::function<bool(const std::shared_ptr<PathTree>&)> f, bool sub_occurence) const {
         std::vector<SubPathTree> res;
         for (auto& child: children_) {
-            if (f(child)) res.push_back(SubPathTree{std::make_shared<Path>(node_), child});
+            bool matched = f(child);
+            if (matched) res.push_back(SubPathTree{std::make_shared<Path>(node_), child});
             
-            auto child_res = child->find_sub_tree(f);
-            res.reserve(res.size() + child_res.size());
+            if (!matched || sub_occurence) {
+                auto child_res = child->find_sub_tree(f, sub_occurence);
+                res.reserve(res.size() + child_res.size());
 
-            for (auto& item: child_res) {
-                res.push_back(SubPathTree{std::make_shared<Path>(node_, item.first), item.second});
+                for (auto& item: child_res) {
+                    res.push_back(SubPathTree{std::make_shared<Path>(node_, item.first), item.second});
+                }
             }
         }
         return res;

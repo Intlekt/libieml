@@ -12,13 +12,13 @@
 #include "ast/interfaces/ICategory.h"
 
 #define RETURN_VISITOR_RESULT(ReturnType, DerivedType, args...) \
-  return (VisitorResult<ReturnType>(std::make_unique<DerivedType>(charRangeFromContext(ctx), args)));
+  return antlrcpp::Any(VisitorResult<ReturnType>(std::make_unique<DerivedType>(charRangeFromContext(ctx), args)));
 
 #define RETURN_VISITOR_RESULT_MOVE(ReturnType, UNIQUE_PTR) \
-  return (VisitorResult<ReturnType>(std::move(UNIQUE_PTR)));
+  return antlrcpp::Any(VisitorResult<ReturnType>(std::move(UNIQUE_PTR)));
 
 #define RETURN_VISITOR_RESULT_ERROR(ReturnType) \
-  return (VisitorResult<ReturnType>());
+  return antlrcpp::Any(VisitorResult<ReturnType>());
 
 
 #define CHECK_SYNTAX_ERROR(ErrorListener, Context, Attribute, Message, Required) \

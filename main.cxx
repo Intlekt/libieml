@@ -4,13 +4,15 @@
 #include <memory>
 
 #include "IemlParser.h"
+#include "relation/Composition.h"
+#include "relation/GraphJsonSerializer.h"
 
 using namespace ieml;
 
 
 int main(int , const char **) {
   std::ifstream file;
-  file.open ("/home/louis/code/ieml2/libieml/assets/exemples/ieml-grammar.ieml");
+  file.open ("/home/louis/code/ieml/libieml/assets/exemples/ieml-grammar.ieml");
   std::stringstream os;
   std::string line;
   while ( getline (file,line) )
@@ -21,24 +23,22 @@ int main(int , const char **) {
     
   parser::IEMLParser parser(os.str());
   parser.parse();
-  auto errors=  parser.getSyntaxErrors();
+  auto errors = parser.getSyntaxErrors();
   for ( auto it = errors.crbegin(); it != errors.crend(); ++it) {
     std::cout << (*it)->to_string() << std::endl;
   }
 
 
-  // auto context = parser.getContext();
-  // auto category_register = context->getCategoryRegister();
-  // auto p0 = structure::Path::from_string("/#/0", *context);
-  // auto p1 = structure::Path::from_string("/#/0", *context);
 
-  // assert(*p0 == *p1);
-  // // auto included = context->resolve_category("included");
-  // // auto container = context->resolve_category("container");
+  if (errors.size() == 0) {
 
-  // auto included = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::FR, "included"));
-  // auto container = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::FR,"container"));
-  // auto topcontainer = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::FR,"topcontainer"));
+    auto cregister = parser.getContext()->getCategoryRegister();
+
+    auto graph = ieml::relation::CompositionRelationGraph::buildFromCategoryRegister(cregister);
+
+    std::cout << ieml::relation::graph_to_json(graph, cregister).dump() << std::endl;
+
+  }
 
 
   return 0;
