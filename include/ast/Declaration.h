@@ -58,9 +58,9 @@ public:
             );
             return;
         }
-
-        ctx.getCategoryRegister().define_category(name, phrase, isNode());
         
+        ctx.getSourceMapping().register_mapping(phrase, this);
+        ctx.getCategoryRegister().define_category(name, phrase, isNode());
     };
 
 private:

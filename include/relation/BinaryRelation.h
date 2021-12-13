@@ -60,6 +60,8 @@ public:
 
     void add_relation(const std::shared_ptr<RelationType>& relation) {
         this->operator[](relation->getSubject()).insert(relation);
+        rev_relations_[relation->getObject()].insert(relation);
+
         vertexes_.insert(relation->getSubject());
         vertexes_.insert(relation->getObject());
     }
@@ -153,6 +155,27 @@ public:
         return nullptr;
     }
 
+    std::vector<std::shared_ptr<RelationType>> getRelationsWithObject(const std::shared_ptr<NodeType>& o) {
+        std::vector<std::shared_ptr<RelationType>> res;
+        auto it = rev_relations_.find(o);
+        if (it == rev_relations_.end()) return res;
+
+        for (auto it_r = it->second.cbegin(); it_r != it->second.cend(); ++it_r) {
+            res.push_back((*it_r));
+        }
+        return res;
+    }
+    std::vector<std::shared_ptr<RelationType>> getRelationsWithSubject(const std::shared_ptr<NodeType>& s) {
+        std::vector<std::shared_ptr<RelationType>> res;
+        auto it = this->find(s);
+        if (it == this->end()) return res;
+
+        for (auto it_r = it->second.cbegin(); it_r != it->second.cend(); ++it_r) {
+            res.push_back((*it_r));
+        }
+        return res;
+    }
+
     size_t vertex_number() const {
         return vertexes_.size();
     }
@@ -169,6 +192,7 @@ public:
 
 private:
     std::set<std::shared_ptr<NodeType>> vertexes_;
+    std::unordered_map<std::shared_ptr<NodeType>, std::unordered_set<std::shared_ptr<RelationType>>> rev_relations_;
 };
 
 }}

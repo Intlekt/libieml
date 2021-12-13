@@ -10,6 +10,7 @@
 #include "structure/WordRegister.h"
 #include "structure/CategoryRegister.h"
 #include "RecognitionError.h"
+#include "SourceMapping.h"
 
 #include "utils.h"
 
@@ -24,6 +25,7 @@ public:
     structure::PathTree::Register& getPathTreeRegister() {return path_tree_register_;};
     structure::CategoryRegister& getCategoryRegister() {return category_register_;};
     structure::WordRegister& getWordRegister() {return word_register_;};
+    parser::SourceMapping& getSourceMapping() {return source_mapping_;};
 
 
     structure::LanguageType getLanguage() const {
@@ -50,5 +52,7 @@ private:
     parser::IEMLParserErrorListener* error_manager_;
 
     structure::PathTree::Register path_tree_register_;
+
+    parser::SourceMapping source_mapping_;
 };
 }

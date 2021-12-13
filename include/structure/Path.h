@@ -490,5 +490,21 @@ struct hash<ieml::structure::PathNode>
         return hash<string>{}(s.to_string());
     }
 };
+
+template<>
+struct hash<ieml::structure::PathTree>
+{
+    size_t operator()(const ieml::structure::PathTree& s) const noexcept
+    {
+        size_t seed = 0;
+        hash_combine(seed, s.getNode());
+
+        for (auto& c: s.getChildren())
+            hash_combine(seed, *c);
+
+        return seed;
+    }
+};
+
 }
 

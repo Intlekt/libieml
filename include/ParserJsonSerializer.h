@@ -8,7 +8,10 @@
 #include <map>
 
 #include "relation/BinaryRelation.h"
+#include "relation/Composition.h"
 #include "structure/CategoryRegister.h"
+#include "structure/Path.h"
+#include "structure/Namespace.h"
 
 
 namespace ieml::parser {
@@ -17,10 +20,15 @@ nlohmann::json charRangeToJson(const CharRange& char_range);
 
 nlohmann::json syntaxErrorToJson(const SyntaxError& syntax_error);
 
+nlohmann::json nameToJson(const ieml::structure::Name& name);
+
 nlohmann::json errorManagerToJson(const IEMLParserErrorListener& error_manager);
 
-nlohmann::json parserToJson(const IEMLParser& parser);
+nlohmann::json conceptToJson(std::shared_ptr<ieml::structure::PathTree> concept, 
+                             ieml::parser::ParserContext& ctx,
+                             ieml::relation::CompositionRelationGraph& composition_graph);
 
+nlohmann::json parserToJson(const IEMLParser& parser);
 
 template<class NodeType>
 nlohmann::json serializeNode(const structure::CategoryRegister& categories, const NodeType& n, size_t id) {
