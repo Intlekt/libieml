@@ -1,0 +1,2163 @@
+{
+ "nodes": [
+  {
+   "class": "NODE",
+   "id": 0,
+   "names": {
+    "EN": "IEML",
+    "FR": "IEML"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 1,
+   "names": {
+    "EN": "language",
+    "FR": "language"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 2,
+   "names": {
+    "EN": "collective intelligence",
+    "FR": "intelligence collective"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 3,
+   "names": {
+    "EN": "IEML grammar",
+    "FR": "grammaire d"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 4,
+   "names": {
+    "EN": "grammar",
+    "FR": "grammaire"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 5,
+   "names": {
+    "EN": "USL",
+    "FR": "USL"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 6,
+   "names": {
+    "EN": "expression",
+    "FR": "expression"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 7,
+   "names": {
+    "EN": "IEML phrase",
+    "FR": "IEML phrase"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 8,
+   "names": {
+    "EN": "phrase",
+    "FR": "phrase"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 9,
+   "names": {
+    "EN": "phrase role",
+    "FR": "r\u00f4le de phrase"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 10,
+   "names": {
+    "EN": "role",
+    "FR": "r\u00f4le"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 11,
+   "names": {
+    "EN": "IEML dictionary",
+    "FR": "dictionnaire d"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 12,
+   "names": {
+    "EN": "word",
+    "FR": "mot"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 13,
+   "names": {
+    "EN": "IEML primitives",
+    "FR": "primitives"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 14,
+   "names": {
+    "EN": "first principles",
+    "FR": "premiers principes"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 15,
+   "names": {
+    "EN": "IEML primitive",
+    "FR": "primitive"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 16,
+   "names": {
+    "EN": "IEML element",
+    "FR": "\u00e9l\u00e9ment d"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 17,
+   "names": {
+    "EN": "atom",
+    "FR": "atome"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 18,
+   "names": {
+    "EN": "seme",
+    "FR": "s\u00e8me"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 19,
+   "names": {
+    "EN": "third",
+    "FR": "troisi\u00e8me"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 20,
+   "names": {
+    "EN": "IEML radical",
+    "FR": "radical"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 21,
+   "names": {
+    "EN": "glue",
+    "FR": "colle"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 22,
+   "names": {
+    "EN": "IEML element paradigm",
+    "FR": "paradigme d \u00e9l\u00e9ments"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 23,
+   "names": {
+    "EN": "contain",
+    "FR": "contenir"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 24,
+   "names": {
+    "EN": "paradigm",
+    "FR": "paradigme"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 25,
+   "names": {
+    "EN": "IEML radical paradigm",
+    "FR": "paradigme de radicaux"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 26,
+   "names": {
+    "EN": "binary dialectic",
+    "FR": "dialectique binaire"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 27,
+   "names": {
+    "EN": "dialectic",
+    "FR": "dialectique"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 28,
+   "names": {
+    "EN": "binary",
+    "FR": "binaire"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 29,
+   "names": {
+    "EN": "ternary dialectic",
+    "FR": "dialectique ternaire"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 30,
+   "names": {
+    "EN": "ternary",
+    "FR": "ternaire"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 31,
+   "names": {
+    "EN": "IEML category",
+    "FR": "cat\u00e9gorie"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 32,
+   "names": {
+    "EN": "discursive content",
+    "FR": "contenu discursif"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 33,
+   "names": {
+    "EN": "elementary category",
+    "FR": "cat\u00e9gorie \u00e9l\u00e9mentaire"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 34,
+   "names": {
+    "EN": "IEML auxiliary",
+    "FR": "auxiliaire"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 35,
+   "names": {
+    "EN": "specify",
+    "FR": "sp\u00e9cifier"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 36,
+   "names": {
+    "EN": "IEML junction",
+    "FR": "jonction"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 37,
+   "names": {
+    "EN": "IEML inflection",
+    "FR": "flexion"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 38,
+   "names": {
+    "EN": "context variation",
+    "FR": "variation du contexte"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 39,
+   "names": {
+    "EN": "grammatical root",
+    "FR": "racine grammaticale"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 40,
+   "names": {
+    "EN": "plays a role"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 41,
+   "names": {
+    "EN": "root",
+    "FR": "racine"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 42,
+   "names": {
+    "EN": "initiator",
+    "FR": "initiateur"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 43,
+   "names": {
+    "EN": "first actant",
+    "FR": "premier actant"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 44,
+   "names": {
+    "EN": "leaf",
+    "FR": "feuille"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 45,
+   "names": {
+    "EN": "interactant",
+    "FR": "interactant"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 46,
+   "names": {
+    "EN": "second actant",
+    "FR": "second actant"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 47,
+   "names": {
+    "EN": "grammatical recipient",
+    "FR": "destinataire grammatical"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 48,
+   "names": {
+    "EN": "third actant",
+    "FR": "troisi\u00e8me actant"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 49,
+   "names": {
+    "EN": "objective structure",
+    "FR": "structure objective"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 50,
+   "names": {
+    "EN": "causal determination",
+    "FR": "d\u00e9termination causale"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 51,
+   "names": {
+    "EN": "grammatical time",
+    "FR": "temps grammatical"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 52,
+   "names": {
+    "EN": "time",
+    "FR": "temps"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 53,
+   "names": {
+    "EN": "grammatical place",
+    "FR": "lieu grammatical"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 54,
+   "names": {
+    "EN": "space",
+    "FR": "espace"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 55,
+   "names": {
+    "EN": "grammatical intention",
+    "FR": "intention gramaticale"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 56,
+   "names": {
+    "EN": "intention",
+    "FR": "intention"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 57,
+   "names": {
+    "EN": "grammatical manner",
+    "FR": "mani\u00e8re grammaticale"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 58,
+   "names": {
+    "EN": "quality",
+    "FR": "qualit\u00e9"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 59,
+   "names": {
+    "EN": "element role",
+    "FR": "r\u00f4le d \u00e9l\u00e9ment"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 60,
+   "names": {
+    "EN": "is a grammatical substance of",
+    "FR": "est une substance grammaticale de"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 61,
+   "names": {
+    "EN": "starting point"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 62,
+   "names": {
+    "EN": "is a grammatical attribute of",
+    "FR": "est un attribut grammatical de"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 63,
+   "names": {
+    "EN": "arrival point"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 64,
+   "names": {
+    "EN": "is a grammatical mode of",
+    "FR": "mode grammatical"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 65,
+   "names": {
+    "EN": "medium point"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 66,
+   "names": {
+    "EN": "is the substance of the substance of",
+    "FR": "est la substance de la substance de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 67,
+   "names": {
+    "EN": "is an attribute of the substance of",
+    "FR": "attribut de la substance"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 68,
+   "names": {
+    "EN": "is the mode of the substance of",
+    "FR": "est le mode de la substance de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 69,
+   "names": {
+    "EN": "is the substance of the attribute of",
+    "FR": "est la substance de l attribut de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 70,
+   "names": {
+    "EN": "is the attribute of the attribute of",
+    "FR": "est l attribut de l attribut de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 71,
+   "names": {
+    "EN": "is the mode of the attribute of",
+    "FR": "est le mode de l attribut de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 72,
+   "names": {
+    "EN": "is the substance of the mode of",
+    "FR": "est la substance du mode de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 73,
+   "names": {
+    "EN": "is the attribute of the mode of",
+    "FR": "est l attribut du mode de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 74,
+   "names": {
+    "EN": "is the mode of the mode of",
+    "FR": "est le mode du mode de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 75,
+   "names": {
+    "EN": "is twin of",
+    "FR": "est jumeau de"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 76,
+   "names": {
+    "EN": "is symmetric of",
+    "FR": "est sym\u00e9trique de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 77,
+   "names": {
+    "EN": "is opposed to",
+    "FR": "est oppos\u00e9 \u00e0"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 78,
+   "names": {
+    "EN": "exchange",
+    "FR": "\u00e9change"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 79,
+   "names": {
+    "EN": "is associated to",
+    "FR": "est associ\u00e9 \u00e0"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 80,
+   "names": {
+    "EN": "change",
+    "FR": "changement"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 81,
+   "names": {
+    "EN": "reflexivity relation",
+    "FR": "relation r\u00e9flexive"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 82,
+   "names": {
+    "EN": "is reflexive",
+    "FR": "est r\u00e9flexif"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 83,
+   "names": {
+    "EN": "relation",
+    "FR": "relation"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 84,
+   "names": {
+    "EN": "irreflexivity relation",
+    "FR": "relation irr\u00e9flexive"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 85,
+   "names": {
+    "EN": "symmetric relation",
+    "FR": "relation sym\u00e9trique"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 86,
+   "names": {
+    "EN": "asymmetric relation",
+    "FR": "relation asym\u00e9trique"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 87,
+   "names": {
+    "EN": "transitive relation",
+    "FR": "relation transitive"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 88,
+   "names": {
+    "EN": "is transitive",
+    "FR": "est transitif"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 89,
+   "names": {
+    "EN": "atransitive relation",
+    "FR": "relation atransitive"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 90,
+   "names": {
+    "EN": "equivalence relation",
+    "FR": "relation d \u00e9quivalence"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 91,
+   "names": {
+    "EN": "combine",
+    "FR": "combiner"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 92,
+   "names": {
+    "EN": "proximity relation",
+    "FR": "relation de proximit\u00e9"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 93,
+   "names": {
+    "EN": "complementary relation",
+    "FR": "relation compl\u00e9mentaire"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 94,
+   "names": {
+    "EN": "order relation",
+    "FR": "relation d ordre"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 95,
+   "names": {
+    "EN": "logically implies",
+    "FR": "implique logiquement"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 96,
+   "names": {
+    "EN": "inference",
+    "FR": "inf\u00e9rence"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 97,
+   "names": {
+    "EN": "conditional determination",
+    "FR": "d\u00e9termination conditionnelle"
+   }
+  }
+ ],
+ "relations": [
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 1,
+   "subject": 0
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/8/*'E:.A:.o.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 2,
+   "subject": 0
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 4,
+   "subject": 3
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 0,
+   "subject": 3
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 6,
+   "subject": 5
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 8,
+   "subject": 7
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 0,
+   "subject": 7
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 10,
+   "subject": 9
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 7,
+   "subject": 9
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0/~'E:A:.-t.u.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 12,
+   "subject": 11
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 0,
+   "subject": 11
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0/~'E:.we.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 14,
+   "subject": 13
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 11,
+   "subject": 13
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0/~'E:.wo.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 14,
+   "subject": 15
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 11,
+   "subject": 15
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0/~'E:.wo.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 17,
+   "subject": 16
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 11,
+   "subject": 16
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 19,
+   "subject": 18
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 16,
+   "subject": 18
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 21,
+   "subject": 20
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1/~'E:.wo.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 12,
+   "subject": 20
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 11,
+   "subject": 20
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 23,
+   "subject": 22
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 24,
+   "subject": 22
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2/~'E:.we.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 16,
+   "subject": 22
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 23,
+   "subject": 25
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 24,
+   "subject": 25
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2/~'E:.we.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 20,
+   "subject": 25
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 27,
+   "subject": 26
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/8"
+   ],
+   "class": "COMPOSITION",
+   "object": 28,
+   "subject": 26
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 27,
+   "subject": 29
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/8"
+   ],
+   "class": "COMPOSITION",
+   "object": 30,
+   "subject": 29
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 6,
+   "subject": 31
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 5,
+   "subject": 31
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 32,
+   "subject": 31
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 6,
+   "subject": 33
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 16,
+   "subject": 33
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 32,
+   "subject": 33
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 35,
+   "subject": 34
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 16,
+   "subject": 34
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 9,
+   "subject": 34
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 21,
+   "subject": 36
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 16,
+   "subject": 36
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2/~'E:.we.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 31,
+   "subject": 36
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 6,
+   "subject": 37
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 16,
+   "subject": 37
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 38,
+   "subject": 37
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/8/*'t.'"
+   ],
+   "class": "COMPOSITION",
+   "object": 31,
+   "subject": 37
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 40,
+   "subject": 39
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 6,
+   "subject": 39
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/6/*'E:.-B:.n.-l.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 41,
+   "subject": 39
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
+   ],
+   "class": "COMPOSITION",
+   "object": 9,
+   "subject": 39
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 40,
+   "subject": 42
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 6,
+   "subject": 42
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 43,
+   "subject": 42
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/6/*'E:.-B:.n.-l.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 44,
+   "subject": 42
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
+   ],
+   "class": "COMPOSITION",
+   "object": 9,
+   "subject": 42
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 40,
+   "subject": 45
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 6,
+   "subject": 45
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 46,
+   "subject": 45
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/6/*'E:.-B:.n.-l.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 44,
+   "subject": 45
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
+   ],
+   "class": "COMPOSITION",
+   "object": 9,
+   "subject": 45
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 40,
+   "subject": 47
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 6,
+   "subject": 47
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 48,
+   "subject": 47
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/6/*'E:.-B:.n.-l.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 44,
+   "subject": 47
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
+   ],
+   "class": "COMPOSITION",
+   "object": 9,
+   "subject": 47
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 40,
+   "subject": 49
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 6,
+   "subject": 49
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 50,
+   "subject": 49
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/6/*'E:.-B:.n.-l.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 44,
+   "subject": 49
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
+   ],
+   "class": "COMPOSITION",
+   "object": 9,
+   "subject": 49
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 40,
+   "subject": 51
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 6,
+   "subject": 51
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 52,
+   "subject": 51
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/6/*'E:.-B:.n.-l.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 44,
+   "subject": 51
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
+   ],
+   "class": "COMPOSITION",
+   "object": 9,
+   "subject": 51
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 40,
+   "subject": 53
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 6,
+   "subject": 53
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 54,
+   "subject": 53
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/6/*'E:.-B:.n.-l.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 44,
+   "subject": 53
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
+   ],
+   "class": "COMPOSITION",
+   "object": 9,
+   "subject": 53
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 40,
+   "subject": 55
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 6,
+   "subject": 55
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 56,
+   "subject": 55
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/6/*'E:.-B:.n.-l.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 44,
+   "subject": 55
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
+   ],
+   "class": "COMPOSITION",
+   "object": 9,
+   "subject": 55
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 40,
+   "subject": 57
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 6,
+   "subject": 57
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 58,
+   "subject": 57
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/6/*'E:.-B:.n.-l.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 44,
+   "subject": 57
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
+   ],
+   "class": "COMPOSITION",
+   "object": 9,
+   "subject": 57
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 10,
+   "subject": 59
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 16,
+   "subject": 59
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 18,
+   "subject": 60
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/6/*'E:.-B:.n.-l.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 61,
+   "subject": 60
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 18,
+   "subject": 62
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/6/*'E:.-B:.n.-l.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 63,
+   "subject": 62
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 18,
+   "subject": 64
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/6/*'E:.-B:.n.-l.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 65,
+   "subject": 64
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 60,
+   "subject": 66
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 18,
+   "subject": 66
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 60,
+   "subject": 66
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 62,
+   "subject": 67
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 18,
+   "subject": 67
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 60,
+   "subject": 67
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 64,
+   "subject": 68
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 18,
+   "subject": 68
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 60,
+   "subject": 68
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 60,
+   "subject": 69
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 18,
+   "subject": 69
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 62,
+   "subject": 69
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 62,
+   "subject": 70
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 18,
+   "subject": 70
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 62,
+   "subject": 70
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 64,
+   "subject": 71
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 18,
+   "subject": 71
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 62,
+   "subject": 71
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 60,
+   "subject": 72
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 18,
+   "subject": 72
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 64,
+   "subject": 72
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 62,
+   "subject": 73
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 18,
+   "subject": 73
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 64,
+   "subject": 73
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 64,
+   "subject": 74
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 18,
+   "subject": 74
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:S:.x.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 64,
+   "subject": 74
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 76,
+   "subject": 75
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 60,
+   "subject": 75
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 62,
+   "subject": 75
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 78,
+   "subject": 77
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 60,
+   "subject": 77
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/2"
+   ],
+   "class": "COMPOSITION",
+   "object": 62,
+   "subject": 77
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 80,
+   "subject": 79
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 64,
+   "subject": 79
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 82,
+   "subject": 81
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 83,
+   "subject": 81
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0/~'E:U:A:.'"
+   ],
+   "class": "COMPOSITION",
+   "object": 82,
+   "subject": 84
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 83,
+   "subject": 84
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 76,
+   "subject": 85
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 83,
+   "subject": 85
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0/~'E:U:A:.'"
+   ],
+   "class": "COMPOSITION",
+   "object": 76,
+   "subject": 86
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 83,
+   "subject": 86
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 88,
+   "subject": 87
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 83,
+   "subject": 87
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0/~'E:U:A:.'"
+   ],
+   "class": "COMPOSITION",
+   "object": 88,
+   "subject": 89
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/1"
+   ],
+   "class": "COMPOSITION",
+   "object": 83,
+   "subject": 89
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0/~'E:.-we.-t.o.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 91,
+   "subject": 90
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0/~'E:.-we.-t.o.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 91,
+   "subject": 92
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0/~'E:.-we.-t.o.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 91,
+   "subject": 93
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0/~'E:.-we.-t.o.-\\''"
+   ],
+   "class": "COMPOSITION",
+   "object": 91,
+   "subject": 94
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/0"
+   ],
+   "class": "COMPOSITION",
+   "object": 96,
+   "subject": 95
+  },
+  {
+   "attributes": [
+    "path",
+    "/#/4/*'E:T:.p.-'"
+   ],
+   "class": "COMPOSITION",
+   "object": 97,
+   "subject": 95
+  }
+ ]
+}
