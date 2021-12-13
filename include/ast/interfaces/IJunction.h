@@ -14,8 +14,8 @@ namespace AST {
 template<class T, class IndexPathNode, class JunctionPathNode >
 class IJunction {
 public:
-    IJunction(std::vector<std::unique_ptr<T>>&& items,
-              std::unique_ptr<Identifier>&& junction_identifier) : 
+    IJunction(std::vector<std::shared_ptr<T>>&& items,
+              std::shared_ptr<Identifier>&& junction_identifier) : 
         items_(std::move(items)),
         junction_identifier_(std::move(junction_identifier)) {
             static_assert(std::is_base_of<AST, T>::value, "T is not an AST.");
@@ -79,8 +79,8 @@ protected:
         return os.str();
     }
 
-    std::unique_ptr<Identifier> junction_identifier_;
-    std::vector<std::unique_ptr<T>> items_;
+    std::shared_ptr<Identifier> junction_identifier_;
+    std::vector<std::shared_ptr<T>> items_;
 };
 
 }

@@ -29,7 +29,7 @@ private:
 
     antlr4::tree::ParseTree* parseTree_ = nullptr;
     
-    std::unique_ptr<Program> ast_ = nullptr;
+    std::shared_ptr<Program> ast_ = nullptr;
     std::shared_ptr<ParserContext> context_ = nullptr;
 
 public:

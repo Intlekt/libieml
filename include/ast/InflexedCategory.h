@@ -19,10 +19,10 @@ namespace ieml::AST {
 
 class InflexedCategory : virtual public AST, public IReferencable {
 public:
-    InflexedCategory(std::unique_ptr<CharRange>&& char_range,
-                     std::vector<std::unique_ptr<Identifier>>&& inflexions,
-                     std::unique_ptr<ICategory>&& category,
-                     std::vector<std::unique_ptr<Reference>>&& references) :
+    InflexedCategory(std::shared_ptr<CharRange>&& char_range,
+                     std::vector<std::shared_ptr<Identifier>>&& inflexions,
+                     std::shared_ptr<ICategory>&& category,
+                     std::vector<std::shared_ptr<Reference>>&& references) :
         AST(std::move(char_range)),
         inflexions_(std::move(inflexions)),
         category_(std::move(category)),
@@ -86,8 +86,8 @@ public:
     }
 
 private:
-    std::vector<std::unique_ptr<Identifier>> inflexions_;
-    std::unique_ptr<ICategory> category_;
+    std::vector<std::shared_ptr<Identifier>> inflexions_;
+    std::shared_ptr<ICategory> category_;
 };
 
 

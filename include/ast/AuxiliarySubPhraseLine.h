@@ -12,7 +12,7 @@ namespace ieml::AST {
 
 class AuxiliarySubPhraseLine : virtual public AST {
 public:
-    AuxiliarySubPhraseLine(std::unique_ptr<Identifier>&& auxiliary) : 
+    AuxiliarySubPhraseLine(std::shared_ptr<Identifier>&& auxiliary) : 
         auxiliary_(std::move(auxiliary)) {}
 
 
@@ -55,14 +55,14 @@ protected:
     }
 
 private:
-    std::unique_ptr<Identifier> auxiliary_;
+    std::shared_ptr<Identifier> auxiliary_;
 };
 
 class SimpleAuxiliarySubPhraseLine : public AuxiliarySubPhraseLine {
 public:
-    SimpleAuxiliarySubPhraseLine(std::unique_ptr<CharRange>&& char_range,
-                                 std::unique_ptr<Identifier>&& auxiliary,
-                                 std::unique_ptr<InflexedCategory>&& flexed_category) : 
+    SimpleAuxiliarySubPhraseLine(std::shared_ptr<CharRange>&& char_range,
+                                 std::shared_ptr<Identifier>&& auxiliary,
+                                 std::shared_ptr<InflexedCategory>&& flexed_category) : 
         AST(std::move(char_range)),
         AuxiliarySubPhraseLine(std::move(auxiliary)),
         flexed_category_(std::move(flexed_category)) {}
@@ -79,15 +79,15 @@ protected:
 
 
 private:
-    std::unique_ptr<InflexedCategory> flexed_category_;
+    std::shared_ptr<InflexedCategory> flexed_category_;
 };
 
 class JunctionAuxiliarySubPhraseLine : public AuxiliarySubPhraseLine, public IJunction<InflexedCategory, structure::InflexingJunctionIndexPathNode, structure::InflexingJunctionPathNode> {
 public:
-    JunctionAuxiliarySubPhraseLine(std::unique_ptr<CharRange>&& char_range,
-                                   std::unique_ptr<Identifier>&& auxiliary,
-                                   std::vector<std::unique_ptr<InflexedCategory>>&& flexed_categories,
-                                   std::unique_ptr<Identifier>&& junction_type) :
+    JunctionAuxiliarySubPhraseLine(std::shared_ptr<CharRange>&& char_range,
+                                   std::shared_ptr<Identifier>&& auxiliary,
+                                   std::vector<std::shared_ptr<InflexedCategory>>&& flexed_categories,
+                                   std::shared_ptr<Identifier>&& junction_type) :
         AST(std::move(char_range)),
         AuxiliarySubPhraseLine(std::move(auxiliary)),
         IJunction<InflexedCategory, structure::InflexingJunctionIndexPathNode, structure::InflexingJunctionPathNode>(std::move(flexed_categories), std::move(junction_type)) {}

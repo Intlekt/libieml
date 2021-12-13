@@ -9,7 +9,7 @@
 namespace ieml::AST {
 class ReferenceStringValue: virtual public AST, public IReferenceValue {
 public:
-    ReferenceStringValue(std::unique_ptr<CharRange>&& char_range,
+    ReferenceStringValue(std::shared_ptr<CharRange>&& char_range,
                          const std::string& value) :
         AST(std::move(char_range)),
         value_(unescape_value(value)) {}

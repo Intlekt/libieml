@@ -14,7 +14,7 @@ namespace AST {
 
 class IReferencable {
 public:
-    IReferencable(std::vector<std::unique_ptr<Reference>>&& references) : 
+    IReferencable(std::vector<std::shared_ptr<Reference>>&& references) : 
         references_(std::move(references)) {};
 
     std::string references_to_string() const {
@@ -31,7 +31,7 @@ public:
     }
 
 private:
-    std::vector<std::unique_ptr<Reference>> references_;
+    std::vector<std::shared_ptr<Reference>> references_;
 
 };
 

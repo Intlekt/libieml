@@ -69,10 +69,10 @@ private:
 
 class SimplePhraseLine : public PhraseLine {
 public:
-    SimplePhraseLine(std::unique_ptr<CharRange>&& char_range,
+    SimplePhraseLine(std::shared_ptr<CharRange>&& char_range,
                      int role_type,
                      bool accentuation,
-                     std::unique_ptr<AuxiliarySubPhraseLine>&& auxiliary_subline) : 
+                     std::shared_ptr<AuxiliarySubPhraseLine>&& auxiliary_subline) : 
         AST(std::move(char_range)),
         PhraseLine(role_type, accentuation),
         auxiliary_subline_(std::move(auxiliary_subline)) {}
@@ -86,15 +86,15 @@ protected:
     };
 
 private:
-    std::unique_ptr<AuxiliarySubPhraseLine> auxiliary_subline_;
+    std::shared_ptr<AuxiliarySubPhraseLine> auxiliary_subline_;
 
 };
 
 class JunctionPhraseLine : public PhraseLine, public IJunction<AuxiliarySubPhraseLine, structure::AuxiliaryJunctionIndexPathNode, structure::AuxiliaryJunctionPathNode> {
 public:
-    JunctionPhraseLine(std::unique_ptr<CharRange>&& char_range,
-                       std::vector<std::unique_ptr<AuxiliarySubPhraseLine>>&& sub_phrases,
-                       std::unique_ptr<Identifier>&& junction_identifier,
+    JunctionPhraseLine(std::shared_ptr<CharRange>&& char_range,
+                       std::vector<std::shared_ptr<AuxiliarySubPhraseLine>>&& sub_phrases,
+                       std::shared_ptr<Identifier>&& junction_identifier,
                        int role_type,
                        bool accentuation) : 
         AST(std::move(char_range)),

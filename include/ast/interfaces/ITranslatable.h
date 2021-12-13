@@ -21,7 +21,7 @@ namespace AST {
 class ITranslatable {
 public:
 // is the copy of translations a deep copy ?
-    ITranslatable(std::vector<std::unique_ptr<LanguageString>> && translations) : 
+    ITranslatable(std::vector<std::shared_ptr<LanguageString>> && translations) : 
         translations_(std::move(translations)) {};
 
 
@@ -58,7 +58,7 @@ public:
 
 
 private:
-    std::vector<std::unique_ptr<LanguageString>> translations_;
+    std::vector<std::shared_ptr<LanguageString>> translations_;
 
 };
 

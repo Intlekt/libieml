@@ -28,9 +28,9 @@ private:
 
 class CategoryDeclaration: public Declaration, public ITranslatable {
 public:
-    CategoryDeclaration(std::unique_ptr<CharRange>&& char_range, 
-                         std::vector<std::unique_ptr<LanguageString>>&& translations,
-                         std::unique_ptr<Phrase>&& phrase,
+    CategoryDeclaration(std::shared_ptr<CharRange>&& char_range, 
+                         std::vector<std::shared_ptr<LanguageString>>&& translations,
+                         std::shared_ptr<Phrase>&& phrase,
                          DeclarationType declaration_type) : 
         AST(std::move(char_range)), 
         ITranslatable(std::move(translations)),
@@ -64,16 +64,16 @@ public:
     };
 
 private:
-    std::unique_ptr<Phrase> phrase_;
+    std::shared_ptr<Phrase> phrase_;
 
 };
 
 
 class ComponentDeclaration: public CategoryDeclaration {
 public:
-    ComponentDeclaration(std::unique_ptr<CharRange>&& char_range, 
-                         std::vector<std::unique_ptr<LanguageString>>&& translations,
-                         std::unique_ptr<Phrase>&& phrase) : 
+    ComponentDeclaration(std::shared_ptr<CharRange>&& char_range, 
+                         std::vector<std::shared_ptr<LanguageString>>&& translations,
+                         std::shared_ptr<Phrase>&& phrase) : 
         AST(std::move(char_range)), 
         CategoryDeclaration(
             nullptr,
@@ -87,9 +87,9 @@ public:
 
 class NodeDeclaration: public CategoryDeclaration {
 public:
-    NodeDeclaration(std::unique_ptr<CharRange>&& char_range, 
-                    std::vector<std::unique_ptr<LanguageString>>&& translations,
-                    std::unique_ptr<Phrase>&& phrase) : 
+    NodeDeclaration(std::shared_ptr<CharRange>&& char_range, 
+                    std::vector<std::shared_ptr<LanguageString>>&& translations,
+                    std::shared_ptr<Phrase>&& phrase) : 
         AST(std::move(char_range)), 
         CategoryDeclaration(
             nullptr,
@@ -103,8 +103,8 @@ public:
 
 class WordDeclaration: public Declaration {
 public:
-    WordDeclaration(std::unique_ptr<CharRange>&& char_range, 
-                    std::unique_ptr<Word>&& word) : 
+    WordDeclaration(std::shared_ptr<CharRange>&& char_range, 
+                    std::shared_ptr<Word>&& word) : 
         AST(std::move(char_range)),          
         Declaration(DeclarationType::Word), 
         word_(std::move(word)) {};
@@ -135,14 +135,14 @@ public:
     };
 
 private:
-    std::unique_ptr<Word> word_;
+    std::shared_ptr<Word> word_;
 };
 
 class ToolWordDeclaration: public Declaration, public ITranslatable {
 public:
-    ToolWordDeclaration(std::unique_ptr<CharRange>&& char_range, 
-                        std::vector<std::unique_ptr<LanguageString>>&& translations,
-                        std::unique_ptr<Word>&& word,
+    ToolWordDeclaration(std::shared_ptr<CharRange>&& char_range, 
+                        std::vector<std::shared_ptr<LanguageString>>&& translations,
+                        std::shared_ptr<Word>&& word,
                         DeclarationType declaration_type) : 
         AST(std::move(char_range)),
         ITranslatable(std::move(translations)),
@@ -150,15 +150,15 @@ public:
         word_(std::move(word)) {};
 
 protected:
-    std::unique_ptr<Word> word_;
+    std::shared_ptr<Word> word_;
 };
 
 class InflexingDeclaration: public ToolWordDeclaration {
 public:
-    InflexingDeclaration(std::unique_ptr<CharRange>&& char_range, 
-                         std::vector<std::unique_ptr<LanguageString>>&& translations,
-                         std::unique_ptr<Identifier>&& type,
-                         std::unique_ptr<Word>&& word) : 
+    InflexingDeclaration(std::shared_ptr<CharRange>&& char_range, 
+                         std::vector<std::shared_ptr<LanguageString>>&& translations,
+                         std::shared_ptr<Identifier>&& type,
+                         std::shared_ptr<Word>&& word) : 
         AST(std::move(char_range)),
         ToolWordDeclaration(nullptr, std::move(translations), std::move(word), DeclarationType::Inflexion),
         type_(std::move(type)) {}
@@ -200,15 +200,15 @@ public:
     };
 
 private:
-    const std::unique_ptr<Identifier> type_;
+    const std::shared_ptr<Identifier> type_;
 };
 
 class AuxiliaryDeclaration: public ToolWordDeclaration {
 public:
-    AuxiliaryDeclaration(std::unique_ptr<CharRange>&& char_range, 
-                         std::vector<std::unique_ptr<LanguageString>>&& translations,
+    AuxiliaryDeclaration(std::shared_ptr<CharRange>&& char_range, 
+                         std::vector<std::shared_ptr<LanguageString>>&& translations,
                          int accepted_role_type,
-                         std::unique_ptr<Word>&& word) : 
+                         std::shared_ptr<Word>&& word) : 
         AST(std::move(char_range)),
         ToolWordDeclaration(nullptr, std::move(translations), std::move(word), DeclarationType::Inflexion),
         accepted_role_type_(accepted_role_type) {}
@@ -253,9 +253,9 @@ private:
 
 class JunctionDeclaration: public ToolWordDeclaration {
 public:
-    JunctionDeclaration(std::unique_ptr<CharRange>&& char_range, 
-                        std::vector<std::unique_ptr<LanguageString>>&& translations,
-                        std::unique_ptr<Word>&& word) : 
+    JunctionDeclaration(std::shared_ptr<CharRange>&& char_range, 
+                        std::vector<std::shared_ptr<LanguageString>>&& translations,
+                        std::shared_ptr<Word>&& word) : 
         AST(std::move(char_range)),
         ToolWordDeclaration(nullptr, std::move(translations), std::move(word), DeclarationType::Inflexion) {}
     
@@ -287,8 +287,8 @@ public:
 
 class LanguageDeclaration: public Declaration {
 public:
-    LanguageDeclaration(std::unique_ptr<CharRange>&& char_range,
-                        std::unique_ptr<Identifier>&& language_type) : 
+    LanguageDeclaration(std::shared_ptr<CharRange>&& char_range,
+                        std::shared_ptr<Identifier>&& language_type) : 
         AST(std::move(char_range)),
         Declaration(DeclarationType::Language),
         language_type_(std::move(language_type)) {}
@@ -322,7 +322,7 @@ public:
 
 
 private:
-    std::unique_ptr<Identifier> language_type_;
+    std::shared_ptr<Identifier> language_type_;
 };
 
 

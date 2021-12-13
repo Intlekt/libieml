@@ -20,15 +20,15 @@ class IEMLGrammarVisitor: public iemlVisitor {
 private:
   IEMLParserErrorListener* error_listener_;
 
-  std::unique_ptr<CharRange> charRangeFromToken(antlr4::Token* token) const ;
-  std::unique_ptr<CharRange> charRangeFromContext(antlr4::ParserRuleContext* ctx) const ;
+  std::shared_ptr<CharRange> charRangeFromToken(antlr4::Token* token) const ;
+  std::shared_ptr<CharRange> charRangeFromContext(antlr4::ParserRuleContext* ctx) const ;
 
 public:
   template<class T>
   class VisitorResult {
   public:
     VisitorResult(): is_error_(true) {}
-    VisitorResult(std::unique_ptr<T>&& value): is_error_(false), value_(std::move(value)) {}
+    VisitorResult(std::shared_ptr<T>&& value): is_error_(false), value_(std::move(value)) {}
 
     VisitorResult(const VisitorResult& vr) = delete;
     VisitorResult(VisitorResult&& vr) noexcept : is_error_(vr.is_error_), value_(std::move(vr.value_)) {};
@@ -37,13 +37,13 @@ public:
 
     bool isError() {return is_error_;};
 
-    std::unique_ptr<T>&& release() { return std::move(value_); }
+    std::shared_ptr<T>&& release() { return std::move(value_); }
 
     const T& value() {return *value_;}
 
   private:
     bool is_error_;
-    std::unique_ptr<T> value_;
+    std::shared_ptr<T> value_;
   };
 
   IEMLGrammarVisitor(IEMLParserErrorListener* error_listener) : iemlVisitor(), error_listener_(error_listener) {}

@@ -13,9 +13,9 @@ namespace ieml::AST {
 
 class LanguageString: virtual public AST {
 public:
-    LanguageString(std::unique_ptr<CharRange>&& char_range, 
-                   std::unique_ptr<Identifier>&& language_type, 
-                   std::unique_ptr<Identifier>&& identifier) : 
+    LanguageString(std::shared_ptr<CharRange>&& char_range, 
+                   std::shared_ptr<Identifier>&& language_type, 
+                   std::shared_ptr<Identifier>&& identifier) : 
         AST(std::move(char_range)), 
         language_type_(std::move(language_type)), 
         identifier_(std::move(identifier)) {}
@@ -41,8 +41,8 @@ public:
     }
 
 private:
-    std::unique_ptr<Identifier> language_type_;
-    std::unique_ptr<Identifier> identifier_;
+    std::shared_ptr<Identifier> language_type_;
+    std::shared_ptr<Identifier> identifier_;
 };
 
 }

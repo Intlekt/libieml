@@ -36,7 +36,7 @@ if (Context->Attribute) {\
 }
 
 #define CHECK_SYNTAX_ERROR_LIST(ErrorListener, Context, Type, Attribute, Message) \
-std::vector<std::unique_ptr<Type>> Attribute;\
+std::vector<std::shared_ptr<Type>> Attribute;\
 bool valid_##Attribute = true; \
 for (auto child: Context->Attribute) { \
   auto t_tmp = visit(child); \
@@ -56,7 +56,7 @@ for (auto child: Context->Attribute) { \
 #define CAST_OR_RETURN_IF_NULL(Context, Type, Attribute, ReturnType) \
 if (!valid_##Attribute) \
   RETURN_VISITOR_RESULT_ERROR(ReturnType);\
-std::unique_ptr<Type> Attribute;\
+std::shared_ptr<Type> Attribute;\
 if(Context->Attribute) {\
   auto _tmp = std::move(t_##Attribute.as<VisitorResult<Type>>()); \
   if (_tmp.isError())\
@@ -70,11 +70,11 @@ if (!valid_##Attribute) \
 
 namespace ieml::parser {
 
-  std::unique_ptr<CharRange> IEMLGrammarVisitor::charRangeFromToken(antlr4::Token* token) const {
+  std::shared_ptr<CharRange> IEMLGrammarVisitor::charRangeFromToken(antlr4::Token* token) const {
     return std::make_unique<CharRange>(token->getLine(), token->getLine(), token->getCharPositionInLine(), token->getCharPositionInLine() + token->getText().size());
   }
 
-  std::unique_ptr<CharRange> IEMLGrammarVisitor::charRangeFromContext(antlr4::ParserRuleContext* ctx) const {
+  std::shared_ptr<CharRange> IEMLGrammarVisitor::charRangeFromContext(antlr4::ParserRuleContext* ctx) const {
     antlr4::Token* start = ctx->getStart();
     antlr4::Token* end   = ctx->getStop();
 
@@ -156,7 +156,7 @@ namespace ieml::parser {
   antlrcpp::Any IEMLGrammarVisitor::visitInflexingDeclaration(iemlParser::InflexingDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
-    std::unique_ptr<Identifier> inflexing_type;
+    std::shared_ptr<Identifier> inflexing_type;
     if(!ctx->inflexing_type) 
       error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid inflexing type for an inflexing declaration. Expected 'NOUN' or 'VERB'.");
     else 
@@ -406,7 +406,7 @@ namespace ieml::parser {
    */
 
   antlrcpp::Any IEMLGrammarVisitor::visitReference(iemlParser::ReferenceContext *ctx) {
-    std::unique_ptr<int> ref_id = nullptr;
+    std::shared_ptr<int> ref_id = nullptr;
     if (ctx->id) {
       int i = std::stoi(ctx->id->getText());
       ref_id = std::move(std::make_unique<int>(i));

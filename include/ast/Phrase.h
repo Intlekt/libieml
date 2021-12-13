@@ -32,8 +32,8 @@ public:
 
 class SimplePhrase : public Phrase {
 public:
-    SimplePhrase(std::unique_ptr<CharRange> && char_range,
-                 std::vector<std::unique_ptr<PhraseLine>> && phrase_lines) : 
+    SimplePhrase(std::shared_ptr<CharRange> && char_range,
+                 std::vector<std::shared_ptr<PhraseLine>> && phrase_lines) : 
             AST(std::move(char_range)),
             Phrase(), 
             phrase_lines_(std::move(phrase_lines)) {}
@@ -97,16 +97,16 @@ public:
 
 
 private:
-    std::vector<std::unique_ptr<PhraseLine>> phrase_lines_;
+    std::vector<std::shared_ptr<PhraseLine>> phrase_lines_;
 
 };
 
 
 class JunctionPhrase : public Phrase, public IJunction<Phrase, structure::PhraseJunctionIndexPathNode, structure::PhraseJunctionPathNode> {
 public:
-    JunctionPhrase(std::unique_ptr<CharRange>&& char_range,
-                   std::vector<std::unique_ptr<Phrase>>&& phrases,
-                   std::unique_ptr<Identifier>&& junction_identifier) : 
+    JunctionPhrase(std::shared_ptr<CharRange>&& char_range,
+                   std::vector<std::shared_ptr<Phrase>>&& phrases,
+                   std::shared_ptr<Identifier>&& junction_identifier) : 
         AST(std::move(char_range)),
         Phrase(), 
         IJunction<Phrase, structure::PhraseJunctionIndexPathNode, structure::PhraseJunctionPathNode>(std::move(phrases), std::move(junction_identifier)) {}
