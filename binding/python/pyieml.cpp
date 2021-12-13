@@ -7,7 +7,7 @@
 #include "IemlParser.h"
 #include "RecognitionError.h"
 #include "relation/Composition.h"
-#include "relation/GraphJsonSerializer.h"
+#include "ParserJsonSerializer.h"
 
 
 
@@ -26,11 +26,11 @@ PYBIND11_MODULE(pyieml, m) {
         .def("parse", &ieml::parser::IEMLParser::parse)
         .def("errors", &ieml::parser::IEMLParser::getSyntaxErrors, py::return_value_policy::reference)
         .def("to_json", [](const ieml::parser::IEMLParser &e) {
-            return e.toJson().dump();
+            return ieml::parser::parserToJson(e).dump();
         })
         .def("composition_graph_json", [](const ieml::parser::IEMLParser &e) {
             auto graph = ieml::relation::CompositionRelationGraph::buildFromCategoryRegister(e.getContext()->getCategoryRegister());
-            return graph_to_json(graph, e.getContext()->getCategoryRegister()).dump();
+            return ieml::parser::binaryGraphToJson(graph, e.getContext()->getCategoryRegister()).dump();
         });
 
     py::class_<ieml::parser::SyntaxError>(m, "SyntaxError")
@@ -38,7 +38,7 @@ PYBIND11_MODULE(pyieml, m) {
             return "<SyntaxError \"" + e.to_string() + "\">";
         })
         .def("to_json", [](const ieml::parser::SyntaxError &e) {
-            return e.toJson().dump();
+            return ieml::parser::syntaxErrorToJson(e).dump();
         })
         .def_property_readonly("message", &ieml::parser::SyntaxError::getMessage)
         .def_property_readonly("range", &ieml::parser::SyntaxError::getCharRange, py::return_value_policy::reference);
@@ -48,7 +48,7 @@ PYBIND11_MODULE(pyieml, m) {
             return "<CharRange \"" + e.to_string() + "\">";
         })
         .def("to_json", [](const ieml::parser::CharRange &e) {
-            return e.toJson().dump();
+            return ieml::parser::charRangeToJson(e).dump();
         })
         .def_property_readonly("line_start", &ieml::parser::CharRange::getLineStart)
         .def_property_readonly("line_end", &ieml::parser::CharRange::getLineEnd)

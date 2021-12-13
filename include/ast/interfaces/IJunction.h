@@ -38,7 +38,7 @@ public:
             children.insert(ctx.getPathTreeRegister().get_or_create(std::make_shared<IndexPathNode>(i), {phrase}));
         }
         
-        auto junction_type = ctx.resolve_junction(junction_identifier_->getName());
+        auto junction_type = ctx.getWordRegister().resolve_junction(structure::LanguageString(ctx.getLanguage(), junction_identifier_->getName()));
 
         if (junction_type == nullptr) {
             ctx.getErrorManager().visitorError(

@@ -73,19 +73,20 @@ TEST(ieml_structure_test_case, path_serialization) {
 TEST(ieml_structure_test_case, path_from_string) {
     ieml::parser::IEMLParserErrorListener error_listener;
     ieml::parser::ParserContext ctx(&error_listener);
-    ctx.define_word(std::make_shared<CategoryWord>("wa."));
+    auto& wregister = ctx.getWordRegister();
+    wregister.define_word(std::make_shared<CategoryWord>("wa."));
 
-    PARSE_PATH_VALID("/'wa.'", ctx);
+    PARSE_PATH_VALID("/'wa.'", wregister);
 
     std::unordered_multiset<LanguageString> s{LanguageString(LanguageType::FR, "aux_a")};
-    ctx.define_auxiliary(std::make_shared<Name>(s), std::make_shared<AuxiliaryWord>("a.", RoleType::ROOT));
-    PARSE_PATH_VALID("/*'a.'", ctx);
-    PARSE_PATH_VALID("/0", ctx);
-    PARSE_PATH_VALID("/0/*'a.'/'wa.'", ctx);
-    PARSE_PATH_VALID("/#/0/*'a.'/'wa.'", ctx);
+    wregister.define_auxiliary(std::make_shared<Name>(s), std::make_shared<AuxiliaryWord>("a.", RoleType::ROOT));
+    PARSE_PATH_VALID("/*'a.'", wregister);
+    PARSE_PATH_VALID("/0", wregister);
+    PARSE_PATH_VALID("/0/*'a.'/'wa.'", wregister);
+    PARSE_PATH_VALID("/#/0/*'a.'/'wa.'", wregister);
 
 
-    EXPECT_EQ(*Path::from_string("/#/0", ctx), *Path::from_string("/#/0", ctx));
+    EXPECT_EQ(*Path::from_string("/#/0", wregister), *Path::from_string("/#/0", wregister));
 }
 
 TEST(ieml_structure_test_case, path_invalid) {

@@ -24,16 +24,14 @@ if (${BUILD_TEST})
     add_subdirectory(test)
 endif()
 
+# add the executable
 if (${BUILD_CHECK_ERRORS})
-    message("Building CHECK_ERRORS_EXECUTABLE")
+    message("Building IEML executable")
 
-    add_executable(IEML_CHECK_ERRORS check_errors.cxx)
-    target_link_libraries(IEML_CHECK_ERRORS IEMLParser)
+    add_executable(IEML main.cxx)
+    target_link_libraries(IEML IEMLParser)
 endif()
 
-# add the executable
-add_executable(IEML main.cxx)
-target_link_libraries(IEML IEMLParser)
 
 
 

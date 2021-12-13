@@ -74,8 +74,8 @@ public:
 
         for (size_t i = 0; i < n_v; i++) {
             for (size_t j = 0; j < n_v; j++) {
-                dist[i][j] = std::numeric_limits<std::size_t>::max();
-                next[i][j] = std::numeric_limits<std::size_t>::max();
+                dist[i][j] = n_v + 1;
+                next[i][j] = n_v + 1;
             }
         }
 

@@ -20,7 +20,7 @@ public:
     }
 
     virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContext& ctx) const {
-        auto word = ctx.resolve_category_word(word_str_);
+        auto word = ctx.getWordRegister().resolve_category_word(word_str_);
 
         if (!word) {
             ctx.getErrorManager().visitorError(

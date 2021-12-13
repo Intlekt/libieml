@@ -20,7 +20,7 @@ public:
         auto child = _check_auxiliary_subline(ctx);
 
         if (auxiliary_) {
-            auto auxiliary = ctx.resolve_auxiliary(auxiliary_->getName());
+            auto auxiliary = ctx.getWordRegister().resolve_auxiliary(structure::LanguageString(ctx.getLanguage(), auxiliary_->getName()));
             if (!auxiliary) {
                 ctx.getErrorManager().visitorError(
                     auxiliary_->getCharRange(),

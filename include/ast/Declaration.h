@@ -120,8 +120,10 @@ public:
         if (!word) {
             return;
         }
-        
-        if (ctx.word_is_defined(word)) {
+
+        auto& wregister = ctx.getWordRegister();
+
+        if (wregister.word_is_defined(word)) {
             ctx.getErrorManager().visitorError(
                 getCharRange(), 
                 "Cannot redefine word " + word->to_string() + " as a category word, it has already been defined before."
@@ -129,7 +131,7 @@ public:
             return;
         }
 
-        ctx.define_word(word);
+        wregister.define_word(word);
     };
 
 private:
@@ -185,15 +187,16 @@ public:
         }
         
         auto inflexing_word = std::make_shared<structure::InflexingWord>(word->getScript(), *inflexing_type);
-
-        if (ctx.word_is_defined(inflexing_word)) {
+        
+        auto& wregister = ctx.getWordRegister();
+        if (wregister.word_is_defined(inflexing_word)) {
             ctx.getErrorManager().visitorError(
                 getCharRange(),
                 "Cannot redefine word " + word->to_string() + " as an inflexion, it has already been defined before."
             );
             return;
         }
-        ctx.define_inflexing(name, inflexing_word);
+        wregister.define_inflexing(name, inflexing_word);
     };
 
 private:
@@ -233,14 +236,15 @@ public:
         
         auto auxiliary_word = std::make_shared<structure::AuxiliaryWord>(word->getScript(), *role_type);
 
-        if (ctx.word_is_defined(auxiliary_word)) {
+        auto& wregister = ctx.getWordRegister();
+        if (wregister.word_is_defined(auxiliary_word)) {
             ctx.getErrorManager().visitorError(
                 getCharRange(),
                 "Cannot redefine word " + word->to_string() + " as an auxiliary, it has already been defined before."
             );
             return;
         }
-        ctx.define_auxiliary(name, auxiliary_word);
+        wregister.define_auxiliary(name, auxiliary_word);
     };
 
 private:
@@ -269,14 +273,15 @@ public:
         
         auto junction_word = std::make_shared<structure::JunctionWord>(word->getScript());
 
-        if (ctx.word_is_defined(junction_word)) {
+        auto& wregister = ctx.getWordRegister();
+        if (wregister.word_is_defined(junction_word)) {
             ctx.getErrorManager().visitorError(
                 getCharRange(),
                 "Cannot redefine word " + word->to_string() + " as a junction, it has already been defined before."
             );
             return;
         }
-        ctx.define_junction(name, junction_word);
+        wregister.define_junction(name, junction_word);
     };
 };
 

@@ -24,7 +24,7 @@ using namespace ieml::relation;
     for (auto it_r = it->second.cbegin(); it_r != it->second.cend(); ++it_r) {\
       if ((*it_r)->getObject() == tgt) {\
         found = true;\
-        auto p = ieml::structure::Path::from_string(path, *context);\
+        auto p = ieml::structure::Path::from_string(path, context->getWordRegister());\
         EXPECT_EQ(*(*it_r)->getAttributes()->getPath(), *p) << "rel_path=" << (*it_r)->getAttributes()->getPath()->to_string() << " expect=" << p->to_string() << std::endl;\
         EXPECT_EQ((*it_r)->getSubject(), src);\
         EXPECT_EQ((*it_r)->getObject(), tgt);\

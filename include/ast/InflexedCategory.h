@@ -56,7 +56,7 @@ public:
 
             bool valid = true;
             for (auto&& inflexion_id: inflexions_) {
-                auto inflexion = ctx.resolve_inflexing(inflexion_id->getName());
+                auto inflexion = ctx.getWordRegister().resolve_inflexing(structure::LanguageString(ctx.getLanguage(), inflexion_id->getName()));
 
                 if (!inflexion) {
                     ctx.getErrorManager().visitorError(

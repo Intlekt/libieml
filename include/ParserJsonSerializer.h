@@ -15,7 +15,7 @@ namespace ieml::parser {
 
 nlohmann::json charRangeToJson(const CharRange& char_range); 
 
-nlohmann::json syntaxErrorSerializer(const SyntaxError& syntax_error);
+nlohmann::json syntaxErrorToJson(const SyntaxError& syntax_error);
 
 nlohmann::json errorManagerToJson(const IEMLParserErrorListener& error_manager);
 

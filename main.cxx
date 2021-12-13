@@ -5,7 +5,7 @@
 
 #include "IemlParser.h"
 #include "relation/Composition.h"
-#include "relation/GraphJsonSerializer.h"
+#include "ParserJsonSerializer.h"
 
 using namespace ieml;
 
@@ -36,7 +36,7 @@ int main(int , const char **) {
 
     auto graph = ieml::relation::CompositionRelationGraph::buildFromCategoryRegister(cregister);
 
-    std::cout << ieml::relation::graph_to_json(graph, cregister).dump() << std::endl;
+    std::cout << ieml::parser::binaryGraphToJson(graph, cregister).dump() << std::endl;
 
   }
 
