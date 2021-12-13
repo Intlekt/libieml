@@ -5,8 +5,6 @@
 #include <sstream>
 #include <any>
 
-#include <nlohmann/json.hpp>
-
 #include "ast/CharRange.h"
 
 namespace ieml::AST {

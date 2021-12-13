@@ -11,7 +11,6 @@
 #include "IEMLGrammarVisitor.h"
 
 #include "ast/Program.h"
-#include <nlohmann/json.hpp>
 
 #include "relation/Composition.h"
 
@@ -44,12 +43,11 @@ public:
     std::string getParseString() const;
 
     const std::vector<const SyntaxError*> getSyntaxErrors() const { return errorListener_->getSyntaxErrors(); }
+    const IEMLParserErrorListener& getErrorListener() const { return *errorListener_; }
 
     const std::string getASTString() const;
     
     std::shared_ptr<ParserContext> getContext() const {return context_;};
-
-    nlohmann::json toJson() const;
 };
 
 }}

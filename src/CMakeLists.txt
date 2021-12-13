@@ -30,6 +30,7 @@ add_library (IEMLParser SHARED
              ${CMAKE_CURRENT_LIST_DIR}/RecognitionError.cpp
              ${CMAKE_CURRENT_LIST_DIR}/IEMLGrammarVisitor.cpp
              ${CMAKE_CURRENT_LIST_DIR}/IemlParser.cpp
+             ${CMAKE_CURRENT_LIST_DIR}/ParserJsonSerializer.cpp
              ${CMAKE_CURRENT_LIST_DIR}/ast/Program.cpp
              ${CMAKE_CURRENT_LIST_DIR}/structure/Path.cpp
              ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp

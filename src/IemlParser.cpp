@@ -66,9 +66,3 @@ const std::string IEMLParser::getASTString() const {
     else
         return "";
 }
-
-nlohmann::json IEMLParser::toJson() const {
-    nlohmann::json j;
-    j["errors"] = errorListener_->toJson();
-    return j;
-};

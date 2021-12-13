@@ -6,7 +6,6 @@
 
 
 using namespace ieml::parser;
-using json = nlohmann::json;
 
 void IEMLParserErrorListener::syntaxError(Recognizer *recognizer, Token *offendingSymbol, size_t line,
                                           size_t charPositionInLine, const std::string &msg, std::exception_ptr e) {
@@ -42,18 +41,3 @@ void IEMLParserErrorListener::reportContextSensitivity(Parser *recognizer, const
 void IEMLParserErrorListener::visitorError(const ieml::AST::CharRange& char_range, const std::string &msg) {
     error_manager_.registerError(new SyntaxError(char_range, msg));
 };
-
-json SyntaxError::toJson() const {
-    return {
-        {"range", char_range_.toJson()},
-        {"message", msg_}
-    };
-}
-
-json IEMLParserErrorListener::toJson() const {
-    json error_list = json::array();
-    for (auto& error: error_manager_.getSyntaxErrors()) {
-        error_list.push_back(error->toJson());
-    }
-    return error_list;
-}

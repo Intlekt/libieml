@@ -1,7 +1,5 @@
 #pragma once
 
-#include <nlohmann/json.hpp>
-
 
 namespace ieml::AST {
 
@@ -34,14 +32,6 @@ public:
         return os.str();
     }
 
-    nlohmann::json toJson() const {
-        return {
-            {"line_start", line_start_},
-            {"line_end", line_end_},
-            {"char_start", char_idx_line_start_},
-            {"char_end", char_idx_line_end_}
-        };
-    }
 
 private:
     const size_t line_start_;

@@ -9,7 +9,7 @@
 
 #include "IemlParser.h"
 #include "relation/Composition.h"
-#include "relation/GraphJsonSerializer.h"
+#include "ParserJsonSerializer.h"
 #include "structure/Path.h"
 #include "structure/LanguageString.h"
 

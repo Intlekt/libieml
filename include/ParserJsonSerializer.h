@@ -1,21 +1,30 @@
 #pragma once
 
+#include <nlohmann/json.hpp>
+#include "IemlParser.h"
+#include "RecognitionError.h"
+
 #include <memory>
 #include <map>
 
 #include "relation/BinaryRelation.h"
 #include "structure/CategoryRegister.h"
 
-#include <nlohmann/json.hpp>
 
+namespace ieml::parser {
 
-namespace ieml::relation {
+nlohmann::json charRangeToJson(const CharRange& char_range); 
 
-using namespace nlohmann;
+nlohmann::json syntaxErrorSerializer(const SyntaxError& syntax_error);
+
+nlohmann::json errorManagerToJson(const IEMLParserErrorListener& error_manager);
+
+nlohmann::json parserToJson(const IEMLParser& parser);
+
 
 template<class NodeType>
-json serializeNode(const structure::CategoryRegister& categories, const NodeType& n, size_t id) {
-    json names;
+nlohmann::json serializeNode(const structure::CategoryRegister& categories, const NodeType& n, size_t id) {
+    nlohmann::json names;
     auto name = categories.getName(n);
     for (auto it = name->begin(); it != name->end(); ++it)
         names[it->second.language()._to_string()] = it->second.value();
@@ -29,7 +38,7 @@ json serializeNode(const structure::CategoryRegister& categories, const NodeType
 }
 
 template<template<class, class> class GraphType, class NodeType, class RelationType>
-json graph_to_json(const std::shared_ptr<GraphType<NodeType, RelationType>> graph, const structure::CategoryRegister& categories) {
+nlohmann::json binaryGraphToJson(const std::shared_ptr<GraphType<NodeType, RelationType>> graph, const structure::CategoryRegister& categories) {
     size_t id = 0;
     std::unordered_map<std::shared_ptr<NodeType>, size_t> node_to_idx;
     
