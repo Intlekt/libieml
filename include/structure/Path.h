@@ -123,14 +123,14 @@ private:
     };
 };
 
-class InflexingJunctionPathNode : public JunctionPathNode {
+class InflectionJunctionPathNode : public JunctionPathNode {
 public:
-    InflexingJunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : JunctionPathNode(junction_type) {}
+    InflectionJunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : JunctionPathNode(junction_type) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
 private:
     virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const InflexingJunctionPathNode&>(a);
+        auto b = dynamic_cast<const InflectionJunctionPathNode&>(a);
 
         if (*getJunctionType() == *b.getJunctionType()) return  0;
         if (*getJunctionType() <  *b.getJunctionType()) return -1;
@@ -199,14 +199,14 @@ private:
     };
 };
 
-class InflexingJunctionIndexPathNode : public JunctionIndexPathNode {
+class InflectionJunctionIndexPathNode : public JunctionIndexPathNode {
 public:
-    InflexingJunctionIndexPathNode(int index) : JunctionIndexPathNode(index) {}
+    InflectionJunctionIndexPathNode(int index) : JunctionIndexPathNode(index) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
 private:
     virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const InflexingJunctionIndexPathNode&>(a);
+        auto b = dynamic_cast<const InflectionJunctionIndexPathNode&>(a);
 
         if (getIndex() == b.getIndex()) return  0;
         if (getIndex() <  b.getIndex()) return -1;
@@ -254,28 +254,28 @@ private:
     const std::shared_ptr<AuxiliaryWord> auxiliary_type_;
 };
 
-class InflexingPathNode : public PathNode {
+class InflectionPathNode : public PathNode {
 public:
-    InflexingPathNode(const std::set<std::shared_ptr<InflexingWord>>& inflexings) : inflexings_(inflexings) {}
+    InflectionPathNode(const std::set<std::shared_ptr<InflectionWord>>& inflections) : inflections_(inflections) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
 
 
 
-    // bool operator< (const InflexingPathNode& a) const noexcept {return cmp(a) <  0;};
-    // bool operator> (const InflexingPathNode& a) const noexcept {return cmp(a) >  0;};
-    // bool operator<=(const InflexingPathNode& a) const noexcept {return cmp(a) <= 0;};
-    // bool operator>=(const InflexingPathNode& a) const noexcept {return cmp(a) >= 0;};
+    // bool operator< (const InflectionPathNode& a) const noexcept {return cmp(a) <  0;};
+    // bool operator> (const InflectionPathNode& a) const noexcept {return cmp(a) >  0;};
+    // bool operator<=(const InflectionPathNode& a) const noexcept {return cmp(a) <= 0;};
+    // bool operator>=(const InflectionPathNode& a) const noexcept {return cmp(a) >= 0;};
 
 private:
     virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const InflexingPathNode&>(a);
+        auto b = dynamic_cast<const InflectionPathNode&>(a);
 
-        if (inflexings_.size() != b.inflexings_.size()) return (inflexings_.size() < b.inflexings_.size() ? -1 : 1);
+        if (inflections_.size() != b.inflections_.size()) return (inflections_.size() < b.inflections_.size() ? -1 : 1);
 
-        auto it_b = b.inflexings_.begin();
-        for (auto it_self = inflexings_.begin(); it_self != inflexings_.end(); it_self++) {
+        auto it_b = b.inflections_.begin();
+        for (auto it_self = inflections_.begin(); it_self != inflections_.end(); it_self++) {
             if (**it_self != **it_b) return (**it_self < **it_b ? -1 : 1);
             it_b++;
         }
@@ -283,7 +283,7 @@ private:
         return 0;
     }
 
-    const std::set<std::shared_ptr<InflexingWord>> inflexings_;
+    const std::set<std::shared_ptr<InflectionWord>> inflections_;
 };
 
 /*
@@ -319,7 +319,7 @@ class Path {
 /**
  * @brief Path nodes in sequence
  * 
- * /{role number} /{junction[]}? /{auxiliary}? /{junction[]}? /{inflexing[]}? /{junction[]}? /{category} ...
+ * /{role number} /{junction[]}? /{auxiliary}? /{junction[]}? /{inflection[]}? /{junction[]}? /{category} ...
  * 
  * 
  * 1) Checks if nodes are valid vector of PathNode ?

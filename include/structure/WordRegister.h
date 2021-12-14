@@ -26,8 +26,8 @@ public:
         return namespace_auxiliary_.find(word)->second;
     };
 
-    std::shared_ptr<structure::Name> getName(const std::shared_ptr<structure::InflexingWord>& word) const {
-        return namespace_inflexing_.find(word)->second;
+    std::shared_ptr<structure::Name> getName(const std::shared_ptr<structure::InflectionWord>& word) const {
+        return namespace_inflection_.find(word)->second;
     };
 
     std::shared_ptr<structure::Name> getName(const std::shared_ptr<structure::JunctionWord>& word) const {
@@ -50,17 +50,17 @@ public:
     
 
     /**********************************
-     * WordRegister: Inflexing Words
+     * WordRegister: Inflection Words
      **********************************/
-    void define_inflexing(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::InflexingWord> word) {
+    void define_inflection(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::InflectionWord> word) {
         if (defined_words_.count(word->getScript()) > 0)
             throw std::invalid_argument("Word already defined.");
 
         defined_words_.insert({word->getScript(), word});
-        namespace_inflexing_.define(name, word);
+        namespace_inflection_.define(name, word);
     }
-    std::shared_ptr<structure::InflexingWord> resolve_inflexing(const structure::LanguageString& s) const {
-        return namespace_inflexing_.resolve(s);
+    std::shared_ptr<structure::InflectionWord> resolve_inflection(const structure::LanguageString& s) const {
+        return namespace_inflection_.resolve(s);
     }
     
     /**********************************
@@ -100,9 +100,9 @@ public:
     const_iterator_auxiliary auxiliaries_begin() const {return namespace_auxiliary_.begin();};
     const_iterator_auxiliary auxiliaries_end()   const {return namespace_auxiliary_.end();};
 
-    typedef std::unordered_map<std::shared_ptr<structure::InflexingWord>, std::shared_ptr<Name>>::const_iterator  const_iterator_inflection;
-    const_iterator_inflection inflections_begin() const {return namespace_inflexing_.begin();};
-    const_iterator_inflection inflections_end()   const {return namespace_inflexing_.end();};
+    typedef std::unordered_map<std::shared_ptr<structure::InflectionWord>, std::shared_ptr<Name>>::const_iterator  const_iterator_inflection;
+    const_iterator_inflection inflections_begin() const {return namespace_inflection_.begin();};
+    const_iterator_inflection inflections_end()   const {return namespace_inflection_.end();};
 
     typedef std::unordered_map<std::shared_ptr<structure::JunctionWord>, std::shared_ptr<Name>>::const_iterator  const_iterator_junction;
     const_iterator_junction junctions_begin() const {return namespace_junction_.begin();};
@@ -110,7 +110,7 @@ public:
 
 private:
     structure::Namespace<structure::AuxiliaryWord> namespace_auxiliary_;
-    structure::Namespace<structure::InflexingWord> namespace_inflexing_;
+    structure::Namespace<structure::InflectionWord> namespace_inflection_;
     structure::Namespace<structure::JunctionWord> namespace_junction_;
 
     std::unordered_map<std::string, std::shared_ptr<structure::Word>> defined_words_;

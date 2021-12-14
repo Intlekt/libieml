@@ -29,9 +29,9 @@ TEST(ieml_structure_test_case, word_comparison) {
         EXPECT_GE(c, a);
     }
     {
-        auto a = InflexingWord("wa.", InflexingType::NOUN);
-        auto b = InflexingWord("we.", InflexingType::NOUN);
-        auto c = InflexingWord("wa.", InflexingType::VERB);
+        auto a = InflectionWord("wa.", InflectionType::NOUN);
+        auto b = InflectionWord("we.", InflectionType::NOUN);
+        auto c = InflectionWord("wa.", InflectionType::VERB);
 
         EXPECT_NE(a, b);
         EXPECT_LT(a, b);
@@ -69,7 +69,7 @@ TEST(ieml_structure_test_case, word_comparison) {
     }
     {
         auto a = CategoryWord("wa.");
-        auto b = InflexingWord("wa.", InflexingType::NOUN);
+        auto b = InflectionWord("wa.", InflectionType::NOUN);
         auto c = AuxiliaryWord("wa.", RoleType::ROOT);
         auto d = JunctionWord("wa.");
         

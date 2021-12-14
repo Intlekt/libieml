@@ -82,7 +82,7 @@ private:
     std::shared_ptr<InflexedCategory> flexed_category_;
 };
 
-class JunctionAuxiliarySubPhraseLine : public AuxiliarySubPhraseLine, public IJunction<InflexedCategory, structure::InflexingJunctionIndexPathNode, structure::InflexingJunctionPathNode> {
+class JunctionAuxiliarySubPhraseLine : public AuxiliarySubPhraseLine, public IJunction<InflexedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode> {
 public:
     JunctionAuxiliarySubPhraseLine(std::shared_ptr<CharRange>&& char_range,
                                    std::shared_ptr<Identifier>&& auxiliary,
@@ -90,7 +90,7 @@ public:
                                    std::shared_ptr<Identifier>&& junction_type) :
         AST(std::move(char_range)),
         AuxiliarySubPhraseLine(std::move(auxiliary)),
-        IJunction<InflexedCategory, structure::InflexingJunctionIndexPathNode, structure::InflexingJunctionPathNode>(std::move(flexed_categories), std::move(junction_type)) {}
+        IJunction<InflexedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode>(std::move(flexed_categories), std::move(junction_type)) {}
 
     std::string to_string() const override {
         return auxiliary_to_string() + junction_to_string();

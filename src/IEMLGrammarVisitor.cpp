@@ -153,28 +153,28 @@ namespace ieml::parser {
                           Word::createFromQuotedString(charRangeFromToken(ctx->word), ctx->word->getText()));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitInflexingDeclaration(iemlParser::InflexingDeclarationContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitInflectionDeclaration(iemlParser::InflectionDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
-    std::shared_ptr<Identifier> inflexing_type;
-    if(!ctx->inflexing_type) 
-      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid inflexing type for an inflexing declaration. Expected 'NOUN' or 'VERB'.");
+    std::shared_ptr<Identifier> inflection_type;
+    if(!ctx->inflection_type) 
+      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid inflection type for an inflection declaration. Expected 'NOUN' or 'VERB'.");
     else 
-      inflexing_type = std::make_unique<Identifier>(charRangeFromToken(ctx->inflexing_type), ctx->inflexing_type->getText());
+      inflection_type = std::make_unique<Identifier>(charRangeFromToken(ctx->inflection_type), ctx->inflection_type->getText());
     
     if (!ctx->word) {
-      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid word for an inflexing declaration.");
+      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid word for an inflection declaration.");
       RETURN_VISITOR_RESULT_ERROR(Declaration);
     }
 
-    if (inflexing_type == nullptr) RETURN_VISITOR_RESULT_ERROR(Declaration);
+    if (inflection_type == nullptr) RETURN_VISITOR_RESULT_ERROR(Declaration);
 
     CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
 
     RETURN_VISITOR_RESULT(Declaration, 
-                          InflexingDeclaration,
+                          InflectionDeclaration,
                           std::move(language_strings),
-                          std::move(inflexing_type),
+                          std::move(inflection_type),
                           Word::createFromQuotedString(charRangeFromToken(ctx->word), ctx->word->getText()));
   }
 

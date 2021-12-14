@@ -28,11 +28,11 @@ using namespace ieml::structure;
 
 TEST(ieml_structure_test_case, path_serialization) {
 
-    std::set<std::shared_ptr<InflexingWord>> plr{std::make_shared<InflexingWord>("we.", InflexingType::NOUN)};
-    std::set<std::shared_ptr<InflexingWord>> plr_sing{std::make_shared<InflexingWord>("we.", InflexingType::NOUN), std::make_shared<InflexingWord>("wa.", InflexingType::NOUN)};
+    std::set<std::shared_ptr<InflectionWord>> plr{std::make_shared<InflectionWord>("we.", InflectionType::NOUN)};
+    std::set<std::shared_ptr<InflectionWord>> plr_sing{std::make_shared<InflectionWord>("we.", InflectionType::NOUN), std::make_shared<InflectionWord>("wa.", InflectionType::NOUN)};
     {
         auto path = std::make_shared<Path>(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")), nullptr);
-        auto path1 = std::make_shared<Path>(std::make_shared<InflexingPathNode>(plr), path);
+        auto path1 = std::make_shared<Path>(std::make_shared<InflectionPathNode>(plr), path);
         auto path2 = std::make_shared<Path>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), path1);
         
         EXPECT_NO_THROW(path2->check()) << "Invalid argument should not have been thrown on path.";
@@ -40,7 +40,7 @@ TEST(ieml_structure_test_case, path_serialization) {
     }
     {
         auto path = std::make_shared<Path>(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")), nullptr);
-        auto path1 = std::make_shared<Path>(std::make_shared<InflexingPathNode>(plr_sing), path);
+        auto path1 = std::make_shared<Path>(std::make_shared<InflectionPathNode>(plr_sing), path);
         auto path2 = std::make_shared<Path>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), path1);
 
         EXPECT_NO_THROW(path2->check()) << "Invalid argument should not have been thrown on path.";
@@ -49,7 +49,7 @@ TEST(ieml_structure_test_case, path_serialization) {
     }
     {
         auto path = std::make_shared<Path>(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")), nullptr);
-        auto path1 = std::make_shared<Path>(std::make_shared<InflexingPathNode>(plr_sing), path);
+        auto path1 = std::make_shared<Path>(std::make_shared<InflectionPathNode>(plr_sing), path);
         auto path2 = std::make_shared<Path>(std::make_shared<AuxiliaryPathNode>(
             std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT)), path1);
         auto path3 = std::make_shared<Path>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), path2);

@@ -2,13 +2,13 @@ grammar ieml;
 
 program : declarations+=declaration* EOF;
 
-declaration : COMPONENT  language_strings+=language_string+ phrase_=phrase                        DECLARATION_END    # componentDeclaration
-            | NODE       language_strings+=language_string+ phrase_=phrase                        DECLARATION_END    # nodeDeclaration
-            | WORD                                                                    word=STRING DECLARATION_END    # wordDeclaration
-            | INFLECTION language_strings+=language_string+ inflexing_type=IDENTIFIER word=STRING DECLARATION_END    # inflexingDeclaration
-            | AUXILIARY  language_strings+=language_string+ role_type=INTEGER         word=STRING DECLARATION_END    # auxiliaryDeclaration
-            | JUNCTION   language_strings+=language_string+                           word=STRING DECLARATION_END    # junctionDeclaration
-            | LANGUAGE   language=identifier                                                      DECLARATION_END    # languageDeclaration
+declaration : COMPONENT  language_strings+=language_string+ phrase_=phrase                         DECLARATION_END    # componentDeclaration
+            | NODE       language_strings+=language_string+ phrase_=phrase                         DECLARATION_END    # nodeDeclaration
+            | WORD                                                                     word=STRING DECLARATION_END    # wordDeclaration
+            | INFLECTION language_strings+=language_string+ inflection_type=IDENTIFIER word=STRING DECLARATION_END    # inflectionDeclaration
+            | AUXILIARY  language_strings+=language_string+ role_type=INTEGER          word=STRING DECLARATION_END    # auxiliaryDeclaration
+            | JUNCTION   language_strings+=language_string+                            word=STRING DECLARATION_END    # junctionDeclaration
+            | LANGUAGE   language=identifier                                                       DECLARATION_END    # languageDeclaration
             ;
 
 phrase : PARENTHESIS_START phrase_lines+=phrase_line (COMMA phrase_lines+=phrase_line)* PARENTHESIS_END                                            # phrase__lines

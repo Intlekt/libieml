@@ -15,8 +15,8 @@ using namespace ieml::structure;
 
 
 TEST(ieml_structure_test_case, path_node_inflection_ordering) {
-    auto a = InflexingPathNode({std::make_shared<InflexingWord>("we.", InflexingType::NOUN), std::make_shared<InflexingWord>("wa.", InflexingType::NOUN)});
-    auto b = InflexingPathNode({std::make_shared<InflexingWord>("wa.", InflexingType::NOUN), std::make_shared<InflexingWord>("we.", InflexingType::NOUN)});
+    auto a = InflectionPathNode({std::make_shared<InflectionWord>("we.", InflectionType::NOUN), std::make_shared<InflectionWord>("wa.", InflectionType::NOUN)});
+    auto b = InflectionPathNode({std::make_shared<InflectionWord>("wa.", InflectionType::NOUN), std::make_shared<InflectionWord>("we.", InflectionType::NOUN)});
     
     EXPECT_EQ(a, b);
 }
@@ -136,9 +136,9 @@ TEST(ieml_structure_test_case, path_node_cmp_hash) {
         EXPECT_GE(c, a);
     }
     {
-        auto a = InflexingJunctionPathNode(std::make_shared<JunctionWord>("E:E:A:."));
-        auto b = InflexingJunctionPathNode(std::make_shared<JunctionWord>("E:E:A:."));
-        auto c = InflexingJunctionPathNode(std::make_shared<JunctionWord>("E:E:B:."));
+        auto a = InflectionJunctionPathNode(std::make_shared<JunctionWord>("E:E:A:."));
+        auto b = InflectionJunctionPathNode(std::make_shared<JunctionWord>("E:E:A:."));
+        auto c = InflectionJunctionPathNode(std::make_shared<JunctionWord>("E:E:B:."));
 
         EXPECT_EQ(a.to_string(), b.to_string());
         EXPECT_EQ(std::hash<PathNode>{}(a), std::hash<PathNode>{}(b));
@@ -157,9 +157,9 @@ TEST(ieml_structure_test_case, path_node_cmp_hash) {
         EXPECT_GE(c, a);
     }
     {
-        auto a = InflexingJunctionIndexPathNode(0);
-        auto b = InflexingJunctionIndexPathNode(0);
-        auto c = InflexingJunctionIndexPathNode(1);
+        auto a = InflectionJunctionIndexPathNode(0);
+        auto b = InflectionJunctionIndexPathNode(0);
+        auto c = InflectionJunctionIndexPathNode(1);
 
         EXPECT_EQ(a.to_string(), b.to_string());
         EXPECT_EQ(std::hash<PathNode>{}(a), std::hash<PathNode>{}(b));
@@ -241,9 +241,9 @@ TEST(ieml_structure_test_case, path_node_cmp_hash) {
         EXPECT_GE(c, a);
     }
     {
-        auto a = InflexingPathNode({std::make_shared<InflexingWord>("we.", InflexingType::NOUN)});
-        auto b = InflexingPathNode({std::make_shared<InflexingWord>("we.", InflexingType::NOUN)});
-        auto c = InflexingPathNode({std::make_shared<InflexingWord>("we.", InflexingType::NOUN), std::make_shared<InflexingWord>("wa.", InflexingType::NOUN)});
+        auto a = InflectionPathNode({std::make_shared<InflectionWord>("we.", InflectionType::NOUN)});
+        auto b = InflectionPathNode({std::make_shared<InflectionWord>("we.", InflectionType::NOUN)});
+        auto c = InflectionPathNode({std::make_shared<InflectionWord>("we.", InflectionType::NOUN), std::make_shared<InflectionWord>("wa.", InflectionType::NOUN)});
 
         EXPECT_EQ(a.to_string(), b.to_string());
         EXPECT_EQ(std::hash<PathNode>{}(a), std::hash<PathNode>{}(b));

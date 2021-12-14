@@ -154,9 +154,9 @@ protected:
     std::shared_ptr<Word> word_;
 };
 
-class InflexingDeclaration: public ToolWordDeclaration {
+class InflectionDeclaration: public ToolWordDeclaration {
 public:
-    InflexingDeclaration(std::shared_ptr<CharRange>&& char_range, 
+    InflectionDeclaration(std::shared_ptr<CharRange>&& char_range, 
                          std::vector<std::shared_ptr<LanguageString>>&& translations,
                          std::shared_ptr<Identifier>&& type,
                          std::shared_ptr<Word>&& word) : 
@@ -165,32 +165,32 @@ public:
         type_(std::move(type)) {}
     
     std::string to_string() const {
-        return "@inflexing " + translations_to_string() + " " + type_->to_string() + " " + word_->to_string() + " .";
+        return "@inflection " + translations_to_string() + " " + type_->to_string() + " " + word_->to_string() + " .";
     };
 
     void check_declaration(ieml::parser::ParserContext& ctx) override {
         auto name = check_translatable(ctx);
 
         // test if type_ is either VERB or NOUN
-        auto inflexing_type = structure::InflexingType::_from_string_nothrow(type_->getName().c_str());
-        if (!inflexing_type) {
+        auto inflection_type = structure::InflectionType::_from_string_nothrow(type_->getName().c_str());
+        if (!inflection_type) {
             ctx.getErrorManager().visitorError(
                 getCharRange(),
-                "Invalid identifier to specify the inflexing type, expected 'NOUN' or 'VERB', got: '" + type_->getName() + "'."
+                "Invalid identifier to specify the inflection type, expected 'NOUN' or 'VERB', got: '" + type_->getName() + "'."
             );
             return;
         } 
 
         auto word = word_->check_word(ctx);
 
-        if (!name | !word | !inflexing_type) {
+        if (!name | !word | !inflection_type) {
             return;
         }
         
-        auto inflexing_word = std::make_shared<structure::InflexingWord>(word->getScript(), *inflexing_type);
+        auto inflection_word = std::make_shared<structure::InflectionWord>(word->getScript(), *inflection_type);
         
         auto& wregister = ctx.getWordRegister();
-        if (wregister.word_is_defined(inflexing_word)) {
+        if (wregister.word_is_defined(inflection_word)) {
             ctx.getErrorManager().visitorError(
                 getCharRange(),
                 "Cannot redefine word " + word->to_string() + " as an inflexion, it has already been defined before."
@@ -198,8 +198,8 @@ public:
             return;
         }
 
-        ctx.getSourceMapping().register_mapping(inflexing_word, this);
-        wregister.define_inflexing(name, inflexing_word);
+        ctx.getSourceMapping().register_mapping(inflection_word, this);
+        wregister.define_inflection(name, inflection_word);
     };
 
 private:

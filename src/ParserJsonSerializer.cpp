@@ -138,9 +138,9 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
             namespace_auxiliary[it_n->second.value()] = aux_hasher(*it->first);
     }
 
-    auto infl_hasher = std::hash<ieml::structure::InflexingWord>();
+    auto infl_hasher = std::hash<ieml::structure::InflectionWord>();
     for (auto it = wregister.inflections_begin(); it != wregister.inflections_end(); ++it) {
-        inflections.push_back(_wordToJson<ieml::structure::InflexingWord>(it->first, *context));
+        inflections.push_back(_wordToJson<ieml::structure::InflectionWord>(it->first, *context));
 
         auto range = it->second->equal_range(language);
         for (auto it_n = range.first; it_n != range.second; ++it_n)

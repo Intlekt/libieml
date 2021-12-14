@@ -59,7 +59,7 @@ public:
   virtual antlrcpp::Any visitComponentDeclaration(iemlParser::ComponentDeclarationContext *ctx) override;
   virtual antlrcpp::Any visitNodeDeclaration(iemlParser::NodeDeclarationContext *context) override;
   virtual antlrcpp::Any visitWordDeclaration(iemlParser::WordDeclarationContext *context) override;
-  virtual antlrcpp::Any visitInflexingDeclaration(iemlParser::InflexingDeclarationContext *context) override;
+  virtual antlrcpp::Any visitInflectionDeclaration(iemlParser::InflectionDeclarationContext *context) override;
   virtual antlrcpp::Any visitAuxiliaryDeclaration(iemlParser::AuxiliaryDeclarationContext *context) override;
   virtual antlrcpp::Any visitJunctionDeclaration(iemlParser::JunctionDeclarationContext *context) override;
   virtual antlrcpp::Any visitLanguageDeclaration(iemlParser::LanguageDeclarationContext *context) override;

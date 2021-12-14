@@ -52,11 +52,11 @@ public:
         auto category = category_->check_category(ctx);
 
         if (inflexions_.size()) {
-            std::set<std::shared_ptr<structure::InflexingWord>> inflexions;
+            std::set<std::shared_ptr<structure::InflectionWord>> inflexions;
 
             bool valid = true;
             for (auto&& inflexion_id: inflexions_) {
-                auto inflexion = ctx.getWordRegister().resolve_inflexing(structure::LanguageString(ctx.getLanguage(), inflexion_id->getName()));
+                auto inflexion = ctx.getWordRegister().resolve_inflection(structure::LanguageString(ctx.getLanguage(), inflexion_id->getName()));
 
                 if (!inflexion) {
                     ctx.getErrorManager().visitorError(
@@ -73,7 +73,7 @@ public:
                 return nullptr;
 
             return ctx.getPathTreeRegister().get_or_create(
-                std::make_shared<structure::InflexingPathNode>(inflexions),
+                std::make_shared<structure::InflectionPathNode>(inflexions),
                 structure::PathTree::Children{category}
             );
 

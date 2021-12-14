@@ -22,8 +22,8 @@ namespace ieml::structure {
         {
         case PathType::JUNCTION_AUXILIARY:
         case PathType::AUXILIARY:
-        case PathType::JUNCTION_INFLEXING:
-        case PathType::INFLEXING:
+        case PathType::JUNCTION_INFLECTION:
+        case PathType::INFLECTION:
         case PathType::JUNCTION_CATEGORY:
         case PathType::WORD:
             return true;
@@ -60,16 +60,16 @@ namespace ieml::structure {
     };
     PathType AuxiliaryJunctionPathNode::getPathType() const {return PathType::JUNCTION_AUXILIARY;};
 
-    bool InflexingJunctionPathNode::accept_next(const PathNode& next) const {
+    bool InflectionJunctionPathNode::accept_next(const PathNode& next) const {
         switch (next.getPathType())
         {
-        case PathType::JUNCTION_INFLEXING_INDEX:
+        case PathType::JUNCTION_INFLECTION_INDEX:
             return true;
         default:
             return false;
         }
     };
-    PathType InflexingJunctionPathNode::getPathType() const {return PathType::JUNCTION_INFLEXING;};
+    PathType InflectionJunctionPathNode::getPathType() const {return PathType::JUNCTION_INFLECTION;};
 
     bool CategoryJunctionPathNode::accept_next(const PathNode& next) const {
         switch (next.getPathType())
@@ -109,17 +109,17 @@ namespace ieml::structure {
     };
     PathType AuxiliaryJunctionIndexPathNode::getPathType() const {return PathType::JUNCTION_AUXILIARY_INDEX;};
 
-    bool InflexingJunctionIndexPathNode::accept_next(const PathNode& next) const {
+    bool InflectionJunctionIndexPathNode::accept_next(const PathNode& next) const {
         switch (next.getPathType())
         {
-        case PathType::JUNCTION_INFLEXING:
-        case PathType::INFLEXING:
+        case PathType::JUNCTION_INFLECTION:
+        case PathType::INFLECTION:
             return true;
         default:
             return false;
         }
     };
-    PathType InflexingJunctionIndexPathNode::getPathType() const {return PathType::JUNCTION_INFLEXING_INDEX;};
+    PathType InflectionJunctionIndexPathNode::getPathType() const {return PathType::JUNCTION_INFLECTION_INDEX;};
 
     bool CategoryJunctionIndexPathNode::accept_next(const PathNode& next) const {
         switch (next.getPathType())
@@ -137,8 +137,8 @@ namespace ieml::structure {
     bool AuxiliaryPathNode::accept_next(const PathNode& next) const {
         switch (next.getPathType())
         {
-        case PathType::JUNCTION_INFLEXING:
-        case PathType::INFLEXING:
+        case PathType::JUNCTION_INFLECTION:
+        case PathType::INFLECTION:
         case PathType::JUNCTION_CATEGORY:
         case PathType::WORD:
         case PathType::ROOT:
@@ -152,7 +152,7 @@ namespace ieml::structure {
         return "*" + auxiliary_type_->to_string();
     }
 
-    bool InflexingPathNode::accept_next(const PathNode& next) const {
+    bool InflectionPathNode::accept_next(const PathNode& next) const {
         switch (next.getPathType())
         {
         case PathType::JUNCTION_CATEGORY:
@@ -163,11 +163,11 @@ namespace ieml::structure {
             return false;
         }
     };
-    PathType InflexingPathNode::getPathType() const {return PathType::INFLEXING;};
-    std::string InflexingPathNode::to_string() const {
+    PathType InflectionPathNode::getPathType() const {return PathType::INFLECTION;};
+    std::string InflectionPathNode::to_string() const {
         std::ostringstream os;
-        for (auto& inflexing: inflexings_)
-            os << "~" << inflexing->to_string();
+        for (auto& inflection: inflections_)
+            os << "~" << inflection->to_string();
         
         return os.str();
     }
@@ -248,11 +248,11 @@ namespace ieml::structure {
                             break;
 
                         case PathType::AUXILIARY:
-                        case PathType::JUNCTION_INFLEXING_INDEX:
-                            junction_node = std::make_shared<InflexingJunctionPathNode>(junction_word);
+                        case PathType::JUNCTION_INFLECTION_INDEX:
+                            junction_node = std::make_shared<InflectionJunctionPathNode>(junction_word);
                             break;
 
-                        case PathType::INFLEXING:
+                        case PathType::INFLECTION:
                         case PathType::JUNCTION_CATEGORY_INDEX:
                             junction_node = std::make_shared<CategoryJunctionPathNode>(junction_word);
                             break;
@@ -292,8 +292,8 @@ namespace ieml::structure {
                     case PathType::JUNCTION_AUXILIARY:
                         junction_node = std::make_shared<AuxiliaryJunctionIndexPathNode>(junction_index);
                         break;
-                    case PathType::JUNCTION_INFLEXING:
-                        junction_node = std::make_shared<InflexingJunctionIndexPathNode>(junction_index);
+                    case PathType::JUNCTION_INFLECTION:
+                        junction_node = std::make_shared<InflectionJunctionIndexPathNode>(junction_index);
                         break;
                     case PathType::JUNCTION_CATEGORY:
                         junction_node = std::make_shared<CategoryJunctionIndexPathNode>(junction_index);
@@ -331,7 +331,7 @@ namespace ieml::structure {
                     }
                     inflection_scripts.push_back(s.substr(start_pos, s.size() - start_pos));
 
-                    std::set<std::shared_ptr<InflexingWord>> inflection_words;
+                    std::set<std::shared_ptr<InflectionWord>> inflection_words;
                     for (auto inflection_script: inflection_scripts) {
                         auto inflection_script_ = inflection_script.substr(1, sub_s[i].size() - 2);
                         auto word = ctx.get_word(inflection_script_);
@@ -342,10 +342,10 @@ namespace ieml::structure {
                         if (word->getWordType() != +WordType::INFLECTION)
                             throw std::invalid_argument("Invalid inflection path node, '" + inflection_script_ + "' is not an inflection.");
 
-                        inflection_words.insert(std::dynamic_pointer_cast<InflexingWord>(word));
+                        inflection_words.insert(std::dynamic_pointer_cast<InflectionWord>(word));
                     }
                     
-                    nodes.push_back(std::make_shared<InflexingPathNode>(inflection_words));
+                    nodes.push_back(std::make_shared<InflectionPathNode>(inflection_words));
                     break;
                 }
                 case '\'': {
