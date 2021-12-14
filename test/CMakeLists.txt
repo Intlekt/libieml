@@ -1,9 +1,11 @@
-set(TEST_IEML_GRAMMAR_EXAMPLES_FOLDER ${CMAKE_SOURCE_DIR}/assets/ieml_files)
+set(TEST_IEML_GRAMMAR_FILES_FOLDER ${CMAKE_SOURCE_DIR}/assets/ieml_files)
+set(TEST_IEML_GRAMMAR_EXAMPLES_FOLDER ${CMAKE_SOURCE_DIR}/assets/examples)
 
 configure_file(TestConfig.h.in TestConfig.h)
 
 add_executable(registerer_test grammar/test_parser.cpp
                                grammar/test_declaration.cpp
+                               grammar/test_json_serialization.cpp
                                structure/test_path.cpp
                                structure/test_path_node.cpp
                                structure/test_namespace.cpp

@@ -42,6 +42,7 @@ reference_value: identifier_=identifier  # reference_value__identifier
 
 language_string : language=identifier '"' value=identifier '"';
 
+
 STRING : '\''(~'\''|'\\\'')*'\'';
 
 identifier : identifiers+=IDENTIFIER+ ;

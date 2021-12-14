@@ -22,6 +22,18 @@ public:
         return r->second;
     }
 
+    std::shared_ptr<structure::Name> getName(const std::shared_ptr<structure::AuxiliaryWord>& word) const {
+        return namespace_auxiliary_.find(word)->second;
+    };
+
+    std::shared_ptr<structure::Name> getName(const std::shared_ptr<structure::InflexingWord>& word) const {
+        return namespace_inflexing_.find(word)->second;
+    };
+
+    std::shared_ptr<structure::Name> getName(const std::shared_ptr<structure::JunctionWord>& word) const {
+        return namespace_junction_.find(word)->second;
+    };
+
     /**********************************
      * WordRegister: Auxiliary Words
      **********************************/
@@ -83,6 +95,18 @@ public:
 
         return res->second;
     }
+
+    typedef std::unordered_map<std::shared_ptr<structure::AuxiliaryWord>, std::shared_ptr<Name>>::const_iterator  const_iterator_auxiliary;
+    const_iterator_auxiliary auxiliaries_begin() const {return namespace_auxiliary_.begin();};
+    const_iterator_auxiliary auxiliaries_end()   const {return namespace_auxiliary_.end();};
+
+    typedef std::unordered_map<std::shared_ptr<structure::InflexingWord>, std::shared_ptr<Name>>::const_iterator  const_iterator_inflection;
+    const_iterator_inflection inflections_begin() const {return namespace_inflexing_.begin();};
+    const_iterator_inflection inflections_end()   const {return namespace_inflexing_.end();};
+
+    typedef std::unordered_map<std::shared_ptr<structure::JunctionWord>, std::shared_ptr<Name>>::const_iterator  const_iterator_junction;
+    const_iterator_junction junctions_begin() const {return namespace_junction_.begin();};
+    const_iterator_junction junctions_end()   const {return namespace_junction_.end();};
 
 private:
     structure::Namespace<structure::AuxiliaryWord> namespace_auxiliary_;

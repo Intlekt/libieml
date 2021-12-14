@@ -63,8 +63,9 @@ public:
         ctx.getCategoryRegister().define_category(name, phrase, isNode());
     };
 
+    std::shared_ptr<Phrase> getPhrase() const {return phrase_;};
 private:
-    std::shared_ptr<Phrase> phrase_;
+    const std::shared_ptr<Phrase> phrase_;
 
 };
 
@@ -196,6 +197,8 @@ public:
             );
             return;
         }
+
+        ctx.getSourceMapping().register_mapping(inflexing_word, this);
         wregister.define_inflexing(name, inflexing_word);
     };
 
@@ -244,6 +247,8 @@ public:
             );
             return;
         }
+
+        ctx.getSourceMapping().register_mapping(auxiliary_word, this);
         wregister.define_auxiliary(name, auxiliary_word);
     };
 
@@ -281,6 +286,8 @@ public:
             );
             return;
         }
+
+        ctx.getSourceMapping().register_mapping(junction_word, this);
         wregister.define_junction(name, junction_word);
     };
 };
