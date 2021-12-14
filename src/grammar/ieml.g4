@@ -11,7 +11,7 @@ declaration : COMPONENT  language_strings+=language_string+ phrase_=phrase      
             | LANGUAGE   language=identifier                                                      DECLARATION_END    # languageDeclaration
             ;
 
-phrase : PARENTHESIS_START phrase_lines+=phrase_line (COMMA phrase_lines+=phrase_line)* PARENTHESIS_END                                             # phrase__lines
+phrase : PARENTHESIS_START phrase_lines+=phrase_line (COMMA phrase_lines+=phrase_line)* PARENTHESIS_END                                            # phrase__lines
        | PARENTHESIS_START JUNCTION_MARK junction_type=identifier JUNCTION_OPEN phrases+=phrase phrases+=phrase+ JUNCTION_CLOSE PARENTHESIS_END    # phrase__junction
        ;
 
@@ -40,10 +40,10 @@ reference_value: identifier_=identifier  # reference_value__identifier
                | phrase_=phrase          # reference_value__phrase
                ;
 
-language_string : language=identifier '"' value=identifier '"';
+language_string : language=identifier '\'' value=identifier '\'';
 
 
-STRING : '\''(~'\''|'\\\'')*'\'';
+STRING : '"'(~'"'|'\\"')*'"';
 
 identifier : identifiers+=IDENTIFIER+ ;
 

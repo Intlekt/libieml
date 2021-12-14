@@ -1,22 +1,22 @@
-@word 'we.' .
-@word 'wo.' .
-@word 'wa.' .
+@word "we." .
+@word "wo." .
+@word "wa." .
 
-@junction fr"et" 'm.' .
+@junction fr'et' "m." .
 
-@inflection fr"singulier" NOUN 'a.' .
-@inflection fr"pluriel" NOUN 'b.' .
-@inflection fr"nom" NOUN 'c.' .
+@inflection fr'singulier' NOUN "a." .
+@inflection fr'pluriel' NOUN "b." .
+@inflection fr'nom' NOUN "c." .
 
 
 @component 
-    fr"le chien mange du paté sur le tapis" 
-    en"the dog eats paté on the carpet" 
+    fr'le chien mange du paté sur le tapis' 
+    en'the dog eats paté on the carpet'
     (
-        0 #( 0 ~nom #'wa.'),
+        0 #( 0 ~nom #"wa."),
         1 &et [
-            ~singulier #( 0 ~nom #'we.')
-            ~pluriel #( 0 ~nom #'wo.') 
+            ~singulier #( 0 ~nom #"we.")
+            ~pluriel #( 0 ~nom #"wo.") 
         ]
     )
 .

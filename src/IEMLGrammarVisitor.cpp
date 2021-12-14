@@ -203,6 +203,11 @@ namespace ieml::parser {
   antlrcpp::Any IEMLGrammarVisitor::visitJunctionDeclaration(iemlParser::JunctionDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
+    if (!ctx->word) {
+      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid word for a junction declaration.");
+      RETURN_VISITOR_RESULT_ERROR(Declaration);
+    }
+
     CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
 
     RETURN_VISITOR_RESULT(Declaration, 

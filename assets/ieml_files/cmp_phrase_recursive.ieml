@@ -1,17 +1,17 @@
-@word 'wa.' .
-@inflection fr"verb" VERB 'a.' .
-@inflection fr"nom" VERB 'b.' .
-@inflection fr"futur" VERB 'c.' .
+@word "wa." .
+@inflection fr'verb' VERB "a." .
+@inflection fr'nom' VERB "b." .
+@inflection fr'futur' VERB "c." .
 
 
 
 @component 
-    fr"le chien mange du paté sur le tapis" 
-    en"the dog eats paté on the carpet" 
+    fr'le chien mange du paté sur le tapis' 
+    en'the dog eats paté on the carpet' 
     (
-        0 ~futur #(0 ~verb #'wa.'),
+        0 ~futur #(0 ~verb #"wa."),
         2 #(
-            0 ~nom #'wa.'
+            0 ~nom #"wa."
         )
     ) 
 .

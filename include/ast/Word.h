@@ -16,7 +16,7 @@ public:
       word_str_(word_str) {}
 
     virtual std::string to_string() const override {
-        return "'" + word_str_ + "'";
+        return "\"" + word_str_ + "\"";
     }
 
     virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContext& ctx) const {

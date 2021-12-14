@@ -12,7 +12,7 @@ using namespace ieml;
 
 int main(int , const char **) {
   std::ifstream file;
-  file.open ("/home/louis/code/ieml/libieml/assets/exemples/ieml-grammar.ieml");
+  file.open ("/home/louis/code/ieml/libieml/assets/ieml_files/cmp_phrase_junction.ieml");
   std::stringstream os;
   std::string line;
   while ( getline (file,line) )
