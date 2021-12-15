@@ -9,7 +9,7 @@
 #include "structure/LanguageString.h"
 #include "structure/WordRegister.h"
 #include "structure/CategoryRegister.h"
-#include "RecognitionError.h"
+#include "SyntaxError.h"
 #include "SourceMapping.h"
 
 #include "utils.h"

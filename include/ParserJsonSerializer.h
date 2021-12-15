@@ -2,7 +2,7 @@
 
 #include <nlohmann/json.hpp>
 #include "IemlParser.h"
-#include "RecognitionError.h"
+#include "SyntaxError.h"
 
 #include <memory>
 #include <map>

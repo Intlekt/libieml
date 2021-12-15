@@ -1,4 +1,4 @@
-#include "RecognitionError.h"
+#include "SyntaxError.h"
 #include "Token.h"
 
 
@@ -16,7 +16,7 @@ void IEMLParserErrorListener::syntaxError(Recognizer *recognizer, Token *offendi
     else
         char_len = 1;
 
-    error_manager_.registerError(new SyntaxError(
+    error_manager_.registerError(new ParseError(
         ieml::AST::CharRange(
             line, 
             line, 
@@ -39,5 +39,10 @@ void IEMLParserErrorListener::reportContextSensitivity(Parser *recognizer, const
 };
 
 void IEMLParserErrorListener::visitorError(const ieml::AST::CharRange& char_range, const std::string &msg) {
-    error_manager_.registerError(new SyntaxError(char_range, msg));
+    error_manager_.registerError(new VisitorError(char_range, msg));
 };
+
+void IEMLParserErrorListener::parseError(const ieml::AST::CharRange& char_range, const std::string &msg) {
+    error_manager_.registerError(new ParseError(char_range, msg));
+};
+

@@ -27,7 +27,7 @@ include_directories(${ANTLR4_INCLUDE_DIRS}
 
 add_library (IEMLParser SHARED
              ${ANTLR_IEMLParser_CXX_OUTPUTS}
-             ${CMAKE_CURRENT_LIST_DIR}/RecognitionError.cpp
+             ${CMAKE_CURRENT_LIST_DIR}/SyntaxError.cpp
              ${CMAKE_CURRENT_LIST_DIR}/IEMLGrammarVisitor.cpp
              ${CMAKE_CURRENT_LIST_DIR}/IemlParser.cpp
              ${CMAKE_CURRENT_LIST_DIR}/ParserJsonSerializer.cpp

@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "IemlParser.h"
-#include "RecognitionError.h"
+#include "SyntaxError.h"
 #include "relation/Composition.h"
 #include "ParserJsonSerializer.h"
 

@@ -6,63 +6,65 @@
 using namespace ieml::parser;
 
 
-IEMLParser::IEMLParser(const std::string& input_str, bool error_stdout) {
-
+IEMLParser::FileParser::FileParser(const std::string& input_str, IEMLParserErrorListener* error_listener) {
     input_ = new antlr4::ANTLRInputStream(input_str);
-    lexer_ = new ieml_generated::iemlLexer(input_);
 
-    errorListener_ = new IEMLParserErrorListener(error_stdout);
+    visitor_ = std::make_shared<IEMLGrammarVisitor>(error_listener);
+
+    lexer_ = new ieml_generated::iemlLexer(input_);
     lexer_->removeErrorListeners();
-    lexer_->addErrorListener(errorListener_);
+    lexer_->addErrorListener(error_listener);
 
     tokens_ = new antlr4::CommonTokenStream(lexer_);
 
     parser_ = new ieml_generated::iemlParser(tokens_);
     parser_->removeErrorListeners();
-    parser_->addErrorListener(errorListener_);
-    
-    parser_->addErrorListener(errorListener_);
+    parser_->addErrorListener(error_listener);
 
-    context_ = std::make_unique<ParserContext>(errorListener_);
 }
 
-IEMLParser::~IEMLParser() {
+IEMLParser::FileParser::~FileParser() {
     delete input_;
     delete parser_;
     delete tokens_;
     delete lexer_;
-    delete errorListener_;
 }
 
-void IEMLParser::parse() {
-    if (parseTree_ != NULL) 
+void IEMLParser::FileParser::parse() {
+    if (parseTree_ != nullptr) 
         return;
+
     parseTree_ = parser_->program();
-    IEMLGrammarVisitor visitor(errorListener_);
     
-    auto ast_t = visitor.visit(parseTree_);
-    if (ast_t.isNull()) {
+    auto ast_t = visitor_->visit(parseTree_);
+    if (ast_t.isNull())
         return;
-    }
     
     ast_ = std::move(ast_t.as<IEMLGrammarVisitor::VisitorResult<Program>>().release());
+}
 
-    if (ast_) {
-        ast_.get()->check_program(*context_);
+IEMLParser::IEMLParser(const std::vector<std::string>& file_ids, 
+                       const std::vector<std::string>& file_contents, 
+                       bool error_stdout) {
+    file_ids_ = file_ids;
+    error_listener_ = std::make_shared<IEMLParserErrorListener>(error_stdout);
+
+    for (size_t i = 0; i < file_ids_.size(); ++i) {
+        file_to_parser_.insert({file_ids[i], std::make_unique<FileParser>(file_contents[i], error_listener_.get())});
     }
-}
 
-const antlr4::tree::ParseTree* IEMLParser::getParseTree() const {
-    return parseTree_;        
 }
+ 
+void IEMLParser::parse() {
+    if (context_ != nullptr) 
+        return;
 
-std::string IEMLParser::getParseString() const {
-    return parseTree_->toStringTree(parser_);
-}
+    context_ = std::make_shared<ParserContext>(error_listener_.get());
 
-const std::string IEMLParser::getASTString() const {
-    if (ast_)
-        return ast_->to_string();
-    else
-        return "";
+
+    for (auto file: file_ids_) {
+        auto parser = file_to_parser_.find(file);
+        parser->second->parse();
+        parser->second->getProgram()->check_program(*context_);
+    }
 }

@@ -27,6 +27,17 @@ namespace parser {
             const ieml::AST::CharRange& getCharRange() const {return char_range_;};
     };
 
+    class ParseError: public SyntaxError {
+    public:
+        ParseError(const ieml::AST::CharRange& char_range, const std::string& msg): 
+            SyntaxError(char_range, msg) {}
+    };
+
+    class VisitorError: public SyntaxError {
+    public:
+        VisitorError(const ieml::AST::CharRange& char_range, const std::string& msg): 
+            SyntaxError(char_range, msg) {}
+    };
 
     class ErrorManager {
     private:
@@ -74,6 +85,7 @@ namespace parser {
 
             
             void visitorError(const ieml::AST::CharRange& char_range, const std::string &msg);
+            void parseError(const ieml::AST::CharRange& char_range, const std::string &msg);
 
             const std::vector<const SyntaxError*> getSyntaxErrors() const { return error_manager_.getSyntaxErrors(); }
 

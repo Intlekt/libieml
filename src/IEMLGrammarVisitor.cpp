@@ -27,11 +27,11 @@ bool valid_##Attribute = true; \
 if (Context->Attribute) {\
   t_##Attribute = visit(Context->Attribute); \
   if (t_##Attribute.isNull()) { \
-    ErrorListener->visitorError(*charRangeFromContext(Context), Message); \
+    ErrorListener->parseError(*charRangeFromContext(Context), Message); \
     valid_##Attribute = false; \
   }\
 } else if (Required) { \
-  ErrorListener->visitorError(*charRangeFromContext(Context), "Missing required " #Attribute " : " Message); \
+  ErrorListener->parseError(*charRangeFromContext(Context), "Missing required " #Attribute " : " Message); \
   valid_##Attribute = false; \
 }
 
@@ -41,7 +41,7 @@ bool valid_##Attribute = true; \
 for (auto child: Context->Attribute) { \
   auto t_tmp = visit(child); \
   if (t_tmp.isNull()) { \
-    ErrorListener->visitorError(*charRangeFromContext(Context), Message); \
+    ErrorListener->parseError(*charRangeFromContext(Context), Message); \
     valid_##Attribute = false; \
   } else { \
     auto _tmp = std::move(t_tmp.as<VisitorResult<Type>>()); \
@@ -112,7 +112,7 @@ namespace ieml::parser {
 
   antlrcpp::Any IEMLGrammarVisitor::visitProgram(iemlParser::ProgramContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Declaration, declarations, "Invalid declaration.");
-    CAST_OR_RETURN_IF_NULL_LIST(declarations, Program);
+    // CAST_OR_RETURN_IF_NULL_LIST(declarations, Program);
 
     RETURN_VISITOR_RESULT(Program, Program, std::move(declarations));
   }
@@ -144,7 +144,7 @@ namespace ieml::parser {
 
   antlrcpp::Any IEMLGrammarVisitor::visitWordDeclaration(iemlParser::WordDeclarationContext *ctx) {
     if (!ctx->word) {
-      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid word for a word declaration.");
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid word for a word declaration.");
       RETURN_VISITOR_RESULT_ERROR(Declaration);
     }
     
@@ -158,12 +158,12 @@ namespace ieml::parser {
 
     std::shared_ptr<Identifier> inflection_type;
     if(!ctx->inflection_type) 
-      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid inflection type for an inflection declaration. Expected 'NOUN' or 'VERB'.");
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid inflection type for an inflection declaration. Expected 'NOUN' or 'VERB'.");
     else 
       inflection_type = std::make_unique<Identifier>(charRangeFromToken(ctx->inflection_type), ctx->inflection_type->getText());
     
     if (!ctx->word) {
-      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid word for an inflection declaration.");
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid word for an inflection declaration.");
       RETURN_VISITOR_RESULT_ERROR(Declaration);
     }
 
@@ -183,7 +183,7 @@ namespace ieml::parser {
 
     int accepted_role_type = -1;
     if (!ctx->role_type)
-      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid role number for auxiliary declaration.");
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid role number for auxiliary declaration.");
     else
       accepted_role_type = std::stoi(ctx->role_type->getText());
 
@@ -204,7 +204,7 @@ namespace ieml::parser {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
     if (!ctx->word) {
-      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid word for a junction declaration.");
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid word for a junction declaration.");
       RETURN_VISITOR_RESULT_ERROR(Declaration);
     }
 
@@ -255,7 +255,7 @@ namespace ieml::parser {
   antlrcpp::Any IEMLGrammarVisitor::visitPhrase_line__sub_phrase_line_auxiliary(iemlParser::Phrase_line__sub_phrase_line_auxiliaryContext *ctx) {
     int role_type = -1;
     if (!ctx->role_type)
-      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid role number.");
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid role number.");
     else
       role_type = std::stoi(ctx->INTEGER()->getSymbol()->getText());
     
@@ -274,7 +274,7 @@ namespace ieml::parser {
   antlrcpp::Any IEMLGrammarVisitor::visitPhrase_line__jonction_auxiliary(iemlParser::Phrase_line__jonction_auxiliaryContext *ctx) {
     int role_type = -1;
     if (!ctx->role_type)
-      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid role number.");
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid role number.");
     else
       role_type = std::stoi(ctx->role_type->getText());
 
@@ -357,7 +357,7 @@ namespace ieml::parser {
 
   antlrcpp::Any IEMLGrammarVisitor::visitCategory__word(iemlParser::Category__wordContext *ctx) {
     if (!ctx->word) {
-      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid word for a category.");
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid word for a category.");
       RETURN_VISITOR_RESULT_ERROR(ICategory);
     }
 
@@ -389,7 +389,7 @@ namespace ieml::parser {
 
   antlrcpp::Any IEMLGrammarVisitor::visitIdentifier(iemlParser::IdentifierContext *ctx) {
     if (ctx->identifiers.empty()) {
-      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid identifier : empty identifier.");
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid identifier : empty identifier.");
       RETURN_VISITOR_RESULT_ERROR(Identifier);
     }
 
@@ -420,7 +420,7 @@ namespace ieml::parser {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, value, "Invalid value in reference.", true);
 
     if (!ctx->data_type) {
-      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid datatype identifier.");
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid datatype identifier.");
       RETURN_VISITOR_RESULT_ERROR(Reference);
     }
 
@@ -444,7 +444,7 @@ namespace ieml::parser {
 
   antlrcpp::Any IEMLGrammarVisitor::visitReference_value__STRING(iemlParser::Reference_value__STRINGContext *ctx) {
     if (!ctx->value) {
-      error_listener_->visitorError(*charRangeFromContext(ctx), "Invalid string for reference value.");
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid string for reference value.");
       RETURN_VISITOR_RESULT_ERROR(IReferenceValue);
     }
 

@@ -6,7 +6,7 @@
 #include <regex>
 
 #include "iemlVisitor.h"
-#include "RecognitionError.h"
+#include "SyntaxError.h"
 #include "ast/CharRange.h"
 
 
