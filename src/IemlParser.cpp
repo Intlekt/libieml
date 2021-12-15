@@ -6,20 +6,21 @@
 using namespace ieml::parser;
 
 
-IEMLParser::FileParser::FileParser(const std::string& input_str, IEMLParserErrorListener* error_listener) {
+IEMLParser::FileParser::FileParser(const std::string& file_id, const std::string& input_str, IEMLParserErrorListener* error_listener) {
     input_ = new antlr4::ANTLRInputStream(input_str);
 
-    visitor_ = std::make_shared<IEMLGrammarVisitor>(error_listener);
+    visitor_ = std::make_shared<IEMLGrammarVisitor>(file_id, error_listener);
 
+    auto antlr_listener = error_listener->getANTLR4ErrorListener(file_id);
     lexer_ = new ieml_generated::iemlLexer(input_);
     lexer_->removeErrorListeners();
-    lexer_->addErrorListener(error_listener);
+    lexer_->addErrorListener(antlr_listener);
 
     tokens_ = new antlr4::CommonTokenStream(lexer_);
 
     parser_ = new ieml_generated::iemlParser(tokens_);
     parser_->removeErrorListeners();
-    parser_->addErrorListener(error_listener);
+    parser_->addErrorListener(antlr_listener);
 
 }
 
@@ -50,7 +51,7 @@ IEMLParser::IEMLParser(const std::vector<std::string>& file_ids,
     error_listener_ = std::make_shared<IEMLParserErrorListener>(error_stdout);
 
     for (size_t i = 0; i < file_ids_.size(); ++i) {
-        file_to_parser_.insert({file_ids[i], std::make_unique<FileParser>(file_contents[i], error_listener_.get())});
+        file_to_parser_.insert({file_ids[i], std::make_unique<FileParser>(file_ids[i], file_contents[i], error_listener_.get())});
     }
 
 }

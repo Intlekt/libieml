@@ -67,22 +67,39 @@ namespace parser {
         const std::vector<const SyntaxError*> getSyntaxErrors() const { return errors_; }
     };
 
-    class IEMLParserErrorListener: public ANTLRErrorListener {
+    class IEMLParserErrorListener{
         public:
+
+            class ANTLR4IEMLParserErrorListener: public ANTLRErrorListener {
+            public:
+                ANTLR4IEMLParserErrorListener(const std::string& file_id, 
+                                              ErrorManager* error_manager) : 
+                    file_id_(file_id), error_manager_(error_manager) {}
+
+                ANTLR4IEMLParserErrorListener(const ANTLR4IEMLParserErrorListener&) = delete;
+
+                void syntaxError(Recognizer *recognizer, Token *offendingSymbol, size_t line,
+                                size_t charPositionInLine, const std::string &msg, std::exception_ptr e);
+
+                void reportAmbiguity(Parser *recognizer, const dfa::DFA &dfa, size_t startIndex, size_t stopIndex, bool exact,
+                                    const antlrcpp::BitSet &ambigAlts, atn::ATNConfigSet *configs);
+
+                void reportAttemptingFullContext(Parser *recognizer, const dfa::DFA &dfa, size_t startIndex, size_t stopIndex,
+                                                const antlrcpp::BitSet &conflictingAlts, atn::ATNConfigSet *configs);
+
+                void reportContextSensitivity(Parser *recognizer, const dfa::DFA &dfa, size_t startIndex, size_t stopIndex,
+                                            size_t prediction, atn::ATNConfigSet *configs);
+            private:
+                std::string file_id_;
+                ErrorManager* error_manager_;
+            };
+
             IEMLParserErrorListener(bool print_stdout = false) : error_manager_(print_stdout) {}
 
-            void syntaxError(Recognizer *recognizer, Token *offendingSymbol, size_t line,
-                             size_t charPositionInLine, const std::string &msg, std::exception_ptr e);
-
-            void reportAmbiguity(Parser *recognizer, const dfa::DFA &dfa, size_t startIndex, size_t stopIndex, bool exact,
-                                 const antlrcpp::BitSet &ambigAlts, atn::ATNConfigSet *configs);
-
-            void reportAttemptingFullContext(Parser *recognizer, const dfa::DFA &dfa, size_t startIndex, size_t stopIndex,
-                                             const antlrcpp::BitSet &conflictingAlts, atn::ATNConfigSet *configs);
-
-            void reportContextSensitivity(Parser *recognizer, const dfa::DFA &dfa, size_t startIndex, size_t stopIndex,
-                                          size_t prediction, atn::ATNConfigSet *configs);
-
+            ANTLR4IEMLParserErrorListener* getANTLR4ErrorListener(const std::string& file_id) {
+                listeners_.push_back(std::make_shared<ANTLR4IEMLParserErrorListener>(file_id, &error_manager_));
+                return listeners_[listeners_.size() - 1].get();
+            };
             
             void visitorError(const ieml::AST::CharRange& char_range, const std::string &msg);
             void parseError(const ieml::AST::CharRange& char_range, const std::string &msg);
@@ -91,5 +108,6 @@ namespace parser {
 
         private:
             ErrorManager error_manager_;
+            std::vector<std::shared_ptr<ANTLR4IEMLParserErrorListener>> listeners_;
     };
 }}

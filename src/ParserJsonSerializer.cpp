@@ -9,6 +9,7 @@ using namespace ieml::parser;
 
 nlohmann::json ieml::parser::charRangeToJson(const CharRange& char_range) {
     return {
+        {"file_id", char_range.getFileId()},
         {"line_start", char_range.getLineStart()},
         {"line_end", char_range.getLineEnd()},
         {"char_start", char_range.getCharStart()},

@@ -26,7 +26,7 @@ public:
 
     class FileParser {
     public:
-        FileParser(const std::string& input_str, IEMLParserErrorListener* error_manager);
+        FileParser(const std::string& file_id, const std::string& input_str, IEMLParserErrorListener* error_manager);
         ~FileParser();
 
         void parse();
@@ -50,7 +50,7 @@ public:
                bool error_stdout = false);
 
     IEMLParser(const std::string& input_str, bool error_stdout = false) : 
-        IEMLParser({"default_"}, {input_str}, error_stdout) {};
+        IEMLParser({""}, {input_str}, error_stdout) {};
 
     void parse();
 

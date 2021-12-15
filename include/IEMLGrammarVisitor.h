@@ -19,6 +19,7 @@ using namespace ieml::AST;
 class IEMLGrammarVisitor: public iemlVisitor {
 private:
   IEMLParserErrorListener* error_listener_;
+  const std::string file_id_;
 
   std::shared_ptr<CharRange> charRangeFromToken(antlr4::Token* token) const ;
   std::shared_ptr<CharRange> charRangeFromContext(antlr4::ParserRuleContext* ctx) const ;
@@ -46,7 +47,8 @@ public:
     std::shared_ptr<T> value_;
   };
 
-  IEMLGrammarVisitor(IEMLParserErrorListener* error_listener) : iemlVisitor(), error_listener_(error_listener) {}
+  IEMLGrammarVisitor(const std::string& file_id, IEMLParserErrorListener* error_listener) 
+      : iemlVisitor(), file_id_(file_id), error_listener_(error_listener) {}
 
   /**
    * PROGRAM

@@ -71,7 +71,7 @@ if (!valid_##Attribute) \
 namespace ieml::parser {
 
   std::shared_ptr<CharRange> IEMLGrammarVisitor::charRangeFromToken(antlr4::Token* token) const {
-    return std::make_unique<CharRange>(token->getLine(), token->getLine(), token->getCharPositionInLine(), token->getCharPositionInLine() + token->getText().size());
+    return std::make_unique<CharRange>(file_id_, token->getLine(), token->getLine(), token->getCharPositionInLine(), token->getCharPositionInLine() + token->getText().size());
   }
 
   std::shared_ptr<CharRange> IEMLGrammarVisitor::charRangeFromContext(antlr4::ParserRuleContext* ctx) const {
@@ -102,7 +102,7 @@ namespace ieml::parser {
       }
     } 
     
-    return std::make_unique<CharRange>(line_s, line_e, char_s, char_e);
+    return std::make_unique<CharRange>(file_id_, line_s, line_e, char_s, char_e);
   }
 
 

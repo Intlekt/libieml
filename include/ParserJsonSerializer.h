@@ -80,7 +80,7 @@ nlohmann::json binaryGraphToJson(const std::shared_ptr<GraphType<NodeType, Relat
                 {"subject", sbj_id},
                 {"object", obj_id},
                 {"attributes", {
-                    "path", rel->getAttributes()->getPath()->to_string()
+                    {"path", rel->getAttributes()->getPath()->to_string()}
                 }}
             });
         }
