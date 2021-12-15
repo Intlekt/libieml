@@ -371,6 +371,7 @@ public:
     std::string to_string() const;
 
     bool is_phrase() const {return node_->getPathType() == +PathType::ROOT;};
+    bool is_inflection() const {return node_->getPathType() == +PathType::INFLECTION;};
 
     bool operator==(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) == 0;};
     bool operator!=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) != 0;};
@@ -423,14 +424,15 @@ public:
      *  - f : the matching function
      *  - sub_occurence : if we return the match of children of matched tree
      */
-    std::vector<SubPathTree> find_sub_tree(std::function<bool(const std::shared_ptr<PathTree>&)> f, bool sub_occurence) const {
+    std::vector<SubPathTree> find_sub_tree(std::function<bool(const std::shared_ptr<PathTree>&)> f,
+                                           std::function<bool(const std::shared_ptr<PathTree>&)> should_stop) const {
         std::vector<SubPathTree> res;
         for (auto& child: children_) {
             bool matched = f(child);
             if (matched) res.push_back(SubPathTree{std::make_shared<Path>(node_), child});
             
-            if (!matched || sub_occurence) {
-                auto child_res = child->find_sub_tree(f, sub_occurence);
+            if (!should_stop(child)) {
+                auto child_res = child->find_sub_tree(f, should_stop);
                 res.reserve(res.size() + child_res.size());
 
                 for (auto& item: child_res) {
