@@ -174,7 +174,7 @@
 
 @component en'third'			fr'troisième'			(0 ~noun #"g.-U:.-'s.o.-l.o.-',")	.
 
-@component en'concept'			fr'concept' 			(0 ~noun #"s.o.-wa.-'S:.-',")		. 
+@component en'concept'			fr'concept' 			(0 ~noun #"s.o.-wa.-'S:.-',")	.	
 
 @component en'precise' en'specify'		fr'préciser' fr'spécifier'	(0 ~verb #"u.-y.'s.o.-k.o-',")		.
 

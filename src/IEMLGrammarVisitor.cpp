@@ -85,19 +85,19 @@ namespace ieml::parser {
       line_s = start->getLine();
       line_e = end->getLine();
       char_s = start->getCharPositionInLine();
-      char_e = end->getCharPositionInLine();
+      char_e = end->getCharPositionInLine() + end->getText().size();
     } else if (start->getLine() > end->getLine()) {
       line_e = start->getLine();
       line_s = end->getLine();
-      char_e = start->getCharPositionInLine();
+      char_e = start->getCharPositionInLine() + start->getText().size();
       char_s = end->getCharPositionInLine();
     } else {
       line_s = line_e = start->getLine();
       if (start->getCharPositionInLine() <= end->getCharPositionInLine()) {
         char_s = start->getCharPositionInLine();
-        char_e = end->getCharPositionInLine();
+        char_e = end->getCharPositionInLine() + end->getText().size();
       } else {
-        char_e = start->getCharPositionInLine();
+        char_e = start->getCharPositionInLine() + start->getText().size();
         char_s = end->getCharPositionInLine();
       }
     } 
