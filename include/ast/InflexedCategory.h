@@ -64,6 +64,7 @@ public:
                         "Undefined inflexion identifier '" + inflexion_id->getName() + "'."
                     );
                     valid = false;
+                    continue;
                 }
 
                 inflexions.insert(inflexion);

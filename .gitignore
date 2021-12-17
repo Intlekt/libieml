@@ -6,3 +6,4 @@ src/grammar/.antlr
 dist
 pyieml.egg-info
 venv
+assets/erroneous_files
