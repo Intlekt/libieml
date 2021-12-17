@@ -26,10 +26,6 @@ TEST(ieml_grammar_test_case, syntax_error) {
     } catch (std::exception& e) {                                  
       EXPECT_TRUE(false) << e.what();                              
     }                                                               
-    auto errors = parser.getSyntaxErrors();
-    for ( auto it = errors.crbegin(); it != errors.crend(); ++it) {
-        std::cout << (*it)->to_string() << std::endl;
-    }
 
     EXPECT_EQ(parser.getSyntaxErrors().size(), 1);
     

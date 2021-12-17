@@ -55,9 +55,6 @@ private:
 template<class NodeType, class RelationType>
 class BinaryRelationGraph : public std::unordered_map<std::shared_ptr<NodeType>, std::unordered_set<std::shared_ptr<RelationType>>> {
 public:
-
-    static std::shared_ptr<BinaryRelationGraph<NodeType, RelationType>> buildFromCategoryRegister(const structure::CategoryRegister& reg);
-
     void add_relation(const std::shared_ptr<RelationType>& relation) {
         this->operator[](relation->getSubject()).insert(relation);
         rev_relations_[relation->getObject()].insert(relation);

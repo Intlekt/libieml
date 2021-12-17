@@ -29,7 +29,7 @@ PYBIND11_MODULE(pyieml, m) {
             return ieml::parser::parserToJson(e).dump();
         })
         .def("composition_graph_json", [](const ieml::parser::IEMLParser &e) {
-            auto graph = ieml::relation::CompositionRelationGraph::buildFromCategoryRegister(e.getContext()->getCategoryRegister());
+            auto graph = ieml::relation::CompositionRelationGraph::buildCompositionRelationGraph(e.getContext()->getCategoryRegister());
             return ieml::parser::binaryGraphToJson(graph, e.getContext()->getCategoryRegister()).dump();
         });
 

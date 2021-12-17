@@ -51,20 +51,22 @@ TEST(ieml_grammar_test_case, validate_exemples) {
   }
 }
 TEST(ieml_grammar_test_case, no_crash_erroneous_files) {
-  for (const auto& file : fs::directory_iterator(TEST_IEML_ERRONEOUS_FILES_FOLDER)) {
-    std::ifstream exampleFile(file.path());
-    std::string exampleString, line;
-    while (std::getline(exampleFile, line)) {
-      exampleString = exampleString + "\n" + line;
-    }
-    exampleFile.close();
+  if (fs::exists(TEST_IEML_ERRONEOUS_FILES_FOLDER)) {
+    for (const auto& file : fs::directory_iterator(TEST_IEML_ERRONEOUS_FILES_FOLDER)) {
+      std::ifstream exampleFile(file.path());
+      std::string exampleString, line;
+      while (std::getline(exampleFile, line)) {
+        exampleString = exampleString + "\n" + line;
+      }
+      exampleFile.close();
 
-    IEMLParser parser(exampleString);
+      IEMLParser parser(exampleString);
 
-    try {
-      parser.parse();
-    } catch (std::exception& e) {
-      EXPECT_TRUE(false) << e.what();
+      try {
+        parser.parse();
+      } catch (std::exception& e) {
+        EXPECT_TRUE(false) << e.what();
+      }
     }
   }
 }

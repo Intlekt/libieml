@@ -34,7 +34,7 @@ int main(int , const char **) {
 
     auto cregister = parser.getContext()->getCategoryRegister();
 
-    auto graph = ieml::relation::CompositionRelationGraph::buildFromCategoryRegister(cregister);
+    auto graph = ieml::relation::CompositionRelationGraph::buildCompositionRelationGraph(cregister);
 
     std::cout << ieml::parser::binaryGraphToJson(graph, cregister).dump() << std::endl;
 

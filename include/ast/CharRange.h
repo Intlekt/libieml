@@ -24,7 +24,7 @@ public:
 
     std::string to_string() const {
         std::ostringstream os;
-        os << "[" << file_id_ << "]";
+        os << "[" << file_id_ << "] ";
         if (line_start_ == line_end_) {
             os << "l." << line_start_;
             if (char_idx_line_start_ == char_idx_line_end_) 

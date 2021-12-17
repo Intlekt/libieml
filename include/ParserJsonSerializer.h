@@ -26,6 +26,7 @@ nlohmann::json errorManagerToJson(const IEMLParserErrorListener& error_manager);
 
 nlohmann::json categoryToJson(std::shared_ptr<ieml::structure::PathTree> concept, 
                              ieml::parser::ParserContext& ctx,
+                             ieml::relation::CompositionNode::Register& node_register,
                              ieml::relation::CompositionRelationGraph& composition_graph);
 
 nlohmann::json parserToJson(const IEMLParser& parser);

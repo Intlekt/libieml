@@ -44,9 +44,10 @@ TEST(ieml_relation_test_case, basic_graph) {
   std::shared_ptr<ieml::parser::ParserContext> context;
   context = parser.getContext();
   auto category_register = context->getCategoryRegister();
+  auto node_register = CompositionNode::Register();
 
   try {                                                           
-      graph = CompositionRelationGraph::buildFromCategoryRegister(context->getCategoryRegister());
+      graph = buildCompositionRelationGraph(node_register, context->getCategoryRegister());
   } catch (std::exception& e) {                                   
     EXPECT_TRUE(false) << e.what();                               
   }
@@ -56,14 +57,14 @@ TEST(ieml_relation_test_case, basic_graph) {
 
   EXPECT_EQ(graph->relation_number(), 2);
   EXPECT_EQ(graph->vertex_number(), 3);
-  HAS_RELATION(container, included, R"(/#/0)");
-  HAS_RELATION(topcontainer, container, R"(/#/0)");
+  HAS_RELATION(node_register.get_or_create(container), node_register.get_or_create(included), R"(/#/0)");
+  HAS_RELATION(node_register.get_or_create(topcontainer), node_register.get_or_create(container), R"(/#/0)");
 
   graph = graph->transitive_closure();
 
   EXPECT_EQ(graph->relation_number(), 3);
   EXPECT_EQ(graph->vertex_number(), 3);
-  HAS_RELATION(container, included, R"(/#/0)");
-  HAS_RELATION(topcontainer, container, R"(/#/0)");
-  HAS_RELATION(topcontainer, included, R"(/#/0/#/0)");
+  HAS_RELATION(node_register.get_or_create(container), node_register.get_or_create(included), R"(/#/0)");
+  HAS_RELATION(node_register.get_or_create(topcontainer), node_register.get_or_create(container), R"(/#/0)");
+  HAS_RELATION(node_register.get_or_create(topcontainer), node_register.get_or_create(included), R"(/#/0/#/0)");
 }

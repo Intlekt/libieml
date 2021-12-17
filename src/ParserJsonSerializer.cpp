@@ -54,30 +54,30 @@ nlohmann::json ieml::parser::errorManagerToJson(const IEMLParserErrorListener& e
 
 nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::PathTree> category, 
                                            ieml::parser::ParserContext& ctx,
+                                           ieml::relation::CompositionNode::Register& node_register,
                                            ieml::relation::CompositionRelationGraph& composition_graph) {
-    auto hasher = std::hash<ieml::structure::PathTree>();
     
-    size_t concept_id = hasher(*category);
+    auto node = node_register.get_or_create(category);
+
     auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(category));
     const ieml::AST::CharRange& range = ast->getCharRange();
     std::string node_type = (ctx.getCategoryRegister().isNode(category) ? "NODE" : "COMPONENT");
     bool user_defined = true;
 
-
     auto name = ctx.getCategoryRegister().getName(category);
 
     nlohmann::json references = nlohmann::json::array();
-    for (auto rel: composition_graph.getRelationsWithSubject(category)) {
-        references.push_back(hasher(*rel->getObject()));
+    for (auto rel: composition_graph.getRelationsWithSubject(node)) {
+        references.push_back(rel->getObject()->getId());
     }
 
     nlohmann::json back_references = nlohmann::json::array();
-    for (auto rel: composition_graph.getRelationsWithObject(category)) {
-        back_references.push_back(hasher(*rel->getSubject()));
+    for (auto rel: composition_graph.getRelationsWithObject(node)) {
+        back_references.push_back(rel->getSubject()->getId());
     }
 
     return {
-        {"category_id", concept_id},
+        {"category_id", node->getId()},
         {"range", charRangeToJson(range)},
         {"node_type", node_type},
         {"user_defined", user_defined},
@@ -109,8 +109,9 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
     auto context = parser.getContext();
     auto cregister = context->getCategoryRegister();
     auto wregister = context->getWordRegister();
+    auto node_register = ieml::relation::CompositionNode::Register();
 
-    auto composition_graph = ieml::relation::CompositionRelationGraph::buildFromCategoryRegister(cregister);
+    auto composition_graph = ieml::relation::buildCompositionRelationGraph(node_register, cregister);
 
     auto language = context->getLanguage();
     
@@ -122,7 +123,7 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
 
     auto chasher = std::hash<ieml::structure::PathTree>();
     for (auto it = cregister.categories_begin(); it != cregister.categories_end(); ++it) {
-        categories.push_back(categoryToJson(it->first, *context, *composition_graph));
+        categories.push_back(categoryToJson(it->first, *context, node_register, *composition_graph));
 
         auto range = it->second->equal_range(language);
 
