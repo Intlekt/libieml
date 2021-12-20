@@ -55,15 +55,15 @@ TEST(ieml_relation_test_case, basic_graph) {
   auto container = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::FR,"container"));
   auto topcontainer = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::FR,"topcontainer"));
 
-  EXPECT_EQ(graph->relation_number(), 3);
-  EXPECT_EQ(graph->vertex_number(), 4);
+  EXPECT_EQ(graph->relation_number(), 4);
+  EXPECT_EQ(graph->vertex_number(), 5);
   HAS_RELATION(node_register.get_or_create(container), node_register.get_or_create(included), R"(/#/0)");
   HAS_RELATION(node_register.get_or_create(topcontainer), node_register.get_or_create(container), R"(/#/0)");
 
   graph = graph->transitive_closure();
 
-  EXPECT_EQ(graph->relation_number(), 4);
-  EXPECT_EQ(graph->vertex_number(), 4);
+  EXPECT_EQ(graph->relation_number(), 5);
+  EXPECT_EQ(graph->vertex_number(), 5);
   HAS_RELATION(node_register.get_or_create(container), node_register.get_or_create(included), R"(/#/0)");
   HAS_RELATION(node_register.get_or_create(topcontainer), node_register.get_or_create(container), R"(/#/0)");
   HAS_RELATION(node_register.get_or_create(topcontainer), node_register.get_or_create(included), R"(/#/0/#/0)");

@@ -68,6 +68,17 @@ std::shared_ptr<CompositionRelationGraph> ieml::relation::buildCompositionRelati
                 ));
             }
         }
+        // words
+        for (auto& words : it->first->find_sub_tree(&ieml::structure::PathTree::is_word, is_phrase)) {
+            for (auto& word: words.second->getNode()->getWords()) {
+                graph->add_relation(std::make_shared<CompositionRelation>(
+                    node_register.get_or_create(it->first),
+                    node_register.get_or_create(word),
+                    std::make_shared<CompositionRelationAttribute>(words.first), 
+                    CompositionRelationType::COMPOSITION_WORD
+                ));
+            }
+        }
 
     }
 

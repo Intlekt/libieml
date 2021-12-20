@@ -46,9 +46,9 @@ nlohmann::json serializeNode(const structure::CategoryRegister& categories,
         name = words.getName(n->getWord());
         ntype = n->getWord()->getWordType()._to_string();
     }
-    for (auto it = name->begin(); it != name->end(); ++it)
-        names[it->second.language()._to_string()] = it->second.value();
-    
+    if (name)
+        for (auto it = name->begin(); it != name->end(); ++it)
+            names[it->second.language()._to_string()] = it->second.value();
 
     return {
         {"id", n->getId()},

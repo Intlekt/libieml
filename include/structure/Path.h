@@ -310,6 +310,9 @@ public:
     // bool operator> (const WordPathNode& a) const noexcept {return *word_ >  *a.word_;};
     // bool operator<=(const WordPathNode& a) const noexcept {return *word_ <= *a.word_;};
     // bool operator>=(const WordPathNode& a) const noexcept {return *word_ >= *a.word_;};
+    virtual const std::set<std::shared_ptr<Word>> getWords() const override {
+        return {word_};
+    };
 
 private:
     virtual int comp(const PathNode& a) const {
@@ -379,6 +382,8 @@ public:
     std::string to_string() const;
 
     bool is_phrase() const {return node_->getPathType() == +PathType::ROOT;};
+
+    bool is_word() const {return node_->getPathType() == +PathType::WORD;};
     bool is_inflection() const {return node_->getPathType() == +PathType::INFLECTION;};
     bool is_auxiliary() const {return node_->getPathType() == +PathType::AUXILIARY;};
     bool is_junction() const {return node_->getPathType() == +PathType::JUNCTION_AUXILIARY || 
