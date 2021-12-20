@@ -2,63 +2,23 @@
  "nodes": [
   {
    "class": "NODE",
-   "id": 0,
+   "id": 39,
    "names": {
-    "EN": "IEML",
-    "FR": "IEML"
+    "EN": "phrase role",
+    "FR": "r\u00f4le de phrase"
    }
   },
   {
-   "class": "COMPONENT",
-   "id": 1,
+   "class": "AUXILIARY",
+   "id": 26,
    "names": {
-    "EN": "language",
-    "FR": "language"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 2,
-   "names": {
-    "EN": "collective intelligence",
-    "FR": "intelligence collective"
+    "EN": "part of",
+    "FR": "partie de"
    }
   },
   {
    "class": "NODE",
-   "id": 3,
-   "names": {
-    "EN": "IEML grammar",
-    "FR": "grammaire d"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 4,
-   "names": {
-    "EN": "grammar",
-    "FR": "grammaire"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 5,
-   "names": {
-    "EN": "USL",
-    "FR": "USL"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 6,
-   "names": {
-    "EN": "expression",
-    "FR": "expression"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 7,
+   "id": 96,
    "names": {
     "EN": "IEML phrase",
     "FR": "IEML phrase"
@@ -66,23 +26,7 @@
   },
   {
    "class": "COMPONENT",
-   "id": 8,
-   "names": {
-    "EN": "phrase",
-    "FR": "phrase"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 9,
-   "names": {
-    "EN": "phrase role",
-    "FR": "r\u00f4le de phrase"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 10,
+   "id": 30,
    "names": {
     "EN": "role",
     "FR": "r\u00f4le"
@@ -90,143 +34,86 @@
   },
   {
    "class": "NODE",
-   "id": 11,
+   "id": 106,
    "names": {
-    "EN": "IEML dictionary",
-    "FR": "dictionnaire d"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 12,
-   "names": {
-    "EN": "word",
-    "FR": "mot"
+    "EN": "IEML grammar",
+    "FR": "grammaire d"
    }
   },
   {
    "class": "NODE",
-   "id": 13,
+   "id": 97,
    "names": {
-    "EN": "IEML primitives",
-    "FR": "primitives"
+    "EN": "IEML",
+    "FR": "IEML"
    }
   },
   {
    "class": "COMPONENT",
-   "id": 14,
+   "id": 114,
+   "names": {
+    "EN": "grammar",
+    "FR": "grammaire"
+   }
+  },
+  {
+   "class": "AUXILIARY",
+   "id": 128,
+   "names": {
+    "EN": "moral feature possessed by",
+    "FR": "trait moral poss\u00e9d\u00e9 par"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 103,
+   "names": {
+    "EN": "collective intelligence",
+    "FR": "intelligence collective"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 88,
+   "names": {
+    "EN": "language",
+    "FR": "language"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 38,
+   "names": {
+    "EN": "leaf",
+    "FR": "feuille"
+   }
+  },
+  {
+   "class": "INFLECTION",
+   "id": 86,
+   "names": {
+    "EN": "noun"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 119,
+   "names": {
+    "EN": "root",
+    "FR": "racine"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 78,
    "names": {
     "EN": "first principles",
     "FR": "premiers principes"
    }
   },
   {
-   "class": "NODE",
-   "id": 15,
-   "names": {
-    "EN": "IEML primitive",
-    "FR": "primitive"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 16,
-   "names": {
-    "EN": "IEML element",
-    "FR": "\u00e9l\u00e9ment d"
-   }
-  },
-  {
    "class": "COMPONENT",
-   "id": 17,
-   "names": {
-    "EN": "atom",
-    "FR": "atome"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 18,
-   "names": {
-    "EN": "seme",
-    "FR": "s\u00e8me"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 19,
-   "names": {
-    "EN": "third",
-    "FR": "troisi\u00e8me"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 20,
-   "names": {
-    "EN": "IEML radical",
-    "FR": "radical"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 21,
-   "names": {
-    "EN": "glue",
-    "FR": "colle"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 22,
-   "names": {
-    "EN": "IEML element paradigm",
-    "FR": "paradigme d \u00e9l\u00e9ments"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 23,
-   "names": {
-    "EN": "contain",
-    "FR": "contenir"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 24,
-   "names": {
-    "EN": "paradigm",
-    "FR": "paradigme"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 25,
-   "names": {
-    "EN": "IEML radical paradigm",
-    "FR": "paradigme de radicaux"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 26,
-   "names": {
-    "EN": "binary dialectic",
-    "FR": "dialectique binaire"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 27,
-   "names": {
-    "EN": "dialectic",
-    "FR": "dialectique"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 28,
+   "id": 84,
    "names": {
     "EN": "binary",
     "FR": "binaire"
@@ -234,331 +121,54 @@
   },
   {
    "class": "NODE",
-   "id": 29,
-   "names": {
-    "EN": "ternary dialectic",
-    "FR": "dialectique ternaire"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 30,
-   "names": {
-    "EN": "ternary",
-    "FR": "ternaire"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 31,
-   "names": {
-    "EN": "IEML category",
-    "FR": "cat\u00e9gorie"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 32,
-   "names": {
-    "EN": "discursive content",
-    "FR": "contenu discursif"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 33,
-   "names": {
-    "EN": "elementary category",
-    "FR": "cat\u00e9gorie \u00e9l\u00e9mentaire"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 34,
-   "names": {
-    "EN": "IEML auxiliary",
-    "FR": "auxiliaire"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 35,
-   "names": {
-    "EN": "specify",
-    "FR": "sp\u00e9cifier"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 36,
-   "names": {
-    "EN": "IEML junction",
-    "FR": "jonction"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 37,
-   "names": {
-    "EN": "IEML inflection",
-    "FR": "flexion"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 38,
-   "names": {
-    "EN": "context variation",
-    "FR": "variation du contexte"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 39,
-   "names": {
-    "EN": "grammatical root",
-    "FR": "racine grammaticale"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 40,
-   "names": {
-    "EN": "plays a role"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 41,
-   "names": {
-    "EN": "root",
-    "FR": "racine"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 42,
-   "names": {
-    "EN": "initiator",
-    "FR": "initiateur"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 43,
-   "names": {
-    "EN": "first actant",
-    "FR": "premier actant"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 44,
-   "names": {
-    "EN": "leaf",
-    "FR": "feuille"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 45,
-   "names": {
-    "EN": "interactant",
-    "FR": "interactant"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 46,
-   "names": {
-    "EN": "second actant",
-    "FR": "second actant"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 47,
-   "names": {
-    "EN": "grammatical recipient",
-    "FR": "destinataire grammatical"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 48,
-   "names": {
-    "EN": "third actant",
-    "FR": "troisi\u00e8me actant"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 49,
-   "names": {
-    "EN": "objective structure",
-    "FR": "structure objective"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 50,
-   "names": {
-    "EN": "causal determination",
-    "FR": "d\u00e9termination causale"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 51,
-   "names": {
-    "EN": "grammatical time",
-    "FR": "temps grammatical"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 52,
-   "names": {
-    "EN": "time",
-    "FR": "temps"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 53,
-   "names": {
-    "EN": "grammatical place",
-    "FR": "lieu grammatical"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 54,
-   "names": {
-    "EN": "space",
-    "FR": "espace"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 55,
-   "names": {
-    "EN": "grammatical intention",
-    "FR": "intention gramaticale"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 56,
-   "names": {
-    "EN": "intention",
-    "FR": "intention"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 57,
+   "id": 126,
    "names": {
     "EN": "grammatical manner",
     "FR": "mani\u00e8re grammaticale"
    }
   },
   {
+   "class": "AUXILIARY",
+   "id": 40,
+   "names": {
+    "EN": "in context",
+    "FR": "en contexte"
+   }
+  },
+  {
+   "class": "AUXILIARY",
+   "id": 28,
+   "names": {
+    "EN": "at",
+    "FR": "\u00e0"
+   }
+  },
+  {
    "class": "COMPONENT",
-   "id": 58,
+   "id": 98,
    "names": {
     "EN": "quality",
     "FR": "qualit\u00e9"
    }
   },
   {
-   "class": "NODE",
-   "id": 59,
+   "class": "COMPONENT",
+   "id": 36,
    "names": {
-    "EN": "element role",
-    "FR": "r\u00f4le d \u00e9l\u00e9ment"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 60,
-   "names": {
-    "EN": "is a grammatical substance of",
-    "FR": "est une substance grammaticale de"
+    "EN": "expression",
+    "FR": "expression"
    }
   },
   {
    "class": "COMPONENT",
-   "id": 61,
+   "id": 34,
    "names": {
-    "EN": "starting point"
+    "EN": "plays a role"
    }
   },
   {
    "class": "NODE",
-   "id": 62,
-   "names": {
-    "EN": "is a grammatical attribute of",
-    "FR": "est un attribut grammatical de"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 63,
-   "names": {
-    "EN": "arrival point"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 64,
-   "names": {
-    "EN": "is a grammatical mode of",
-    "FR": "mode grammatical"
-   }
-  },
-  {
-   "class": "COMPONENT",
-   "id": 65,
-   "names": {
-    "EN": "medium point"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 66,
-   "names": {
-    "EN": "is the substance of the substance of",
-    "FR": "est la substance de la substance de"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 67,
-   "names": {
-    "EN": "is an attribute of the substance of",
-    "FR": "attribut de la substance"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 68,
-   "names": {
-    "EN": "is the mode of the substance of",
-    "FR": "est le mode de la substance de"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 69,
-   "names": {
-    "EN": "is the substance of the attribute of",
-    "FR": "est la substance de l attribut de"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 70,
+   "id": 17,
    "names": {
     "EN": "is the attribute of the attribute of",
     "FR": "est l attribut de l attribut de"
@@ -566,119 +176,261 @@
   },
   {
    "class": "NODE",
-   "id": 71,
+   "id": 22,
    "names": {
-    "EN": "is the mode of the attribute of",
-    "FR": "est le mode de l attribut de"
+    "EN": "is a grammatical attribute of",
+    "FR": "est un attribut grammatical de"
    }
   },
   {
    "class": "NODE",
-   "id": 72,
+   "id": 25,
    "names": {
-    "EN": "is the substance of the mode of",
-    "FR": "est la substance du mode de"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 73,
-   "names": {
-    "EN": "is the attribute of the mode of",
-    "FR": "est l attribut du mode de"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 74,
-   "names": {
-    "EN": "is the mode of the mode of",
-    "FR": "est le mode du mode de"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 75,
-   "names": {
-    "EN": "is twin of",
-    "FR": "est jumeau de"
+    "EN": "seme",
+    "FR": "s\u00e8me"
    }
   },
   {
    "class": "COMPONENT",
-   "id": 76,
+   "id": 125,
+   "names": {
+    "EN": "concept",
+    "FR": "concept"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 71,
+   "names": {
+    "EN": "ternary",
+    "FR": "ternaire"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 123,
+   "names": {
+    "EN": "proposition",
+    "FR": "proposition"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 75,
+   "names": {
+    "EN": "third",
+    "FR": "troisi\u00e8me"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 67,
+   "names": {
+    "EN": "discursive content",
+    "FR": "contenu discursif"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 19,
    "names": {
     "EN": "is symmetric of",
     "FR": "est sym\u00e9trique de"
    }
   },
   {
-   "class": "NODE",
-   "id": 77,
+   "class": "COMPONENT",
+   "id": 58,
    "names": {
-    "EN": "is opposed to",
-    "FR": "est oppos\u00e9 \u00e0"
+    "EN": "context variation",
+    "FR": "variation du contexte"
    }
   },
   {
    "class": "COMPONENT",
-   "id": 78,
+   "id": 74,
    "names": {
-    "EN": "exchange",
-    "FR": "\u00e9change"
+    "EN": "paradigm",
+    "FR": "paradigme"
    }
   },
   {
    "class": "NODE",
-   "id": 79,
+   "id": 105,
    "names": {
-    "EN": "is associated to",
-    "FR": "est associ\u00e9 \u00e0"
+    "EN": "IEML radical",
+    "FR": "radical"
    }
   },
   {
-   "class": "COMPONENT",
+   "class": "INFLECTION",
+   "id": 121,
+   "names": {
+    "EN": "two",
+    "FR": "deux"
+   }
+  },
+  {
+   "class": "INFLECTION",
+   "id": 122,
+   "names": {
+    "EN": "three",
+    "FR": "trois"
+   }
+  },
+  {
+   "class": "NODE",
    "id": 80,
    "names": {
-    "EN": "change",
-    "FR": "changement"
+    "EN": "IEML dictionary",
+    "FR": "dictionnaire d"
+   }
+  },
+  {
+   "class": "JUNCTION",
+   "id": 57,
+   "names": {
+    "EN": "inclusive or",
+    "FR": "ou inclusif"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 120,
+   "names": {
+    "EN": "atom",
+    "FR": "atome"
+   }
+  },
+  {
+   "class": "INFLECTION",
+   "id": 81,
+   "names": {
+    "EN": "singular",
+    "FR": "singulier"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 100,
+   "names": {
+    "EN": "word",
+    "FR": "mot"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 61,
+   "names": {
+    "EN": "glue",
+    "FR": "colle"
    }
   },
   {
    "class": "NODE",
-   "id": 81,
+   "id": 118,
    "names": {
-    "EN": "reflexivity relation",
-    "FR": "relation r\u00e9flexive"
+    "EN": "grammatical root",
+    "FR": "racine grammaticale"
    }
   },
   {
    "class": "COMPONENT",
-   "id": 82,
+   "id": 117,
    "names": {
-    "EN": "is reflexive",
-    "FR": "est r\u00e9flexif"
+    "EN": "common name",
+    "FR": "name commum"
    }
   },
   {
    "class": "COMPONENT",
-   "id": 83,
+   "id": 111,
+   "names": {
+    "EN": "verb",
+    "FR": "verbe"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 0,
+   "names": {
+    "EN": "combine",
+    "FR": "combiner"
+   }
+  },
+  {
+   "class": "INFLECTION",
+   "id": 112,
+   "names": {
+    "EN": "verb"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 8,
    "names": {
     "EN": "relation",
     "FR": "relation"
    }
   },
   {
-   "class": "NODE",
-   "id": 84,
+   "class": "COMPONENT",
+   "id": 92,
    "names": {
-    "EN": "irreflexivity relation",
-    "FR": "relation irr\u00e9flexive"
+    "EN": "conditional determination",
+    "FR": "d\u00e9termination conditionnelle"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 116,
+   "names": {
+    "EN": "variable",
+    "FR": "variable"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 115,
+   "names": {
+    "EN": "plays a move",
+    "FR": "jouer un coup"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 73,
+   "names": {
+    "EN": "contain",
+    "FR": "contenir"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 48,
+   "names": {
+    "EN": "second actant",
+    "FR": "second actant"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 46,
+   "names": {
+    "EN": "causal determination",
+    "FR": "d\u00e9termination causale"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 102,
+   "names": {
+    "EN": "arrival point"
    }
   },
   {
    "class": "NODE",
-   "id": 85,
+   "id": 65,
    "names": {
     "EN": "symmetric relation",
     "FR": "relation sym\u00e9trique"
@@ -686,31 +438,71 @@
   },
   {
    "class": "NODE",
-   "id": 86,
+   "id": 109,
    "names": {
-    "EN": "asymmetric relation",
-    "FR": "relation asym\u00e9trique"
-   }
-  },
-  {
-   "class": "NODE",
-   "id": 87,
-   "names": {
-    "EN": "transitive relation",
-    "FR": "relation transitive"
+    "EN": "grammatical recipient",
+    "FR": "destinataire grammatical"
    }
   },
   {
    "class": "COMPONENT",
-   "id": 88,
+   "id": 89,
    "names": {
-    "EN": "is transitive",
-    "FR": "est transitif"
+    "EN": "third actant",
+    "FR": "troisi\u00e8me actant"
    }
   },
   {
    "class": "NODE",
-   "id": 89,
+   "id": 16,
+   "names": {
+    "EN": "is the substance of the attribute of",
+    "FR": "est la substance de l attribut de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 21,
+   "names": {
+    "EN": "is a grammatical substance of",
+    "FR": "est une substance grammaticale de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 72,
+   "names": {
+    "EN": "complementary relation",
+    "FR": "relation compl\u00e9mentaire"
+   }
+  },
+  {
+   "class": "JUNCTION",
+   "id": 6,
+   "names": {
+    "EN": "and",
+    "FR": "et"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 4,
+   "names": {
+    "EN": "irreflexivity relation",
+    "FR": "relation irr\u00e9flexive"
+   }
+  },
+  {
+   "class": "INFLECTION",
+   "id": 5,
+   "names": {
+    "EN": "reciprocal",
+    "FR": "r\u00e9ciproque"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 50,
    "names": {
     "EN": "atransitive relation",
     "FR": "relation atransitive"
@@ -718,39 +510,199 @@
   },
   {
    "class": "NODE",
-   "id": 90,
+   "id": 2,
    "names": {
-    "EN": "equivalence relation",
-    "FR": "relation d \u00e9quivalence"
+    "EN": "asymmetric relation",
+    "FR": "relation asym\u00e9trique"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 41,
+   "names": {
+    "EN": "grammatical place",
+    "FR": "lieu grammatical"
    }
   },
   {
    "class": "COMPONENT",
-   "id": 91,
+   "id": 42,
    "names": {
-    "EN": "combine",
-    "FR": "combiner"
+    "EN": "space",
+    "FR": "espace"
    }
   },
   {
    "class": "NODE",
-   "id": 92,
+   "id": 35,
    "names": {
-    "EN": "proximity relation",
-    "FR": "relation de proximit\u00e9"
+    "EN": "grammatical intention",
+    "FR": "intention gramaticale"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 37,
+   "names": {
+    "EN": "intention",
+    "FR": "intention"
+   }
+  },
+  {
+   "class": "INFLECTION",
+   "id": 9,
+   "names": {
+    "EN": "not",
+    "FR": "non"
    }
   },
   {
    "class": "NODE",
-   "id": 93,
+   "id": 55,
    "names": {
-    "EN": "complementary relation",
-    "FR": "relation compl\u00e9mentaire"
+    "EN": "IEML junction",
+    "FR": "jonction"
+   }
+  },
+  {
+   "class": "INFLECTION",
+   "id": 62,
+   "names": {
+    "EN": "plural",
+    "FR": "pluriel"
    }
   },
   {
    "class": "NODE",
-   "id": 94,
+   "id": 59,
+   "names": {
+    "EN": "IEML category",
+    "FR": "cat\u00e9gorie"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 32,
+   "names": {
+    "EN": "IEML element",
+    "FR": "\u00e9l\u00e9ment d"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 11,
+   "names": {
+    "EN": "is in crossed relation with",
+    "FR": "est en relation crois\u00e9e avec"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 10,
+   "names": {
+    "EN": "exchange",
+    "FR": "\u00e9change"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 12,
+   "names": {
+    "EN": "is the substance of the substance of",
+    "FR": "est la substance de la substance de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 13,
+   "names": {
+    "EN": "is an attribute of the substance of",
+    "FR": "attribut de la substance"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 14,
+   "names": {
+    "EN": "is a grammatical mode of",
+    "FR": "mode grammatical"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 15,
+   "names": {
+    "EN": "IEML element paradigm",
+    "FR": "paradigme d \u00e9l\u00e9ments"
+   }
+  },
+  {
+   "class": "AUXILIARY",
+   "id": 18,
+   "names": {
+    "EN": "same",
+    "FR": "m\u00eame"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 104,
+   "names": {
+    "EN": "IEML radical paradigm",
+    "FR": "paradigme de radicaux"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 76,
+   "names": {
+    "EN": "change",
+    "FR": "changement"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 54,
+   "names": {
+    "EN": "tool word",
+    "FR": "particule grammaticale"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 56,
+   "names": {
+    "EN": "IEML auxiliary",
+    "FR": "auxiliaire"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 53,
+   "names": {
+    "EN": "IEML inflection",
+    "FR": "flexion"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 7,
+   "names": {
+    "EN": "is reflexive",
+    "FR": "est r\u00e9flexif"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 49,
+   "names": {
+    "EN": "is transitive",
+    "FR": "est transitif"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 1,
    "names": {
     "EN": "order relation",
     "FR": "relation d ordre"
@@ -758,1406 +710,2929 @@
   },
   {
    "class": "NODE",
-   "id": 95,
+   "id": 3,
+   "names": {
+    "EN": "transitive relation",
+    "FR": "relation transitive"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 113,
+   "names": {
+    "EN": "jump",
+    "FR": "sauter"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 23,
+   "names": {
+    "EN": "reflexivity relation",
+    "FR": "relation r\u00e9flexive"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 110,
+   "names": {
+    "EN": "truth",
+    "FR": "v\u00e9rit\u00e9"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 64,
+   "names": {
+    "EN": "proximity relation",
+    "FR": "relation de proximit\u00e9"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 63,
+   "names": {
+    "EN": "specify",
+    "FR": "sp\u00e9cifier"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 29,
+   "names": {
+    "EN": "starting point"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 43,
+   "names": {
+    "EN": "grammatical time",
+    "FR": "temps grammatical"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 44,
+   "names": {
+    "EN": "time",
+    "FR": "temps"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 108,
+   "names": {
+    "EN": "equivalence relation",
+    "FR": "relation d \u00e9quivalence"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 66,
+   "names": {
+    "EN": "elementary category",
+    "FR": "cat\u00e9gorie \u00e9l\u00e9mentaire"
+   }
+  },
+  {
+   "class": "AUXILIARY",
+   "id": 60,
+   "names": {
+    "EN": "with"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 24,
+   "names": {
+    "EN": "is the mode of the mode of",
+    "FR": "est le mode du mode de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 85,
+   "names": {
+    "EN": "IEML primitives",
+    "FR": "primitives"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 33,
+   "names": {
+    "EN": "is the mode of the attribute of",
+    "FR": "est le mode de l attribut de"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 127,
+   "names": {
+    "EN": "express"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 51,
+   "names": {
+    "EN": "initiator",
+    "FR": "initiateur"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 52,
+   "names": {
+    "EN": "first actant",
+    "FR": "premier actant"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 124,
+   "names": {
+    "EN": "is opposed to",
+    "FR": "est oppos\u00e9 \u00e0"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 47,
+   "names": {
+    "EN": "interactant",
+    "FR": "interactant"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 79,
+   "names": {
+    "EN": "IEML primitive",
+    "FR": "primitive"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 77,
+   "names": {
+    "EN": "is associated to",
+    "FR": "est associ\u00e9 \u00e0"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 31,
+   "names": {
+    "EN": "element role",
+    "FR": "r\u00f4le d \u00e9l\u00e9ment"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 101,
+   "names": {
+    "EN": "is the substance of the mode of",
+    "FR": "est la substance du mode de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 70,
+   "names": {
+    "EN": "ternary dialectic",
+    "FR": "dialectique ternaire"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 69,
+   "names": {
+    "EN": "dialectic",
+    "FR": "dialectique"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 83,
+   "names": {
+    "EN": "binary dialectic",
+    "FR": "dialectique binaire"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 87,
+   "names": {
+    "EN": "text",
+    "FR": "texte"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 91,
    "names": {
     "EN": "logically implies",
     "FR": "implique logiquement"
    }
   },
   {
+   "class": "AUXILIARY",
+   "id": 93,
+   "names": {
+    "EN": "by",
+    "FR": "par"
+   }
+  },
+  {
    "class": "COMPONENT",
-   "id": 96,
+   "id": 90,
    "names": {
     "EN": "inference",
     "FR": "inf\u00e9rence"
    }
   },
   {
-   "class": "COMPONENT",
-   "id": 97,
+   "class": "NODE",
+   "id": 68,
    "names": {
-    "EN": "conditional determination",
-    "FR": "d\u00e9termination conditionnelle"
+    "EN": "USL",
+    "FR": "USL"
+   }
+  },
+  {
+   "class": "AUXILIARY",
+   "id": 107,
+   "names": {
+    "EN": "formal cause",
+    "FR": "cause formelle"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 94,
+   "names": {
+    "EN": "is the mode of the substance of",
+    "FR": "est le mode de la substance de"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 95,
+   "names": {
+    "EN": "phrase",
+    "FR": "phrase"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 45,
+   "names": {
+    "EN": "objective structure",
+    "FR": "structure objective"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 20,
+   "names": {
+    "EN": "is twin of",
+    "FR": "est jumeau de"
+   }
+  },
+  {
+   "class": "NODE",
+   "id": 82,
+   "names": {
+    "EN": "is the attribute of the mode of",
+    "FR": "est l attribut du mode de"
+   }
+  },
+  {
+   "class": "INFLECTION",
+   "id": 129,
+   "names": {
+    "EN": "all",
+    "FR": "tous"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 99,
+   "names": {
+    "EN": "part",
+    "FR": "partie"
+   }
+  },
+  {
+   "class": "COMPONENT",
+   "id": 27,
+   "names": {
+    "EN": "medium point"
    }
   }
  ],
  "relations": [
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 1,
-   "subject": 0
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 39
   },
   {
-   "attributes": [
-    "path",
-    "/#/8/*'E:.A:.o.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 2,
-   "subject": 0
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 96,
+   "subject": 39
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 4,
-   "subject": 3
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 0,
-   "subject": 3
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 6,
-   "subject": 5
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 8,
-   "subject": 7
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 0,
-   "subject": 7
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 10,
-   "subject": 9
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 7,
-   "subject": 9
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0/~'E:A:.-t.u.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 12,
-   "subject": 11
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 0,
-   "subject": 11
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0/~'E:.we.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 14,
-   "subject": 13
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 11,
-   "subject": 13
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0/~'E:.wo.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 14,
-   "subject": 15
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 11,
-   "subject": 15
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0/~'E:.wo.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 17,
-   "subject": 16
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 11,
-   "subject": 16
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 19,
-   "subject": 18
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 16,
-   "subject": 18
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 21,
-   "subject": 20
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/1/~'E:.wo.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 12,
-   "subject": 20
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 11,
-   "subject": 20
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 23,
-   "subject": 22
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 24,
-   "subject": 22
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/2/~'E:.we.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 16,
-   "subject": 22
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 23,
-   "subject": 25
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 24,
-   "subject": 25
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/2/~'E:.we.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 20,
-   "subject": 25
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 27,
-   "subject": 26
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/8"
-   ],
-   "class": "COMPOSITION",
-   "object": 28,
-   "subject": 26
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 27,
-   "subject": 29
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/8"
-   ],
-   "class": "COMPOSITION",
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
    "object": 30,
-   "subject": 29
+   "subject": 39
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 6,
-   "subject": 31
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 106
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 5,
-   "subject": 31
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 97,
+   "subject": 106
   },
   {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
-   "object": 32,
-   "subject": 31
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 114,
+   "subject": 106
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 6,
-   "subject": 33
+   "attributes": {
+    "path": "/#/8",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 128,
+   "subject": 97
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 16,
-   "subject": 33
+   "attributes": {
+    "path": "/#/8/*'E:.A:.o.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 103,
+   "subject": 97
   },
   {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
-   "object": 32,
-   "subject": 33
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 88,
+   "subject": 97
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 35,
-   "subject": 34
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 38
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 16,
-   "subject": 34
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 119
   },
   {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
-   "object": 9,
-   "subject": 34
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 78
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 21,
-   "subject": 36
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 84
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 16,
-   "subject": 36
+   "attributes": {
+    "path": "/#/7/*'E:.-'h.o.d.-U:.-'x.-','",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 39,
+   "subject": 126
   },
   {
-   "attributes": [
-    "path",
-    "/#/2/~'E:.we.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 31,
-   "subject": 36
+   "attributes": {
+    "path": "/#/7",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 40,
+   "subject": 126
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 6,
-   "subject": 37
+   "attributes": {
+    "path": "/#/6",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 28,
+   "subject": 126
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 16,
-   "subject": 37
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
+   "attributes": {
+    "path": "/#/6/*'E:.-B:.n.-l.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
    "object": 38,
-   "subject": 37
+   "subject": 126
   },
   {
-   "attributes": [
-    "path",
-    "/#/8/*'t.'"
-   ],
-   "class": "COMPOSITION",
-   "object": 31,
-   "subject": 37
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 98,
+   "subject": 126
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 40,
-   "subject": 39
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 36,
+   "subject": 126
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 6,
-   "subject": 39
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 34,
+   "subject": 126
   },
   {
-   "attributes": [
-    "path",
-    "/#/6/*'E:.-B:.n.-l.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 41,
-   "subject": 39
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 22,
+   "subject": 17
   },
   {
-   "attributes": [
-    "path",
-    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
-   ],
-   "class": "COMPOSITION",
-   "object": 9,
-   "subject": 39
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 17
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 40,
-   "subject": 42
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 25,
+   "subject": 17
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 6,
-   "subject": 42
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 22,
+   "subject": 17
   },
   {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
-   "object": 43,
-   "subject": 42
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 125
   },
   {
-   "attributes": [
-    "path",
-    "/#/6/*'E:.-B:.n.-l.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 44,
-   "subject": 42
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 71
   },
   {
-   "attributes": [
-    "path",
-    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
-   ],
-   "class": "COMPOSITION",
-   "object": 9,
-   "subject": 42
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 123
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 40,
-   "subject": 45
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 75
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 6,
-   "subject": 45
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 67
   },
   {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
-   "object": 46,
-   "subject": 45
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 19
   },
   {
-   "attributes": [
-    "path",
-    "/#/6/*'E:.-B:.n.-l.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 44,
-   "subject": 45
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 58
   },
   {
-   "attributes": [
-    "path",
-    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
-   ],
-   "class": "COMPOSITION",
-   "object": 9,
-   "subject": 45
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 74
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 40,
-   "subject": 47
+   "attributes": {
+    "path": "/#/2/#/&'E:B:.-k.u.-''/[0]",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 121,
+   "subject": 105
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 6,
-   "subject": 47
+   "attributes": {
+    "path": "/#/2/#/&'E:B:.-k.u.-''/[1]",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 122,
+   "subject": 105
   },
   {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
-   "object": 48,
-   "subject": 47
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 80,
+   "subject": 105
   },
   {
-   "attributes": [
-    "path",
-    "/#/6/*'E:.-B:.n.-l.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 44,
-   "subject": 47
+   "attributes": {
+    "path": "/#/2/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 57,
+   "subject": 105
   },
   {
-   "attributes": [
-    "path",
-    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
-   ],
-   "class": "COMPOSITION",
-   "object": 9,
-   "subject": 47
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 105
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 40,
-   "subject": 49
+   "attributes": {
+    "path": "/#/2/#/&'E:B:.-k.u.-''/[1]/~'E:.wu.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 120,
+   "subject": 105
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 6,
-   "subject": 49
+   "attributes": {
+    "path": "/#/2/#/&'E:B:.-k.u.-''/[0]/~'E:.wa.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 120,
+   "subject": 105
   },
   {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
-   "object": 50,
-   "subject": 49
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 81,
+   "subject": 105
   },
   {
-   "attributes": [
-    "path",
-    "/#/6/*'E:.-B:.n.-l.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 44,
-   "subject": 49
+   "attributes": {
+    "path": "/#/1/~'E:.wo.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 100,
+   "subject": 105
   },
   {
-   "attributes": [
-    "path",
-    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
-   ],
-   "class": "COMPOSITION",
-   "object": 9,
-   "subject": 49
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 40,
-   "subject": 51
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 6,
-   "subject": 51
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
-   "object": 52,
-   "subject": 51
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/6/*'E:.-B:.n.-l.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 44,
-   "subject": 51
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
-   ],
-   "class": "COMPOSITION",
-   "object": 9,
-   "subject": 51
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 40,
-   "subject": 53
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 6,
-   "subject": 53
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
-   "object": 54,
-   "subject": 53
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/6/*'E:.-B:.n.-l.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 44,
-   "subject": 53
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
-   ],
-   "class": "COMPOSITION",
-   "object": 9,
-   "subject": 53
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 40,
-   "subject": 55
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 6,
-   "subject": 55
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
-   "object": 56,
-   "subject": 55
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/6/*'E:.-B:.n.-l.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 44,
-   "subject": 55
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
-   ],
-   "class": "COMPOSITION",
-   "object": 9,
-   "subject": 55
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 40,
-   "subject": 57
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 6,
-   "subject": 57
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
-   "object": 58,
-   "subject": 57
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/6/*'E:.-B:.n.-l.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 44,
-   "subject": 57
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/7/*'E:.-\\'h.o.d.-U:.-\\'x.-\\','"
-   ],
-   "class": "COMPOSITION",
-   "object": 9,
-   "subject": 57
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 10,
-   "subject": 59
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 16,
-   "subject": 59
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 18,
-   "subject": 60
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/6/*'E:.-B:.n.-l.-\\''"
-   ],
-   "class": "COMPOSITION",
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
    "object": 61,
-   "subject": 60
+   "subject": 105
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
+   "attributes": {
+    "path": "/#/2/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 57,
+   "subject": 118
+  },
+  {
+   "attributes": {
+    "path": "/#/7",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 40,
+   "subject": 118
+  },
+  {
+   "attributes": {
+    "path": "/#/6",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 28,
+   "subject": 118
+  },
+  {
+   "attributes": {
+    "path": "/#/7/*'E:.-'h.o.d.-U:.-'x.-','",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 39,
+   "subject": 118
+  },
+  {
+   "attributes": {
+    "path": "/#/6/*'E:.-B:.n.-l.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 119,
+   "subject": 118
+  },
+  {
+   "attributes": {
+    "path": "/#/2/#/&'E:B:.-k.u.-''/[1]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 117,
+   "subject": 118
+  },
+  {
+   "attributes": {
+    "path": "/#/2/#/&'E:B:.-k.u.-''/[0]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 111,
+   "subject": 118
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 36,
+   "subject": 118
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 34,
+   "subject": 118
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 112,
+   "subject": 0
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 8
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 92
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 112,
+   "subject": 116
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 115
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 112,
+   "subject": 73
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 48
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 114
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 120
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 46
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 111
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 30
+  },
+  {
+   "attributes": {
+    "path": "/#/6",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 28,
+   "subject": 22
+  },
+  {
+   "attributes": {
+    "path": "/#/6/*'E:.-B:.n.-l.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 102,
+   "subject": 22
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 25,
+   "subject": 22
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 8,
+   "subject": 65
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 19,
+   "subject": 65
+  },
+  {
+   "attributes": {
+    "path": "/#/7/*'E:.-'h.o.d.-U:.-'x.-','",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 39,
+   "subject": 109
+  },
+  {
+   "attributes": {
+    "path": "/#/7",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 40,
+   "subject": 109
+  },
+  {
+   "attributes": {
+    "path": "/#/6",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 28,
+   "subject": 109
+  },
+  {
+   "attributes": {
+    "path": "/#/6/*'E:.-B:.n.-l.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 38,
+   "subject": 109
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 89,
+   "subject": 109
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 36,
+   "subject": 109
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 34,
+   "subject": 109
+  },
+  {
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 22,
+   "subject": 16
+  },
+  {
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 16
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 25,
+   "subject": 16
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 21,
+   "subject": 16
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 6,
+   "subject": 72
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#/&'E:S:.-k.u.-''/[2]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 4,
+   "subject": 72
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 5,
+   "subject": 72
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#/&'E:S:.-k.u.-''/[1]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 50,
+   "subject": 72
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#/&'E:S:.-k.u.-''/[0]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 2,
+   "subject": 72
+  },
+  {
+   "attributes": {
+    "path": "/#/0/~'E:.-we.-t.o.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 0,
+   "subject": 72
+  },
+  {
+   "attributes": {
+    "path": "/#/7/*'E:.-'h.o.d.-U:.-'x.-','",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 39,
+   "subject": 41
+  },
+  {
+   "attributes": {
+    "path": "/#/7",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 40,
+   "subject": 41
+  },
+  {
+   "attributes": {
+    "path": "/#/6",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 28,
+   "subject": 41
+  },
+  {
+   "attributes": {
+    "path": "/#/6/*'E:.-B:.n.-l.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 38,
+   "subject": 41
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 36,
+   "subject": 41
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 42,
+   "subject": 41
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 34,
+   "subject": 41
+  },
+  {
+   "attributes": {
+    "path": "/#/7",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 40,
+   "subject": 35
+  },
+  {
+   "attributes": {
+    "path": "/#/6",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 28,
+   "subject": 35
+  },
+  {
+   "attributes": {
+    "path": "/#/7/*'E:.-'h.o.d.-U:.-'x.-','",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 39,
+   "subject": 35
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 37,
+   "subject": 35
+  },
+  {
+   "attributes": {
+    "path": "/#/6/*'E:.-B:.n.-l.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 38,
+   "subject": 35
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 36,
+   "subject": 35
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 34,
+   "subject": 35
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 9,
+   "subject": 2
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 8,
+   "subject": 2
+  },
+  {
+   "attributes": {
+    "path": "/#/0/~'E:U:A:.'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 19,
+   "subject": 2
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 62,
+   "subject": 55
+  },
+  {
+   "attributes": {
+    "path": "/#/2/~'E:.we.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 59,
+   "subject": 55
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 32,
+   "subject": 55
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 61,
+   "subject": 55
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 117
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[0]/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 10,
+   "subject": 11
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[0]/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 12,
+   "subject": 11
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[0]/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 13,
+   "subject": 11
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[0]/#/8/*'E:.A:.g.-'/#/&'E:S:.-k.u.-''/[0]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 14,
+   "subject": 11
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[0]/#/8/*'E:.A:.g.-'/#/&'E:S:.-k.u.-''/[1]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 15,
+   "subject": 11
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[1]/#/8/*'E:.A:.g.-'/#/&'E:S:.-k.u.-''/[1]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 15,
+   "subject": 11
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[1]/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 10,
+   "subject": 11
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[1]/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 16,
+   "subject": 11
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[0]/#/8/*'E:.A:.g.-'/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 6,
+   "subject": 11
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[1]/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 17,
+   "subject": 11
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[0]/#/8",
+    "type": "COMPOSITION_AUXILIARY"
+   },
    "object": 18,
-   "subject": 62
+   "subject": 11
   },
   {
-   "attributes": [
-    "path",
-    "/#/6/*'E:.-B:.n.-l.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 63,
-   "subject": 62
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[1]/#/8/*'E:.A:.g.-'/#/&'E:S:.-k.u.-''/[0]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 14,
+   "subject": 11
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[1]/#/8/*'E:.A:.g.-'/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 6,
+   "subject": 11
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:S:.-k.u.-''/[1]/#/8",
+    "type": "COMPOSITION_AUXILIARY"
+   },
    "object": 18,
+   "subject": 11
+  },
+  {
+   "attributes": {
+    "path": "/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 6,
+   "subject": 11
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 37
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 62,
+   "subject": 104
+  },
+  {
+   "attributes": {
+    "path": "/#/2/~'E:.we.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 105,
+   "subject": 104
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 74,
+   "subject": 104
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 73,
+   "subject": 104
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 76
+  },
+  {
+   "attributes": {
+    "path": "/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 57,
+   "subject": 54
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:B:.-k.u.-''/[2]/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 56,
+   "subject": 54
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:B:.-k.u.-''/[1]/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 55,
+   "subject": 54
+  },
+  {
+   "attributes": {
+    "path": "/#/&'E:B:.-k.u.-''/[0]/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 53,
+   "subject": 54
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 9,
+   "subject": 4
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 8,
+   "subject": 4
+  },
+  {
+   "attributes": {
+    "path": "/#/0/~'E:U:A:.'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 7,
+   "subject": 4
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 9,
+   "subject": 50
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 8,
+   "subject": 50
+  },
+  {
+   "attributes": {
+    "path": "/#/0/~'E:U:A:.'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 49,
+   "subject": 50
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 6,
+   "subject": 1
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 5,
+   "subject": 1
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#/&'E:S:.-k.u.-''/[2]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 4,
+   "subject": 1
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#/&'E:S:.-k.u.-''/[1]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 3,
+   "subject": 1
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#/&'E:S:.-k.u.-''/[0]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 2,
+   "subject": 1
+  },
+  {
+   "attributes": {
+    "path": "/#/0/~'E:.-we.-t.o.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 0,
+   "subject": 1
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 112,
+   "subject": 113
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 8,
+   "subject": 23
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 7,
+   "subject": 23
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 110
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 6,
    "subject": 64
   },
   {
-   "attributes": [
-    "path",
-    "/#/6/*'E:.-B:.n.-l.-\\''"
-   ],
-   "class": "COMPOSITION",
+   "attributes": {
+    "path": "/#/1/#/&'E:S:.-k.u.-''/[2]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 23,
+   "subject": 64
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 5,
+   "subject": 64
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#/&'E:S:.-k.u.-''/[1]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 50,
+   "subject": 64
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#/&'E:S:.-k.u.-''/[0]",
+    "type": "COMPOSITION_PHRASE"
+   },
    "object": 65,
    "subject": 64
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 60,
+   "attributes": {
+    "path": "/#/0/~'E:.-we.-t.o.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 0,
+   "subject": 64
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 81,
+   "subject": 32
+  },
+  {
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 32
+  },
+  {
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 80,
+   "subject": 32
+  },
+  {
+   "attributes": {
+    "path": "/#/0/~'E:.wo.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 120,
+   "subject": 32
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 32,
+   "subject": 56
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 39,
+   "subject": 56
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 63,
+   "subject": 56
+  },
+  {
+   "attributes": {
+    "path": "/#/6",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 28,
+   "subject": 21
+  },
+  {
+   "attributes": {
+    "path": "/#/6/*'E:.-B:.n.-l.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 29,
+   "subject": 21
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 25,
+   "subject": 21
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 10
+  },
+  {
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 21,
+   "subject": 13
+  },
+  {
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 13
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 25,
+   "subject": 13
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 22,
+   "subject": 13
+  },
+  {
+   "attributes": {
+    "path": "/#/7/*'E:.-'h.o.d.-U:.-'x.-','",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 39,
+   "subject": 43
+  },
+  {
+   "attributes": {
+    "path": "/#/7",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 40,
+   "subject": 43
+  },
+  {
+   "attributes": {
+    "path": "/#/6",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 28,
+   "subject": 43
+  },
+  {
+   "attributes": {
+    "path": "/#/6/*'E:.-B:.n.-l.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 38,
+   "subject": 43
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 36,
+   "subject": 43
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 44,
+   "subject": 43
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 34,
+   "subject": 43
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 6,
+   "subject": 108
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#/&'E:S:.-k.u.-''/[2]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 23,
+   "subject": 108
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#/&'E:S:.-k.u.-''/[0]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 65,
+   "subject": 108
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 5,
+   "subject": 108
+  },
+  {
+   "attributes": {
+    "path": "/#/1/#/&'E:S:.-k.u.-''/[1]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 3,
+   "subject": 108
+  },
+  {
+   "attributes": {
+    "path": "/#/0/~'E:.-we.-t.o.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 0,
+   "subject": 108
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 67,
    "subject": 66
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 18,
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 32,
    "subject": 66
   },
   {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 60,
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 36,
    "subject": 66
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 62,
-   "subject": 67
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 34
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 18,
-   "subject": 67
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 21,
+   "subject": 12
   },
   {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 12
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 25,
+   "subject": 12
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 21,
+   "subject": 12
+  },
+  {
+   "attributes": {
+    "path": "/#/8/*'t.'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 59,
+   "subject": 53
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 58,
+   "subject": 53
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 32,
+   "subject": 53
+  },
+  {
+   "attributes": {
+    "path": "/#/8",
+    "type": "COMPOSITION_AUXILIARY"
+   },
    "object": 60,
-   "subject": 67
+   "subject": 53
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 64,
-   "subject": 68
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 36,
+   "subject": 53
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 18,
-   "subject": 68
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 14,
+   "subject": 24
   },
   {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 60,
-   "subject": 68
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 24
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 60,
-   "subject": 69
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 25,
+   "subject": 24
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 18,
-   "subject": 69
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 14,
+   "subject": 24
   },
   {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 85
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
    "object": 62,
-   "subject": 69
+   "subject": 85
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 62,
-   "subject": 70
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 80,
+   "subject": 85
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 18,
-   "subject": 70
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 62,
-   "subject": 70
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 64,
-   "subject": 71
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 18,
-   "subject": 71
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 62,
-   "subject": 71
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 60,
-   "subject": 72
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 18,
-   "subject": 72
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 64,
-   "subject": 72
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 62,
-   "subject": 73
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 18,
-   "subject": 73
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 64,
-   "subject": 73
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 64,
-   "subject": 74
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 18,
-   "subject": 74
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/4/*'E:S:.x.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 64,
-   "subject": 74
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 76,
-   "subject": 75
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 60,
-   "subject": 75
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
-   "object": 62,
-   "subject": 75
-  },
-  {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
+   "attributes": {
+    "path": "/#/0/~'E:.we.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
    "object": 78,
-   "subject": 77
+   "subject": 85
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 60,
-   "subject": 77
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 44
   },
   {
-   "attributes": [
-    "path",
-    "/#/2"
-   ],
-   "class": "COMPOSITION",
-   "object": 62,
-   "subject": 77
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 22,
+   "subject": 33
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 33
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 25,
+   "subject": 33
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 14,
+   "subject": 33
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 112,
+   "subject": 36
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 103
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 127
+  },
+  {
+   "attributes": {
+    "path": "/#/7/*'E:.-'h.o.d.-U:.-'x.-','",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 39,
+   "subject": 51
+  },
+  {
+   "attributes": {
+    "path": "/#/7",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 40,
+   "subject": 51
+  },
+  {
+   "attributes": {
+    "path": "/#/6",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 28,
+   "subject": 51
+  },
+  {
+   "attributes": {
+    "path": "/#/6/*'E:.-B:.n.-l.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 38,
+   "subject": 51
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 52,
+   "subject": 51
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 36,
+   "subject": 51
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 34,
+   "subject": 51
+  },
+  {
+   "attributes": {
+    "path": "/#/8/*'E:.A:.g.-'/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 6,
+   "subject": 124
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 22,
+   "subject": 124
+  },
+  {
+   "attributes": {
+    "path": "/#/8/*'E:.A:.g.-'/#/&'E:S:.-k.u.-''/[1]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 15,
+   "subject": 124
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 21,
+   "subject": 124
+  },
+  {
+   "attributes": {
+    "path": "/#/8",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 18,
+   "subject": 124
+  },
+  {
+   "attributes": {
+    "path": "/#/8/*'E:.A:.g.-'/#/&'E:S:.-k.u.-''/[0]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 14,
+   "subject": 124
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 10,
+   "subject": 124
+  },
+  {
+   "attributes": {
+    "path": "/#/7/*'E:.-'h.o.d.-U:.-'x.-','",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 39,
+   "subject": 47
+  },
+  {
+   "attributes": {
+    "path": "/#/7",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 40,
+   "subject": 47
+  },
+  {
+   "attributes": {
+    "path": "/#/6",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 28,
+   "subject": 47
+  },
+  {
+   "attributes": {
+    "path": "/#/6/*'E:.-B:.n.-l.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 38,
+   "subject": 47
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 36,
+   "subject": 47
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 48,
+   "subject": 47
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 34,
+   "subject": 47
+  },
+  {
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 79
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 81,
+   "subject": 79
+  },
+  {
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
    "object": 80,
    "subject": 79
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 64,
+   "attributes": {
+    "path": "/#/0/~'E:.wo.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 78,
    "subject": 79
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 82,
-   "subject": 81
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 112,
+   "subject": 63
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 83,
-   "subject": 81
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 49
   },
   {
-   "attributes": [
-    "path",
-    "/#/0/~'E:U:A:.'"
-   ],
-   "class": "COMPOSITION",
-   "object": 82,
-   "subject": 84
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 25
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 83,
-   "subject": 84
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 32,
+   "subject": 25
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 75,
+   "subject": 25
+  },
+  {
+   "attributes": {
+    "path": "/#/4/*'E:.A:.g.-'/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 6,
+   "subject": 77
+  },
+  {
+   "attributes": {
+    "path": "/#/4/*'E:.A:.g.-'/#/&'E:S:.-k.u.-''/[2]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 15,
+   "subject": 77
+  },
+  {
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 18,
+   "subject": 77
+  },
+  {
+   "attributes": {
+    "path": "/#/4/*'E:.A:.g.-'/#/&'E:S:.-k.u.-''/[1]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 22,
+   "subject": 77
+  },
+  {
+   "attributes": {
+    "path": "/#/4/*'E:.A:.g.-'/#/&'E:S:.-k.u.-''/[0]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 21,
+   "subject": 77
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 14,
+   "subject": 77
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
    "object": 76,
-   "subject": 85
+   "subject": 77
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 83,
-   "subject": 85
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 31
   },
   {
-   "attributes": [
-    "path",
-    "/#/0/~'E:U:A:.'"
-   ],
-   "class": "COMPOSITION",
-   "object": 76,
-   "subject": 86
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 32,
+   "subject": 31
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 83,
-   "subject": 86
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 30,
+   "subject": 31
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 88,
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 14,
+   "subject": 101
+  },
+  {
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 101
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 25,
+   "subject": 101
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 21,
+   "subject": 101
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 8,
+   "subject": 3
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 49,
+   "subject": 3
+  },
+  {
+   "attributes": {
+    "path": "/#/8",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 71,
+   "subject": 70
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 69,
+   "subject": 70
+  },
+  {
+   "attributes": {
+    "path": "/#/8",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 84,
+   "subject": 83
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 69,
+   "subject": 83
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
    "subject": 87
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 83,
-   "subject": 87
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 93,
+   "subject": 91
   },
   {
-   "attributes": [
-    "path",
-    "/#/0/~'E:U:A:.'"
-   ],
-   "class": "COMPOSITION",
-   "object": 88,
+   "attributes": {
+    "path": "/#/4/*'E:T:.p.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 92,
+   "subject": 91
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 90,
+   "subject": 91
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 88
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
    "subject": 89
   },
   {
-   "attributes": [
-    "path",
-    "/#/1"
-   ],
-   "class": "COMPOSITION",
-   "object": 83,
-   "subject": 89
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 29
   },
   {
-   "attributes": [
-    "path",
-    "/#/0/~'E:.-we.-t.o.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 91,
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
    "subject": 90
   },
   {
-   "attributes": [
-    "path",
-    "/#/0/~'E:.-we.-t.o.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 91,
-   "subject": 92
+   "attributes": {
+    "path": "/#/4/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 6,
+   "subject": 68
   },
   {
-   "attributes": [
-    "path",
-    "/#/0/~'E:.-we.-t.o.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 91,
-   "subject": 93
+   "attributes": {
+    "path": "/#/4/#/&'E:S:.-k.u.-''/[1]",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 68
   },
   {
-   "attributes": [
-    "path",
-    "/#/0/~'E:.-we.-t.o.-\\''"
-   ],
-   "class": "COMPOSITION",
-   "object": 91,
+   "attributes": {
+    "path": "/#/4/#/&'E:S:.-k.u.-''/[0]",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 107,
+   "subject": 68
+  },
+  {
+   "attributes": {
+    "path": "/#/4/#/&'E:S:.-k.u.-''/[1]/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 97,
+   "subject": 68
+  },
+  {
+   "attributes": {
+    "path": "/#/4/#/&'E:S:.-k.u.-''/[0]/*'E:T:.j.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 106,
+   "subject": 68
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 36,
+   "subject": 68
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 61
+  },
+  {
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 21,
    "subject": 94
   },
   {
-   "attributes": [
-    "path",
-    "/#/0"
-   ],
-   "class": "COMPOSITION",
-   "object": 96,
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 94
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 25,
+   "subject": 94
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 14,
+   "subject": 94
+  },
+  {
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 96
+  },
+  {
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 97,
+   "subject": 96
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 95,
+   "subject": 96
+  },
+  {
+   "attributes": {
+    "path": "/#/7/*'E:.-'h.o.d.-U:.-'x.-','",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 39,
+   "subject": 45
+  },
+  {
+   "attributes": {
+    "path": "/#/7",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 40,
+   "subject": 45
+  },
+  {
+   "attributes": {
+    "path": "/#/6",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 28,
+   "subject": 45
+  },
+  {
+   "attributes": {
+    "path": "/#/6/*'E:.-B:.n.-l.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 38,
+   "subject": 45
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 36,
+   "subject": 45
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 46,
+   "subject": 45
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 34,
+   "subject": 45
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 62,
+   "subject": 15
+  },
+  {
+   "attributes": {
+    "path": "/#/2/~'E:.we.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 32,
+   "subject": 15
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 74,
+   "subject": 15
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 73,
+   "subject": 15
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 69
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 100
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 42
+  },
+  {
+   "attributes": {
+    "path": "/#/8/*'E:.A:.g.-'/#",
+    "type": "COMPOSITION_JUNCTION"
+   },
+   "object": 6,
+   "subject": 20
+  },
+  {
+   "attributes": {
+    "path": "/#/8/*'E:.A:.g.-'/#/&'E:S:.-k.u.-''/[1]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 15,
+   "subject": 20
+  },
+  {
+   "attributes": {
+    "path": "/#/8",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 18,
+   "subject": 20
+  },
+  {
+   "attributes": {
+    "path": "/#/8/*'E:.A:.g.-'/#/&'E:S:.-k.u.-''/[0]",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 14,
+   "subject": 20
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 21,
+   "subject": 20
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 22,
+   "subject": 20
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 19,
+   "subject": 20
+  },
+  {
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 14,
+   "subject": 82
+  },
+  {
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 82
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 25,
+   "subject": 82
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 22,
+   "subject": 82
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 98
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 129,
+   "subject": 80
+  },
+  {
+   "attributes": {
+    "path": "/#/4",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 26,
+   "subject": 80
+  },
+  {
+   "attributes": {
+    "path": "/#/4/*'E:S:.x.-'",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 97,
+   "subject": 80
+  },
+  {
+   "attributes": {
+    "path": "/#/0/~'E:A:.-t.u.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 100,
+   "subject": 80
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 99
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 27
+  },
+  {
+   "attributes": {
+    "path": "/#/2",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 67,
+   "subject": 59
+  },
+  {
+   "attributes": {
+    "path": "/#/1",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 68,
+   "subject": 59
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 36,
+   "subject": 59
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
    "subject": 95
   },
   {
-   "attributes": [
-    "path",
-    "/#/4/*'E:T:.p.-'"
-   ],
-   "class": "COMPOSITION",
-   "object": 97,
-   "subject": 95
+   "attributes": {
+    "path": "/#/6",
+    "type": "COMPOSITION_AUXILIARY"
+   },
+   "object": 28,
+   "subject": 14
+  },
+  {
+   "attributes": {
+    "path": "/#/6/*'E:.-B:.n.-l.-''",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 27,
+   "subject": 14
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_PHRASE"
+   },
+   "object": 25,
+   "subject": 14
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 52
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 102
+  },
+  {
+   "attributes": {
+    "path": "/#/0",
+    "type": "COMPOSITION_INFLECTION"
+   },
+   "object": 86,
+   "subject": 7
   }
  ]
 }

@@ -19,15 +19,15 @@ def to_graph(nodes, edges):
 
 
 if __name__ == '__main__':
-    with open(os.path.dirname(__file__) + "/../assets/exemples/ieml-grammar.ieml", 'r', encoding='utf8') as fp:
+    with open(os.path.dirname(__file__) + "/../assets/examples/ieml-grammar.ieml", 'r', encoding='utf8') as fp:
         parser = pyieml.Parser(fp.read())
 
     parser.parse()
     loaded = json.loads(parser.composition_graph_json())
 
-    graph = to_graph(loaded['nodes'], loaded['relations'])
+    # graph = to_graph(loaded['nodes'], loaded['relations'])
 
-    graph.view(tempfile.mktemp('.gv'))  
+    # graph.view(tempfile.mktemp('.gv'))  
 
     with open('graph.json', 'w', encoding='utf8') as fp:
         json.dump(loaded, fp, indent=True)
