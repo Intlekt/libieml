@@ -57,8 +57,8 @@ PYBIND11_MODULE(pyieml, m) {
         .def_property_readonly("line_start", &ieml::parser::CharRange::getLineStart)
         .def_property_readonly("line_end", &ieml::parser::CharRange::getLineEnd)
         .def_property_readonly("char_start", &ieml::parser::CharRange::getCharStart)
-        .def_property_readonly("char_end", &ieml::parser::CharRange::getCharEnd);
-
+        .def_property_readonly("char_end", &ieml::parser::CharRange::getCharEnd)
+        .def_property_readonly("file_id", &ieml::parser::CharRange::getFileId);
 
 
     m.doc() = "Python wrapper for libieml";

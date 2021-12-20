@@ -38,8 +38,6 @@ class TestBinding(unittest.TestCase):
         parser = pyieml.Parser(["file_0", "file_1"], ["""@word "wa.". @word .""", """@word "e."."""])
         parser.parse()
 
-        # print(parser.to_json())
-
 
 if __name__ == '__main__':
     unittest.main()
