@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <unordered_map>
+#include <enum.h>
 
 #include "ParserContext.h"
 #include "relation/BinaryRelation.h"
@@ -16,7 +17,7 @@ class CompositionNode {
 public:
     class Register {
     public:
-        std::shared_ptr<CompositionNode> get_or_create(std::shared_ptr<structure::PathTree> path_tree) {
+        std::shared_ptr<CompositionNode> get_or_create(const std::shared_ptr<structure::PathTree>& path_tree) {
             auto it = path_tree_map_.find(path_tree);
             if (it != path_tree_map_.end())
                 return it->second;
@@ -26,7 +27,7 @@ public:
             return node;
         }
 
-        std::shared_ptr<CompositionNode> get_or_create(std::shared_ptr<structure::Word> word) {
+        std::shared_ptr<CompositionNode> get_or_create(const std::shared_ptr<structure::Word>& word) {
             auto it = word_map_.find(word);
             if (it != word_map_.end())
                 return it->second;
@@ -63,6 +64,11 @@ public:
 
     bool isPathTree() const {return path_tree_ != nullptr;};
 
+    std::string to_string() const {
+        return "(id=" + std::to_string(id_) + " " + 
+            (isPathTree() ? "Phrase=" + path_tree_->to_string() : "Word=" + word_->to_string()) + ")";
+        };
+
 private:
     CompositionNode(std::shared_ptr<structure::PathTree> path_tree, size_t id) : path_tree_(path_tree), id_(id) {}
     CompositionNode(std::shared_ptr<structure::Word>     word     , size_t id) : word_(word), id_(id) {}
@@ -78,16 +84,18 @@ private:
     const size_t id_;
 };
 
-
+BETTER_ENUM(CompositionRelationType, char, COMPOSITION_PHRASE, COMPOSITION_INFLECTION, COMPOSITION_AUXILIARY, COMPOSITION_JUNCTION);
 
 class CompositionRelationAttribute {
 public:
-    CompositionRelationAttribute(const std::shared_ptr<structure::Path>& path) : path_(path) {}
+    CompositionRelationAttribute(
+        const std::shared_ptr<structure::Path>& path
+    ) : path_(path) {}
 
-    std::string to_string() const {return path_->to_string();};
+    std::string to_string() const {return  "path=" + path_->to_string();};
     std::shared_ptr<structure::Path> getPath() const {return path_;};
 
-    std::shared_ptr<CompositionRelationAttribute> merge(const std::shared_ptr<CompositionRelationAttribute>& other) const {
+    std::shared_ptr<CompositionRelationAttribute> merge(const std::shared_ptr<CompositionRelationAttribute>& other) const {      
         auto current = path_;
         std::vector<std::shared_ptr<ieml::structure::Path>> paths;
         while (current != nullptr) {
@@ -108,8 +116,8 @@ private:
 };
 
 
-typedef BinaryRelation<CompositionNode, CompositionRelationAttribute> CompositionRelation;
-typedef BinaryRelationGraph<CompositionNode, CompositionRelation> CompositionRelationGraph;
+typedef BinaryRelation<CompositionNode, CompositionRelationAttribute, CompositionRelationType> CompositionRelation;
+typedef BinaryRelationGraph<CompositionNode, CompositionRelation, CompositionRelationType> CompositionRelationGraph;
 
 std::shared_ptr<CompositionRelationGraph> buildCompositionRelationGraph(
     CompositionNode::Register& node_register, 

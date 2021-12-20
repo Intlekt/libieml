@@ -18,41 +18,46 @@ namespace relation {
 BETTER_ENUM(Class, char, COMPOSITION);
 
 
-template<typename NodeType, typename AttributeType>
+template<typename NodeType, typename AttributeType, class RelationAttributeTypeEnum>
 class BinaryRelation {
 public:
     BinaryRelation(const std::shared_ptr<NodeType>& subject, 
                    const std::shared_ptr<NodeType>& object,
-                   const std::shared_ptr<AttributeType>& attributes) : 
-        subject_(subject), object_(object), attributes_(attributes) {};
+                   const std::shared_ptr<AttributeType>& attributes,
+                   const RelationAttributeTypeEnum type) : 
+        subject_(subject), object_(object), attributes_(attributes), type_(type) {};
 
     const std::shared_ptr<NodeType>& getSubject() const {return subject_;};
     const std::shared_ptr<NodeType>& getObject() const {return object_;};
     const std::shared_ptr<AttributeType>& getAttributes() const {return attributes_;};
+    RelationAttributeTypeEnum getType() const {return type_;};
 
-    std::shared_ptr<BinaryRelation> concatenate(const std::shared_ptr<BinaryRelation<NodeType, AttributeType>>& other) {
-        if (other == nullptr || object_ != other->subject_) 
-            throw std::invalid_argument("Cannot concatenate two relations that are not connected.");
+    std::shared_ptr<BinaryRelation> concatenate(const std::shared_ptr<BinaryRelation<NodeType, AttributeType, RelationAttributeTypeEnum>>& other) {
+        if (other == nullptr || object_ != other->subject_ || type_ != other->type_) 
+            throw std::invalid_argument("Cannot concatenate two relations that are not connected or of different types.");
 
         return std::make_shared<BinaryRelation>(
             subject_,
             other->object_,
-            attributes_->merge(other->attributes_)
+            attributes_->merge(other->attributes_),
+            type_
         );
     };
 
     std::string to_string() const {
-        return subject_->to_string() + " -> " + object_->to_string() + " [" + attributes_->to_string() + "]";
+        return subject_->to_string() + " -> " + object_->to_string() + "[type=" + std::string(type_._to_string()) + " " + attributes_->to_string() + "]";
     }
 
 private:
     const std::shared_ptr<NodeType> subject_;
     const std::shared_ptr<NodeType> object_;
     const std::shared_ptr<AttributeType> attributes_;
+    const RelationAttributeTypeEnum type_;
+
 };
 
 
-template<class NodeType, class RelationType>
+template<class NodeType, class RelationType, class RelationAttributeTypeEnum>
 class BinaryRelationGraph : public std::unordered_map<std::shared_ptr<NodeType>, std::unordered_set<std::shared_ptr<RelationType>>> {
 public:
     void add_relation(const std::shared_ptr<RelationType>& relation) {
@@ -63,21 +68,27 @@ public:
         vertexes_.insert(relation->getObject());
     }
 
-    std::shared_ptr<BinaryRelationGraph<NodeType, RelationType>> transitive_closure() {
+    std::shared_ptr<BinaryRelationGraph<NodeType, RelationType, RelationAttributeTypeEnum>> transitive_closure() {
         std::unordered_map<std::shared_ptr<NodeType>, size_t> vertex_to_id;
         std::unordered_map<size_t, std::shared_ptr<NodeType>> id_to_vertex;
-        size_t n_v = vertexes_.size();
+        const size_t n_v = vertexes_.size();
 
-        size_t dist[n_v][n_v];
-        size_t next[n_v][n_v];
+        std::map<RelationAttributeTypeEnum, std::vector<std::vector<size_t>>> dist;
+        std::map<RelationAttributeTypeEnum, std::vector<std::vector<size_t>>> next;
+        for (auto rel_type: RelationAttributeTypeEnum::_values()) {
+            dist[rel_type] = std::vector<std::vector<size_t>>(n_v);
+            next[rel_type] = std::vector<std::vector<size_t>>(n_v);
 
-        for (size_t i = 0; i < n_v; i++) {
-            for (size_t j = 0; j < n_v; j++) {
-                dist[i][j] = n_v + 1;
-                next[i][j] = n_v + 1;
+            for (size_t i = 0; i < n_v; i++) {
+                dist[rel_type][i] = std::vector<size_t>(n_v);
+                next[rel_type][i] = std::vector<size_t>(n_v);
+                for (size_t j = 0; j < n_v; j++) {
+                    dist[rel_type][i][j] = n_v + 1;
+                    next[rel_type][i][j] = n_v + 1;
+                }
             }
-        }
 
+        }
         size_t i = 0;
         for (auto it = vertexes_.cbegin(); it != vertexes_.cend(); ++it) {
             vertex_to_id[*it] = i;
@@ -90,44 +101,48 @@ public:
             for (auto it_r = it->second.cbegin(); it_r != it->second.cend(); ++it_r) {
                 auto s = vertex_to_id[(*it_r)->getSubject()];
                 auto o = vertex_to_id[(*it_r)->getObject()];
-                next[s][o] = o;
-                dist[s][o] = 1;
+                next[(*it_r)->getType()][s][o] = o;
+                dist[(*it_r)->getType()][s][o] = 1;
+            }
+        }
+        for (auto rel_type: RelationAttributeTypeEnum::_values()) {
+            for (size_t i = 0; i < n_v; i++) {
+                next[rel_type][i][i] = i;
+                dist[rel_type][i][i] = 0;
+            }
+
+            for (size_t k = 0; k < n_v; k++) {
+                for (size_t i = 0; i < n_v; i++) {
+                    for (size_t j = 0; j < n_v; j++) {
+                        if (dist[rel_type][i][j] > dist[rel_type][i][k] + dist[rel_type][k][j]) {
+                            dist[rel_type][i][j] = dist[rel_type][i][k] + dist[rel_type][k][j];
+                            next[rel_type][i][j] = next[rel_type][i][k];
+                        }
+                    }
+                }
             }
         }
 
-        for (size_t i = 0; i < n_v; i++) {
-            next[i][i] = i;
-            dist[i][i] = 0;
-        }
-
-        for (size_t k = 0; k < n_v; k++) {
+        std::shared_ptr<BinaryRelationGraph<NodeType, RelationType, RelationAttributeTypeEnum>> graph = 
+            std::make_shared<BinaryRelationGraph<NodeType, RelationType, RelationAttributeTypeEnum>>();
+        
+        for (auto rel_type: RelationAttributeTypeEnum::_values()) {
             for (size_t i = 0; i < n_v; i++) {
                 for (size_t j = 0; j < n_v; j++) {
-                    if (dist[i][j] > dist[i][k] + dist[k][j]) {
-                        dist[i][j] = dist[i][k] + dist[k][j];
-                        next[i][j] = next[i][k];
+                    if (i != j && dist[rel_type][i][j] <= n_v) {
+                        size_t k = i;
+                        auto rel = getRelation(id_to_vertex[k], id_to_vertex[next[rel_type][k][j]]);
+                        k = next[rel_type][k][j];
+                        while (k != j) {
+                            rel = rel->concatenate(getRelation(id_to_vertex[k], id_to_vertex[next[rel_type][k][j]]));
+                            k = next[rel_type][k][j];
+                        }
+                        graph->add_relation(rel);
                     }
                 }
             }
         }
 
-        std::shared_ptr<BinaryRelationGraph<NodeType, RelationType>> graph = std::make_shared<BinaryRelationGraph<NodeType, RelationType>>();
-
-        for (size_t i = 0; i < n_v; i++) {
-            for (size_t j = 0; j < n_v; j++) {
-                if (i != j && dist[i][j] <= n_v) {
-                    size_t k = i;
-                    auto rel = getRelation(id_to_vertex[k], id_to_vertex[next[k][j]]);
-                    k = next[k][j];
-                    while (k != j) {
-                        rel = rel->concatenate(getRelation(id_to_vertex[k], id_to_vertex[next[k][j]]));
-                        k = next[k][j];
-                    }
-                    graph->add_relation(rel);
-                }
-            }
-        }
-        
         return graph;
     }
 

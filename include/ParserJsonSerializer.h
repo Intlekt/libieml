@@ -57,8 +57,8 @@ nlohmann::json serializeNode(const structure::CategoryRegister& categories,
     };
 }
 
-template<template<class, class> class GraphType, class NodeType, class RelationType>
-nlohmann::json binaryGraphToJson(const std::shared_ptr<GraphType<NodeType, RelationType>> graph, 
+template<template<class, class, class> class GraphType, class NodeType, class RelationType, class RelationAttributeTypeEnum>
+nlohmann::json binaryGraphToJson(const std::shared_ptr<GraphType<NodeType, RelationType, RelationAttributeTypeEnum>> graph, 
                                  const structure::CategoryRegister& categories,
                                  const structure::WordRegister& words) {
     size_t id = 0;

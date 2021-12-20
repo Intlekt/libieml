@@ -45,6 +45,8 @@ public:
     };
 
     virtual std::string to_string() const = 0;
+    virtual const std::set<std::shared_ptr<Word>> getWords() const {return {};};
+
 private:
     virtual int comp(const PathNode& a) const = 0;
 };
@@ -84,6 +86,7 @@ public:
     virtual std::string to_string() const override;
     
     std::shared_ptr<JunctionWord> getJunctionType() const {return junction_type_;};
+    virtual const std::set<std::shared_ptr<Word>> getWords() const override {return {junction_type_};};
 
     // bool operator< (const JunctionPathNode& a) const noexcept {return *junction_type_ <  *a.junction_type_;};
     // bool operator> (const JunctionPathNode& a) const noexcept {return *junction_type_ >  *a.junction_type_;};
@@ -241,6 +244,7 @@ public:
     // bool operator> (const AuxiliaryPathNode& a) const noexcept {return *auxiliary_type_ >  *a.auxiliary_type_;};
     // bool operator<=(const AuxiliaryPathNode& a) const noexcept {return *auxiliary_type_ <= *a.auxiliary_type_;};
     // bool operator>=(const AuxiliaryPathNode& a) const noexcept {return *auxiliary_type_ >= *a.auxiliary_type_;};
+    virtual const std::set<std::shared_ptr<Word>> getWords() const override {return {auxiliary_type_};};
 
 private:
     virtual int comp(const PathNode& a) const {
@@ -268,8 +272,9 @@ public:
     // bool operator<=(const InflectionPathNode& a) const noexcept {return cmp(a) <= 0;};
     // bool operator>=(const InflectionPathNode& a) const noexcept {return cmp(a) >= 0;};
 
-    const std::set<std::shared_ptr<InflectionWord>>& getWords() const {return inflections_;};
-
+    virtual const std::set<std::shared_ptr<Word>> getWords() const override {
+        return std::set<std::shared_ptr<Word>>(inflections_.begin(), inflections_.end());
+    };
 
 private:
     virtual int comp(const PathNode& a) const {
@@ -375,6 +380,11 @@ public:
 
     bool is_phrase() const {return node_->getPathType() == +PathType::ROOT;};
     bool is_inflection() const {return node_->getPathType() == +PathType::INFLECTION;};
+    bool is_auxiliary() const {return node_->getPathType() == +PathType::AUXILIARY;};
+    bool is_junction() const {return node_->getPathType() == +PathType::JUNCTION_AUXILIARY || 
+                                     node_->getPathType() == +PathType::JUNCTION_PHRASE || 
+                                     node_->getPathType() == +PathType::JUNCTION_CATEGORY || 
+                                     node_->getPathType() == +PathType::JUNCTION_INFLECTION;};
 
     bool operator==(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) == 0;};
     bool operator!=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) != 0;};

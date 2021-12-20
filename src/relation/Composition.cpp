@@ -30,26 +30,44 @@ std::shared_ptr<CompositionRelationGraph> ieml::relation::buildCompositionRelati
             graph->add_relation(std::make_shared<CompositionRelation>(
                 node_register.get_or_create(it->first),
                 node_register.get_or_create(subphrase.second),
-                std::make_shared<CompositionRelationAttribute>(subphrase.first)
+                std::make_shared<CompositionRelationAttribute>(subphrase.first), 
+                CompositionRelationType::COMPOSITION_PHRASE
             ));
         }
 
         // inflections
         for (auto& inflections : it->first->find_sub_tree(&ieml::structure::PathTree::is_inflection, is_phrase)) {
-
-            for (auto& inflection: std::dynamic_pointer_cast<ieml::structure::InflectionPathNode>(inflections.second->getNode())->getWords()) {
+            for (auto& inflection: inflections.second->getNode()->getWords()) {
                 graph->add_relation(std::make_shared<CompositionRelation>(
                     node_register.get_or_create(it->first),
                     node_register.get_or_create(inflection),
-                    std::make_shared<CompositionRelationAttribute>(inflections.first)
+                    std::make_shared<CompositionRelationAttribute>(inflections.first), 
+                    CompositionRelationType::COMPOSITION_INFLECTION
                 ));
-
             }
         }
-
-    }
-
-    for (auto it = wreg.inflections_begin(); it != wreg.inflections_end(); ++it) {
+        // auxiliaries
+        for (auto& auxiliaries : it->first->find_sub_tree(&ieml::structure::PathTree::is_auxiliary, is_phrase)) {
+            for (auto& auxiliary: auxiliaries.second->getNode()->getWords()) {
+                graph->add_relation(std::make_shared<CompositionRelation>(
+                    node_register.get_or_create(it->first),
+                    node_register.get_or_create(auxiliary),
+                    std::make_shared<CompositionRelationAttribute>(auxiliaries.first), 
+                    CompositionRelationType::COMPOSITION_AUXILIARY
+                ));
+            }
+        }
+        // junctions
+        for (auto& junctions : it->first->find_sub_tree(&ieml::structure::PathTree::is_junction, is_phrase)) {
+            for (auto& junction: junctions.second->getNode()->getWords()) {
+                graph->add_relation(std::make_shared<CompositionRelation>(
+                    node_register.get_or_create(it->first),
+                    node_register.get_or_create(junction),
+                    std::make_shared<CompositionRelationAttribute>(junctions.first), 
+                    CompositionRelationType::COMPOSITION_JUNCTION
+                ));
+            }
+        }
 
     }
 

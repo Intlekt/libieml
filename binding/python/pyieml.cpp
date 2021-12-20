@@ -30,8 +30,10 @@ PYBIND11_MODULE(pyieml, m) {
         })
         .def("composition_graph_json", [](const ieml::parser::IEMLParser &e) {
             ieml::relation::CompositionNode::Register register_;
-            auto graph = ieml::relation::buildCompositionRelationGraph(register_, e.getContext()->getCategoryRegister(), e.getContext()->getWordRegister());
-            return ieml::parser::binaryGraphToJson(graph, e.getContext()->getCategoryRegister(), e.getContext()->getWordRegister()).dump();
+            auto wregister = e.getContext()->getWordRegister();
+            auto cregister = e.getContext()->getCategoryRegister();
+            auto graph = ieml::relation::buildCompositionRelationGraph(register_, cregister, wregister);
+            return ieml::parser::binaryGraphToJson(graph, cregister, wregister).dump();
         });
 
     py::class_<ieml::parser::SyntaxError>(m, "SyntaxError")
