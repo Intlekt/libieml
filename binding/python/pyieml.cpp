@@ -23,6 +23,7 @@ std::vector<const ieml::parser::SyntaxError *> parse(const std::string& input) {
 PYBIND11_MODULE(pyieml, m) {
     py::class_<ieml::parser::IEMLParser>(m, "Parser")
         .def(py::init<const std::string &>())
+        .def(py::init<const std::vector<std::string> &, const std::vector<std::string> &>())
         .def("parse", &ieml::parser::IEMLParser::parse)
         .def("errors", &ieml::parser::IEMLParser::getSyntaxErrors, py::return_value_policy::reference)
         .def("to_json", [](const ieml::parser::IEMLParser &e) {

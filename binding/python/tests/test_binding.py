@@ -31,8 +31,15 @@ class TestBinding(unittest.TestCase):
         parser.parse()
 
         j = parser.composition_graph_json()
-        print(j)
+        # print(j)
         # print(json.dumps(json.loads(j), indent=4))
+
+    def test_multiple_files(self):
+        parser = pyieml.Parser(["file_0", "file_1"], ["""@word "wa.". @word .""", """@word "e."."""])
+        parser.parse()
+
+        # print(parser.to_json())
+
 
 if __name__ == '__main__':
     unittest.main()
