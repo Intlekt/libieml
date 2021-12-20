@@ -5,7 +5,7 @@
 #include "SyntaxError.h"
 
 #include <memory>
-#include <map>
+#include <set>
 
 #include "relation/BinaryRelation.h"
 #include "relation/Composition.h"
@@ -32,54 +32,59 @@ nlohmann::json categoryToJson(std::shared_ptr<ieml::structure::PathTree> concept
 nlohmann::json parserToJson(const IEMLParser& parser);
 
 template<class NodeType>
-nlohmann::json serializeNode(const structure::CategoryRegister& categories, const NodeType& n, size_t id) {
+nlohmann::json serializeNode(const structure::CategoryRegister& categories, 
+                             const structure::WordRegister& words, 
+                             const NodeType& n) {
     nlohmann::json names;
-    auto name = categories.getName(n);
+
+    std::shared_ptr<structure::Name> name;
+    std::string ntype;
+    if (n->isPathTree()) {
+        name = categories.getName(n->getPathTree());
+        ntype = categories.isNode(n->getPathTree()) ? "NODE" : "COMPONENT";
+    } else {
+        name = words.getName(n->getWord());
+        ntype = n->getWord()->getWordType()._to_string();
+    }
     for (auto it = name->begin(); it != name->end(); ++it)
         names[it->second.language()._to_string()] = it->second.value();
     
 
     return {
-        {"id", id},
-        {"class", categories.isNode(n) ? "NODE" : "COMPONENT"},
+        {"id", n->getId()},
+        {"class", ntype},
         {"names", names}
     };
 }
 
 template<template<class, class> class GraphType, class NodeType, class RelationType>
-nlohmann::json binaryGraphToJson(const std::shared_ptr<GraphType<NodeType, RelationType>> graph, const structure::CategoryRegister& categories) {
+nlohmann::json binaryGraphToJson(const std::shared_ptr<GraphType<NodeType, RelationType>> graph, 
+                                 const structure::CategoryRegister& categories,
+                                 const structure::WordRegister& words) {
     size_t id = 0;
-    std::unordered_map<std::shared_ptr<NodeType>, size_t> node_to_idx;
+    std::unordered_set<std::shared_ptr<NodeType>> nodes_set;
     
     nlohmann::json nodes;
     nlohmann::json relations;
     for (auto it = graph->begin(); it != graph->end(); ++it) {
         for (auto it_r = it->second.begin(); it_r != it->second.end(); ++it_r) {
             auto rel = *it_r;
-            size_t sbj_id, obj_id;
 
-            auto sbj_it = node_to_idx.find(rel->getSubject());
-            if (sbj_it == node_to_idx.end()) {
-                sbj_id = id;
-                node_to_idx.insert({rel->getSubject(), id});
-                nodes.push_back(serializeNode(categories, rel->getSubject(), id));
-                
-                id++;
-            } else sbj_id = sbj_it->second;
+            auto sbj_it = nodes_set.find(rel->getSubject());
+            if (sbj_it == nodes_set.end()) {
+                nodes_set.insert(rel->getSubject());
+                nodes.push_back(serializeNode(categories, words, rel->getSubject()));
+            };
 
-            auto obj_it = node_to_idx.find(rel->getObject());
-            if (obj_it == node_to_idx.end()) {
-                obj_id = id;
-                node_to_idx.insert({rel->getObject(), id});
-                nodes.push_back(serializeNode(categories, rel->getObject(), id));
-
-                id++;
-            } else obj_id = obj_it->second;
-
+            auto obj_it = nodes_set.find(rel->getObject());
+            if (obj_it == nodes_set.end()) {
+                nodes_set.insert(rel->getObject());
+                nodes.push_back(serializeNode(categories, words, rel->getObject()));
+            };
 
             relations.push_back({
-                {"subject", sbj_id},
-                {"object", obj_id},
+                {"subject", rel->getSubject()->getId()},
+                {"object", rel->getObject()->getId()},
                 {"attributes", {
                     {"path", rel->getAttributes()->getPath()->to_string()}
                 }}

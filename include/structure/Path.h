@@ -268,6 +268,9 @@ public:
     // bool operator<=(const InflectionPathNode& a) const noexcept {return cmp(a) <= 0;};
     // bool operator>=(const InflectionPathNode& a) const noexcept {return cmp(a) >= 0;};
 
+    const std::set<std::shared_ptr<InflectionWord>>& getWords() const {return inflections_;};
+
+
 private:
     virtual int comp(const PathNode& a) const {
         auto b = dynamic_cast<const InflectionPathNode&>(a);

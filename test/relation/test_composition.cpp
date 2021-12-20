@@ -47,7 +47,7 @@ TEST(ieml_relation_test_case, basic_graph) {
   auto node_register = CompositionNode::Register();
 
   try {                                                           
-      graph = buildCompositionRelationGraph(node_register, context->getCategoryRegister());
+      graph = buildCompositionRelationGraph(node_register, context->getCategoryRegister(), context->getWordRegister());
   } catch (std::exception& e) {                                   
     EXPECT_TRUE(false) << e.what();                               
   }

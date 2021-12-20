@@ -38,11 +38,30 @@ public:
     private:
         size_t index = 0;
 
+        struct WordHash_ {
+            size_t operator()(const std::shared_ptr<structure::Word>& w) const {
+                return std::hash<std::string>{}(w->getScript());
+            }
+        };
+        struct WordEqual_ {
+            bool operator()(const std::shared_ptr<structure::Word>& l, const std::shared_ptr<structure::Word>& r) const {
+                return l->getScript() == r->getScript();
+            }
+        };
+
         std::unordered_map<std::shared_ptr<structure::PathTree>, std::shared_ptr<CompositionNode>> path_tree_map_;
-        std::unordered_map<std::shared_ptr<structure::Word>, std::shared_ptr<CompositionNode>> word_map_;
+        std::unordered_map<std::shared_ptr<structure::Word>, 
+                           std::shared_ptr<CompositionNode>, 
+                           WordHash_, 
+                           WordEqual_> word_map_;
     };
 
     size_t getId() {return id_;};
+
+    std::shared_ptr<structure::PathTree> getPathTree() const {return path_tree_;};
+    std::shared_ptr<structure::Word>     getWord() const     {return word_;};
+
+    bool isPathTree() const {return path_tree_ != nullptr;};
 
 private:
     CompositionNode(std::shared_ptr<structure::PathTree> path_tree, size_t id) : path_tree_(path_tree), id_(id) {}
@@ -92,6 +111,9 @@ private:
 typedef BinaryRelation<CompositionNode, CompositionRelationAttribute> CompositionRelation;
 typedef BinaryRelationGraph<CompositionNode, CompositionRelation> CompositionRelationGraph;
 
-std::shared_ptr<CompositionRelationGraph> buildCompositionRelationGraph(CompositionNode::Register& node_register, const ieml::structure::CategoryRegister& reg);
+std::shared_ptr<CompositionRelationGraph> buildCompositionRelationGraph(
+    CompositionNode::Register& node_register, 
+    const ieml::structure::CategoryRegister& creg,
+    const ieml::structure::WordRegister& wreg);
 
 }
