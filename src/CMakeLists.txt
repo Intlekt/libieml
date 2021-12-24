@@ -1,12 +1,12 @@
 LIST( APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 
 set (ANTLR4_TAG fb661e891d2db191af4369695651906865c4959f)
+
 # add external build for antlrcpp
 include( ExternalAntlr4Cpp )
 
 # required if linking to static library
 # add_definitions(-DANTLR4CPP_STATIC)
-
 
 message(STATUS "Found antlr4cpp includes: ${ANTLR4_INCLUDE_DIRS} ")
 set(ANTLR_EXECUTABLE ${CMAKE_SOURCE_DIR}/thirdparty/antlr/antlr-4.9.2-complete.jar)
@@ -24,32 +24,33 @@ include_directories(${ANTLR4_INCLUDE_DIRS}
                     ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json
                     ${PROJECT_SOURCE_DIR}/thirdparty/better_enums)
 
+set(IEMLParser_src ${ANTLR_IEMLParser_CXX_OUTPUTS}
+                   ${CMAKE_CURRENT_LIST_DIR}/SyntaxError.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/IEMLGrammarVisitor.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/IemlParser.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ParserJsonSerializer.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/Program.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/Path.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/relation/Composition.cpp)
+                   
+set(IEMLParser_include ${PROJECT_SOURCE_DIR}/include
+                       ${ANTLR4_INCLUDE_DIRS}
+                       ${ANTLR_IEMLParser_OUTPUT_DIR}
+                       ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json
+                       ${PROJECT_SOURCE_DIR}/thirdparty/better_enums)
 
-add_library (IEMLParser SHARED
-             ${ANTLR_IEMLParser_CXX_OUTPUTS}
-             ${CMAKE_CURRENT_LIST_DIR}/SyntaxError.cpp
-             ${CMAKE_CURRENT_LIST_DIR}/IEMLGrammarVisitor.cpp
-             ${CMAKE_CURRENT_LIST_DIR}/IemlParser.cpp
-             ${CMAKE_CURRENT_LIST_DIR}/ParserJsonSerializer.cpp
-             ${CMAKE_CURRENT_LIST_DIR}/ast/Program.cpp
-             ${CMAKE_CURRENT_LIST_DIR}/structure/Path.cpp
-             ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp
-             ${CMAKE_CURRENT_LIST_DIR}/relation/Composition.cpp
-             )
+add_library (IEMLParser_object OBJECT ${IEMLParser_src})
+set_property(TARGET IEMLParser_object PROPERTY POSITION_INDEPENDENT_CODE True)
+target_include_directories(IEMLParser_object PUBLIC ${IEMLParser_include})
 
+add_library(IEMLParser_shared SHARED $<TARGET_OBJECTS:IEMLParser_object>)
+add_library(IEMLParser_static STATIC $<TARGET_OBJECTS:IEMLParser_object>)
+target_link_libraries(IEMLParser_shared PUBLIC antlr4_static)
+target_link_libraries(IEMLParser_static PUBLIC antlr4_static)
 
-target_include_directories(IEMLParser 
-                           INTERFACE ${PROJECT_SOURCE_DIR}/include
-                                     ${ANTLR4_INCLUDE_DIRS}
-                                     ${ANTLR_IEMLParser_OUTPUT_DIR}
-                                     ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json
-                                     ${PROJECT_SOURCE_DIR}/thirdparty/better_enums)
-
-# target_compile_options(IEMLParser PRIVATE -Wall -Wextra -Wpedantic)
-
-
-target_link_libraries(IEMLParser antlr4_shared)
-
+target_include_directories(IEMLParser_shared PUBLIC ${IEMLParser_include})
+target_include_directories(IEMLParser_static PUBLIC ${IEMLParser_include})
 
 
 

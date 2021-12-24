@@ -29,11 +29,8 @@ if (${BUILD_CHECK_ERRORS})
     message("Building IEML executable")
 
     add_executable(IEML main.cxx)
-    target_link_libraries(IEML IEMLParser)
+    target_link_libraries(IEML IEMLParser_shared)
 endif()
-
-
-
 
 if(${BUILD_PYBIND11})
     message("Building python wrapper")
