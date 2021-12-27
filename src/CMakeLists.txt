@@ -43,6 +43,7 @@ set(IEMLParser_include ${PROJECT_SOURCE_DIR}/include
 add_library (IEMLParser_object OBJECT ${IEMLParser_src})
 set_property(TARGET IEMLParser_object PROPERTY POSITION_INDEPENDENT_CODE True)
 target_include_directories(IEMLParser_object PUBLIC ${IEMLParser_include})
+add_dependencies(IEMLParser_object antlr4_static)
 
 add_library(IEMLParser_shared SHARED $<TARGET_OBJECTS:IEMLParser_object>)
 add_library(IEMLParser_static STATIC $<TARGET_OBJECTS:IEMLParser_object>)
