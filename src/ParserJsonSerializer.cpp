@@ -3,6 +3,8 @@
 #include "ast/interfaces/AST.h"
 
 #include <functional>
+#include <locale>
+
 
 using namespace ieml::parser;
 
@@ -26,6 +28,7 @@ nlohmann::json ieml::parser::syntaxErrorToJson(const SyntaxError& syntax_error) 
 
 nlohmann::json ieml::parser::nameToJson(const ieml::structure::Name& name) {
     nlohmann::json translations;
+    std::locale loc;
 
     for (auto it = name.begin(); it != name.end();) {
         
@@ -41,7 +44,6 @@ nlohmann::json ieml::parser::nameToJson(const ieml::structure::Name& name) {
     }
 
     return translations;
-
 }
 
 nlohmann::json ieml::parser::errorManagerToJson(const IEMLParserErrorListener& error_manager) {
@@ -50,6 +52,16 @@ nlohmann::json ieml::parser::errorManagerToJson(const IEMLParserErrorListener& e
         error_list.push_back(syntaxErrorToJson(*error));
     }
     return error_list;
+}
+
+std::string hashElement(std::shared_ptr<ieml::structure::PathTree> element) {
+    auto hasher = std::hash<ieml::structure::PathTree>();
+    return "category_" + std::to_string(hasher(*element));
+}
+
+std::string hashElement(std::shared_ptr<ieml::structure::Word> element) {
+    auto hasher = std::hash<std::string>();
+    return "word_" + std::to_string(hasher(element->to_string()));
 }
 
 nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::PathTree> category, 
@@ -68,28 +80,41 @@ nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::Pat
 
     nlohmann::json references = nlohmann::json::array();
     for (auto rel: composition_graph.getRelationsWithSubject(node)) {
-        references.push_back(rel->getObject()->getId());
+        auto tgt = rel->getObject();
+        if (tgt->isPathTree())
+            references.push_back(hashElement(tgt->getPathTree()));
+        else
+            references.push_back(hashElement(tgt->getWord()));
     }
 
     nlohmann::json back_references = nlohmann::json::array();
     for (auto rel: composition_graph.getRelationsWithObject(node)) {
-        back_references.push_back(rel->getSubject()->getId());
+        auto tgt = rel->getSubject();
+        if (tgt->isPathTree())
+            back_references.push_back(hashElement(tgt->getPathTree()));
+        else
+            back_references.push_back(hashElement(tgt->getWord()));
     }
 
     return {
-        {"category_id", node->getId()},
+        {"id", hashElement(category)},
         {"range", charRangeToJson(range)},
-        {"node_type", node_type},
         {"user_defined", user_defined},
         {"translations", nameToJson(*name)},
+        {"type", "CATEGORY"},
+
+        {"category_type", node_type},
         {"references", references},
         {"back_references", back_references}
     };
 }
 
+
 template <class WordType>
 nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
                            ieml::parser::ParserContext& ctx) {
+    static_assert(std::is_base_of_v<ieml::structure::Word, WordType>, "WordType must derive from ieml::structure::Word");
+
     auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(word));
     const ieml::AST::CharRange& range = ast->getCharRange();
 
@@ -97,10 +122,13 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
     auto name = ctx.getWordRegister().getName(word);
 
     return {
-        {"word_id", std::hash<WordType>()(*word)},
+        {"id", hashElement(word)},
         {"range", charRangeToJson(range)},
         {"user_defined", user_defined},
-        {"translations", nameToJson(*name)}
+        {"translations", nameToJson(*name)},
+        {"type", "WORD"},
+
+        {"word_type", word->getWordType()._to_string()}
     };
 }
 
@@ -115,59 +143,23 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
 
     auto language = context->getLanguage();
     
-    nlohmann::json namespace_category, namespace_auxiliary, namespace_inflection, namespace_junction;
-    nlohmann::json categories = nlohmann::json();
-    nlohmann::json auxiliaries = nlohmann::json();
-    nlohmann::json inflections = nlohmann::json();
-    nlohmann::json junctions = nlohmann::json();
+    nlohmann::json elements;
 
-    auto chasher = std::hash<ieml::structure::PathTree>();
-    for (auto it = cregister.categories_begin(); it != cregister.categories_end(); ++it) {
-        categories.push_back(categoryToJson(it->first, *context, node_register, *composition_graph));
-
-        auto range = it->second->equal_range(language);
-
-        for (auto it_n = range.first; it_n != range.second; ++it_n)
-            namespace_category[it_n->second.value()] = chasher(*it->first);
-    }
+    for (auto it = cregister.categories_begin(); it != cregister.categories_end(); ++it)
+        elements[hashElement(it->first)] = categoryToJson(it->first, *context, node_register, *composition_graph);
     
-    auto aux_hasher = std::hash<ieml::structure::AuxiliaryWord>();
-    for (auto it = wregister.auxiliaries_begin(); it != wregister.auxiliaries_end(); ++it) {
-        auxiliaries.push_back(_wordToJson<ieml::structure::AuxiliaryWord>(it->first, *context));
+    for (auto it = wregister.auxiliaries_begin(); it != wregister.auxiliaries_end(); ++it)
+        elements[hashElement(it->first)] = _wordToJson<ieml::structure::AuxiliaryWord>(it->first, *context);
 
-        auto range = it->second->equal_range(language);
-        for (auto it_n = range.first; it_n != range.second; ++it_n)
-            namespace_auxiliary[it_n->second.value()] = aux_hasher(*it->first);
-    }
+    for (auto it = wregister.inflections_begin(); it != wregister.inflections_end(); ++it)
+        elements[hashElement(it->first)] = _wordToJson<ieml::structure::InflectionWord>(it->first, *context);
 
-    auto infl_hasher = std::hash<ieml::structure::InflectionWord>();
-    for (auto it = wregister.inflections_begin(); it != wregister.inflections_end(); ++it) {
-        inflections.push_back(_wordToJson<ieml::structure::InflectionWord>(it->first, *context));
-
-        auto range = it->second->equal_range(language);
-        for (auto it_n = range.first; it_n != range.second; ++it_n)
-            namespace_inflection[it_n->second.value()] = infl_hasher(*it->first);
-    }
-
-    auto jct_hasher = std::hash<ieml::structure::JunctionWord>();
-    for (auto it = wregister.junctions_begin(); it != wregister.junctions_end(); ++it) {
-        junctions.push_back(_wordToJson<ieml::structure::JunctionWord>(it->first, *context));
-
-        auto range = it->second->equal_range(language);
-        for (auto it_n = range.first; it_n != range.second; ++it_n)
-            namespace_junction[it_n->second.value()] = jct_hasher(*it->first);
-    }
-
+    for (auto it = wregister.junctions_begin(); it != wregister.junctions_end(); ++it)
+        elements[hashElement(it->first)] = _wordToJson<ieml::structure::JunctionWord>(it->first, *context);
+  
     return {
         {"errors", errors},
         {"language", language._to_string()},
-        {"categories", categories},
-        {"namespace_category", namespace_category},
-        {"auxiliaries", auxiliaries},
-        {"namespace_auxiliary", namespace_auxiliary},
-        {"inflections", inflections},
-        {"namespace_inflection", namespace_inflection},
-        {"junctions", junctions},
-        {"namespace_junction", namespace_junction}
+        {"elements", elements}
     };
 };

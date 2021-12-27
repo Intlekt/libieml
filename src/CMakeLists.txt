@@ -40,18 +40,18 @@ set(IEMLParser_include ${PROJECT_SOURCE_DIR}/include
                        ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json
                        ${PROJECT_SOURCE_DIR}/thirdparty/better_enums)
 
+# IEMLParser_object
 add_library (IEMLParser_object OBJECT ${IEMLParser_src})
 set_property(TARGET IEMLParser_object PROPERTY POSITION_INDEPENDENT_CODE True)
 target_include_directories(IEMLParser_object PUBLIC ${IEMLParser_include})
 add_dependencies(IEMLParser_object antlr4_static)
 
+# IEMLParser_shared
 add_library(IEMLParser_shared SHARED $<TARGET_OBJECTS:IEMLParser_object>)
-add_library(IEMLParser_static STATIC $<TARGET_OBJECTS:IEMLParser_object>)
 target_link_libraries(IEMLParser_shared PUBLIC antlr4_static)
-target_link_libraries(IEMLParser_static PUBLIC antlr4_static)
-
 target_include_directories(IEMLParser_shared PUBLIC ${IEMLParser_include})
+
+# IEMLParser_static
+add_library(IEMLParser_static STATIC $<TARGET_OBJECTS:IEMLParser_object>)
+target_link_libraries(IEMLParser_static PUBLIC antlr4_static)
 target_include_directories(IEMLParser_static PUBLIC ${IEMLParser_include})
-
-
-
