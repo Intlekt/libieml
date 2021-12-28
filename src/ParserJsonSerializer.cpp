@@ -143,7 +143,7 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
 
     auto language = context->getLanguage();
     
-    nlohmann::json elements;
+    nlohmann::json elements = nlohmann::json::object();
 
     for (auto it = cregister.categories_begin(); it != cregister.categories_end(); ++it)
         elements[hashElement(it->first)] = categoryToJson(it->first, *context, node_register, *composition_graph);
