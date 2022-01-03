@@ -132,6 +132,7 @@ public:
             return;
         }
 
+        ctx.getSourceMapping().register_mapping(word, this);
         wregister.define_word(word);
     };
 

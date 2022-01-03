@@ -2,6 +2,7 @@ import os
 import re
 import subprocess
 import sys
+import multiprocessing
 
 from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext
@@ -105,8 +106,13 @@ class CMakeBuild(build_ext):
             # self.parallel is a Python 3 only way to set parallel jobs by hand
             # using -j in the build_ext call, not supported by pip or PyPA-build.
             if hasattr(self, "parallel") and self.parallel:
-                # CMake 3.12+ only.
-                build_args += [f"-j{self.parallel}"]
+                n_count = self.parallel
+            else:
+                n_count = multiprocessing.cpu_count()
+
+            cmake_args += [
+                f"-DCMAKE_BUILD_PARALLEL_LEVEL={n_count}"
+            ]
 
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
@@ -117,7 +123,6 @@ class CMakeBuild(build_ext):
         subprocess.check_call(
             ["cmake", "--build", "."] + build_args, cwd=self.build_temp
         )
-
 
 # The information here can also be placed in setup.cfg - better separation of
 # logic and declaration, and simpler if you include description/version in a file.

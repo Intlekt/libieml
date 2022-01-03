@@ -12,6 +12,7 @@
 #include "structure/CategoryRegister.h"
 #include "structure/Path.h"
 #include "structure/Namespace.h"
+#include "SourceMapping.h"
 
 
 namespace ieml::parser {
@@ -33,34 +34,41 @@ nlohmann::json parserToJson(const IEMLParser& parser);
 
 template<class NodeType>
 nlohmann::json serializeNode(const structure::CategoryRegister& categories, 
-                             const structure::WordRegister& words, 
+                             const structure::WordRegister& words,
+                             const SourceMapping& mapping,
                              const NodeType& n) {
     nlohmann::json names;
 
     std::shared_ptr<structure::Name> name;
     std::string ntype;
+    std::string file_id;
     if (n->isPathTree()) {
         name = categories.getName(n->getPathTree());
         ntype = categories.isNode(n->getPathTree()) ? "NODE" : "COMPONENT";
+        file_id = mapping.resolve_mapping(n->getPathTree())->getCharRange().getFileId();
+
     } else {
         name = words.getName(n->getWord());
         ntype = n->getWord()->getWordType()._to_string();
+        file_id = mapping.resolve_mapping(n->getWord())->getCharRange().getFileId();
     }
     if (name)
         for (auto it = name->begin(); it != name->end(); ++it)
             names[it->second.language()._to_string()] = it->second.value();
-
-    return {
+    
+    return { 
         {"id", n->getId()},
         {"class", ntype},
-        {"names", names}
+        {"names", names},
+        {"file_id", file_id}
     };
 }
 
 template<template<class, class, class> class GraphType, class NodeType, class RelationType, class RelationAttributeTypeEnum>
 nlohmann::json binaryGraphToJson(const std::shared_ptr<GraphType<NodeType, RelationType, RelationAttributeTypeEnum>> graph, 
                                  const structure::CategoryRegister& categories,
-                                 const structure::WordRegister& words) {
+                                 const structure::WordRegister& words,
+                                 const SourceMapping& mapping) {
     size_t id = 0;
     std::unordered_set<std::shared_ptr<NodeType>> nodes_set;
     
@@ -73,13 +81,13 @@ nlohmann::json binaryGraphToJson(const std::shared_ptr<GraphType<NodeType, Relat
             auto sbj_it = nodes_set.find(rel->getSubject());
             if (sbj_it == nodes_set.end()) {
                 nodes_set.insert(rel->getSubject());
-                nodes.push_back(serializeNode(categories, words, rel->getSubject()));
+                nodes.push_back(serializeNode(categories, words, mapping, rel->getSubject()));
             };
 
             auto obj_it = nodes_set.find(rel->getObject());
             if (obj_it == nodes_set.end()) {
                 nodes_set.insert(rel->getObject());
-                nodes.push_back(serializeNode(categories, words, rel->getObject()));
+                nodes.push_back(serializeNode(categories, words, mapping, rel->getObject()));
             };
 
             relations.push_back({
