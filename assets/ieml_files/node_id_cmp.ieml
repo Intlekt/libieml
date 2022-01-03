@@ -1,10 +1,10 @@
 @word "wa." .
-@inflection fr'nom' NOUN "a." .
+@inflection fr:nom NOUN "a." .
 
-@component fr'test' en'test' (
+@component fr:test en:test (
     0 ~nom #"wa."
 ) .
 
-@node fr'test2' en'test2' (
+@node fr:test2 en:test2 (
     0  #test
 ) .

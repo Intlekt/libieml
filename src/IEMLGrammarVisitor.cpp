@@ -373,10 +373,14 @@ namespace ieml::parser {
    */
 
   antlrcpp::Any IEMLGrammarVisitor::visitLanguage_string(iemlParser::Language_stringContext *ctx) {
-    CHECK_SYNTAX_ERROR(error_listener_, ctx, language, "Invalid language identifier for language string.", true);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, value, "Invalid identifier value for language string.", true);
+    if (!ctx->language) {
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid language identifier for language string.");
+      RETURN_VISITOR_RESULT_ERROR(LanguageString);
+    }
 
-    CAST_OR_RETURN_IF_NULL(ctx, Identifier, language, LanguageString)
+    std::shared_ptr<Identifier> language = std::make_shared<Identifier>(charRangeFromToken(ctx->language), 
+                                                                        ctx->language->getText().substr(0, 2));
     CAST_OR_RETURN_IF_NULL(ctx, Identifier, value, LanguageString)
 
     RETURN_VISITOR_RESULT(LanguageString, LanguageString, std::move(language), std::move(value))

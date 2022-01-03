@@ -40,14 +40,15 @@ reference_value: identifier_=identifier  # reference_value__identifier
                | phrase_=phrase          # reference_value__phrase
                ;
 
-language_string : language=identifier '\'' value=identifier '\'';
+language_string : language=LANGUAGE_STRING_MARK value=identifier;
 
+LANGUAGE_STRING_MARK : [a-z][a-z]':';
 
 STRING : '"'(~'"'|'\\"')*'"';
 
 identifier : identifiers+=IDENTIFIER+ ;
 
-IDENTIFIER : [a-zA-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ][0-9a-zA-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ]*;
+IDENTIFIER : [a-zA-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ'\-][0-9a-zA-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ'\-]*;
 
 FLEXION_MARK : '~' ;
 JUNCTION_MARK : '&' ;

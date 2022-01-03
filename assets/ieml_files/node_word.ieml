@@ -1,6 +1,6 @@
 @word "wa." .
-@inflection fr'nom' VERB "a." .
+@inflection fr:nom VERB "a." .
 
-@node fr'test' en'test' (
+@node fr:test en:test (
     0 ~nom #"wa."
 ) .

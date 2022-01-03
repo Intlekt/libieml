@@ -1,6 +1,6 @@
 @word "wa." .
-@auxiliary fr'r' 2 "b." .
-@inflection fr'nom' VERB "a." .
+@auxiliary fr:r 2 "b." .
+@inflection fr:nom VERB "a." .
 
 
-@component fr'test' en'test' (0 ~nom #(0 ~nom #"wa.") <1 int "test">,1 !*r #(0 ~nom #"wa.")) .
+@component fr:test en:test (0 ~nom #(0 ~nom #"wa.") <1 int "test">,1 !*r #(0 ~nom #"wa.")) .
