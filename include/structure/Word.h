@@ -48,6 +48,8 @@ public:
     }
     virtual WordType getWordType() const {return WordType::AUXILIARY;};
 
+    RoleType getRoleType() const {return accepted_role_;}
+
 private:
     const RoleType accepted_role_;
 };

@@ -102,27 +102,26 @@ private:
 };
 
 
-class JunctionPhrase : public Phrase, public IJunction<Phrase, structure::PhraseJunctionIndexPathNode, structure::PhraseJunctionPathNode> {
+class JunctionPhrase : public Phrase, public IJunction<Phrase, structure::PhraseJunctionIndexPathNode, structure::PhraseJunctionPathNode, Empty> {
 public:
     JunctionPhrase(std::shared_ptr<CharRange>&& char_range,
                    std::vector<std::shared_ptr<Phrase>>&& phrases,
                    std::shared_ptr<Identifier>&& junction_identifier) : 
         AST(std::move(char_range)),
         Phrase(), 
-        IJunction<Phrase, structure::PhraseJunctionIndexPathNode, structure::PhraseJunctionPathNode>(std::move(phrases), std::move(junction_identifier)) {}
+        IJunction<Phrase, structure::PhraseJunctionIndexPathNode, structure::PhraseJunctionPathNode, Empty>(std::move(phrases), std::move(junction_identifier)) {}
 
     std::string to_string() const override {
         return "(" + junction_to_string() + ")";
     }
     
-    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i) const override {
+    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i, Empty a) const override {
         return items_[i]->check_phrase(ctx);
     };
 
     virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContext& ctx) const override {
-        return check_junction(ctx);
+        return check_junction(ctx, {});
     }
-
 };
 }
 }

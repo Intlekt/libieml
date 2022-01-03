@@ -16,7 +16,7 @@ public:
         auxiliary_(std::move(auxiliary)) {}
 
 
-    std::shared_ptr<structure::PathTree> check_auxiliary_subline(parser::ParserContext& ctx) const {
+    std::shared_ptr<structure::PathTree> check_auxiliary_subline(parser::ParserContext& ctx, structure::RoleType role_type) const {
         auto child = _check_auxiliary_subline(ctx);
 
         if (auxiliary_) {
@@ -28,9 +28,21 @@ public:
                 );
                 return nullptr;
             }
+
+            if (!auxiliary->accept_role(role_type)) {
+                ctx.getErrorManager().visitorError(
+                    auxiliary_->getCharRange(),
+                    "Invalid auxiliary for this role, '" + auxiliary_->getName() + "' is declared for role '" + 
+                        auxiliary->getRoleType()._to_string() + "', not '" + role_type._to_string() + "'."
+                );
+                return nullptr;
+
+            }
+
             if(!child) {
                 return nullptr;
             }
+
             
             return ctx.getPathTreeRegister().get_or_create(
                 std::make_shared<structure::AuxiliaryPathNode>(auxiliary), 
@@ -82,7 +94,7 @@ private:
     std::shared_ptr<InflexedCategory> flexed_category_;
 };
 
-class JunctionAuxiliarySubPhraseLine : public AuxiliarySubPhraseLine, public IJunction<InflexedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode> {
+class JunctionAuxiliarySubPhraseLine : public AuxiliarySubPhraseLine, public IJunction<InflexedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, Empty> {
 public:
     JunctionAuxiliarySubPhraseLine(std::shared_ptr<CharRange>&& char_range,
                                    std::shared_ptr<Identifier>&& auxiliary,
@@ -90,7 +102,7 @@ public:
                                    std::shared_ptr<Identifier>&& junction_type) :
         AST(std::move(char_range)),
         AuxiliarySubPhraseLine(std::move(auxiliary)),
-        IJunction<InflexedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode>(std::move(flexed_categories), std::move(junction_type)) {}
+        IJunction<InflexedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, Empty>(std::move(flexed_categories), std::move(junction_type)) {}
 
     std::string to_string() const override {
         return auxiliary_to_string() + junction_to_string();
@@ -98,10 +110,10 @@ public:
 
 protected:
     std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx) const override {
-        return check_junction(ctx);
+        return check_junction(ctx, {});
     };
 
-    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i) const override {
+    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i, Empty e) const override {
         return items_[i]->check_flexed_category(ctx);
     };
 };

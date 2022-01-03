@@ -10,8 +10,10 @@
 
 namespace ieml {
 namespace AST {
+    
+struct Empty {};
 
-template<class T, class IndexPathNode, class JunctionPathNode >
+template<class T, class IndexPathNode, class JunctionPathNode, class CheckArgument >
 class IJunction {
 public:
     IJunction(std::vector<std::shared_ptr<T>>&& items,
@@ -21,14 +23,14 @@ public:
             static_assert(std::is_base_of<AST, T>::value, "T is not an AST.");
         };
 
-    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i) const = 0;
+    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i, CheckArgument arg) const = 0;
 
-    std::shared_ptr<structure::PathTree> check_junction(parser::ParserContext& ctx) const {
+    std::shared_ptr<structure::PathTree> check_junction(parser::ParserContext& ctx, CheckArgument arg) const {
         structure::PathTree::Children children;
 
         bool valid = true;
         for (size_t i = 0; i < items_.size(); ++i) {
-            auto phrase = check_junction_item(ctx, i);
+            auto phrase = check_junction_item(ctx, i, arg);
 
             if (phrase == nullptr) {
                 valid = false;
