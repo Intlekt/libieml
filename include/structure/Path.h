@@ -80,6 +80,33 @@ private:
     const RoleType role_type_;
 };
 
+class ParadigmPathNode : public PathNode {
+public:
+    virtual bool accept_next(const PathNode& next) const override;
+    virtual PathType getPathType() const override;
+    virtual std::string to_string() const override;
+private:
+    virtual int comp(const PathNode& a) const {return  0;};
+};
+
+class ParadigmIndexPathNode : public PathNode {
+public:
+    ParadigmIndexPathNode(const size_t& index) : index_(index) {};
+    virtual bool accept_next(const PathNode& next) const override;
+    virtual PathType getPathType() const override;
+    virtual std::string to_string() const override;
+
+private:
+    virtual int comp(const PathNode& a) const {
+        auto b = dynamic_cast<const ParadigmIndexPathNode&>(a);
+        if (index_ == b.index_) return  0;
+        if (index_ <  b.index_) return -1;
+        else                    return  1;
+    };
+
+    const size_t index_;
+};
+
 class JunctionPathNode : public PathNode {
 public:
     JunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : junction_type_(junction_type) {}

@@ -25,6 +25,7 @@ namespace ieml::structure {
         case PathType::JUNCTION_INFLECTION:
         case PathType::INFLECTION:
         case PathType::JUNCTION_CATEGORY:
+        case PathType::PARADIGM:
         case PathType::WORD:
             return true;
         default:
@@ -33,6 +34,33 @@ namespace ieml::structure {
     };
     PathType RoleNumberPathNode::getPathType() const {return PathType::ROLE;};
     std::string RoleNumberPathNode::to_string() const {return std::to_string(role_type_);}
+
+    bool ParadigmPathNode::accept_next(const PathNode& next) const {
+        switch (next.getPathType())
+        {
+        case PathType::PARADIGM_INDEX:
+            return true;
+        default:
+            return false;
+        }
+    };
+    PathType ParadigmPathNode::getPathType() const {return PathType::PARADIGM;};
+    std::string ParadigmPathNode::to_string() const {return "{}";}
+   
+    bool ParadigmIndexPathNode::accept_next(const PathNode& next) const {
+        switch (next.getPathType())
+        {
+        case PathType::ROOT:
+        case PathType::WORD:
+            return true;
+        default:
+            return false;
+        }
+    };
+    PathType ParadigmIndexPathNode::getPathType() const {return PathType::PARADIGM_INDEX;};
+    std::string ParadigmIndexPathNode::to_string() const {return std::to_string(index_);}
+
+
 
     std::string JunctionPathNode::to_string() const {
         return "&" + std::string(junction_type_->to_string());
@@ -125,6 +153,7 @@ namespace ieml::structure {
         switch (next.getPathType())
         {
         case PathType::JUNCTION_CATEGORY:
+        case PathType::PARADIGM:
         case PathType::WORD:
         case PathType::ROOT:
             return true;
@@ -140,6 +169,7 @@ namespace ieml::structure {
         case PathType::JUNCTION_INFLECTION:
         case PathType::INFLECTION:
         case PathType::JUNCTION_CATEGORY:
+        case PathType::PARADIGM:
         case PathType::WORD:
         case PathType::ROOT:
             return true;
@@ -156,6 +186,7 @@ namespace ieml::structure {
         switch (next.getPathType())
         {
         case PathType::JUNCTION_CATEGORY:
+        case PathType::PARADIGM:
         case PathType::WORD:
         case PathType::ROOT:
             return true;

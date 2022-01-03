@@ -25,13 +25,17 @@ category : identifier_=identifier # category__identifier
          | word=STRING            # category__word
          ;
 
+category_paradigm : PARADIGM_START categories+=category (PARADIGM_SEP categories+=category)* PARADIGM_END;  
 
 sub_phrase_line_auxiliary : (AUXILIARY_MARK auxiliary=identifier)? inflexed_category_=inflexed_category                                     # sub_phrase_line_auxiliary__sub_phrase_no_auxiliary
                           | AUXILIARY_MARK auxiliary=identifier JUNCTION_MARK junction_type=identifier 
                             JUNCTION_OPEN inflexed_categories+=inflexed_category inflexed_categories+=inflexed_category+ JUNCTION_CLOSE     # sub_phrase_line_auxiliary__jonction_no_auxiliary
                           ;
 
-inflexed_category : (FLEXION_MARK inflexions+=identifier)* CATEGORY_MARK category_=category references+=reference*;
+inflexed_category : (FLEXION_MARK inflexions+=identifier)* CATEGORY_MARK category_=category references+=reference*        #inflexed_category__singular 
+                  | (FLEXION_MARK inflexions+=identifier)* CATEGORY_MARK category_=category_paradigm                      #inflexed_category__paradigm
+                  ;
+
 
 reference : REFERENCE_OPEN (id=INTEGER)? data_type=IDENTIFIER value=reference_value REFERENCE_CLOSE;
 
@@ -48,7 +52,7 @@ STRING : '"'(~'"'|'\\"')*'"';
 
 identifier : identifiers+=IDENTIFIER+ ;
 
-IDENTIFIER : [a-zA-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ][0-9a-zA-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ'\-]*;
+IDENTIFIER : [a-zA-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ\-][0-9a-zA-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ'\-]*;
 
 FLEXION_MARK : '~' ;
 JUNCTION_MARK : '&' ;
@@ -66,14 +70,14 @@ SEMANTIC_ACCENT : '!' ;
 DECLARATION_MARK : '@' ;
 DECLARATION_END : '.' ;
 
-SUBSTITUTION_START : '{' ;
-SUBSTITUTION_END : '}' ;
+PARADIGM_START : '{' ;
+PARADIGM_END : '}' ;
+PARADIGM_SEP : ';' ;
 
 PARENTHESIS_START : '(';
 PARENTHESIS_END : ')';
 COMMA : ',';
 
-SUBSTITUTION_SEP : ';' ;
 
 INTEGER : [0-9]+ ;
 

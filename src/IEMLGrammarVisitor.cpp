@@ -7,6 +7,7 @@
 #include "ast/Phrase.h"
 #include "ast/Reference.h"
 #include "ast/Word.h"
+#include "ast/CategoryParadigm.h"
 #include "ast/InflexedCategory.h"
 #include "ast/ReferenceStringValue.h"
 #include "ast/interfaces/ICategory.h"
@@ -323,8 +324,7 @@ namespace ieml::parser {
   /**
    * INFLEXED CATEGORY (SUB PHRASELINE without AUXILIARY)
    */
-
-  antlrcpp::Any IEMLGrammarVisitor::visitInflexed_category(iemlParser::Inflexed_categoryContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitInflexed_category__singular(iemlParser::Inflexed_category__singularContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Identifier, inflexions, "Invalid inflexion in inflexed category.");
     CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a category : an identifier, a phrase or a word.", true);
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Reference, references, "Invalid reference.");
@@ -335,8 +335,15 @@ namespace ieml::parser {
 
     RETURN_VISITOR_RESULT(InflexedCategory, InflexedCategory, std::move(inflexions), std::move(category_), std::move(references));
   }
+  antlrcpp::Any IEMLGrammarVisitor::visitInflexed_category__paradigm(iemlParser::Inflexed_category__paradigmContext *ctx) {
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Identifier, inflexions, "Invalid inflexion in inflexed category.");
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a substitution list of category.", true);
+    
+    CAST_OR_RETURN_IF_NULL_LIST(inflexions, InflexedCategory);
+    CAST_OR_RETURN_IF_NULL(ctx, CategoryParadigm, category_, InflexedCategory);
 
-
+    RETURN_VISITOR_RESULT(InflexedCategory, InflexedCategory, std::move(inflexions), std::move(category_), std::vector<std::shared_ptr<Reference>>{});
+  }
   /**
    *  CATEGORY
    */
@@ -366,6 +373,14 @@ namespace ieml::parser {
     
     RETURN_VISITOR_RESULT(ICategory, Word, word_str);
   }
+
+  antlrcpp::Any IEMLGrammarVisitor::visitCategory_paradigm(iemlParser::Category_paradigmContext *ctx) {
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, ICategory, categories, "Invalid category list for a paradigm declaration.");
+
+    CAST_OR_RETURN_IF_NULL_LIST(categories, CategoryParadigm);
+
+    RETURN_VISITOR_RESULT(CategoryParadigm, CategoryParadigm, std::move(categories));
+  };
 
 
   /**

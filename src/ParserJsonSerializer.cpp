@@ -29,6 +29,9 @@ nlohmann::json ieml::parser::syntaxErrorToJson(const SyntaxError& syntax_error) 
 nlohmann::json ieml::parser::nameToJson(const ieml::structure::Name& name) {
     nlohmann::json translations;
     std::locale loc;
+    
+    for (auto l : structure::LanguageType::_values())
+        translations[l._to_string()] = nlohmann::json::array();
 
     for (auto it = name.begin(); it != name.end();) {
         

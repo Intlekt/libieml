@@ -87,7 +87,8 @@ public:
   /**
    * INFLEXED CATEGORY (SUB PHRASELINE without AUXILIARY)
    */
-  virtual antlrcpp::Any visitInflexed_category(iemlParser::Inflexed_categoryContext *ctx) override;
+  virtual antlrcpp::Any visitInflexed_category__singular(iemlParser::Inflexed_category__singularContext *context) override;
+  virtual antlrcpp::Any visitInflexed_category__paradigm(iemlParser::Inflexed_category__paradigmContext *context) override;
 
   /**
    *  CATEGORY
@@ -95,6 +96,7 @@ public:
   virtual antlrcpp::Any visitCategory__identifier(iemlParser::Category__identifierContext *ctx) override;
   virtual antlrcpp::Any visitCategory__phrase(iemlParser::Category__phraseContext *ctx) override;
   virtual antlrcpp::Any visitCategory__word(iemlParser::Category__wordContext *ctx) override;
+  virtual antlrcpp::Any visitCategory_paradigm(iemlParser::Category_paradigmContext *context) override;
 
   /**
    *  LANGUAGE STRING
