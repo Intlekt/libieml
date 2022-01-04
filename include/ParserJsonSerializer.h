@@ -17,6 +17,9 @@
 
 namespace ieml::parser {
 
+std::string hashElement(std::shared_ptr<ieml::structure::PathTree> element);
+std::string hashElement(std::shared_ptr<ieml::structure::Word> element);
+
 nlohmann::json charRangeToJson(const CharRange& char_range); 
 
 nlohmann::json syntaxErrorToJson(const SyntaxError& syntax_error);

@@ -511,7 +511,7 @@ private:
             auto it_r = childrenB.begin();
 
             for (;it != childrenA.end() && it_r != childrenB.end();) {
-                if (*it != *it_r) return *it < *it_r ? -1 : 1;
+                if (**it != **it_r) return **it < **it_r ? -1 : 1;
 
                 ++it;
                 ++it_r;
@@ -544,7 +544,7 @@ struct hash<ieml::structure::PathTree>
     size_t operator()(const ieml::structure::PathTree& s) const noexcept
     {
         size_t seed = 0;
-        hash_combine(seed, s.getNode());
+        hash_combine(seed, *s.getNode());
 
         for (auto& c: s.getChildren())
             hash_combine(seed, *c);
