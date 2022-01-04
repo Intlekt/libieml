@@ -48,7 +48,7 @@ public:
         return os.str();
     }
 
-    std::shared_ptr<structure::PathTree> check_flexed_category(parser::ParserContext& ctx) const {
+    std::shared_ptr<structure::PathTree> check_flexed_category(parser::ParserContext& ctx, structure::RoleType role_type) const {
         auto category = category_->check_category(ctx);
 
         if (inflexions_.size()) {
@@ -62,6 +62,15 @@ public:
                     ctx.getErrorManager().visitorError(
                         inflexion_id->getCharRange(),
                         "Undefined inflexion identifier '" + inflexion_id->getName() + "'."
+                    );
+                    valid = false;
+                    continue;
+                }
+
+                if (!inflexion->accept_role(role_type)) {
+                    ctx.getErrorManager().visitorError(
+                        inflexion_id->getCharRange(),
+                        "Invalid inflexion for role " + std::string(role_type._to_string()) + "."
                     );
                     valid = false;
                     continue;

@@ -6,7 +6,7 @@
 
 @inflection fr:singulier NOUN "a." .
 @inflection fr:pluriel NOUN "b." .
-@inflection fr:nom NOUN "c." .
+@inflection fr:nom VERB "c." .
 
 
 @component 

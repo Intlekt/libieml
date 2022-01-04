@@ -59,3 +59,4 @@ TEST(ieml_grammar_test_case, inflection_decl_invalid_no_trad)        TEST_PARSE_
 TEST(ieml_grammar_test_case, inflection_decl_invalid_no_word)        TEST_PARSE_ERRORS(R"(@inflection fr:test NOUN .)");
 
 TEST(ieml_grammar_test_case, invalid_auxiliary_number)        TEST_PARSE_ERRORS(R"(@auxiliary fr:test 2 "wa.". @word "we.". @node fr:test2 (0 *test #"we.").)");
+TEST(ieml_grammar_test_case, invalid_inflection)              TEST_PARSE_ERRORS(R"(@inflection fr:test NOUN "wa.". @word "we.". @node fr:test2 (0 ~test #"we.").)");

@@ -1,6 +1,6 @@
 @word "wa." .
-@inflection fr:nom NOUN "a." .
-@inflection fr:futur NOUN "c." .
+@inflection fr:nom VERB "a." .
+@inflection fr:futur VERB "c." .
 @auxiliary fr:sur 5 "b." .
 
 @component 

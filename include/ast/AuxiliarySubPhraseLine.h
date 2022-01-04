@@ -17,7 +17,7 @@ public:
 
 
     std::shared_ptr<structure::PathTree> check_auxiliary_subline(parser::ParserContext& ctx, structure::RoleType role_type) const {
-        auto child = _check_auxiliary_subline(ctx);
+        auto child = _check_auxiliary_subline(ctx, role_type);
 
         if (auxiliary_) {
             auto auxiliary = ctx.getWordRegister().resolve_auxiliary(structure::LanguageString(ctx.getLanguage(), auxiliary_->getName()));
@@ -57,7 +57,7 @@ public:
 
 
 protected:
-    virtual std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx) const = 0;
+    virtual std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx, structure::RoleType role_type) const = 0;
 
     std::string auxiliary_to_string() const {
         if (auxiliary_)
@@ -85,8 +85,8 @@ public:
     }
 
 protected:
-    std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx) const override {
-        return flexed_category_->check_flexed_category(ctx);
+    std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx, structure::RoleType role_type) const override {
+        return flexed_category_->check_flexed_category(ctx, role_type);
     };
 
 
@@ -94,7 +94,9 @@ private:
     std::shared_ptr<InflexedCategory> flexed_category_;
 };
 
-class JunctionAuxiliarySubPhraseLine : public AuxiliarySubPhraseLine, public IJunction<InflexedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, Empty> {
+class JunctionAuxiliarySubPhraseLine : 
+    public AuxiliarySubPhraseLine, 
+    public IJunction<InflexedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, structure::RoleType> {
 public:
     JunctionAuxiliarySubPhraseLine(std::shared_ptr<CharRange>&& char_range,
                                    std::shared_ptr<Identifier>&& auxiliary,
@@ -102,19 +104,19 @@ public:
                                    std::shared_ptr<Identifier>&& junction_type) :
         AST(std::move(char_range)),
         AuxiliarySubPhraseLine(std::move(auxiliary)),
-        IJunction<InflexedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, Empty>(std::move(flexed_categories), std::move(junction_type)) {}
+        IJunction<InflexedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, structure::RoleType>(std::move(flexed_categories), std::move(junction_type)) {}
 
     std::string to_string() const override {
         return auxiliary_to_string() + junction_to_string();
     }
 
 protected:
-    std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx) const override {
-        return check_junction(ctx, {});
+    std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx, structure::RoleType role_type) const override {
+        return check_junction(ctx, role_type);
     };
 
-    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i, Empty e) const override {
-        return items_[i]->check_flexed_category(ctx);
+    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i, structure::RoleType role_type) const override {
+        return items_[i]->check_flexed_category(ctx, role_type);
     };
 };
 

@@ -63,7 +63,8 @@ public:
      * NOUN inflexion can be anywhere, but VERB inflexions can only be in ROOT. 
      */
     bool accept_role(RoleType role_type) {
-        return type_ == +InflectionType::NOUN || role_type == +RoleType::ROOT;
+        return (type_ == +InflectionType::NOUN && role_type != +RoleType::ROOT) || 
+               (type_ == +InflectionType::VERB && role_type == +RoleType::ROOT);
     }
     virtual WordType getWordType() const {return WordType::INFLECTION;};
 

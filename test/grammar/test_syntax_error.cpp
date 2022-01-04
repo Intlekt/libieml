@@ -20,7 +20,7 @@ using namespace ieml::parser;
 
 TEST(ieml_grammar_test_case, syntax_error) {
     
-    IEMLParser parser(R"(@word "a.". @inflection fr:noun NOUN "E:A:.". @node fr:invalid node (0 ~invalid noun #"a."). @node fr:valid node (0 ~noun #"a.").)");                                         
+    IEMLParser parser(R"(@word "a.". @inflection fr:noun VERB "E:A:.". @node fr:invalid node (0 ~invalid noun #"a."). @node fr:valid node (0 ~noun #"a.").)");                                         
     try {                                                           
       parser.parse();                                              
     } catch (std::exception& e) {                                  
