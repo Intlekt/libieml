@@ -16,9 +16,10 @@
 
 
 namespace ieml::parser {
-class ParserContext {
+
+class ParserContextManager {
 public:
-    ParserContext(ieml::parser::IEMLParserErrorListener* error_manager) : 
+    ParserContextManager(ieml::parser::IEMLParserErrorListener* error_manager) : 
         error_manager_(error_manager) {}
 
     ieml::parser::IEMLParserErrorListener& getErrorManager() const {return *error_manager_;};
@@ -30,7 +31,7 @@ public:
 
     structure::LanguageType getLanguage() const {
         if (default_language_ == nullptr)
-            return structure::LanguageType::FR;
+            return structure::LanguageType::EN;
         else 
             return *default_language_;
     };

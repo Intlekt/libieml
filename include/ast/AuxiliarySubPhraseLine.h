@@ -16,7 +16,7 @@ public:
         auxiliary_(std::move(auxiliary)) {}
 
 
-    std::shared_ptr<structure::PathTree> check_auxiliary_subline(parser::ParserContext& ctx, structure::RoleType role_type) const {
+    std::shared_ptr<structure::PathTree> check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const {
         auto child = _check_auxiliary_subline(ctx, role_type);
 
         if (auxiliary_) {
@@ -57,7 +57,7 @@ public:
 
 
 protected:
-    virtual std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx, structure::RoleType role_type) const = 0;
+    virtual std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const = 0;
 
     std::string auxiliary_to_string() const {
         if (auxiliary_)
@@ -85,7 +85,7 @@ public:
     }
 
 protected:
-    std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx, structure::RoleType role_type) const override {
+    std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         return flexed_category_->check_flexed_category(ctx, role_type);
     };
 
@@ -111,11 +111,11 @@ public:
     }
 
 protected:
-    std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContext& ctx, structure::RoleType role_type) const override {
+    std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         return check_junction(ctx, role_type);
     };
 
-    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i, structure::RoleType role_type) const override {
+    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContextManager& ctx, size_t i, structure::RoleType role_type) const override {
         return items_[i]->check_flexed_category(ctx, role_type);
     };
 };

@@ -31,7 +31,7 @@ public:
         os << "}";
         return os.str();
     }   
-    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContext& ctx) const override {
+    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContextManager& ctx) const override {
         structure::PathTree::Children children;
         for (size_t i = 0; i < categories_.size(); i++) {
             auto child = categories_[i]->check_category(ctx);

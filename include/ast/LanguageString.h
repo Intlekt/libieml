@@ -27,7 +27,7 @@ public:
     const Identifier& identifier() const {return *identifier_;};
     const Identifier& language() const {return *language_type_;};
 
-    std::shared_ptr<structure::LanguageString> check_language_string(parser::ParserContext& ctx) const {    
+    std::shared_ptr<structure::LanguageString> check_language_string(parser::ParserContextManager& ctx) const {    
         auto language = structure::LanguageType::_from_string_nocase_nothrow(language_type_->getName().c_str());
         if (!language) {
             ctx.getErrorManager().visitorError(

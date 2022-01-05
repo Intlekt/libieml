@@ -10,7 +10,7 @@
 
 namespace ieml {
 namespace AST {
-    
+
 struct Empty {};
 
 template<class T, class IndexPathNode, class JunctionPathNode, class CheckArgument >
@@ -23,9 +23,9 @@ public:
             static_assert(std::is_base_of<AST, T>::value, "T is not an AST.");
         };
 
-    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i, CheckArgument arg) const = 0;
+    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContextManager& ctx, size_t i, CheckArgument arg) const = 0;
 
-    std::shared_ptr<structure::PathTree> check_junction(parser::ParserContext& ctx, CheckArgument arg) const {
+    std::shared_ptr<structure::PathTree> check_junction(parser::ParserContextManager& ctx, CheckArgument arg) const {
         structure::PathTree::Children children;
 
         bool valid = true;

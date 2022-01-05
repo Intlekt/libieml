@@ -59,23 +59,23 @@ TEST(ieml_grammar_test_case, unique_id_pathtree) {
     std::string h0, h1;
     std::shared_ptr<ieml::structure::PathTree> p0, p1;
     {
-        ieml::parser::IEMLParser parser(R"(@word "a.". @inflection fr:noun VERB "E:A:.". @node fr:valid node (0 ~noun #"a.").)");                                         
+        ieml::parser::IEMLParser parser(R"(@word "a.". @inflection en:noun VERB "E:A:.". @node en:valid node (0 ~noun #"a.").)");                                         
         try {                                                           
         parser.parse();                                              
         } catch (std::exception& e) {                                  
         EXPECT_TRUE(false) << e.what();                              
         }            
-        p0 = parser.getContext()->getCategoryRegister().resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::FR, "valid node"));                                              
+        p0 = parser.getContext()->getCategoryRegister().resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "valid node"));                                              
         h0 = ieml::parser::hashElement(p0);
     }
     {
-        ieml::parser::IEMLParser parser(R"(@word "a.". @inflection fr:noun VERB "E:A:.". @node fr:valid node (0 ~noun #"a.").)");                                         
+        ieml::parser::IEMLParser parser(R"(@word "a.". @inflection en:noun VERB "E:A:.". @node en:valid node (0 ~noun #"a.").)");                                         
         try {                                                           
         parser.parse();                                              
         } catch (std::exception& e) {                                  
         EXPECT_TRUE(false) << e.what();                              
         }                              
-        p1 = parser.getContext()->getCategoryRegister().resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::FR, "valid node"));                                 
+        p1 = parser.getContext()->getCategoryRegister().resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "valid node"));                                 
         h1 = ieml::parser::hashElement(p1);
     }
 
@@ -87,23 +87,23 @@ TEST(ieml_grammar_test_case, unique_id_word) {
     std::string h0, h1;
     std::shared_ptr<ieml::structure::Word> p0, p1;
     {
-        ieml::parser::IEMLParser parser(R"(@inflection fr:noun VERB "E:A:.".)");                                         
+        ieml::parser::IEMLParser parser(R"(@inflection en:noun VERB "E:A:.".)");                                         
         try {                                                           
         parser.parse();                                              
         } catch (std::exception& e) {                                  
         EXPECT_TRUE(false) << e.what();                              
         }            
-        p0 = parser.getContext()->getWordRegister().resolve_inflection(ieml::structure::LanguageString(ieml::structure::LanguageType::FR, "noun"));                                              
+        p0 = parser.getContext()->getWordRegister().resolve_inflection(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "noun"));                                              
         h0 = ieml::parser::hashElement(p0);
     }
     {
-        ieml::parser::IEMLParser parser(R"(@inflection fr:noun VERB "E:A:.".)");                                         
+        ieml::parser::IEMLParser parser(R"(@inflection en:noun VERB "E:A:.".)");                                         
         try {                                                           
         parser.parse();                                              
         } catch (std::exception& e) {                                  
         EXPECT_TRUE(false) << e.what();                              
         }                              
-        p1 = parser.getContext()->getWordRegister().resolve_inflection(ieml::structure::LanguageString(ieml::structure::LanguageType::FR, "noun"));                                              
+        p1 = parser.getContext()->getWordRegister().resolve_inflection(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "noun"));                                              
         h1 = ieml::parser::hashElement(p1);
     }
 

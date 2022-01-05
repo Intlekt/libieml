@@ -60,7 +60,7 @@ void IEMLParser::parse() {
     if (context_ != nullptr) 
         return;
 
-    context_ = std::make_shared<ParserContext>(error_listener_.get());
+    context_ = std::make_shared<ParserContextManager>(error_listener_.get());
 
 
     for (auto file: file_ids_) {

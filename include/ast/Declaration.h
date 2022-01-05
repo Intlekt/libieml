@@ -9,7 +9,7 @@
 #include "ast/Word.h"
 #include "ast/Constants.h"
 #include "ast/Phrase.h"
-#include "ParserContext.h"
+#include "ParserContextManager.h"
 
 
 namespace ieml::AST {
@@ -20,7 +20,7 @@ public:
     Declaration(DeclarationType declaration_type) : 
         declaration_type_(declaration_type) {};
 
-    virtual void check_declaration(ieml::parser::ParserContext& ctx) = 0;
+    virtual void check_declaration(ieml::parser::ParserContextManager& ctx) = 0;
 
 private:
     const DeclarationType declaration_type_;
@@ -43,7 +43,7 @@ public:
         return std::string(isNode() ? "node" : "component") + " " + translations_to_string() + " " + phrase_->to_string() + " .";
     };
 
-    void check_declaration(ieml::parser::ParserContext& ctx) override {
+    void check_declaration(ieml::parser::ParserContextManager& ctx) override {
         auto phrase = phrase_->check_phrase(ctx);
         auto name = check_translatable(ctx);
 
@@ -115,7 +115,7 @@ public:
         return "@word " + word_->to_string() + " .";
     };
 
-    void check_declaration(ieml::parser::ParserContext& ctx) override {
+    void check_declaration(ieml::parser::ParserContextManager& ctx) override {
         auto word = word_->check_word(ctx);
 
         if (!word) {
@@ -169,7 +169,7 @@ public:
         return "@inflection " + translations_to_string() + " " + type_->to_string() + " " + word_->to_string() + " .";
     };
 
-    void check_declaration(ieml::parser::ParserContext& ctx) override {
+    void check_declaration(ieml::parser::ParserContextManager& ctx) override {
         auto name = check_translatable(ctx);
 
         // test if type_ is either VERB or NOUN
@@ -221,7 +221,7 @@ public:
         return "@auxiliary " + translations_to_string() + " " + std::to_string(accepted_role_type_) + " " + word_->to_string() + " .";
     };
 
-    void check_declaration(ieml::parser::ParserContext& ctx) override {
+    void check_declaration(ieml::parser::ParserContextManager& ctx) override {
         auto name = check_translatable(ctx);
 
         auto role_type = structure::RoleType::_from_integral_nothrow(accepted_role_type_);
@@ -269,7 +269,7 @@ public:
         return "@junction " + translations_to_string() + " " + word_->to_string() + " .";
     };
 
-    void check_declaration(ieml::parser::ParserContext& ctx) override {
+    void check_declaration(ieml::parser::ParserContextManager& ctx) override {
         auto name = check_translatable(ctx);
         auto word = word_->check_word(ctx);
 
@@ -305,7 +305,7 @@ public:
         return "@language " + language_type_->to_string() + " .";
     };
 
-    void check_declaration(ieml::parser::ParserContext& ctx) override {
+    void check_declaration(ieml::parser::ParserContextManager& ctx) override {
         auto language = ieml::structure::LanguageType::_from_string_nocase_nothrow(language_type_->getName().c_str());
 
         if (!language) {

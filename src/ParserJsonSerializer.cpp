@@ -68,7 +68,7 @@ std::string ieml::parser::hashElement(std::shared_ptr<ieml::structure::Word> ele
 }
 
 nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::PathTree> category, 
-                                           ieml::parser::ParserContext& ctx,
+                                           ieml::parser::ParserContextManager& ctx,
                                            ieml::relation::CompositionNode::Register& node_register,
                                            ieml::relation::CompositionRelationGraph& composition_graph) {
     
@@ -115,7 +115,7 @@ nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::Pat
 
 template <class WordType>
 nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
-                           ieml::parser::ParserContext& ctx) {
+                           ieml::parser::ParserContextManager& ctx) {
     static_assert(std::is_base_of_v<ieml::structure::Word, WordType>, "WordType must derive from ieml::structure::Word");
 
     auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(word));

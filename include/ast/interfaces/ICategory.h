@@ -4,7 +4,7 @@
 
 #include "ast/interfaces/AST.h"
 #include "structure/Path.h"
-#include "ParserContext.h"
+#include "ParserContextManager.h"
 
 namespace ieml {
 namespace AST {
@@ -13,7 +13,7 @@ class ICategory : virtual public AST{
 public:
     ICategory() {}
 
-    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContext& ctx) const = 0;
+    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContextManager& ctx) const = 0;
 };
 
 }

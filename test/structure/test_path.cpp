@@ -9,7 +9,7 @@
 
 #include "structure/Path.h"
 #include "structure/Constants.h"
-#include "ParserContext.h"
+#include "ParserContextManager.h"
 
 #include "test_utils.h"
 
@@ -72,7 +72,7 @@ TEST(ieml_structure_test_case, path_serialization) {
 
 TEST(ieml_structure_test_case, path_from_string) {
     ieml::parser::IEMLParserErrorListener error_listener;
-    ieml::parser::ParserContext ctx(&error_listener);
+    ieml::parser::ParserContextManager ctx(&error_listener);
     auto& wregister = ctx.getWordRegister();
     wregister.define_word(std::make_shared<CategoryWord>("wa."));
 
@@ -188,11 +188,11 @@ TEST(ieml_structure_test_case, path_tree_register) {
     EXPECT_EQ(b, c->getChildren()[0]);
 
     {
-        PARSE_NO_ERRORS(R"(@word "wa.". @inflection fr:nom VERB "e.". @component fr:included (0 ~nom #"wa."). @component fr:container (0 #(0 ~nom #"wa.")).)");
+        PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:noun VERB "e.". @component en:included (0 ~noun #"wa."). @component en:container (0 #(0 ~noun #"wa.")).)");
         auto context = parser.getContext();
 
-        auto included = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::FR, "included"));
-        auto container = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::FR, "container"));
+        auto included = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::EN, "included"));
+        auto container = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::EN, "container"));
 
         ASSERT_NE(included, nullptr);
         ASSERT_NE(container, nullptr);

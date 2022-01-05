@@ -57,14 +57,14 @@ public:
     const std::vector<const SyntaxError*> getSyntaxErrors() const { return error_listener_->getSyntaxErrors(); }
     const IEMLParserErrorListener& getErrorListener() const { return *error_listener_; }
     
-    std::shared_ptr<ParserContext> getContext() const {return context_;};
+    std::shared_ptr<ParserContextManager> getContext() const {return context_;};
 
 private:
     std::unordered_map<std::string, std::unique_ptr<FileParser>> file_to_parser_;
     std::vector<std::string> file_ids_;
 
     std::shared_ptr<IEMLParserErrorListener> error_listener_;
-    std::shared_ptr<ParserContext> context_;
+    std::shared_ptr<ParserContextManager> context_;
 };
 
 }}

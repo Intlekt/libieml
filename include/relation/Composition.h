@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <enum.h>
 
-#include "ParserContext.h"
+#include "ParserContextManager.h"
 #include "relation/BinaryRelation.h"
 
 #include "structure/Path.h"

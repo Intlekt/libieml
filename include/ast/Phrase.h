@@ -11,7 +11,7 @@
 
 #include "ast/PhraseLine.h"
 
-#include "ParserContext.h"
+#include "ParserContextManager.h"
 #include "structure/Path.h"
 
 
@@ -21,9 +21,9 @@ class Phrase: virtual public AST, public ICategory, public IReferenceValue {
 public:
     Phrase() : ICategory(), IReferenceValue() {}
 
-    virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContext& ctx) const = 0;
+    virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContextManager& ctx) const = 0;
 
-    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContext& ctx) const {
+    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContextManager& ctx) const {
         return check_phrase(ctx);
     };
 
@@ -55,7 +55,7 @@ public:
         return os.str();
     }
 
-    virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContext& ctx) const override {
+    virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContextManager& ctx) const override {
         std::unordered_set<structure::RoleType> seen_nodes;
         
         structure::PathTree::Children children;
@@ -115,11 +115,11 @@ public:
         return "(" + junction_to_string() + ")";
     }
     
-    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContext& ctx, size_t i, Empty a) const override {
+    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContextManager& ctx, size_t i, Empty a) const override {
         return items_[i]->check_phrase(ctx);
     };
 
-    virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContext& ctx) const override {
+    virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContextManager& ctx) const override {
         return check_junction(ctx, {});
     }
 };

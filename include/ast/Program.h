@@ -6,7 +6,7 @@
 
 #include "ast/interfaces/AST.h"
 #include "ast/Declaration.h"
-#include "ParserContext.h"
+#include "ParserContextManager.h"
 
 
 namespace ieml::AST {
@@ -19,7 +19,7 @@ public:
 
     std::string to_string() const override;
 
-    void check_program(ieml::parser::ParserContext& ctx) {
+    void check_program(ieml::parser::ParserContextManager& ctx) {
         for (auto&& declaration: declarations_)
             declaration->check_declaration(ctx);
     }

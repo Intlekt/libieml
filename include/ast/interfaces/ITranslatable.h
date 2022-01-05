@@ -12,7 +12,7 @@
 #include "structure/LanguageString.h"
 #include "structure/Constants.h"
 
-#include "ParserContext.h"
+#include "ParserContextManager.h"
 
 namespace ieml {
 namespace AST {
@@ -39,7 +39,7 @@ public:
         return os.str();
     };
 
-    std::shared_ptr<structure::Name> check_translatable(parser::ParserContext& ctx) {
+    std::shared_ptr<structure::Name> check_translatable(parser::ParserContextManager& ctx) {
         std::unordered_multiset<structure::LanguageString> names;
 
         bool valid = true;

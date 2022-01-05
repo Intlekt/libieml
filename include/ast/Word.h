@@ -19,7 +19,7 @@ public:
         return "\"" + word_str_ + "\"";
     }
 
-    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContext& ctx) const {
+    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContextManager& ctx) const {
         auto word = ctx.getWordRegister().resolve_category_word(word_str_);
 
         if (!word) {
@@ -33,7 +33,7 @@ public:
         return ctx.getPathTreeRegister().get_or_create(std::make_shared<structure::WordPathNode>(word));
     };
 
-    virtual std::shared_ptr<structure::CategoryWord> check_word(parser::ParserContext& ctx) const {
+    virtual std::shared_ptr<structure::CategoryWord> check_word(parser::ParserContextManager& ctx) const {
         return std::make_shared<structure::CategoryWord>(word_str_);
     };
 

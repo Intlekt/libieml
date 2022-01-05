@@ -38,10 +38,10 @@ using namespace ieml::relation;
 
 
 TEST(ieml_relation_test_case, basic_graph) {
-  PARSE_NO_ERRORS(R"(@word "wa.". @inflection fr:nom VERB "e.". @component fr:included (0 ~nom #"wa."). @component fr:container (0 #(0 ~nom #"wa.")).@component fr:topcontainer (0 #(0 #(0 ~nom #"wa."))).)");
+  PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:noun VERB "e.". @component en:included (0 ~noun #"wa."). @component en:container (0 #(0 ~noun #"wa.")).@component en:topcontainer (0 #(0 #(0 ~noun #"wa."))).)");
 
   std::shared_ptr<CompositionRelationGraph> graph;
-  std::shared_ptr<ieml::parser::ParserContext> context;
+  std::shared_ptr<ieml::parser::ParserContextManager> context;
   context = parser.getContext();
   auto category_register = context->getCategoryRegister();
   auto node_register = CompositionNode::Register();
@@ -51,9 +51,9 @@ TEST(ieml_relation_test_case, basic_graph) {
   } catch (std::exception& e) {                                   
     EXPECT_TRUE(false) << e.what();                               
   }
-  auto included = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::FR, "included"));
-  auto container = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::FR,"container"));
-  auto topcontainer = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::FR,"topcontainer"));
+  auto included = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "included"));
+  auto container = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN,"container"));
+  auto topcontainer = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN,"topcontainer"));
 
   EXPECT_EQ(graph->relation_number(), 4);
   EXPECT_EQ(graph->vertex_number(), 5);
