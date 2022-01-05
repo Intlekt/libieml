@@ -36,6 +36,10 @@ public:
             return *default_language_;
     };
     
+    void resetLanguage() {
+        default_language_ = nullptr;
+    }
+
     bool setLanguage(structure::LanguageType language_type) {
         if (default_language_ != nullptr) {
             return false;

@@ -66,6 +66,8 @@ void IEMLParser::parse() {
     for (auto file: file_ids_) {
         auto parser = file_to_parser_.find(file);
         parser->second->parse();
+        
+        context_->resetLanguage();
         parser->second->getProgram()->check_program(*context_);
     }
 }
