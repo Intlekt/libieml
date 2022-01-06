@@ -10,6 +10,7 @@
 
 #include "IemlParser.h"
 #include "ParserJsonSerializer.h"
+#include "structure/HashElement.h"
 
 
 TEST(ieml_grammar_test_case, json_serialization) {
@@ -66,7 +67,7 @@ TEST(ieml_grammar_test_case, unique_id_pathtree) {
         EXPECT_TRUE(false) << e.what();                              
         }            
         p0 = parser.getContext()->getCategoryRegister().resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "valid node"));                                              
-        h0 = ieml::parser::hashElement(p0);
+        h0 = ieml::structure::hashElement(p0);
     }
     {
         ieml::parser::IEMLParser parser(R"(@word "a.". @inflection en:noun VERB "E:A:.". @node en:valid node (0 ~noun #"a.").)");                                         
@@ -76,7 +77,7 @@ TEST(ieml_grammar_test_case, unique_id_pathtree) {
         EXPECT_TRUE(false) << e.what();                              
         }                              
         p1 = parser.getContext()->getCategoryRegister().resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "valid node"));                                 
-        h1 = ieml::parser::hashElement(p1);
+        h1 = ieml::structure::hashElement(p1);
     }
 
     EXPECT_EQ(*p0, *p1);
@@ -94,7 +95,7 @@ TEST(ieml_grammar_test_case, unique_id_word) {
         EXPECT_TRUE(false) << e.what();                              
         }            
         p0 = parser.getContext()->getWordRegister().resolve_inflection(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "noun"));                                              
-        h0 = ieml::parser::hashElement(p0);
+        h0 = ieml::structure::hashElement(p0);
     }
     {
         ieml::parser::IEMLParser parser(R"(@inflection en:noun VERB "E:A:.".)");                                         
@@ -104,7 +105,7 @@ TEST(ieml_grammar_test_case, unique_id_word) {
         EXPECT_TRUE(false) << e.what();                              
         }                              
         p1 = parser.getContext()->getWordRegister().resolve_inflection(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "noun"));                                              
-        h1 = ieml::parser::hashElement(p1);
+        h1 = ieml::structure::hashElement(p1);
     }
 
     EXPECT_EQ(*p0, *p1);

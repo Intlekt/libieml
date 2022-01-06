@@ -32,6 +32,7 @@ set(IEMLParser_src ${ANTLR_IEMLParser_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/ast/Program.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/Path.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/HashElement.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/relation/Composition.cpp)
                    
 set(IEMLParser_include ${PROJECT_SOURCE_DIR}/include

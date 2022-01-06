@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <unordered_map>
 #include <enum.h>
 
@@ -9,6 +10,9 @@
 
 #include "structure/Path.h"
 #include "structure/CategoryRegister.h"
+
+#include "structure/HashElement.h"
+
 
 namespace ieml::relation {
 
@@ -22,7 +26,7 @@ public:
             if (it != path_tree_map_.end())
                 return it->second;
 
-            auto node = std::shared_ptr<CompositionNode>(new CompositionNode(path_tree, index++));
+            auto node = std::shared_ptr<CompositionNode>(new CompositionNode(path_tree, structure::hashElement(path_tree)));
             path_tree_map_.insert({path_tree, node});
             return node;
         }
@@ -32,13 +36,11 @@ public:
             if (it != word_map_.end())
                 return it->second;
 
-            auto node = std::shared_ptr<CompositionNode>(new CompositionNode(word, index++));
+            auto node = std::shared_ptr<CompositionNode>(new CompositionNode(word, structure::hashElement(word)));
             word_map_.insert({word, node});
             return node;
         }
     private:
-        size_t index = 0;
-
         struct WordHash_ {
             size_t operator()(const std::shared_ptr<structure::Word>& w) const {
                 return std::hash<std::string>{}(w->getScript());
@@ -57,7 +59,7 @@ public:
                            WordEqual_> word_map_;
     };
 
-    size_t getId() {return id_;};
+    std::string getId() {return id_;};
 
     std::shared_ptr<structure::PathTree> getPathTree() const {return path_tree_;};
     std::shared_ptr<structure::Word>     getWord() const     {return word_;};
@@ -65,13 +67,13 @@ public:
     bool isPathTree() const {return path_tree_ != nullptr;};
 
     std::string to_string() const {
-        return "(id=" + std::to_string(id_) + " " + 
+        return "(id=" + id_ + " " + 
             (isPathTree() ? "Phrase=" + path_tree_->to_string() : "Word=" + word_->to_string()) + ")";
         };
 
 private:
-    CompositionNode(std::shared_ptr<structure::PathTree> path_tree, size_t id) : path_tree_(path_tree), id_(id) {}
-    CompositionNode(std::shared_ptr<structure::Word>     word     , size_t id) : word_(word), id_(id) {}
+    CompositionNode(std::shared_ptr<structure::PathTree> path_tree, std::string id) : path_tree_(path_tree), id_(id) {}
+    CompositionNode(std::shared_ptr<structure::Word>     word     , std::string id) : word_(word), id_(id) {}
 
     CompositionNode(const CompositionNode&) = delete;
     CompositionNode(CompositionNode&&) = delete;
@@ -81,7 +83,7 @@ private:
     const std::shared_ptr<structure::PathTree> path_tree_;
     const std::shared_ptr<structure::Word>     word_;
 
-    const size_t id_;
+    const std::string id_;
 };
 
 BETTER_ENUM(CompositionRelationType, char, COMPOSITION_PHRASE, COMPOSITION_INFLECTION, COMPOSITION_AUXILIARY, COMPOSITION_JUNCTION, COMPOSITION_WORD);
