@@ -60,6 +60,10 @@ private:
 template<class NodeType, class RelationType, class RelationAttributeTypeEnum>
 class BinaryRelationGraph : public std::unordered_map<std::shared_ptr<NodeType>, std::unordered_set<std::shared_ptr<RelationType>>> {
 public:
+    void add_node(const std::shared_ptr<NodeType>& node) {
+        vertexes_.insert(node);
+    }
+
     void add_relation(const std::shared_ptr<RelationType>& relation) {
         this->operator[](relation->getSubject()).insert(relation);
         rev_relations_[relation->getObject()].insert(relation);
@@ -187,6 +191,9 @@ public:
         }
         return res;
     }
+
+    typename std::set<std::shared_ptr<NodeType>>::const_iterator vertex_begin() const {return vertexes_.begin();}
+    typename std::set<std::shared_ptr<NodeType>>::const_iterator vertex_end() const {return vertexes_.end();}
 
     size_t vertex_number() const {
         return vertexes_.size();

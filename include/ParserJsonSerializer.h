@@ -66,30 +66,36 @@ nlohmann::json serializeNode(const structure::CategoryRegister& categories,
 }
 
 template<template<class, class, class> class GraphType, class NodeType, class RelationType, class RelationAttributeTypeEnum>
-nlohmann::json binaryGraphToJson(const std::shared_ptr<GraphType<NodeType, RelationType, RelationAttributeTypeEnum>> graph, 
+nlohmann::json binaryGraphToJson(const std::shared_ptr<GraphType<NodeType, RelationType, RelationAttributeTypeEnum>> graph,
                                  const structure::CategoryRegister& categories,
                                  const structure::WordRegister& words,
                                  const SourceMapping& mapping) {
     size_t id = 0;
     std::unordered_set<std::shared_ptr<NodeType>> nodes_set;
     
-    nlohmann::json nodes;
-    nlohmann::json relations;
+    nlohmann::json nodes = nlohmann::json::array();
+
+    for (auto it = graph->vertex_begin(); it != graph->vertex_end(); it ++) {
+        nodes_set.insert(*it);
+        nodes.push_back(serializeNode(categories, words, mapping, *it));
+    }
+
+    nlohmann::json relations = nlohmann::json::array();
     for (auto it = graph->begin(); it != graph->end(); ++it) {
         for (auto it_r = it->second.begin(); it_r != it->second.end(); ++it_r) {
             auto rel = *it_r;
 
-            auto sbj_it = nodes_set.find(rel->getSubject());
-            if (sbj_it == nodes_set.end()) {
-                nodes_set.insert(rel->getSubject());
-                nodes.push_back(serializeNode(categories, words, mapping, rel->getSubject()));
-            };
+            // auto sbj_it = nodes_set.find(rel->getSubject());
+            // if (sbj_it == nodes_set.end()) {
+            //     nodes_set.insert(rel->getSubject());
+            //     nodes.push_back(serializeNode(categories, words, mapping, rel->getSubject()));
+            // };
 
-            auto obj_it = nodes_set.find(rel->getObject());
-            if (obj_it == nodes_set.end()) {
-                nodes_set.insert(rel->getObject());
-                nodes.push_back(serializeNode(categories, words, mapping, rel->getObject()));
-            };
+            // auto obj_it = nodes_set.find(rel->getObject());
+            // if (obj_it == nodes_set.end()) {
+            //     nodes_set.insert(rel->getObject());
+            //     nodes.push_back(serializeNode(categories, words, mapping, rel->getObject()));
+            // };
 
             relations.push_back({
                 {"subject", rel->getSubject()->getId()},

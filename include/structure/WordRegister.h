@@ -125,6 +125,11 @@ public:
     const_iterator_junction junctions_begin() const {return namespace_junction_.begin();};
     const_iterator_junction junctions_end()   const {return namespace_junction_.end();};
 
+    typedef std::unordered_map<std::string, std::shared_ptr<structure::CategoryWord>>::const_iterator  const_iterator_category_word;
+    const_iterator_category_word category_word_begin() const {return caterory_words_.begin();};
+    const_iterator_category_word category_word_end()   const {return caterory_words_.end();};
+
+
 private:
     structure::Namespace<structure::AuxiliaryWord> namespace_auxiliary_;
     structure::Namespace<structure::InflectionWord> namespace_inflection_;
