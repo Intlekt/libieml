@@ -11,6 +11,8 @@
 #include <enum.h>
 #include "structure/CategoryRegister.h"
 
+#include "relation/RelationGraph.h"
+
 namespace ieml {
 namespace relation {
 

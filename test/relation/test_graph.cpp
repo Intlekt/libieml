@@ -9,6 +9,7 @@
 
 #include "IemlParser.h"
 #include "relation/Composition.h"
+#include "relation/RelationGraph.h"
 #include "ParserJsonSerializer.h"
 #include "structure/Path.h"
 #include "structure/LanguageString.h"
@@ -17,6 +18,9 @@
 
 using namespace ieml::relation;
 
+TEST(ieml_relation_test_case, test_relation_graph) {
+    RelationGraph graph;
+}
 TEST(ieml_relation_test_case, test_graph_compilation_error_not_null) {
     ieml::parser::IEMLParser parser(R"(
 @language fr.
@@ -51,11 +55,11 @@ TEST(ieml_relation_test_case, test_graph_compilation_error_not_null) {
       EXPECT_TRUE(false) << e.what();                               
     }                                                               
 
-    ieml::relation::CompositionNode::Register register_;
     auto wregister = parser.getContext()->getWordRegister();
     auto cregister = parser.getContext()->getCategoryRegister();
     auto mapping = parser.getContext()->getSourceMapping();
-    auto graph = ieml::relation::buildCompositionRelationGraph(register_, cregister, wregister);
+    ieml::relation::RelationGraph graph;
+    ieml::relation::buildCompositionRelationGraph(graph, cregister, wregister);
     auto result = ieml::parser::binaryGraphToJson(graph, cregister, wregister, mapping);
 
     EXPECT_NE(result["nodes"], nullptr);

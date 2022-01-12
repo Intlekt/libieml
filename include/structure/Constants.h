@@ -5,6 +5,8 @@
 
 namespace ieml::structure {
 
+BETTER_ENUM(ElementType, char, WORD, PATH_TREE);
+
 BETTER_ENUM(PathType, char,
     ROOT,
     ROLE,

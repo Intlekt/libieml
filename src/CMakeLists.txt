@@ -37,14 +37,18 @@ set( BOOST_LIB_DIR ${boost_INSTALL}/lib )
 ExternalProject_Add(external_boost
                     URL               ${boost_URL}
                     URL_HASH          SHA1=${boost_SHA1}
-                    BUILD_IN_SOURCE 1
-                    CONFIGURE_COMMAND ./bootstrap.sh
-                                      --with-libraries=graph
-                                      --prefix=<INSTALL_DIR>
-                    BUILD_COMMAND     ./b2 install link=static variant=release threading=multi runtime-link=static
-                    INSTALL_COMMAND ""
-                    INSTALL_DIR ${boost_INSTALL} )
-        
+                    PREFIX            ${boost_INSTALL}
+                    CONFIGURE_COMMAND ""
+                    BUILD_COMMAND     ""
+                    INSTALL_COMMAND   mkdir ${BOOST_INCLUDE_DIR} && cp -R ${boost_INSTALL}/src/external_boost/boost ${BOOST_INCLUDE_DIR}/boost
+                    )
+                    # BUILD_IN_SOURCE 1
+                    # CONFIGURE_COMMAND ./bootstrap.sh
+                    #                   --with-libraries=graph
+                    #                   --prefix=<INSTALL_DIR>
+                    # BUILD_COMMAND     ./b2 install link=static variant=release threading=multi runtime-link=static
+                    # INSTALL_COMMAND   ""
+                    # INSTALL_DIR ${boost_INSTALL} )
 
 #########################
 # IEMLParser
@@ -64,7 +68,7 @@ set(IEMLParser_src ${ANTLR_IEMLParser_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/ast/Program.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/Path.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp
-                   ${CMAKE_CURRENT_LIST_DIR}/structure/HashElement.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/relation/RelationGraph.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/relation/Composition.cpp)
                    
 set(IEMLParser_include ${PROJECT_SOURCE_DIR}/include

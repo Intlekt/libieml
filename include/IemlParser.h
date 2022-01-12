@@ -15,8 +15,6 @@
 
 #include "ast/Program.h"
 
-#include "relation/Composition.h"
-
 namespace ieml {
 namespace parser {
 

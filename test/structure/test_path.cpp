@@ -146,11 +146,11 @@ TEST(ieml_structure_test_case, path_tree_building) {
         EXPECT_EQ(*pathTree->getNode(), *a->getNode());
         EXPECT_EQ(*pathTree->getNode(), *b->getNode());
 
-        EXPECT_EQ(*pathTree->getChildren()[0]->getNode(), *a->getNext()->getNode());
-        EXPECT_EQ(*pathTree->getChildren()[1]->getNode(), *b->getNext()->getNode());
+        EXPECT_EQ(*pathTree->getChildrenAsVector()[0]->getNode(), *a->getNext()->getNode());
+        EXPECT_EQ(*pathTree->getChildrenAsVector()[1]->getNode(), *b->getNext()->getNode());
 
-        EXPECT_EQ(*pathTree->getChildren()[0]->getChildren()[0]->getNode(), *a->getNext()->getNext()->getNode());
-        EXPECT_EQ(*pathTree->getChildren()[1]->getChildren()[0]->getNode(), *b->getNext()->getNext()->getNode());
+        EXPECT_EQ(*pathTree->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getNode(), *a->getNext()->getNext()->getNode());
+        EXPECT_EQ(*pathTree->getChildrenAsVector()[1]->getChildrenAsVector()[0]->getNode(), *b->getNext()->getNext()->getNode());
     }
 }
 
@@ -185,7 +185,7 @@ TEST(ieml_structure_test_case, path_tree_register) {
     EXPECT_EQ(a, b);
 
     auto c = reg.get_or_create(std::make_shared<RootPathNode>(), {reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT))});
-    EXPECT_EQ(b, c->getChildren()[0]);
+    EXPECT_EQ(b, c->getChildrenAsVector()[0]);
 
     {
         PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:noun VERB "e.". @component en:included (0 ~noun #"wa."). @component en:container (0 #(0 ~noun #"wa.")).)");
@@ -198,27 +198,27 @@ TEST(ieml_structure_test_case, path_tree_register) {
         ASSERT_NE(container, nullptr);
         // assert that container['/#/0/#/0/~'e.'] == included['/#/0/~'e.']
         // value
-        EXPECT_EQ(*container->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0], *included->getChildren()[0]->getChildren()[0]->getChildren()[0]);
+        EXPECT_EQ(*container->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0], *included->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0]);
         // pointer
-        EXPECT_EQ(container->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0], included->getChildren()[0]->getChildren()[0]->getChildren()[0]);
+        EXPECT_EQ(container->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0], included->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0]);
  
         // assert that container['/#/0/#/0'] == included['/#/0']
         // value
-        EXPECT_EQ(*container->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0], *included->getChildren()[0]->getChildren()[0]);
+        EXPECT_EQ(*container->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0], *included->getChildrenAsVector()[0]->getChildrenAsVector()[0]);
         // pointer
-        EXPECT_EQ(container->getChildren()[0]->getChildren()[0]->getChildren()[0]->getChildren()[0], included->getChildren()[0]->getChildren()[0]);
+        EXPECT_EQ(container->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0], included->getChildrenAsVector()[0]->getChildrenAsVector()[0]);
 
         // assert that container['/#/0/#'] == included['/#']
         // value
-        EXPECT_EQ(*container->getChildren()[0]->getChildren()[0]->getChildren()[0], *included->getChildren()[0]);
+        EXPECT_EQ(*container->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0], *included->getChildrenAsVector()[0]);
         // pointer
-        EXPECT_EQ(container->getChildren()[0]->getChildren()[0]->getChildren()[0], included->getChildren()[0]);
+        EXPECT_EQ(container->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getChildrenAsVector()[0], included->getChildrenAsVector()[0]);
 
         // assert that container['/#/0'] == included
         // value
-        EXPECT_EQ(*container->getChildren()[0]->getChildren()[0], *included);
+        EXPECT_EQ(*container->getChildrenAsVector()[0]->getChildrenAsVector()[0], *included);
         // pointer
-        EXPECT_EQ(container->getChildren()[0]->getChildren()[0], included);
+        EXPECT_EQ(container->getChildrenAsVector()[0]->getChildrenAsVector()[0], included);
 
     }
 }

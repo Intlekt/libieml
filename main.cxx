@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "IemlParser.h"
-#include "relation/Composition.h"
 #include "ParserJsonSerializer.h"
 
 using namespace ieml;

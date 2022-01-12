@@ -477,7 +477,7 @@ namespace ieml::structure {
         return os.str();
     }
 
-    std::vector<std::shared_ptr<PathTree>> PathTree::getChildren() const {
+    std::vector<std::shared_ptr<PathTree>> PathTree::getChildrenAsVector() const {
         std::vector<std::shared_ptr<PathTree>> v;
 
         if (children_.size() == 0)
@@ -491,4 +491,14 @@ namespace ieml::structure {
         return v;
     };
 
+
+    size_t PathTree::hash() const {
+        size_t seed = 0;
+        hash_combine(seed, *node_);
+
+        for (auto& c: getChildrenAsVector())
+            hash_combine(seed, c->hash());
+
+        return seed;
+    }
 }

@@ -10,7 +10,8 @@
 
 #include "IemlParser.h"
 #include "ParserJsonSerializer.h"
-#include "structure/HashElement.h"
+
+#include "relation/Composition.h"
 
 
 TEST(ieml_grammar_test_case, json_serialization) {
@@ -48,11 +49,11 @@ TEST(ieml_grammar_test_case, composition_graph_json_serialization) {
     auto parser = ieml::parser::IEMLParser(o.str());
     parser.parse();
     
-    ieml::relation::CompositionNode::Register register_;
+    ieml::relation::RelationGraph graph;
     auto wregister = parser.getContext()->getWordRegister();
     auto cregister = parser.getContext()->getCategoryRegister();
     auto mapping = parser.getContext()->getSourceMapping();
-    auto graph = ieml::relation::buildCompositionRelationGraph(register_, cregister, wregister);
+    ieml::relation::buildCompositionRelationGraph(graph, cregister, wregister);
     ieml::parser::binaryGraphToJson(graph, cregister, wregister, mapping).dump();
 }
 
@@ -67,7 +68,7 @@ TEST(ieml_grammar_test_case, unique_id_pathtree) {
         EXPECT_TRUE(false) << e.what();                              
         }            
         p0 = parser.getContext()->getCategoryRegister().resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "valid node"));                                              
-        h0 = ieml::structure::hashElement(p0);
+        h0 = p0->uid();
     }
     {
         ieml::parser::IEMLParser parser(R"(@word "a.". @inflection en:noun VERB "E:A:.". @node en:valid node (0 ~noun #"a.").)");                                         
@@ -77,7 +78,7 @@ TEST(ieml_grammar_test_case, unique_id_pathtree) {
         EXPECT_TRUE(false) << e.what();                              
         }                              
         p1 = parser.getContext()->getCategoryRegister().resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "valid node"));                                 
-        h1 = ieml::structure::hashElement(p1);
+        h1 = p1->uid();
     }
 
     EXPECT_EQ(*p0, *p1);
@@ -95,7 +96,7 @@ TEST(ieml_grammar_test_case, unique_id_word) {
         EXPECT_TRUE(false) << e.what();                              
         }            
         p0 = parser.getContext()->getWordRegister().resolve_inflection(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "noun"));                                              
-        h0 = ieml::structure::hashElement(p0);
+        h0 = p0->uid();
     }
     {
         ieml::parser::IEMLParser parser(R"(@inflection en:noun VERB "E:A:.".)");                                         
@@ -105,7 +106,7 @@ TEST(ieml_grammar_test_case, unique_id_word) {
         EXPECT_TRUE(false) << e.what();                              
         }                              
         p1 = parser.getContext()->getWordRegister().resolve_inflection(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "noun"));                                              
-        h1 = ieml::structure::hashElement(p1);
+        h1 = p1->uid();
     }
 
     EXPECT_EQ(*p0, *p1);

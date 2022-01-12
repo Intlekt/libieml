@@ -4,6 +4,7 @@
 #include "structure/Word.h"
 #include "structure/WordRegister.h"
 #include "utils.h"
+#include "structure/Element.h"
 
 #include <string>
 #include <memory>
@@ -401,11 +402,11 @@ private:
     }
 };
 
-class PathTree {
+class PathTree : public Element {
 public:
-    std::shared_ptr<PathNode> getNode() const {return node_;}
-    std::vector<std::shared_ptr<PathTree>> getChildren() const;
-    
+    virtual ElementType getElementType() const {return ElementType::PATH_TREE;};
+
+
     std::string to_string() const;
 
     bool is_phrase() const {return node_->getPathType() == +PathType::ROOT;};
@@ -488,6 +489,12 @@ public:
         return res;
     };
 
+    std::shared_ptr<PathNode> getNode() const {return node_;}
+    std::vector<std::shared_ptr<PathTree>> getChildrenAsVector() const;
+    const Children getChildren() const {return children_;};
+
+
+    virtual size_t hash() const;
 
 private:
     PathTree(const std::shared_ptr<PathNode>& node, const Children& children) : 
@@ -523,6 +530,13 @@ private:
         } else 
             return *nodeA < *nodeB ? -1 : 1;
     }
+
+    virtual int comp_element_(const Element& o_elem) const {
+        const auto& o = dynamic_cast<const PathTree&>(o_elem);
+        return comp(node_, children_, o.getNode(), o.getChildren());
+    };
+
+
 };
 
 }
@@ -538,20 +552,20 @@ struct hash<ieml::structure::PathNode>
     }
 };
 
-template<>
-struct hash<ieml::structure::PathTree>
-{
-    size_t operator()(const ieml::structure::PathTree& s) const noexcept
-    {
-        size_t seed = 0;
-        hash_combine(seed, *s.getNode());
+// template<>
+// struct hash<ieml::structure::PathTree>
+// {
+//     size_t operator()(const ieml::structure::PathTree& s) const noexcept
+//     {
+//         size_t seed = 0;
+//         hash_combine(seed, *s.getNode());
 
-        for (auto& c: s.getChildren())
-            hash_combine(seed, *c);
+//         for (auto& c: s.getChildrenAsVector())
+//             hash_combine(seed, *c);
 
-        return seed;
-    }
-};
+//         return seed;
+//     }
+// };
 
 }
 

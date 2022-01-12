@@ -7,29 +7,51 @@
 #include "structure/Constants.h"
 #include "utils.h"
 
+#include "structure/Element.h"
 
 namespace ieml::structure {
-class Word {
+class Word : public Element {
 public:
     Word(const std::string& s): script_(s) {}
 
-    std::string to_string() const { return "'" + script_ + "'"; };
+    virtual ElementType getElementType() const {return ElementType::WORD;};
+
+    virtual std::string to_string() const { return "'" + script_ + "'"; };
 
     std::string getScript() const {return script_;};
 
     virtual WordType getWordType() const = 0;
 
+    virtual size_t hash() const {
+        auto hasher = std::hash<std::string>();
+        return hasher(script_);
+    };
+
     // total ordering on Word and subtypes
-    bool operator==(const Word& word) const {return getWordType() == word.getWordType() && script_ == word.script_;}
-    bool operator!=(const Word& word) const {return getWordType() != word.getWordType() || script_ != word.script_;}
-    bool operator< (const Word& word) const {return getWordType() <  word.getWordType() || script_ <  word.script_;}
-    bool operator> (const Word& word) const {return getWordType() >  word.getWordType() || script_ >  word.script_;}
-    bool operator<=(const Word& word) const {return getWordType() <= word.getWordType() && script_ <= word.script_;}
-    bool operator>=(const Word& word) const {return getWordType() >= word.getWordType() && script_ >= word.script_;}
+    // bool operator==(const Word& word) const {return getWordType() == word.getWordType() && script_ == word.script_;}
+    // bool operator!=(const Word& word) const {return getWordType() != word.getWordType() || script_ != word.script_;}
+    // bool operator< (const Word& word) const {return getWordType() <  word.getWordType() || script_ <  word.script_;}
+    // bool operator> (const Word& word) const {return getWordType() >  word.getWordType() || script_ >  word.script_;}
+    // bool operator<=(const Word& word) const {return getWordType() <= word.getWordType() && script_ <= word.script_;}
+    // bool operator>=(const Word& word) const {return getWordType() >= word.getWordType() && script_ >= word.script_;}
+
+protected:
+    virtual int comp_element_(const Element& o_word) const {
+        const auto& o = dynamic_cast<const Word&>(o_word);
+
+        if (getWordType() == o.getWordType()) {
+            if (script_ == o.script_)               return 0;
+            else if (script_ < o.script_)           return -1;
+            else                                    return 1; 
+        } else if (getWordType() < o.getWordType()) return -1;
+        else                                        return 1;
+    };
+
 
 private:
     const std::string script_;
 
+    
 };
 
 class CategoryWord: public Word {
