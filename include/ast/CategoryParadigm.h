@@ -27,7 +27,7 @@ public:
                 os << c->to_string();
                 first = false;
             } else 
-                os << ", " << c->to_string();
+                os << "; " << c->to_string();
         os << "}";
         return os.str();
     }   

@@ -30,13 +30,15 @@ category_paradigm       : PARADIGM_START categories+=category            (PARADI
 inflection_list: (FLEXION_MARK inflections+=identifier)+ ;
 inflection_list_paradigm: PARADIGM_START inflection_lists+=inflection_list (PARADIGM_SEP inflection_lists+=inflection_list)* PARADIGM_END;
 
-auxiliary: AUXILIARY_MARK identifier_=identifier                                                                                          # auxiliary__simple
-         | PARADIGM_START AUXILIARY_MARK identifiers+=identifier  (PARADIGM_SEP AUXILIARY_MARK identifiers+=identifier)* PARADIGM_END     # auxiliary__paradigm
-         ;
+auxiliary: AUXILIARY_MARK identifier_=identifier ;                                                                                        
+auxiliary_paradigm: PARADIGM_START identifiers+=auxiliary (PARADIGM_SEP identifiers+=auxiliary)* PARADIGM_END;
 
+auxiliary_simple_or_paradigm: auxiliary_=auxiliary            # auxiliary_simple_or_paradigm__simple
+                            | auxiliary_=auxiliary_paradigm   # auxiliary_simple_or_paradigm__paradigm
+                            ;
 
-sub_phrase_line_auxiliary : auxiliary_=auxiliary?          inflected_category_=inflected_category                                                  # sub_phrase_line_auxiliary__no_junction
-                          | auxiliary_=auxiliary JUNCTION_MARK junction_type=identifier 
+sub_phrase_line_auxiliary : auxiliary_=auxiliary_simple_or_paradigm?          inflected_category_=inflected_category                                                  # sub_phrase_line_auxiliary__no_junction
+                          | auxiliary_=auxiliary_simple_or_paradigm JUNCTION_MARK junction_type=identifier 
                             JUNCTION_OPEN inflected_categories+=inflected_category inflected_categories+=inflected_category+ JUNCTION_CLOSE      # sub_phrase_line_auxiliary__jonction
                           ;
 

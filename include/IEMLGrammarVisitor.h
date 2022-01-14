@@ -88,8 +88,14 @@ public:
   /**
    * AUXILIARY
    */  
-  virtual antlrcpp::Any visitAuxiliary__simple(iemlParser::Auxiliary__simpleContext *ctx) override;
-  virtual antlrcpp::Any visitAuxiliary__paradigm(iemlParser::Auxiliary__paradigmContext *ctx) override;
+  virtual antlrcpp::Any visitAuxiliary(iemlParser::AuxiliaryContext *ctx) override;
+  virtual antlrcpp::Any visitAuxiliary_paradigm(iemlParser::Auxiliary_paradigmContext *ctx) override;
+
+  /**
+   * AUXILIARY SIMPLE OR PARADIGM
+   */  
+  virtual antlrcpp::Any visitAuxiliary_simple_or_paradigm__simple(iemlParser::Auxiliary_simple_or_paradigm__simpleContext *ctx) override;
+  virtual antlrcpp::Any visitAuxiliary_simple_or_paradigm__paradigm(iemlParser::Auxiliary_simple_or_paradigm__paradigmContext *ctx) override;
 
   /**
    * SUB PHRASELINE with AUXILIARY
