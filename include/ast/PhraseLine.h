@@ -26,30 +26,30 @@ public:
     int getRoleType() const {return role_type_;}
     bool getAccentuation() const {return accentuation_;}
 
-    std::shared_ptr<structure::PathTree> check_phrase_line(parser::ParserContextManager& ctx) const {
+    structure::PathTree::Set check_phrase_line(parser::ParserContextManager& ctx) const {
         auto type = structure::RoleType::_from_integral_nothrow(role_type_);
 
         if (!type) {
             ctx.getErrorManager().visitorError(
                 getCharRange(), "Invalid role number, got '" + std::to_string(role_type_) + "'"
             );
-            return nullptr;
+            return {nullptr};
         }
-        std::shared_ptr<structure::PathTree> child = _check_phrase_line(ctx, *type);
+        auto child_set = _check_phrase_line(ctx, *type);
 
-        if (!child || !type) {
-            return nullptr;
+        if (!*child_set.begin() || !type) {
+            return {nullptr};
         }
 
-        return ctx.getPathTreeRegister().get_or_create(
+        return ctx.getPathTreeRegister().get_or_create_product(
             std::make_shared<structure::RoleNumberPathNode>(*type), 
-            structure::PathTree::Children{child}
+            {child_set}
         );
     };
     
 
 protected:
-    virtual std::shared_ptr<structure::PathTree> _check_phrase_line(parser::ParserContextManager& ctx, structure::RoleType role_type) const = 0;
+    virtual structure::PathTree::Set _check_phrase_line(parser::ParserContextManager& ctx, structure::RoleType role_type) const = 0;
 
 
     std::string phrase_line_to_string() const {
@@ -81,7 +81,7 @@ public:
         return phrase_line_to_string() + auxiliary_subline_->to_string();
     }
 protected:
-    std::shared_ptr<structure::PathTree> _check_phrase_line(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+    structure::PathTree::Set _check_phrase_line(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         return auxiliary_subline_->check_auxiliary_subline(ctx, role_type);
     };
 
@@ -106,11 +106,11 @@ public:
     }
 
 protected:
-    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContextManager& ctx, size_t i, structure::RoleType role_type) const override {
+    virtual structure::PathTree::Set check_junction_item(parser::ParserContextManager& ctx, size_t i, structure::RoleType role_type) const override {
         return items_[i]->check_auxiliary_subline(ctx, role_type);
     };
 
-    virtual std::shared_ptr<structure::PathTree> _check_phrase_line(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+    virtual structure::PathTree::Set _check_phrase_line(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         return check_junction(ctx, role_type);
     }
 };

@@ -5,6 +5,6 @@
 
 namespace ieml::AST {
 
-BETTER_ENUM(DeclarationType, char, Component, Node, Word, Inflexion, Auxiliary, Language);
+BETTER_ENUM(DeclarationType, char, COMPONENT, NODE, PARANODE, WORD, INFLECTION, AUXILIARY, JUNCTION, LANGUAGE);
 
 }

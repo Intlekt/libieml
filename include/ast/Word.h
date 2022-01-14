@@ -19,7 +19,7 @@ public:
         return "\"" + word_str_ + "\"";
     }
 
-    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContextManager& ctx) const {
+    virtual structure::PathTree::Set check_category(parser::ParserContextManager& ctx) const {
         auto word = ctx.getWordRegister().resolve_category_word(word_str_);
 
         if (!word) {
@@ -27,10 +27,10 @@ public:
                 getCharRange(),
                 "Word not defined in dictionary: " + word_str_
             );
-            return nullptr;
+            return {nullptr};
         }
 
-        return ctx.getPathTreeRegister().get_or_create(std::make_shared<structure::WordPathNode>(word));
+        return {ctx.getPathTreeRegister().get_or_create(std::make_shared<structure::WordPathNode>(word))};
     };
 
     virtual std::shared_ptr<structure::CategoryWord> check_word(parser::ParserContextManager& ctx) const {

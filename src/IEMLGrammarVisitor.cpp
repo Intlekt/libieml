@@ -8,9 +8,12 @@
 #include "ast/Reference.h"
 #include "ast/Word.h"
 #include "ast/CategoryParadigm.h"
-#include "ast/InflexedCategory.h"
+#include "ast/InflectedCategory.h"
 #include "ast/ReferenceStringValue.h"
+#include "ast/InflectionList.h"
+#include "ast/Auxiliary.h"
 #include "ast/interfaces/ICategory.h"
+
 
 #define RETURN_VISITOR_RESULT(ReturnType, DerivedType, args...) \
   return antlrcpp::Any(VisitorResult<ReturnType>(std::make_unique<DerivedType>(charRangeFromContext(ctx), args)));
@@ -143,6 +146,16 @@ namespace ieml::parser {
     RETURN_VISITOR_RESULT(Declaration, NodeDeclaration, std::move(language_strings), std::move(phrase_));
   }
 
+  antlrcpp::Any IEMLGrammarVisitor::visitParanodeDeclaration(iemlParser::ParanodeDeclarationContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase definition in node declaration.", true);
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
+
+    CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, Declaration);
+    CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
+
+    RETURN_VISITOR_RESULT(Declaration, ParanodeDeclaration, std::move(language_strings), std::move(phrase_));
+  }
+
   antlrcpp::Any IEMLGrammarVisitor::visitWordDeclaration(iemlParser::WordDeclarationContext *ctx) {
     if (!ctx->word) {
       error_listener_->parseError(*charRangeFromContext(ctx), "Invalid word for a word declaration.");
@@ -260,7 +273,7 @@ namespace ieml::parser {
     else
       role_type = std::stoi(ctx->INTEGER()->getSymbol()->getText());
     
-    CHECK_SYNTAX_ERROR(error_listener_, ctx, sub_phrase, "Invalid sub phrase line : invalid auxiliary, inflexion, category or references.", true);
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, sub_phrase, "Invalid sub phrase line : invalid auxiliary, inflection, category or references.", true);
 
     CAST_OR_RETURN_IF_NULL(ctx, AuxiliarySubPhraseLine, sub_phrase, PhraseLine);
     
@@ -293,57 +306,104 @@ namespace ieml::parser {
     RETURN_VISITOR_RESULT(PhraseLine, JunctionPhraseLine, std::move(sub_phrases), std::move(junction_type), role_type, accentuation);
   }
 
+  /**
+   * INFLEXION LIST
+   */
+  antlrcpp::Any IEMLGrammarVisitor::visitInflection_list(iemlParser::Inflection_listContext *ctx) {
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Identifier, inflections, "Invalid inflection identifiers in phrase line.");
+    CAST_OR_RETURN_IF_NULL_LIST(inflections, IInflectionList);
+
+    RETURN_VISITOR_RESULT(IInflectionList, InflectionList, std::move(inflections));
+  }
+  antlrcpp::Any IEMLGrammarVisitor::visitInflection_list_paradigm(iemlParser::Inflection_list_paradigmContext *ctx) {
+
+  }
+
+  /**
+   * AUXILIARY
+   */  
+  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary__simple(iemlParser::Auxiliary__simpleContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, identifier_, "Invalid auxiliary identifier in phrase line.", true);
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, identifier_, IAuxiliary);
+    
+    RETURN_VISITOR_RESULT(IAuxiliary, Auxiliary, std::move(identifier_));
+  }
+  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary__paradigm(iemlParser::Auxiliary__paradigmContext *ctx) {
+
+  }
 
   /**
    * SUB PHRASELINE with AUXILIARY
    */
 
-  antlrcpp::Any IEMLGrammarVisitor::visitSub_phrase_line_auxiliary__sub_phrase_no_auxiliary(iemlParser::Sub_phrase_line_auxiliary__sub_phrase_no_auxiliaryContext *ctx) {
-    CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary, "Invalid auxiliary identifier.", false);
-    CHECK_SYNTAX_ERROR(error_listener_, ctx, inflexed_category_, "Missing a category : an identifier, a phrase or a word.", true);
+  antlrcpp::Any IEMLGrammarVisitor::visitSub_phrase_line_auxiliary__no_junction(iemlParser::Sub_phrase_line_auxiliary__no_junctionContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary_, "Invalid auxiliary identifier.", false);
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, inflected_category_, "Missing a category : an identifier, a phrase or a word.", true);
 
-    CAST_OR_RETURN_IF_NULL(ctx, InflexedCategory, inflexed_category_, AuxiliarySubPhraseLine);
-    CAST_OR_RETURN_IF_NULL(ctx, Identifier, auxiliary, AuxiliarySubPhraseLine);
+    CAST_OR_RETURN_IF_NULL(ctx, InflectedCategory, inflected_category_, AuxiliarySubPhraseLine);
+    CAST_OR_RETURN_IF_NULL(ctx, IAuxiliary, auxiliary_, AuxiliarySubPhraseLine);
     
-    RETURN_VISITOR_RESULT(AuxiliarySubPhraseLine, SimpleAuxiliarySubPhraseLine, std::move(auxiliary), std::move(inflexed_category_));
+    RETURN_VISITOR_RESULT(AuxiliarySubPhraseLine, SimpleAuxiliarySubPhraseLine, std::move(auxiliary_), std::move(inflected_category_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitSub_phrase_line_auxiliary__jonction_no_auxiliary(iemlParser::Sub_phrase_line_auxiliary__jonction_no_auxiliaryContext *ctx) {
-    CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary, "Invalid auxiliary identifier.", true);
-    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, InflexedCategory, inflexed_categories, "Invalid inflexed categories in auxiliarized phrase line junction.");
+  antlrcpp::Any IEMLGrammarVisitor::visitSub_phrase_line_auxiliary__jonction(iemlParser::Sub_phrase_line_auxiliary__jonctionContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary_, "Invalid auxiliary identifier.", true);
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, InflectedCategory, inflected_categories, "Invalid inflected categories in auxiliarized phrase line junction.");
     CHECK_SYNTAX_ERROR(error_listener_, ctx, junction_type, "Invalid junction type identifier.", true);
     
-    CAST_OR_RETURN_IF_NULL(ctx, Identifier, auxiliary, AuxiliarySubPhraseLine);
+    CAST_OR_RETURN_IF_NULL(ctx, IAuxiliary, auxiliary_, AuxiliarySubPhraseLine);
     CAST_OR_RETURN_IF_NULL(ctx, Identifier, junction_type, AuxiliarySubPhraseLine);
-    CAST_OR_RETURN_IF_NULL_LIST(inflexed_categories, AuxiliarySubPhraseLine)
+    CAST_OR_RETURN_IF_NULL_LIST(inflected_categories, AuxiliarySubPhraseLine)
 
-    RETURN_VISITOR_RESULT(AuxiliarySubPhraseLine, JunctionAuxiliarySubPhraseLine, std::move(auxiliary), std::move(inflexed_categories), std::move(junction_type));
+    RETURN_VISITOR_RESULT(AuxiliarySubPhraseLine, JunctionAuxiliarySubPhraseLine, std::move(auxiliary_), std::move(inflected_categories), std::move(junction_type));
   }
 
 
   /**
    * INFLEXED CATEGORY (SUB PHRASELINE without AUXILIARY)
    */
-  antlrcpp::Any IEMLGrammarVisitor::visitInflexed_category__singular(iemlParser::Inflexed_category__singularContext *ctx) {
-    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Identifier, inflexions, "Invalid inflexion in inflexed category.");
+  antlrcpp::Any IEMLGrammarVisitor::visitInflected_category__singular(iemlParser::Inflected_category__singularContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, inflection_list_, "Invalid inflection list in inflected category.", false);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a category : an identifier, a phrase or a word.", true);
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Reference, references, "Invalid reference.");
 
-    CAST_OR_RETURN_IF_NULL_LIST(inflexions, InflexedCategory);
-    CAST_OR_RETURN_IF_NULL(ctx, ICategory, category_, InflexedCategory);
-    CAST_OR_RETURN_IF_NULL_LIST(references, InflexedCategory);
+    CAST_OR_RETURN_IF_NULL(ctx, IInflectionList, inflection_list_, InflectedCategory);
+    CAST_OR_RETURN_IF_NULL(ctx, ICategory, category_, InflectedCategory);
+    CAST_OR_RETURN_IF_NULL_LIST(references, InflectedCategory);
 
-    RETURN_VISITOR_RESULT(InflexedCategory, InflexedCategory, std::move(inflexions), std::move(category_), std::move(references));
+    RETURN_VISITOR_RESULT(InflectedCategory, InflectedCategory, std::move(inflection_list_), std::move(category_), std::move(references));
   }
-  antlrcpp::Any IEMLGrammarVisitor::visitInflexed_category__paradigm(iemlParser::Inflexed_category__paradigmContext *ctx) {
-    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Identifier, inflexions, "Invalid inflexion in inflexed category.");
+  antlrcpp::Any IEMLGrammarVisitor::visitInflected_category__category_paradigm(iemlParser::Inflected_category__category_paradigmContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, inflection_list_, "Invalid inflection list in inflected category.", false);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a substitution list of category.", true);
     
-    CAST_OR_RETURN_IF_NULL_LIST(inflexions, InflexedCategory);
-    CAST_OR_RETURN_IF_NULL(ctx, CategoryParadigm, category_, InflexedCategory);
+    CAST_OR_RETURN_IF_NULL(ctx, IInflectionList, inflection_list_, InflectedCategory);
+    CAST_OR_RETURN_IF_NULL(ctx, CategoryParadigm, category_, InflectedCategory);
 
-    RETURN_VISITOR_RESULT(InflexedCategory, InflexedCategory, std::move(inflexions), std::move(category_), std::vector<std::shared_ptr<Reference>>{});
+    RETURN_VISITOR_RESULT(InflectedCategory, InflectedCategory, std::move(inflection_list_), std::move(category_), std::vector<std::shared_ptr<Reference>>{});
   }
+  antlrcpp::Any IEMLGrammarVisitor::visitInflected_category__inflection_paradigm(iemlParser::Inflected_category__inflection_paradigmContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, inflection_list_, "Invalid inflection list in inflected category.", true);
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a substitution list of category.", true);
+    
+    CAST_OR_RETURN_IF_NULL(ctx, IInflectionList, inflection_list_, InflectedCategory);
+    CAST_OR_RETURN_IF_NULL(ctx, CategoryParadigm, category_, InflectedCategory);
+
+    RETURN_VISITOR_RESULT(InflectedCategory, InflectedCategory, std::move(inflection_list_), std::move(category_), std::vector<std::shared_ptr<Reference>>{});
+  };
+  antlrcpp::Any IEMLGrammarVisitor::visitInflected_category__inflection_and_category_paradigm(iemlParser::Inflected_category__inflection_and_category_paradigmContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, inflection_list_, "Invalid inflection list in inflected category.", true);
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a substitution list of category.", true);
+    
+    CAST_OR_RETURN_IF_NULL(ctx, IInflectionList, inflection_list_, InflectedCategory);
+    CAST_OR_RETURN_IF_NULL(ctx, CategoryParadigm, category_, InflectedCategory);
+
+    RETURN_VISITOR_RESULT(InflectedCategory, InflectedCategory, std::move(inflection_list_), std::move(category_), std::vector<std::shared_ptr<Reference>>{});
+  };
+
+
+
+
   /**
    *  CATEGORY
    */

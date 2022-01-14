@@ -22,6 +22,8 @@ public:
 
     virtual void check_declaration(ieml::parser::ParserContextManager& ctx) = 0;
 
+    virtual std::string getDeclarationString() const = 0;
+    DeclarationType getDeclarationType() const {return declaration_type_;};
 private:
     const DeclarationType declaration_type_;
 };
@@ -29,90 +31,176 @@ private:
 class CategoryDeclaration: public Declaration, public ITranslatable {
 public:
     CategoryDeclaration(std::shared_ptr<CharRange>&& char_range, 
-                         std::vector<std::shared_ptr<LanguageString>>&& translations,
-                         std::shared_ptr<Phrase>&& phrase,
-                         DeclarationType declaration_type) : 
+                        std::vector<std::shared_ptr<LanguageString>>&& translations,
+                        std::shared_ptr<Phrase>&& phrase,
+                        DeclarationType declaration_type) : 
         AST(std::move(char_range)), 
         ITranslatable(std::move(translations)),
-        Declaration(declaration_type), 
+        Declaration(declaration_type),
         phrase_(std::move(phrase)) {};
 
-    virtual bool isNode() const = 0;
-
-    std::string to_string() const {
-        return std::string(isNode() ? "node" : "component") + " " + translations_to_string() + " " + phrase_->to_string() + " .";
+    std::string to_string() const override {
+        return getDeclarationString() + " " + translations_to_string() + " " + phrase_->to_string() + " .";
     };
 
     void check_declaration(ieml::parser::ParserContextManager& ctx) override {
-        auto phrase = phrase_->check_phrase(ctx);
+        auto phrase = _check_phrase(ctx);
         auto name = check_translatable(ctx);
 
         if (!phrase || !name) {
             return;
         }
-        
+
         if (ctx.getCategoryRegister().category_is_defined(phrase)) {
             ctx.getErrorManager().visitorError(
                 getCharRange(), 
-                "Cannot redefine phrase " + phrase->to_string() + " as a category, it has already been defined before."
+                "Cannot redefine phrase " + phrase->to_string() + ", it has already been defined before."
             );
             return;
         }
         
         ctx.getSourceMapping().register_mapping(phrase, this);
-        ctx.getCategoryRegister().define_category(name, phrase, isNode());
+        define_category(ctx, name, phrase);
     };
 
     std::shared_ptr<Phrase> getPhrase() const {return phrase_;};
+
+protected:
+
+    virtual void define_category(ieml::parser::ParserContextManager& ctx, 
+                                 std::shared_ptr<structure::Name>& name, 
+                                 std::shared_ptr<structure::PathTree>& phrase) const = 0;
+    virtual std::shared_ptr<structure::PathTree> _check_phrase(ieml::parser::ParserContextManager& ctx) const = 0;
+
 private:
     const std::shared_ptr<Phrase> phrase_;
-
 };
 
 
-class ComponentDeclaration: public CategoryDeclaration {
+class SingularCategoryDeclaration: public CategoryDeclaration {
+public:
+    SingularCategoryDeclaration(std::shared_ptr<CharRange>&& char_range, 
+                                std::vector<std::shared_ptr<LanguageString>>&& translations,
+                                std::shared_ptr<Phrase>&& phrase,
+                                DeclarationType declaration_type) : 
+        AST(std::move(char_range)), 
+        CategoryDeclaration(
+            nullptr,
+            std::move(translations),
+            std::move(phrase),
+            declaration_type)
+         {};
+
+
+    virtual void define_category(ieml::parser::ParserContextManager& ctx, 
+                                 std::shared_ptr<structure::Name>& name, 
+                                 std::shared_ptr<structure::PathTree>& phrase) const override {
+        ctx.getCategoryRegister().define_category(name, phrase, 
+            (getDeclarationType() == +DeclarationType::NODE ? 
+                structure::DefinitionType::NODE : 
+                structure::DefinitionType::COMPONENT)
+        );
+    }
+
+protected:
+    virtual std::shared_ptr<structure::PathTree> _check_phrase(ieml::parser::ParserContextManager& ctx) const override {
+        auto phrase_set = getPhrase()->check_phrase(ctx);
+
+        if (phrase_set.size() != 1) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(), 
+                "Paradigms can only be defined with a @paranode declaration."
+            );
+            return nullptr;
+        }
+
+        return *phrase_set.begin();
+    };
+
+};
+
+class ComponentDeclaration: public SingularCategoryDeclaration {
 public:
     ComponentDeclaration(std::shared_ptr<CharRange>&& char_range, 
                          std::vector<std::shared_ptr<LanguageString>>&& translations,
                          std::shared_ptr<Phrase>&& phrase) : 
         AST(std::move(char_range)), 
-        CategoryDeclaration(
+        SingularCategoryDeclaration(
             nullptr,
             std::move(translations),
             std::move(phrase),
-            DeclarationType::Component) {};
-
-    virtual bool isNode() const {return false;};
+            DeclarationType::COMPONENT) {};
+    
+    virtual std::string getDeclarationString() const override {return "@component";};
 
 };
 
-class NodeDeclaration: public CategoryDeclaration {
+class NodeDeclaration: public SingularCategoryDeclaration {
 public:
     NodeDeclaration(std::shared_ptr<CharRange>&& char_range, 
                     std::vector<std::shared_ptr<LanguageString>>&& translations,
                     std::shared_ptr<Phrase>&& phrase) : 
         AST(std::move(char_range)), 
+        SingularCategoryDeclaration(
+            nullptr,
+            std::move(translations),
+            std::move(phrase),
+            DeclarationType::NODE) {};
+
+    virtual std::string getDeclarationString() const override {return "@node";};
+};
+
+class ParanodeDeclaration: public CategoryDeclaration {
+public:
+    ParanodeDeclaration(std::shared_ptr<CharRange>&& char_range, 
+                        std::vector<std::shared_ptr<LanguageString>>&& translations,
+                        std::shared_ptr<Phrase>&& phrase) : 
+        AST(std::move(char_range)), 
         CategoryDeclaration(
             nullptr,
             std::move(translations),
             std::move(phrase),
-            DeclarationType::Node) {};
+            DeclarationType::PARANODE) {};
 
-    virtual bool isNode() const {return true;};
+    virtual std::string getDeclarationString() const override {return "@paranode";};
+
+    virtual void define_category(ieml::parser::ParserContextManager& ctx, 
+                                 std::shared_ptr<structure::Name>& name, 
+                                 std::shared_ptr<structure::PathTree>& phrase) const override {
+        
+        ctx.getCategoryRegister().define_category(name, phrase, structure::DefinitionType::PARADIGM);
+    }
+
+protected:
+    virtual std::shared_ptr<structure::PathTree> _check_phrase(ieml::parser::ParserContextManager& ctx) const override {
+        auto phrase_set = getPhrase()->check_phrase(ctx);
+
+        if (phrase_set.size() == 1) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(), 
+                "A @paranode declaration must define a paradigm category."
+            );
+            return nullptr;
+        }
+
+        return ctx.getPathTreeRegister().get_or_create(
+            std::make_shared<structure::ParadigmPathNode>(), 
+            phrase_set);
+    };
+
 };
-
 
 class WordDeclaration: public Declaration {
 public:
     WordDeclaration(std::shared_ptr<CharRange>&& char_range, 
                     std::shared_ptr<Word>&& word) : 
         AST(std::move(char_range)),          
-        Declaration(DeclarationType::Word), 
+        Declaration(DeclarationType::WORD), 
         word_(std::move(word)) {};
 
 
     std::string to_string() const {
-        return "@word " + word_->to_string() + " .";
+        return getDeclarationString() + " " + word_->to_string() + " .";
     };
 
     void check_declaration(ieml::parser::ParserContextManager& ctx) override {
@@ -135,6 +223,8 @@ public:
         ctx.getSourceMapping().register_mapping(word, this);
         wregister.define_word(word);
     };
+
+    virtual std::string getDeclarationString() const override {return "@word";};
 
 private:
     std::shared_ptr<Word> word_;
@@ -162,12 +252,13 @@ public:
                          std::shared_ptr<Identifier>&& type,
                          std::shared_ptr<Word>&& word) : 
         AST(std::move(char_range)),
-        ToolWordDeclaration(nullptr, std::move(translations), std::move(word), DeclarationType::Inflexion),
+        ToolWordDeclaration(nullptr, std::move(translations), std::move(word), DeclarationType::INFLECTION),
         type_(std::move(type)) {}
     
     std::string to_string() const {
-        return "@inflection " + translations_to_string() + " " + type_->to_string() + " " + word_->to_string() + " .";
+        return getDeclarationString() + " " + translations_to_string() + " " + type_->to_string() + " " + word_->to_string() + " .";
     };
+    virtual std::string getDeclarationString() const override {return "@inflection";};
 
     void check_declaration(ieml::parser::ParserContextManager& ctx) override {
         auto name = check_translatable(ctx);
@@ -194,7 +285,7 @@ public:
         if (wregister.word_is_defined(inflection_word)) {
             ctx.getErrorManager().visitorError(
                 getCharRange(),
-                "Cannot redefine word " + word->to_string() + " as an inflexion, it has already been defined before."
+                "Cannot redefine word " + word->to_string() + " as an inflection, it has already been defined before."
             );
             return;
         }
@@ -214,12 +305,14 @@ public:
                          int accepted_role_type,
                          std::shared_ptr<Word>&& word) : 
         AST(std::move(char_range)),
-        ToolWordDeclaration(nullptr, std::move(translations), std::move(word), DeclarationType::Inflexion),
+        ToolWordDeclaration(nullptr, std::move(translations), std::move(word), DeclarationType::AUXILIARY),
         accepted_role_type_(accepted_role_type) {}
     
     std::string to_string() const {
-        return "@auxiliary " + translations_to_string() + " " + std::to_string(accepted_role_type_) + " " + word_->to_string() + " .";
+        return getDeclarationString() + " " + translations_to_string() + " " + std::to_string(accepted_role_type_) + " " + word_->to_string() + " .";
     };
+
+    virtual std::string getDeclarationString() const override {return "@auxiliary";};
 
     void check_declaration(ieml::parser::ParserContextManager& ctx) override {
         auto name = check_translatable(ctx);
@@ -263,11 +356,12 @@ public:
                         std::vector<std::shared_ptr<LanguageString>>&& translations,
                         std::shared_ptr<Word>&& word) : 
         AST(std::move(char_range)),
-        ToolWordDeclaration(nullptr, std::move(translations), std::move(word), DeclarationType::Inflexion) {}
+        ToolWordDeclaration(nullptr, std::move(translations), std::move(word), DeclarationType::JUNCTION) {}
     
     std::string to_string() const {
-        return "@junction " + translations_to_string() + " " + word_->to_string() + " .";
+        return getDeclarationString() + " " + translations_to_string() + " " + word_->to_string() + " .";
     };
+    virtual std::string getDeclarationString() const override {return "@junction";};
 
     void check_declaration(ieml::parser::ParserContextManager& ctx) override {
         auto name = check_translatable(ctx);
@@ -298,12 +392,13 @@ public:
     LanguageDeclaration(std::shared_ptr<CharRange>&& char_range,
                         std::shared_ptr<Identifier>&& language_type) : 
         AST(std::move(char_range)),
-        Declaration(DeclarationType::Language),
+        Declaration(DeclarationType::LANGUAGE),
         language_type_(std::move(language_type)) {}
 
     std::string to_string() const {
-        return "@language " + language_type_->to_string() + " .";
+        return getDeclarationString() + " " + language_type_->to_string() + " .";
     };
+    virtual std::string getDeclarationString() const override {return "@language";};
 
     void check_declaration(ieml::parser::ParserContextManager& ctx) override {
         auto language = ieml::structure::LanguageType::_from_string_nocase_nothrow(language_type_->getName().c_str());

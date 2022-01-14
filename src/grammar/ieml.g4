@@ -4,6 +4,7 @@ program : declarations+=declaration* EOF;
 
 declaration : COMPONENT  language_strings+=language_string+ phrase_=phrase                         DECLARATION_END    # componentDeclaration
             | NODE       language_strings+=language_string+ phrase_=phrase                         DECLARATION_END    # nodeDeclaration
+            | PARANODE   language_strings+=language_string+ phrase_=phrase                         DECLARATION_END    # paranodeDeclaration
             | WORD                                                                     word=STRING DECLARATION_END    # wordDeclaration
             | INFLECTION language_strings+=language_string+ inflection_type=IDENTIFIER word=STRING DECLARATION_END    # inflectionDeclaration
             | AUXILIARY  language_strings+=language_string+ role_type=INTEGER          word=STRING DECLARATION_END    # auxiliaryDeclaration
@@ -24,18 +25,26 @@ category : identifier_=identifier # category__identifier
          | phrase_=phrase         # category__phrase
          | word=STRING            # category__word
          ;
+category_paradigm       : PARADIGM_START categories+=category            (PARADIGM_SEP categories+=category)*            PARADIGM_END;
 
-category_paradigm : PARADIGM_START categories+=category (PARADIGM_SEP categories+=category)* PARADIGM_END;  
+inflection_list: (FLEXION_MARK inflections+=identifier)+ ;
+inflection_list_paradigm: PARADIGM_START inflection_lists+=inflection_list (PARADIGM_SEP inflection_lists+=inflection_list)* PARADIGM_END;
 
-sub_phrase_line_auxiliary : (AUXILIARY_MARK auxiliary=identifier)? inflexed_category_=inflexed_category                                     # sub_phrase_line_auxiliary__sub_phrase_no_auxiliary
-                          | AUXILIARY_MARK auxiliary=identifier JUNCTION_MARK junction_type=identifier 
-                            JUNCTION_OPEN inflexed_categories+=inflexed_category inflexed_categories+=inflexed_category+ JUNCTION_CLOSE     # sub_phrase_line_auxiliary__jonction_no_auxiliary
+auxiliary: AUXILIARY_MARK identifier_=identifier                                                                                          # auxiliary__simple
+         | PARADIGM_START AUXILIARY_MARK identifiers+=identifier  (PARADIGM_SEP AUXILIARY_MARK identifiers+=identifier)* PARADIGM_END     # auxiliary__paradigm
+         ;
+
+
+sub_phrase_line_auxiliary : auxiliary_=auxiliary?          inflected_category_=inflected_category                                                  # sub_phrase_line_auxiliary__no_junction
+                          | auxiliary_=auxiliary JUNCTION_MARK junction_type=identifier 
+                            JUNCTION_OPEN inflected_categories+=inflected_category inflected_categories+=inflected_category+ JUNCTION_CLOSE      # sub_phrase_line_auxiliary__jonction
                           ;
 
-inflexed_category : (FLEXION_MARK inflexions+=identifier)* CATEGORY_MARK category_=category references+=reference*        #inflexed_category__singular 
-                  | (FLEXION_MARK inflexions+=identifier)* CATEGORY_MARK category_=category_paradigm                      #inflexed_category__paradigm
-                  ;
-
+inflected_category : inflection_list_=inflection_list?                CATEGORY_MARK category_=category references+=reference*        #inflected_category__singular 
+                   | inflection_list_=inflection_list?                CATEGORY_MARK category_=category_paradigm                      #inflected_category__category_paradigm
+                   | inflection_list_=inflection_list_paradigm        CATEGORY_MARK category_=category                               #inflected_category__inflection_paradigm
+                   | inflection_list_=inflection_list_paradigm        CATEGORY_MARK category_=category_paradigm                      #inflected_category__inflection_and_category_paradigm
+                   ;
 
 reference : REFERENCE_OPEN (id=INTEGER)? data_type=IDENTIFIER value=reference_value REFERENCE_CLOSE;
 
@@ -93,6 +102,8 @@ WORD : '@word';
 INFLECTION : '@inflection';
 AUXILIARY : '@auxiliary';
 JUNCTION : '@junction';
+PARANODE: '@paranode';
+TABLE: '@table';
 // REFERENCE_ID : 'id';
 // REFERENCE_DATATYPE : 'dt';
 // REFERENCE_VALUE : 'va';

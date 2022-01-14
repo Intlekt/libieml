@@ -17,6 +17,18 @@ namespace ieml::structure {
     PathType RootPathNode::getPathType() const {return PathType::ROOT;};
     std::string RootPathNode::to_string() const { return "#"; };
 
+    bool ParadigmPathNode::accept_next(const PathNode& next) const {
+        switch (next.getPathType())
+        {
+        case PathType::ROOT:
+            return true;
+        default:
+            return false;
+        }
+    };
+    PathType ParadigmPathNode::getPathType() const {return PathType::PARADIGM;};
+    std::string ParadigmPathNode::to_string() const { return "{}"; };
+
     bool RoleNumberPathNode::accept_next(const PathNode& next) const {
         switch (next.getPathType())
         {
@@ -25,7 +37,6 @@ namespace ieml::structure {
         case PathType::JUNCTION_INFLECTION:
         case PathType::INFLECTION:
         case PathType::JUNCTION_CATEGORY:
-        case PathType::PARADIGM:
         case PathType::WORD:
             return true;
         default:
@@ -34,33 +45,6 @@ namespace ieml::structure {
     };
     PathType RoleNumberPathNode::getPathType() const {return PathType::ROLE;};
     std::string RoleNumberPathNode::to_string() const {return std::to_string(role_type_);}
-
-    bool ParadigmPathNode::accept_next(const PathNode& next) const {
-        switch (next.getPathType())
-        {
-        case PathType::PARADIGM_INDEX:
-            return true;
-        default:
-            return false;
-        }
-    };
-    PathType ParadigmPathNode::getPathType() const {return PathType::PARADIGM;};
-    std::string ParadigmPathNode::to_string() const {return "{}";}
-   
-    bool ParadigmIndexPathNode::accept_next(const PathNode& next) const {
-        switch (next.getPathType())
-        {
-        case PathType::ROOT:
-        case PathType::WORD:
-            return true;
-        default:
-            return false;
-        }
-    };
-    PathType ParadigmIndexPathNode::getPathType() const {return PathType::PARADIGM_INDEX;};
-    std::string ParadigmIndexPathNode::to_string() const {return std::to_string(index_);}
-
-
 
     std::string JunctionPathNode::to_string() const {
         return "&" + std::string(junction_type_->to_string());
@@ -153,7 +137,6 @@ namespace ieml::structure {
         switch (next.getPathType())
         {
         case PathType::JUNCTION_CATEGORY:
-        case PathType::PARADIGM:
         case PathType::WORD:
         case PathType::ROOT:
             return true;
@@ -169,7 +152,6 @@ namespace ieml::structure {
         case PathType::JUNCTION_INFLECTION:
         case PathType::INFLECTION:
         case PathType::JUNCTION_CATEGORY:
-        case PathType::PARADIGM:
         case PathType::WORD:
         case PathType::ROOT:
             return true;
@@ -186,7 +168,6 @@ namespace ieml::structure {
         switch (next.getPathType())
         {
         case PathType::JUNCTION_CATEGORY:
-        case PathType::PARADIGM:
         case PathType::WORD:
         case PathType::ROOT:
             return true;
@@ -423,6 +404,48 @@ namespace ieml::structure {
         return c;
     }
 
+    PathTree::Set PathTree::Register::get_or_create_product(const PathNode::Set& node_set, const std::vector<PathTree::Set>& children_list) {
+        size_t size = 1;
+        for (auto& set : children_list) size *= set.size();
+
+        std::vector<Set> bins(size);
+        for (auto& set : children_list) {
+            size_t i = 0;
+            for (auto& child: set) {
+                for (size_t j = 0; j < size / set.size(); ++j)
+                    bins[j * set.size() + i].insert(child);
+
+                ++i;
+            }
+        }
+
+        Set res;
+        for (auto& children: bins)
+            for (auto& node: node_set)
+                res.insert(get_or_create(node, children));
+
+        return res;
+    }
+
+
+    PathTree::Set PathTree::Register::get_or_create_product(const std::shared_ptr<PathNode>& node, const std::vector<PathTree::Set>& children_list) {
+        return get_or_create_product((PathNode::Set){node}, children_list);
+    }
+
+    std::shared_ptr<PathTree> PathTree::Register::get_or_create(const std::shared_ptr<PathNode>& node, const PathTree::Set& children) {
+        auto key = Key(node, children);
+        auto it = store_.find(key);
+        if (it != store_.end()) return it->second;
+
+        auto item = std::shared_ptr<PathTree>(new PathTree(node, children));
+        store_.insert({key, item});
+        return item;
+    }
+    std::shared_ptr<PathTree> PathTree::Register::get_or_create(const std::shared_ptr<PathNode>& node) {
+        return get_or_create(node, Set{});
+    }
+
+
     std::shared_ptr<PathTree> PathTree::Register::buildFromPaths(std::vector<std::shared_ptr<Path>> paths) {
         const auto node = paths[0]->getNode();
         PathType path_type(PathType::ROOT);
@@ -451,7 +474,7 @@ namespace ieml::structure {
             }
         }
         
-        Children children;
+        Set children;
 
         for (auto paths: children_paths) {
             children.insert(buildFromPaths(paths.second));
@@ -459,11 +482,6 @@ namespace ieml::structure {
 
         return get_or_create(node, children);
     }
-
-
-    bool PathTree::CompareFunctor::operator()(const std::shared_ptr<PathTree>& l, const std::shared_ptr<PathTree>& r) const {
-        return comp(l->node_, l->children_, r->node_, r->children_) < 0;
-    };
 
 
     std::string PathTree::to_string() const {
@@ -501,4 +519,60 @@ namespace ieml::structure {
 
         return seed;
     }
+
+    std::vector<PathTree::SubPathTree> PathTree::find_sub_tree(std::function<bool(const std::shared_ptr<PathTree>&)> f,
+                                           std::function<bool(const std::shared_ptr<PathTree>&)> should_stop) const {
+        std::vector<SubPathTree> res;
+        for (auto& child: children_) {
+            bool matched = f(child);
+            if (matched) res.push_back(SubPathTree{std::make_shared<Path>(node_), child});
+            
+            if (!should_stop(child)) {
+                auto child_res = child->find_sub_tree(f, should_stop);
+                res.reserve(res.size() + child_res.size());
+
+                for (auto& item: child_res) {
+                    res.push_back(SubPathTree{std::make_shared<Path>(node_, item.first), item.second});
+                }
+            }
+        }
+        return res;
+    };
+
+    PathTree::Set PathTree::singular_sequences(std::shared_ptr<PathTree>& pt) {
+        switch (pt->getNode()->getPathType()) {
+            case PathType::ROOT:
+                return {pt};
+            case PathType::PARADIGM:
+                return pt->getChildren();
+            default:
+                throw std::invalid_argument("Invalid path type for singular sequences " + std::string(pt->getNode()->getPathType()._to_string()));
+        }
+    };
+
+    int PathTree::comp(const std::shared_ptr<PathNode>& nodeA, const PathTree::Set& childrenA, 
+                              const std::shared_ptr<PathNode>& nodeB, const PathTree::Set& childrenB) {
+        if (*nodeA == *nodeB) {
+            auto it = childrenA.begin();
+            auto it_r = childrenB.begin();
+
+            for (;it != childrenA.end() && it_r != childrenB.end();) {
+                if (**it != **it_r) return **it < **it_r ? -1 : 1;
+
+                ++it;
+                ++it_r;
+            }
+
+            if (it == childrenA.end() && it_r == childrenB.end()) return 0;
+
+            return it == childrenA.end() ? -1 : 1;
+        } else 
+            return *nodeA < *nodeB ? -1 : 1;
+    };
+
+    int PathTree::comp_element_(const Element& o_elem) const {
+        const auto& o = dynamic_cast<const PathTree&>(o_elem);
+        return comp(node_, children_, o.getNode(), o.getChildren());
+    };
+
 }

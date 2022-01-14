@@ -27,14 +27,6 @@ public:
         return hasher(script_);
     };
 
-    // total ordering on Word and subtypes
-    // bool operator==(const Word& word) const {return getWordType() == word.getWordType() && script_ == word.script_;}
-    // bool operator!=(const Word& word) const {return getWordType() != word.getWordType() || script_ != word.script_;}
-    // bool operator< (const Word& word) const {return getWordType() <  word.getWordType() || script_ <  word.script_;}
-    // bool operator> (const Word& word) const {return getWordType() >  word.getWordType() || script_ >  word.script_;}
-    // bool operator<=(const Word& word) const {return getWordType() <= word.getWordType() && script_ <= word.script_;}
-    // bool operator>=(const Word& word) const {return getWordType() >= word.getWordType() && script_ >= word.script_;}
-
 protected:
     virtual int comp_element_(const Element& o_word) const {
         const auto& o = dynamic_cast<const Word&>(o_word);
@@ -82,7 +74,7 @@ public:
         Word(s), type_(type) {}
 
     /**
-     * NOUN inflexion can be anywhere, but VERB inflexions can only be in ROOT. 
+     * NOUN inflection can be anywhere, but VERB inflections can only be in ROOT. 
      */
     bool accept_role(RoleType role_type) {
         return (type_ == +InflectionType::NOUN || role_type == +RoleType::ROOT);

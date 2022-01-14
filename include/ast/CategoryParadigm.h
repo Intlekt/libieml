@@ -31,17 +31,22 @@ public:
         os << "}";
         return os.str();
     }   
-    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContextManager& ctx) const override {
-        structure::PathTree::Children children;
+    virtual structure::PathTree::Set check_category(parser::ParserContextManager& ctx) const override {
+        structure::PathTree::Set children_paradigm;
+
+        bool valid = true;
         for (size_t i = 0; i < categories_.size(); i++) {
-            auto child = categories_[i]->check_category(ctx);
-            if (child) {
-                auto child_ = ctx.getPathTreeRegister().get_or_create(std::make_shared<structure::ParadigmIndexPathNode>(i), {child});
-                children.insert(child_);
+            auto children = categories_[i]->check_category(ctx);
+            for (auto& child: children) {
+                if (!child) valid = false;
+                children_paradigm.insert(child);
             }
         }
 
-        return ctx.getPathTreeRegister().get_or_create(std::make_shared<structure::ParadigmPathNode>(), children);
+        if (!valid)
+            return {nullptr};
+
+        return children_paradigm;
     };
 
 

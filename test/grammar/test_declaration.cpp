@@ -49,7 +49,7 @@ TEST(ieml_grammar_test_case, inflection_decl_valid_noun_test_verb)             T
 TEST(ieml_grammar_test_case, inflection_decl_valid_verb)             TEST_PARSE_NO_ERRORS(R"(@inflection en:test VERB "wa.".)");
 TEST(ieml_grammar_test_case, inflection_decl_valid_multi_trad)       TEST_PARSE_NO_ERRORS(R"(@inflection en:test en:test2 VERB "wa.".)");
 TEST(ieml_grammar_test_case, component_decl)                         TEST_PARSE_NO_ERRORS(R"(@word "wa.". @component en:test (0 #"wa."). @component en:test2 (0 #test).)");
-TEST(ieml_grammar_test_case, paradigm)                         TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @component en:test2 (0 #{"wa."; "we."}).)");
+TEST(ieml_grammar_test_case, paradigm)                         TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @paranode en:test2 (0 #{"wa."; "we."}).)");
 
 TEST(ieml_grammar_test_case, extra_comma_in_phrase_line)             TEST_PARSE_ERRORS(R"(@component en:test (0 #(0 ~noun #"wa."),) .)");
 TEST(ieml_grammar_test_case, language_string_with_old_decl)             TEST_PARSE_ERRORS(R"(@component fr'test' (0 #(0 ~noun #"wa."),) .)");
@@ -60,6 +60,9 @@ TEST(ieml_grammar_test_case, inflection_decl_invalid_no_type)        TEST_PARSE_
 TEST(ieml_grammar_test_case, inflection_decl_invalid_type)           TEST_PARSE_ERRORS(R"(@inflection en:test invalidtype "wa.".)");
 TEST(ieml_grammar_test_case, inflection_decl_invalid_no_trad)        TEST_PARSE_ERRORS(R"(@inflection NOUN "wa.".)");
 TEST(ieml_grammar_test_case, inflection_decl_invalid_no_word)        TEST_PARSE_ERRORS(R"(@inflection en:test NOUN .)");
+
+TEST(ieml_grammar_test_case, invalid_paradigm)                         TEST_PARSE_ERRORS(R"(@word "wa.". @word "we.". @node en:test2 (0 #{"wa."; "we."}).)");
+TEST(ieml_grammar_test_case, invalid_non_paradigm)                         TEST_PARSE_ERRORS(R"(@word "wa.". @word "we.". @paranode en:test2 (0 #"wa.").)");
 
 TEST(ieml_grammar_test_case, invalid_auxiliary_number)        TEST_PARSE_ERRORS(R"(@auxiliary en:test 2 "wa.". @word "we.". @node en:test2 (0 *test #"we.").)");
 TEST(ieml_grammar_test_case, invalid_inflection)              TEST_PARSE_ERRORS(R"(@inflection en:test VERB "wa.". @word "we.". @node en:test2 (0 ~test #"we."). @node en:test3 (0 #test2, 1 ~test #test2). )");

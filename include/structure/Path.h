@@ -48,11 +48,23 @@ public:
     virtual std::string to_string() const = 0;
     virtual const std::set<std::shared_ptr<Word>> getWords() const {return {};};
 
+    typedef std::set<std::shared_ptr<PathNode>> Set;
+
 private:
     virtual int comp(const PathNode& a) const = 0;
 };
 
 class RootPathNode : public PathNode {
+public:
+    virtual bool accept_next(const PathNode& next) const override;
+    virtual PathType getPathType() const override;
+    virtual std::string to_string() const override;
+
+private:
+    virtual int comp(const PathNode& a) const {return 0;};
+};
+
+class ParadigmPathNode : public PathNode {
 public:
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
@@ -81,32 +93,6 @@ private:
     const RoleType role_type_;
 };
 
-class ParadigmPathNode : public PathNode {
-public:
-    virtual bool accept_next(const PathNode& next) const override;
-    virtual PathType getPathType() const override;
-    virtual std::string to_string() const override;
-private:
-    virtual int comp(const PathNode& a) const {return  0;};
-};
-
-class ParadigmIndexPathNode : public PathNode {
-public:
-    ParadigmIndexPathNode(const size_t& index) : index_(index) {};
-    virtual bool accept_next(const PathNode& next) const override;
-    virtual PathType getPathType() const override;
-    virtual std::string to_string() const override;
-
-private:
-    virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const ParadigmIndexPathNode&>(a);
-        if (index_ == b.index_) return  0;
-        if (index_ <  b.index_) return -1;
-        else                    return  1;
-    };
-
-    const size_t index_;
-};
 
 class JunctionPathNode : public PathNode {
 public:
@@ -116,10 +102,6 @@ public:
     std::shared_ptr<JunctionWord> getJunctionType() const {return junction_type_;};
     virtual const std::set<std::shared_ptr<Word>> getWords() const override {return {junction_type_};};
 
-    // bool operator< (const JunctionPathNode& a) const noexcept {return *junction_type_ <  *a.junction_type_;};
-    // bool operator> (const JunctionPathNode& a) const noexcept {return *junction_type_ >  *a.junction_type_;};
-    // bool operator<=(const JunctionPathNode& a) const noexcept {return *junction_type_ <= *a.junction_type_;};
-    // bool operator>=(const JunctionPathNode& a) const noexcept {return *junction_type_ >= *a.junction_type_;};
 private:
     const std::shared_ptr<JunctionWord> junction_type_;
 };
@@ -190,10 +172,6 @@ public:
     virtual std::string to_string() const override;
 
     int getIndex() const {return index_;};
-    // bool operator< (const JunctionIndexPathNode& a) const noexcept {return index_ <  a.index_;};
-    // bool operator> (const JunctionIndexPathNode& a) const noexcept {return index_ >  a.index_;};
-    // bool operator<=(const JunctionIndexPathNode& a) const noexcept {return index_ <= a.index_;};
-    // bool operator>=(const JunctionIndexPathNode& a) const noexcept {return index_ >= a.index_;};
 private:
     const int index_;
 };
@@ -267,11 +245,6 @@ public:
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
-
-    // bool operator< (const AuxiliaryPathNode& a) const noexcept {return *auxiliary_type_ <  *a.auxiliary_type_;};
-    // bool operator> (const AuxiliaryPathNode& a) const noexcept {return *auxiliary_type_ >  *a.auxiliary_type_;};
-    // bool operator<=(const AuxiliaryPathNode& a) const noexcept {return *auxiliary_type_ <= *a.auxiliary_type_;};
-    // bool operator>=(const AuxiliaryPathNode& a) const noexcept {return *auxiliary_type_ >= *a.auxiliary_type_;};
     virtual const std::set<std::shared_ptr<Word>> getWords() const override {return {auxiliary_type_};};
 
 private:
@@ -292,13 +265,6 @@ public:
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
-
-
-
-    // bool operator< (const InflectionPathNode& a) const noexcept {return cmp(a) <  0;};
-    // bool operator> (const InflectionPathNode& a) const noexcept {return cmp(a) >  0;};
-    // bool operator<=(const InflectionPathNode& a) const noexcept {return cmp(a) <= 0;};
-    // bool operator>=(const InflectionPathNode& a) const noexcept {return cmp(a) >= 0;};
 
     virtual const std::set<std::shared_ptr<Word>> getWords() const override {
         return std::set<std::shared_ptr<Word>>(inflections_.begin(), inflections_.end());
@@ -334,10 +300,6 @@ public:
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
 
-    // bool operator< (const WordPathNode& a) const noexcept {return *word_ <  *a.word_;};
-    // bool operator> (const WordPathNode& a) const noexcept {return *word_ >  *a.word_;};
-    // bool operator<=(const WordPathNode& a) const noexcept {return *word_ <= *a.word_;};
-    // bool operator>=(const WordPathNode& a) const noexcept {return *word_ >= *a.word_;};
     virtual const std::set<std::shared_ptr<Word>> getWords() const override {
         return {word_};
     };
@@ -419,35 +381,29 @@ public:
                                      node_->getPathType() == +PathType::JUNCTION_CATEGORY || 
                                      node_->getPathType() == +PathType::JUNCTION_INFLECTION;};
 
-    bool operator==(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) == 0;};
-    bool operator!=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) != 0;};
+    // bool operator==(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) == 0;};
+    // bool operator!=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) != 0;};
 
-    bool operator< (const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) <  0;};
-    bool operator> (const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) >  0;};
-    bool operator<=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) <= 0;};
-    bool operator>=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) >= 0;};
+    // bool operator< (const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) <  0;};
+    // bool operator> (const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) >  0;};
+    // bool operator<=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) <= 0;};
+    // bool operator>=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) >= 0;};
 
     struct CompareFunctor {
-        bool operator()(const std::shared_ptr<PathTree>& l, const std::shared_ptr<PathTree>& r) const; 
+        bool operator()(const std::shared_ptr<PathTree>& l, const std::shared_ptr<PathTree>& r) const {
+            return comp(l->node_, l->children_, r->node_, r->children_) < 0;
+        } 
     };
-    typedef std::set<std::shared_ptr<PathTree>, CompareFunctor> Children;
+    typedef std::set<std::shared_ptr<PathTree>, CompareFunctor> Set;
 
     class Register {
     public:
-        typedef std::pair<std::shared_ptr<PathNode>, PathTree::Children> Key;
+        typedef std::pair<std::shared_ptr<PathNode>, PathTree::Set> Key;
 
-        std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node, const Children& children) {
-            auto key = Key(node, children);
-            auto it = store_.find(key);
-            if (it != store_.end()) return it->second;
-
-            auto item = std::shared_ptr<PathTree>(new PathTree(node, children));
-            store_.insert({key, item});
-            return item;
-        }
-        std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node) {
-            return get_or_create(node, Children{});
-        }
+        Set get_or_create_product(const PathNode::Set& node_set, const std::vector<Set>& children_list);
+        Set get_or_create_product(const std::shared_ptr<PathNode>& node, const std::vector<Set>& children_list);
+        std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node, const Set& children);
+        std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node) ;
 
         std::shared_ptr<PathTree> buildFromPaths(std::vector<std::shared_ptr<Path>> paths);
 
@@ -471,33 +427,19 @@ public:
      *  - sub_occurence : if we return the match of children of matched tree
      */
     std::vector<SubPathTree> find_sub_tree(std::function<bool(const std::shared_ptr<PathTree>&)> f,
-                                           std::function<bool(const std::shared_ptr<PathTree>&)> should_stop) const {
-        std::vector<SubPathTree> res;
-        for (auto& child: children_) {
-            bool matched = f(child);
-            if (matched) res.push_back(SubPathTree{std::make_shared<Path>(node_), child});
-            
-            if (!should_stop(child)) {
-                auto child_res = child->find_sub_tree(f, should_stop);
-                res.reserve(res.size() + child_res.size());
+                                           std::function<bool(const std::shared_ptr<PathTree>&)> should_stop) const;
 
-                for (auto& item: child_res) {
-                    res.push_back(SubPathTree{std::make_shared<Path>(node_, item.first), item.second});
-                }
-            }
-        }
-        return res;
-    };
+    static Set singular_sequences(std::shared_ptr<PathTree>& pt);
 
     std::shared_ptr<PathNode> getNode() const {return node_;}
     std::vector<std::shared_ptr<PathTree>> getChildrenAsVector() const;
-    const Children getChildren() const {return children_;};
+    const Set getChildren() const {return children_;};
 
 
     virtual size_t hash() const;
 
 private:
-    PathTree(const std::shared_ptr<PathNode>& node, const Children& children) : 
+    PathTree(const std::shared_ptr<PathNode>& node, const Set& children) : 
         node_(node), children_(children) {}
 
     PathTree(const std::shared_ptr<PathNode>& node) : 
@@ -508,38 +450,20 @@ private:
 
 
     const std::shared_ptr<PathNode> node_;
-    const Children children_;
+    const Set children_;
 
 
-    static int comp(const std::shared_ptr<PathNode>& nodeA, const Children& childrenA, 
-                    const std::shared_ptr<PathNode>& nodeB, const Children& childrenB) {
-        if (*nodeA == *nodeB) {
-            auto it = childrenA.begin();
-            auto it_r = childrenB.begin();
+    static int comp(const std::shared_ptr<PathNode>& nodeA, const Set& childrenA, 
+                    const std::shared_ptr<PathNode>& nodeB, const Set& childrenB);
 
-            for (;it != childrenA.end() && it_r != childrenB.end();) {
-                if (**it != **it_r) return **it < **it_r ? -1 : 1;
-
-                ++it;
-                ++it_r;
-            }
-
-            if (it == childrenA.end() && it_r == childrenB.end()) return 0;
-
-            return it == childrenA.end() ? -1 : 1;
-        } else 
-            return *nodeA < *nodeB ? -1 : 1;
-    }
-
-    virtual int comp_element_(const Element& o_elem) const {
-        const auto& o = dynamic_cast<const PathTree&>(o_elem);
-        return comp(node_, children_, o.getNode(), o.getChildren());
-    };
+    virtual int comp_element_(const Element& o_elem) const;
 
 
 };
 
+
 }
+
 
 
 namespace std {
@@ -551,6 +475,7 @@ struct hash<ieml::structure::PathNode>
         return hash<string>{}(s.to_string());
     }
 };
+
 
 // template<>
 // struct hash<ieml::structure::PathTree>

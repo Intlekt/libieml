@@ -4,16 +4,17 @@
 #include <string>
 
 #include "structure/Path.h"
+#include "structure/Constants.h"
 #include "structure/Namespace.h"
 
 namespace ieml::structure {
 class CategoryRegister {
 public:
-    void define_category(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::PathTree> phrase, bool is_node) {
-        if (category_is_node_.count(phrase) > 0) 
-            throw std::invalid_argument("Phrase already defined.");
+    void define_category(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::PathTree> phrase, DefinitionType type) {
+        if (definition_types_.count(phrase) > 0) 
+            throw std::invalid_argument("Category already defined.");
         
-        category_is_node_.insert({phrase, is_node});
+        definition_types_.insert({phrase, type});
         namespace_category_.define(name, phrase);
     }
     std::shared_ptr<structure::PathTree> resolve_category(const structure::LanguageString& s) const {
@@ -27,8 +28,12 @@ public:
         return namespace_category_.find(phrase)->second;
     };
 
+    DefinitionType getDefinitionType(const std::shared_ptr<structure::PathTree>& phrase) const {
+        return definition_types_.find(phrase)->second;
+    }
+
     bool isNode(const std::shared_ptr<structure::PathTree>& phrase) const { 
-        return category_is_node_.find(phrase)->second;
+        return getDefinitionType(phrase) == +DefinitionType::NODE;
     };
 
     typedef std::unordered_map<std::shared_ptr<structure::PathTree>, std::shared_ptr<Name>>::const_iterator  const_iterator;
@@ -38,6 +43,6 @@ public:
 
 private:
     structure::Namespace<structure::PathTree> namespace_category_;
-    std::unordered_map<std::shared_ptr<structure::PathTree>, bool> category_is_node_;
+    std::unordered_map<std::shared_ptr<structure::PathTree>, DefinitionType> definition_types_;
 };
 }

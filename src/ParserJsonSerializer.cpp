@@ -66,7 +66,7 @@ nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::Pat
 
     auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(category));
     const ieml::AST::CharRange& range = ast->getCharRange();
-    std::string node_type = (ctx.getCategoryRegister().isNode(category) ? "NODE" : "COMPONENT");
+    std::string node_type(ctx.getCategoryRegister().getDefinitionType(category)._to_string());
     bool user_defined = true;
 
     auto name = ctx.getCategoryRegister().getName(category);
@@ -107,16 +107,13 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
     auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(word));
     const ieml::AST::CharRange& range = ast->getCharRange();
 
-    bool user_defined = true;
     auto name = ctx.getWordRegister().getName(word);
 
     return {
         {"id", word->uid()},
-        {"range", charRangeToJson(range)},
-        {"user_defined", user_defined},
         {"translations", nameToJson(*name)},
+        // {"user_defined", user_defined},
         {"type", "WORD"},
-
         {"word_type", word->getWordType()._to_string()}
     };
 }

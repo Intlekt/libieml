@@ -60,6 +60,7 @@ public:
    */
   virtual antlrcpp::Any visitComponentDeclaration(iemlParser::ComponentDeclarationContext *ctx) override;
   virtual antlrcpp::Any visitNodeDeclaration(iemlParser::NodeDeclarationContext *context) override;
+  virtual antlrcpp::Any visitParanodeDeclaration(iemlParser::ParanodeDeclarationContext *context) override;
   virtual antlrcpp::Any visitWordDeclaration(iemlParser::WordDeclarationContext *context) override;
   virtual antlrcpp::Any visitInflectionDeclaration(iemlParser::InflectionDeclarationContext *context) override;
   virtual antlrcpp::Any visitAuxiliaryDeclaration(iemlParser::AuxiliaryDeclarationContext *context) override;
@@ -79,16 +80,30 @@ public:
   virtual antlrcpp::Any visitPhrase_line__jonction_auxiliary(iemlParser::Phrase_line__jonction_auxiliaryContext *ctx) override;
 
   /**
+   * INFLEXION LIST
+   */
+  virtual antlrcpp::Any visitInflection_list(iemlParser::Inflection_listContext *ctx) override;
+  virtual antlrcpp::Any visitInflection_list_paradigm(iemlParser::Inflection_list_paradigmContext *ctx) override;
+
+  /**
+   * AUXILIARY
+   */  
+  virtual antlrcpp::Any visitAuxiliary__simple(iemlParser::Auxiliary__simpleContext *ctx) override;
+  virtual antlrcpp::Any visitAuxiliary__paradigm(iemlParser::Auxiliary__paradigmContext *ctx) override;
+
+  /**
    * SUB PHRASELINE with AUXILIARY
    */
-  virtual antlrcpp::Any visitSub_phrase_line_auxiliary__sub_phrase_no_auxiliary(iemlParser::Sub_phrase_line_auxiliary__sub_phrase_no_auxiliaryContext *ctx) override;
-  virtual antlrcpp::Any visitSub_phrase_line_auxiliary__jonction_no_auxiliary(iemlParser::Sub_phrase_line_auxiliary__jonction_no_auxiliaryContext *ctx) override;
+  virtual antlrcpp::Any visitSub_phrase_line_auxiliary__no_junction(iemlParser::Sub_phrase_line_auxiliary__no_junctionContext *ctx) override;
+  virtual antlrcpp::Any visitSub_phrase_line_auxiliary__jonction(iemlParser::Sub_phrase_line_auxiliary__jonctionContext *ctx) override;
 
   /**
    * INFLEXED CATEGORY (SUB PHRASELINE without AUXILIARY)
    */
-  virtual antlrcpp::Any visitInflexed_category__singular(iemlParser::Inflexed_category__singularContext *context) override;
-  virtual antlrcpp::Any visitInflexed_category__paradigm(iemlParser::Inflexed_category__paradigmContext *context) override;
+  virtual antlrcpp::Any visitInflected_category__singular(iemlParser::Inflected_category__singularContext *context) override;
+  virtual antlrcpp::Any visitInflected_category__category_paradigm(iemlParser::Inflected_category__category_paradigmContext *context) override;
+  virtual antlrcpp::Any visitInflected_category__inflection_paradigm(iemlParser::Inflected_category__inflection_paradigmContext *context) override;
+  virtual antlrcpp::Any visitInflected_category__inflection_and_category_paradigm(iemlParser::Inflected_category__inflection_and_category_paradigmContext *context) override;
 
   /**
    *  CATEGORY

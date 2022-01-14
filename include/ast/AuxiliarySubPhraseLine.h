@@ -4,77 +4,61 @@
 #include <set>
 
 #include "ast/interfaces/AST.h"
+#include "ast/interfaces/IAuxiliary.h"
 
-#include "ast/InflexedCategory.h"
+#include "ast/InflectedCategory.h"
 
 
 namespace ieml::AST {
 
 class AuxiliarySubPhraseLine : virtual public AST {
 public:
-    AuxiliarySubPhraseLine(std::shared_ptr<Identifier>&& auxiliary) : 
+    AuxiliarySubPhraseLine(std::shared_ptr<IAuxiliary>&& auxiliary) : 
         auxiliary_(std::move(auxiliary)) {}
 
-
-    std::shared_ptr<structure::PathTree> check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const {
-        auto child = _check_auxiliary_subline(ctx, role_type);
+    structure::PathTree::Set check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const {
+        auto child_set = _check_auxiliary_subline(ctx, role_type);
 
         if (auxiliary_) {
-            auto auxiliary = ctx.getWordRegister().resolve_auxiliary(structure::LanguageString(ctx.getLanguage(), auxiliary_->getName()));
-            if (!auxiliary) {
-                ctx.getErrorManager().visitorError(
-                    auxiliary_->getCharRange(),
-                    "Undefined auxiliary identifier '" + auxiliary_->getName() + "'."
-                );
-                return nullptr;
+            auto auxiliary_nodes = auxiliary_->check_auxiliary(ctx, role_type);
+
+            if(!*child_set.begin() || !*auxiliary_nodes.begin()) {
+                return {nullptr};
             }
-
-            if (!auxiliary->accept_role(role_type)) {
-                ctx.getErrorManager().visitorError(
-                    auxiliary_->getCharRange(),
-                    "Invalid auxiliary for this role, '" + auxiliary_->getName() + "' is declared for role '" + 
-                        auxiliary->getRoleType()._to_string() + "', not '" + role_type._to_string() + "'."
-                );
-                return nullptr;
-
-            }
-
-            if(!child) {
-                return nullptr;
-            }
-
             
-            return ctx.getPathTreeRegister().get_or_create(
-                std::make_shared<structure::AuxiliaryPathNode>(auxiliary), 
-                structure::PathTree::Children{child});
-        } else {
-            if(!child) 
-                return nullptr;
-            
-            return child;
-        }
+            return ctx.getPathTreeRegister().get_or_create_product(auxiliary_nodes, {child_set});
+        } else  
+            return child_set;
+        
     };  
 
 
 protected:
-    virtual std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const = 0;
+    /**
+     * @brief Check the rest of the auxiliary line except the auxiliary *... part.
+     * 
+     * @param ctx 
+     * @param role_type 
+     * @return structure::PathTree::Set 
+     */
+    virtual structure::PathTree::Set _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const = 0;
 
     std::string auxiliary_to_string() const {
         if (auxiliary_)
-            return "*" + auxiliary_->to_string() + " ";
+            return auxiliary_->to_string() + " ";
         else
             return "";
     }
 
 private:
-    std::shared_ptr<Identifier> auxiliary_;
+    const std::shared_ptr<IAuxiliary> auxiliary_;
 };
 
 class SimpleAuxiliarySubPhraseLine : public AuxiliarySubPhraseLine {
 public:
     SimpleAuxiliarySubPhraseLine(std::shared_ptr<CharRange>&& char_range,
-                                 std::shared_ptr<Identifier>&& auxiliary,
-                                 std::shared_ptr<InflexedCategory>&& flexed_category) : 
+                                 std::shared_ptr<IAuxiliary>&& auxiliary,
+                                 std::shared_ptr<InflectedCategory>&& flexed_category) : 
         AST(std::move(char_range)),
         AuxiliarySubPhraseLine(std::move(auxiliary)),
         flexed_category_(std::move(flexed_category)) {}
@@ -85,37 +69,37 @@ public:
     }
 
 protected:
-    std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+    virtual structure::PathTree::Set _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         return flexed_category_->check_flexed_category(ctx, role_type);
     };
 
 
 private:
-    std::shared_ptr<InflexedCategory> flexed_category_;
+    std::shared_ptr<InflectedCategory> flexed_category_;
 };
 
 class JunctionAuxiliarySubPhraseLine : 
     public AuxiliarySubPhraseLine, 
-    public IJunction<InflexedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, structure::RoleType> {
+    public IJunction<InflectedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, structure::RoleType> {
 public:
     JunctionAuxiliarySubPhraseLine(std::shared_ptr<CharRange>&& char_range,
-                                   std::shared_ptr<Identifier>&& auxiliary,
-                                   std::vector<std::shared_ptr<InflexedCategory>>&& flexed_categories,
+                                   std::shared_ptr<IAuxiliary>&& auxiliary,
+                                   std::vector<std::shared_ptr<InflectedCategory>>&& flexed_categories,
                                    std::shared_ptr<Identifier>&& junction_type) :
         AST(std::move(char_range)),
         AuxiliarySubPhraseLine(std::move(auxiliary)),
-        IJunction<InflexedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, structure::RoleType>(std::move(flexed_categories), std::move(junction_type)) {}
+        IJunction<InflectedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, structure::RoleType>(std::move(flexed_categories), std::move(junction_type)) {}
 
     std::string to_string() const override {
         return auxiliary_to_string() + junction_to_string();
     }
 
 protected:
-    std::shared_ptr<structure::PathTree> _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+    virtual structure::PathTree::Set _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         return check_junction(ctx, role_type);
     };
 
-    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContextManager& ctx, size_t i, structure::RoleType role_type) const override {
+    virtual structure::PathTree::Set check_junction_item(parser::ParserContextManager& ctx, size_t i, structure::RoleType role_type) const override {
         return items_[i]->check_flexed_category(ctx, role_type);
     };
 };

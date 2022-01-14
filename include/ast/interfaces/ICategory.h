@@ -13,7 +13,7 @@ class ICategory : virtual public AST{
 public:
     ICategory() {}
 
-    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContextManager& ctx) const = 0;
+    virtual structure::PathTree::Set check_category(parser::ParserContextManager& ctx) const = 0;
 };
 
 }

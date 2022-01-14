@@ -19,7 +19,7 @@ TEST(ieml_structure_test_case, namespace) {
     PathTree::Register reg;
 
     LanguageString l = LanguageString(LanguageType::FR, "test");
-    auto p = reg.get_or_create(std::make_shared<RootPathNode>(), PathTree::Children{});
+    auto p = reg.get_or_create(std::make_shared<RootPathNode>(), PathTree::Set{});
 
     n.define(
         std::make_shared<Name>(unordered_multiset<LanguageString>{l}),
@@ -44,7 +44,7 @@ TEST(ieml_structure_test_case, namespace_multiple_traduction) {
         std::make_shared<Name>(unordered_multiset<LanguageString>{l1})
     };
 
-    auto p = reg.get_or_create(std::make_shared<RootPathNode>(), PathTree::Children{});
+    auto p = reg.get_or_create(std::make_shared<RootPathNode>(), PathTree::Set{});
 
     for (auto& name : names) {
         n.define(

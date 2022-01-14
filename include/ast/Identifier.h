@@ -27,7 +27,7 @@ public:
         return name_;
     }
 
-    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContextManager& ctx) const {        
+    virtual structure::PathTree::Set check_category(parser::ParserContextManager& ctx) const {        
         std::shared_ptr<structure::PathTree> phrase = ctx.getCategoryRegister().resolve_category(structure::LanguageString(ctx.getLanguage(), name_));
 
         if (phrase == nullptr) {
@@ -36,10 +36,10 @@ public:
                 "Undefined category identifier '" + name_ + "'."
             );
 
-            return nullptr;
+            return {nullptr};
         }
 
-        return phrase;
+        return structure::PathTree::singular_sequences(phrase);
     };
 
 private:

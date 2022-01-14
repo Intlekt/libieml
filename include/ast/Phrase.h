@@ -21,9 +21,9 @@ class Phrase: virtual public AST, public ICategory, public IReferenceValue {
 public:
     Phrase() : ICategory(), IReferenceValue() {}
 
-    virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContextManager& ctx) const = 0;
+    virtual structure::PathTree::Set check_phrase(parser::ParserContextManager& ctx) const = 0;
 
-    virtual std::shared_ptr<structure::PathTree> check_category(parser::ParserContextManager& ctx) const {
+    virtual structure::PathTree::Set check_category(parser::ParserContextManager& ctx) const {
         return check_phrase(ctx);
     };
 
@@ -55,21 +55,21 @@ public:
         return os.str();
     }
 
-    virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContextManager& ctx) const override {
+    virtual structure::PathTree::Set check_phrase(parser::ParserContextManager& ctx) const override {
         std::unordered_set<structure::RoleType> seen_nodes;
         
-        structure::PathTree::Children children;
+        std::vector<structure::PathTree::Set> children_list;
 
         bool valid = true;
         for (const auto& line: phrase_lines_) {
-            auto tree = line->check_phrase_line(ctx);
+            auto phrase_line_set = line->check_phrase_line(ctx);
 
-            if (!tree) {
+            if (!*phrase_line_set.begin()) {
                 valid = false;
                 continue;
             }
             
-            auto role_number = std::dynamic_pointer_cast<structure::RoleNumberPathNode>(tree->getNode());
+            auto role_number = std::dynamic_pointer_cast<structure::RoleNumberPathNode>((*phrase_line_set.begin())->getNode());
 
             if (!role_number) {
                 // should not occur
@@ -83,16 +83,16 @@ public:
                     valid = false;
                 } else {
                     seen_nodes.insert(role_number->getRoleType());
-                    children.insert(tree);
+                    children_list.push_back(phrase_line_set);
                 }
             }
         }
 
         if (!valid)
-            return nullptr;
+            return {nullptr};
         
 
-        return ctx.getPathTreeRegister().get_or_create(std::make_shared<structure::RootPathNode>(), children);
+        return ctx.getPathTreeRegister().get_or_create_product(std::make_shared<structure::RootPathNode>(), children_list);
     };
 
 
@@ -115,11 +115,11 @@ public:
         return "(" + junction_to_string() + ")";
     }
     
-    virtual std::shared_ptr<structure::PathTree> check_junction_item(parser::ParserContextManager& ctx, size_t i, Empty a) const override {
+    virtual structure::PathTree::Set check_junction_item(parser::ParserContextManager& ctx, size_t i, Empty a) const override {
         return items_[i]->check_phrase(ctx);
     };
 
-    virtual std::shared_ptr<structure::PathTree> check_phrase(parser::ParserContextManager& ctx) const override {
+    virtual structure::PathTree::Set check_phrase(parser::ParserContextManager& ctx) const override {
         return check_junction(ctx, {});
     }
 };
