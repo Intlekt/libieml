@@ -509,17 +509,6 @@ namespace ieml::structure {
         return v;
     };
 
-
-    size_t PathTree::hash() const {
-        size_t seed = 0;
-        hash_combine(seed, *node_);
-
-        for (auto& c: getChildrenAsVector())
-            hash_combine(seed, c->hash());
-
-        return seed;
-    }
-
     std::vector<PathTree::SubPathTree> PathTree::find_sub_tree(std::function<bool(const std::shared_ptr<PathTree>&)> f,
                                            std::function<bool(const std::shared_ptr<PathTree>&)> should_stop) const {
         std::vector<SubPathTree> res;

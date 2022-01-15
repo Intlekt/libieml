@@ -37,17 +37,6 @@
                                                                     \
     EXPECT_EQ(parser.getSyntaxErrors().size(), 0) << os.str();      \
 }
-#define TEST_PARSE_NO_ERRORS2(Str) {                                 \
-    IEMLParser parser(Str);                                         \
-      parser.parse();                                               \
-                                                                    \
-    std::ostringstream os;                                          \
-    for (auto& error : parser.getSyntaxErrors()) {                  \
-      os << error->to_string() << std::endl;                        \
-    }                                                               \
-                                                                    \
-    EXPECT_EQ(parser.getSyntaxErrors().size(), 0) << os.str();      \
-}
 
 #define TEST_PARSE_ERRORS(Str) {                                    \
     IEMLParser parser(Str);                                         \
@@ -75,8 +64,8 @@ TEST(ieml_grammar_test_case, inflection_decl_valid_verb)             TEST_PARSE_
 TEST(ieml_grammar_test_case, inflection_decl_valid_multi_trad)       TEST_PARSE_NO_ERRORS(R"(@inflection en:test en:test2 VERB "wa.".)");
 TEST(ieml_grammar_test_case, component_decl)                         TEST_PARSE_NO_ERRORS(R"(@word "wa.". @component en:test (0 #"wa."). @component en:test2 (0 #test).)");
 TEST(ieml_grammar_test_case, paradigm_category)                      TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @paranode en:test2 (0 #{"wa."; "we."}).)");
-TEST(ieml_grammar_test_case, paradigm_auxiliary)                     TEST_PARSE_NO_ERRORS2(R"(@word "wa.". @auxiliary en:aux0 0 "we.". @auxiliary en:aux1 0 "wo.". @paranode en:test2 (0 {*aux0 ; *aux1} #"wa.").)");
-TEST(ieml_grammar_test_case, paradigm_inflection)                    TEST_PARSE_NO_ERRORS2(R"(@word "wa.". @inflection en:infl0 NOUN "we.". @inflection en:infl1 NOUN "wo.". @paranode en:test2 (0 {~infl0; ~infl1} #"wa.").)");
+TEST(ieml_grammar_test_case, paradigm_auxiliary)                     TEST_PARSE_NO_ERRORS(R"(@word "wa.". @auxiliary en:aux0 0 "we.". @auxiliary en:aux1 0 "wo.". @paranode en:test2 (0 {*aux0 ; *aux1} #"wa.").)");
+TEST(ieml_grammar_test_case, paradigm_inflection)                    TEST_PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:infl0 NOUN "we.". @inflection en:infl1 NOUN "wo.". @paranode en:test2 (0 {~infl0; ~infl1} #"wa.").)");
 
 TEST(ieml_grammar_test_case, extra_comma_in_phrase_line)             TEST_PARSE_ERRORS(R"(@component en:test (0 #(0 ~noun #"wa."),) .)");
 TEST(ieml_grammar_test_case, language_string_with_old_decl)          TEST_PARSE_ERRORS(R"(@component fr'test' (0 #(0 ~noun #"wa."),) .)");

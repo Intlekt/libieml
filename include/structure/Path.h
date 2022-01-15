@@ -14,6 +14,7 @@
 #include <unordered_map>
 #include <functional>
 #include <set>
+#include <stdexcept>
 
 
 namespace ieml::structure {
@@ -48,6 +49,15 @@ public:
     virtual std::string to_string() const = 0;
     virtual const std::set<std::shared_ptr<Word>> getWords() const {return {};};
 
+    virtual size_t getIndex() const {throw std::invalid_argument("No index defined for " +std::string(getPathType()._to_string())+ " path node.");};
+    virtual RoleType getRoleType() const {throw std::invalid_argument("No RoleType defined for " +std::string(getPathType()._to_string())+ " path node.");};
+    virtual std::shared_ptr<JunctionWord> getJunctionType() const {throw std::invalid_argument("No JunctionWord defined for " +std::string(getPathType()._to_string())+ " path node.");};
+
+    virtual std::shared_ptr<AuxiliaryWord> getAuxialiryType() const {throw std::invalid_argument("No AuxiliaryWord defined for " +std::string(getPathType()._to_string())+ " path node.");};
+    virtual const std::set<std::shared_ptr<InflectionWord>>& getInflections() const {throw std::invalid_argument("No InflectionWords defined for " +std::string(getPathType()._to_string())+ " path node.");}; 
+    virtual const std::shared_ptr<CategoryWord> getCategoryWord() const {throw std::invalid_argument("No CategoryWord defined for " +std::string(getPathType()._to_string())+ " path node.");};
+
+
     typedef std::set<std::shared_ptr<PathNode>> Set;
 
 private:
@@ -74,6 +84,27 @@ private:
     virtual int comp(const PathNode& a) const {return 0;};
 };
 
+class ParadigmIndexPathNode : public PathNode {
+public:
+    ParadigmIndexPathNode(size_t index) : index_(index) {};
+    virtual bool accept_next(const PathNode& next) const override;
+    virtual PathType getPathType() const override;
+    virtual std::string to_string() const override;
+
+    virtual size_t getIndex() const override {return index_;};
+
+private:
+    virtual int comp(const PathNode& a) const {
+        if (getIndex() == a.getIndex()) return  0;
+        if (getIndex() <  a.getIndex()) return -1;
+        else                            return  1;
+    };
+
+    const size_t index_;
+};
+
+
+
 class RoleNumberPathNode : public PathNode {
 public:
     RoleNumberPathNode(RoleType role_type) : role_type_(role_type) {};
@@ -81,12 +112,11 @@ public:
     virtual PathType getPathType() const override;
     virtual std::string to_string() const override;
 
-    RoleType getRoleType() const {return role_type_;}
+    virtual RoleType getRoleType() const override {return role_type_;};
 private:
     virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const RoleNumberPathNode&>(a);
-        if (role_type_ == b.role_type_) return  0;
-        if (role_type_ <  b.role_type_) return -1;
+        if (getRoleType() == a.getRoleType()) return  0;
+        if (getRoleType() <  a.getRoleType()) return -1;
         else                            return  1;
     };
 
@@ -99,10 +129,16 @@ public:
     JunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : junction_type_(junction_type) {}
     virtual std::string to_string() const override;
     
-    std::shared_ptr<JunctionWord> getJunctionType() const {return junction_type_;};
+    virtual std::shared_ptr<JunctionWord> getJunctionType() const override {return junction_type_;};
     virtual const std::set<std::shared_ptr<Word>> getWords() const override {return {junction_type_};};
 
 private:
+    virtual int comp(const PathNode& a) const {
+        if (*getJunctionType() == *a.getJunctionType()) return  0;
+        if (*getJunctionType() <  *a.getJunctionType()) return -1;
+        else                                            return  1;
+    };
+
     const std::shared_ptr<JunctionWord> junction_type_;
 };
 
@@ -111,14 +147,6 @@ public:
     PhraseJunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : JunctionPathNode(junction_type) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
-private:
-    virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const PhraseJunctionPathNode&>(a);
-
-        if (*getJunctionType() == *b.getJunctionType()) return  0;
-        if (*getJunctionType() <  *b.getJunctionType()) return -1;
-        else                                            return  1;
-    };
 };
 
 class AuxiliaryJunctionPathNode : public JunctionPathNode {
@@ -126,14 +154,6 @@ public:
     AuxiliaryJunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : JunctionPathNode(junction_type) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
-private:
-    virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const AuxiliaryJunctionPathNode&>(a);
-
-        if (*getJunctionType() == *b.getJunctionType()) return  0;
-        if (*getJunctionType() <  *b.getJunctionType()) return -1;
-        else                                            return  1;
-    };
 };
 
 class InflectionJunctionPathNode : public JunctionPathNode {
@@ -141,14 +161,6 @@ public:
     InflectionJunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : JunctionPathNode(junction_type) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
-private:
-    virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const InflectionJunctionPathNode&>(a);
-
-        if (*getJunctionType() == *b.getJunctionType()) return  0;
-        if (*getJunctionType() <  *b.getJunctionType()) return -1;
-        else                                            return  1;
-    };
 };
 
 class CategoryJunctionPathNode : public JunctionPathNode {
@@ -156,87 +168,50 @@ public:
     CategoryJunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : JunctionPathNode(junction_type) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
-private:
-    virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const CategoryJunctionPathNode&>(a);
-
-        if (*getJunctionType() == *b.getJunctionType()) return  0;
-        if (*getJunctionType() <  *b.getJunctionType()) return -1;
-        else                                            return  1;
-    };
 };
 
 class JunctionIndexPathNode : public PathNode {
 public:
-    JunctionIndexPathNode(int index) : index_(index) {}
+    JunctionIndexPathNode(size_t index) : index_(index) {}
     virtual std::string to_string() const override;
 
-    int getIndex() const {return index_;};
+    virtual size_t getIndex() const override {return index_;};
 private:
-    const int index_;
+    virtual int comp(const PathNode& a) const override {
+        if (getIndex() == a.getIndex()) return  0;
+        if (getIndex() <  a.getIndex()) return -1;
+        else                    return  1;
+    };
+
+    const size_t index_;
 };
 
 class PhraseJunctionIndexPathNode : public JunctionIndexPathNode {
 public:
-    PhraseJunctionIndexPathNode(int index) : JunctionIndexPathNode(index) {}
+    PhraseJunctionIndexPathNode(size_t index) : JunctionIndexPathNode(index) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
-private:
-    virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const PhraseJunctionIndexPathNode&>(a);
-
-        if (getIndex() == b.getIndex()) return  0;
-        if (getIndex() <  b.getIndex()) return -1;
-        else                    return  1;
-    };
-
 };
 
 class AuxiliaryJunctionIndexPathNode : public JunctionIndexPathNode {
 public:
-    AuxiliaryJunctionIndexPathNode(int index) : JunctionIndexPathNode(index) {}
+    AuxiliaryJunctionIndexPathNode(size_t index) : JunctionIndexPathNode(index) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
-
-private:
-    virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const AuxiliaryJunctionIndexPathNode&>(a);
-
-        if (getIndex() == b.getIndex()) return  0;
-        if (getIndex() <  b.getIndex()) return -1;
-        else                    return  1;
-    };
 };
 
 class InflectionJunctionIndexPathNode : public JunctionIndexPathNode {
 public:
-    InflectionJunctionIndexPathNode(int index) : JunctionIndexPathNode(index) {}
+    InflectionJunctionIndexPathNode(size_t index) : JunctionIndexPathNode(index) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
-private:
-    virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const InflectionJunctionIndexPathNode&>(a);
-
-        if (getIndex() == b.getIndex()) return  0;
-        if (getIndex() <  b.getIndex()) return -1;
-        else                    return  1;
-    };
 };
 
 class CategoryJunctionIndexPathNode : public JunctionIndexPathNode {
 public:
-    CategoryJunctionIndexPathNode(int index) : JunctionIndexPathNode(index) {}
+    CategoryJunctionIndexPathNode(size_t index) : JunctionIndexPathNode(index) {}
     virtual bool accept_next(const PathNode& next) const override;
     virtual PathType getPathType() const override;
-
-private:
-    virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const CategoryJunctionIndexPathNode&>(a);
-
-        if (getIndex() == b.getIndex()) return  0;
-        if (getIndex() <  b.getIndex()) return -1;
-        else                    return  1;
-    };
 };
 
 class AuxiliaryPathNode : public PathNode {
@@ -247,12 +222,11 @@ public:
     virtual std::string to_string() const override;
     virtual const std::set<std::shared_ptr<Word>> getWords() const override {return {auxiliary_type_};};
 
+    virtual std::shared_ptr<AuxiliaryWord> getAuxialiryType() const override {return auxiliary_type_;};
 private:
     virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const AuxiliaryPathNode&>(a);
-
-        if (*auxiliary_type_ == *b.auxiliary_type_) return  0;
-        if (*auxiliary_type_ <  *b.auxiliary_type_) return -1;
+        if (*getAuxialiryType() == *a.getAuxialiryType()) return  0;
+        if (*getAuxialiryType() <  *a.getAuxialiryType()) return -1;
         else                                        return  1;
     };
 
@@ -270,16 +244,16 @@ public:
         return std::set<std::shared_ptr<Word>>(inflections_.begin(), inflections_.end());
     };
 
+    virtual const std::set<std::shared_ptr<InflectionWord>>& getInflections() const override {return inflections_;}; 
+
 private:
     virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const InflectionPathNode&>(a);
+        if (getInflections().size() != a.getInflections().size()) return (getInflections().size() < a.getInflections().size() ? -1 : 1);
 
-        if (inflections_.size() != b.inflections_.size()) return (inflections_.size() < b.inflections_.size() ? -1 : 1);
-
-        auto it_b = b.inflections_.begin();
-        for (auto it_self = inflections_.begin(); it_self != inflections_.end(); it_self++) {
-            if (**it_self != **it_b) return (**it_self < **it_b ? -1 : 1);
-            it_b++;
+        auto it_a = a.getInflections().begin();
+        for (auto it_self = getInflections().begin(); it_self != getInflections().end(); it_self++) {
+            if (**it_self != **it_a) return (**it_self < **it_a ? -1 : 1);
+            it_a++;
         }
         // they are equal
         return 0;
@@ -304,13 +278,12 @@ public:
         return {word_};
     };
 
+    virtual const std::shared_ptr<CategoryWord> getCategoryWord() const override {return word_;};
 private:
     virtual int comp(const PathNode& a) const {
-        auto b = dynamic_cast<const WordPathNode&>(a);
-
-        if (*word_ == *b.word_) return  0;
-        if (*word_ <  *b.word_) return -1;
-        else                    return  1;
+        if (*getCategoryWord() == *a.getCategoryWord()) return  0;
+        if (*getCategoryWord() <  *a.getCategoryWord()) return -1;
+        else                                            return  1;
     };
 
     const std::shared_ptr<CategoryWord> word_;
@@ -408,13 +381,19 @@ public:
         std::shared_ptr<PathTree> buildFromPaths(std::vector<std::shared_ptr<Path>> paths);
 
     private:
-        struct cmpKey {
+        struct eqKey {
             bool operator()(const Key& a, const Key& b) const {
-                return comp(a.first, a.second, b.first, b.second) < 0;
+                return comp(a.first, a.second, b.first, b.second) == 0;
             }
         };
 
-        std::map<Key, std::shared_ptr<PathTree>, cmpKey> store_;
+        struct hashKey {
+            size_t operator()(const Key& a) const {
+                return PathTree::hash_internal(a.first, a.second);
+            }
+        };
+
+        std::unordered_map<Key, std::shared_ptr<PathTree>, hashKey, eqKey> store_;
     };
 
     typedef std::pair<std::shared_ptr<Path>, std::shared_ptr<PathTree>> SubPathTree;
@@ -436,19 +415,30 @@ public:
     const Set getChildren() const {return children_;};
 
 
-    virtual size_t hash() const;
+    virtual size_t hash() const {return hash_;};
 
 private:
     PathTree(const std::shared_ptr<PathNode>& node, const Set& children) : 
-        node_(node), children_(children) {}
+        node_(node), children_(children), hash_(hash_internal(node, children)) {}
 
     PathTree(const std::shared_ptr<PathNode>& node) : 
-        node_(node), children_() {}
+        node_(node), children_(), hash_(hash_internal(node, {})) {}
 
     PathTree(const PathTree&) = delete;
     PathTree& operator=(const PathTree&) = delete;
 
 
+    static size_t hash_internal(const std::shared_ptr<PathNode>& node, const Set& children) {
+        size_t seed = 0;
+        hash_combine(seed, *node);
+
+        for (auto& c: children)
+            hash_combine(seed, c->hash());
+
+        return seed;
+    }
+
+    const size_t hash_;
     const std::shared_ptr<PathNode> node_;
     const Set children_;
 
