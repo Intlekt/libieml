@@ -69,7 +69,8 @@ set(IEMLParser_src ${ANTLR_IEMLParser_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/structure/Path.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/relation/RelationGraph.cpp
-                   ${CMAKE_CURRENT_LIST_DIR}/relation/Composition.cpp)
+                   ${CMAKE_CURRENT_LIST_DIR}/relation/Composition.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/relation/Inclusion.cpp)
                    
 set(IEMLParser_include ${PROJECT_SOURCE_DIR}/include
                        ${ANTLR4_INCLUDE_DIRS}

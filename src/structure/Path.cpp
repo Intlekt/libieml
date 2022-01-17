@@ -540,7 +540,7 @@ namespace ieml::structure {
     };
 
     int PathTree::comp(const std::shared_ptr<PathNode>& nodeA, const PathTree::Set& childrenA, 
-                              const std::shared_ptr<PathNode>& nodeB, const PathTree::Set& childrenB) {
+                       const std::shared_ptr<PathNode>& nodeB, const PathTree::Set& childrenB) {
         if (*nodeA == *nodeB) {
             auto it = childrenA.begin();
             auto it_r = childrenB.begin();

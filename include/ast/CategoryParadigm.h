@@ -38,7 +38,10 @@ public:
         for (size_t i = 0; i < categories_.size(); i++) {
             auto children = categories_[i]->check_category(ctx);
             for (auto& child: children) {
-                if (!child) valid = false;
+                if (!child) {
+                    valid = false;
+                    continue;
+                }
                 children_paradigm.insert(child);
             }
         }

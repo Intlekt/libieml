@@ -9,8 +9,8 @@ using namespace ieml::relation;
 
 
 void ieml::relation::buildCompositionRelationGraph(RelationGraph& graph, 
-                                   const ieml::structure::CategoryRegister& creg, 
-                                   const ieml::structure::WordRegister& wreg) {
+                                                   const ieml::structure::CategoryRegister& creg, 
+                                                   const ieml::structure::WordRegister& wreg) {
     
 
     auto is_phrase = [&creg](const std::shared_ptr<ieml::structure::PathTree>& t){

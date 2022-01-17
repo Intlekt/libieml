@@ -8,6 +8,7 @@ add_executable(registerer_test grammar/test_parser.cpp
                                grammar/test_declaration.cpp
                                grammar/test_json_serialization.cpp
                                grammar/test_syntax_error.cpp
+                               grammar/test_paradigm.cpp
                                structure/test_path.cpp
                                structure/test_path_node.cpp
                                structure/test_namespace.cpp

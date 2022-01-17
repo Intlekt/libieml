@@ -1,15 +1,8 @@
 #pragma once
 
-#include <memory>
-#include <string>
-#include <unordered_map>
-#include <enum.h>
-
-#include "ParserContextManager.h"
 #include "relation/RelationGraph.h"
-
-#include "structure/Path.h"
 #include "structure/CategoryRegister.h"
+#include "structure/WordRegister.h"
 
 
 
