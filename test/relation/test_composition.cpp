@@ -21,10 +21,11 @@ using namespace ieml::relation;
   bool found = false;\
   boost::graph_traits<RelationGraph::Graph>::out_edge_iterator e, eend; \
   for (std::tie(e, eend) = boost::out_edges(src, graph); e != eend; ++e) {\
-    if (graph[*e].relation_type == +RelationType::COMPOSITION && boost::target(*e, graph) == tgt) {\
+    if (graph[*e].attribute->getRelationType() == +RelationType::COMPOSITION && boost::target(*e, graph) == tgt) {\
       found = true;\
       auto p = ieml::structure::Path::from_string(path, context->getWordRegister());\
-      EXPECT_EQ(*graph[*e].composition_attributes.path_, *p) << "rel_path=" << graph[*e].composition_attributes.path_->to_string() << " expect=" << p->to_string() << std::endl;\
+      auto attr = std::dynamic_pointer_cast<CompositionAttribute>(graph[*e].attribute);\
+      EXPECT_EQ(*attr->getCompositionPath(), *p) << "rel_path=" << attr->getCompositionPath()->to_string() << " expect=" << p->to_string() << std::endl;\
       break;\
     }\
   }\

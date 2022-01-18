@@ -219,6 +219,5 @@ TEST(ieml_structure_test_case, path_tree_register) {
         EXPECT_EQ(*container->getChildrenAsVector()[0]->getChildrenAsVector()[0], *included);
         // pointer
         EXPECT_EQ(container->getChildrenAsVector()[0]->getChildrenAsVector()[0], included);
-
     }
 }

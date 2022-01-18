@@ -7,6 +7,7 @@
 #include "IemlParser.h"
 #include "SyntaxError.h"
 #include "relation/Composition.h"
+#include "relation/Inclusion.h"
 #include "ParserJsonSerializer.h"
 
 
@@ -35,6 +36,7 @@ PYBIND11_MODULE(pyieml, m) {
             auto mapping = e.getContext()->getSourceMapping();
             ieml::relation::RelationGraph graph;
             ieml::relation::buildCompositionRelationGraph(graph, cregister, wregister);
+            ieml::relation::buildInclusionRelationGraph(graph, cregister, wregister);
             return ieml::parser::binaryGraphToJson(graph, cregister, wregister, mapping).dump();
         });
 

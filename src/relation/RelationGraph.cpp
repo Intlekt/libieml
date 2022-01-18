@@ -25,15 +25,11 @@ void RelationGraph::add_node(const std::shared_ptr<structure::Element>& element)
 }
 
 void RelationGraph::add_relation(const Relation& relation) {
-    const Vertex& source = register_.get_or_create(relation.source_, graph_);
-    const Vertex& target = register_.get_or_create(relation.target_, graph_);
+    const Vertex& source = register_.get_or_create(relation.source, graph_);
+    const Vertex& target = register_.get_or_create(relation.target, graph_);
     
     add_edge(source, 
              target, 
-             (EdgeProperties){
-                 .relation_type = relation.rel_type_,
-                 .composition_attributes = relation.cmp_attr_,
-                 .link = relation.link_
-             }, 
+             (EdgeProperties){.attribute = relation.attribute}, 
              graph_);
 }

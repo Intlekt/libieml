@@ -2,6 +2,7 @@
 
 #include "ast/interfaces/AST.h"
 #include "relation/Composition.h"
+#include "relation/Composition.h"
 #include <functional>
 #include <locale>
 
@@ -28,7 +29,6 @@ nlohmann::json ieml::parser::syntaxErrorToJson(const SyntaxError& syntax_error) 
 
 nlohmann::json ieml::parser::nameToJson(const ieml::structure::Name& name) {
     nlohmann::json translations;
-    std::locale loc;
     
     for (auto l : structure::LanguageType::_values())
         translations[l._to_string()] = nlohmann::json::array();
@@ -67,7 +67,7 @@ nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::Pat
     auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(category));
     const ieml::AST::CharRange& range = ast->getCharRange();
     std::string node_type(ctx.getCategoryRegister().getDefinitionType(category)._to_string());
-    bool user_defined = true;
+    // bool user_defined = true;
 
     auto name = ctx.getCategoryRegister().getName(category);
 
@@ -88,7 +88,7 @@ nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::Pat
     return {
         {"id", category->uid()},
         {"range", charRangeToJson(range)},
-        {"user_defined", user_defined},
+        // {"user_defined", user_defined},
         {"translations", nameToJson(*name)},
         {"type", "CATEGORY"},
 
@@ -154,38 +154,39 @@ nlohmann::json ieml::parser::serializeNode(const structure::CategoryRegister& ca
                              const structure::WordRegister& words,
                              const SourceMapping& mapping,
                              const std::shared_ptr<structure::Element>& n) {
-    nlohmann::json names;
 
     std::shared_ptr<structure::Name> name;
     std::string ntype;
-    std::string file_id;
+    nlohmann::json char_range;
     if (n->getElementType() == +structure::ElementType::PATH_TREE) {
         auto pt = std::dynamic_pointer_cast<structure::PathTree>(n);
         name = categories.getName(pt);
         ntype = categories.isNode(pt) ? "NODE" : "COMPONENT";
-        file_id = mapping.resolve_mapping(pt)->getCharRange().getFileId();
+        char_range = charRangeToJson(mapping.resolve_mapping(pt)->getCharRange());
     } else {
         auto w = std::dynamic_pointer_cast<structure::Word>(n);
         name = words.getName(w);
         ntype = w->getWordType()._to_string();
-        file_id = mapping.resolve_mapping(w)->getCharRange().getFileId();
+        char_range = charRangeToJson(mapping.resolve_mapping(w)->getCharRange());
     }
+
+    nlohmann::json names;
+
     if (name)
-        for (auto it = name->begin(); it != name->end(); ++it)
-            names[it->second.language()._to_string()] = it->second.value();
+        names = nameToJson(*name);
     
     return { 
         {"id", n->uid()},
         {"class", ntype},
         {"names", names},
-        {"file_id", file_id}
+        {"range", char_range}
     };
 };
 
 nlohmann::json ieml::parser::binaryGraphToJson(ieml::relation::RelationGraph& relation_graph,
-                                 const structure::CategoryRegister& categories,
-                                 const structure::WordRegister& words,
-                                 const SourceMapping& mapping) {
+                                               const structure::CategoryRegister& categories,
+                                               const structure::WordRegister& words,
+                                               const SourceMapping& mapping) {
     size_t id = 0;
     std::unordered_set<ieml::relation::RelationGraph::Vertex> nodes_set;
     
@@ -203,14 +204,12 @@ nlohmann::json ieml::parser::binaryGraphToJson(ieml::relation::RelationGraph& re
 
     ieml::relation::RelationGraph::Graph::edge_iterator e, eend;
     for (boost::tie(e, eend) = boost::edges(graph); e != eend; ++e) {
+        const auto attribute = graph[*e].attribute;
+
         relations.push_back({
             {"subject", graph[boost::source(*e, graph)].element->uid()},
             {"object", graph[boost::target(*e, graph)].element->uid()},
-            {"attributes", {
-                {"type", std::string(graph[*e].relation_type._to_string())},
-                {"composition_type", std::string(graph[*e].composition_attributes.cmp_type_._to_string())},
-                {"path", graph[*e].composition_attributes.path_->to_string()}
-            }}
+            {"attributes", attribute->to_json()}
         });
 
     }

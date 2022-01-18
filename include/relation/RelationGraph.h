@@ -1,5 +1,6 @@
 #pragma once
 
+#include <nlohmann/json.hpp>
 #include <enum.h>
 #include <utility>
 #include <boost/graph/graph_traits.hpp>
@@ -12,21 +13,22 @@
 
 namespace ieml::relation {
 
-BETTER_ENUM(RelationType, char, COMPOSITION, LINK);
+BETTER_ENUM(RelationType, char, COMPOSITION, INCLUSION, LINK);
 
-BETTER_ENUM(CompositionRelationType, char, COMPOSITION_PHRASE, COMPOSITION_INFLECTION, COMPOSITION_AUXILIARY, COMPOSITION_JUNCTION, COMPOSITION_WORD);
+class RelationAttribute {
+public:
+    virtual RelationType getRelationType() const = 0;
 
-struct CompositionAttributes {
-    const std::shared_ptr<structure::Path> path_;
-    const CompositionRelationType cmp_type_;
+    virtual nlohmann::json to_json() const = 0;
 };
-struct Relation {
-    const std::shared_ptr<structure::Element> source_; 
-    const std::shared_ptr<structure::Element> target_;
 
-    const RelationType rel_type_;
-    const CompositionAttributes cmp_attr_ = (CompositionAttributes){.path_=nullptr, .cmp_type_=CompositionRelationType::COMPOSITION_PHRASE};
-    const std::shared_ptr<structure::PathTree> link_ = nullptr;
+struct Relation {
+    const std::shared_ptr<structure::Element> source; 
+    const std::shared_ptr<structure::Element> target;
+
+    const std::shared_ptr<RelationAttribute> attribute;
+
+    // const CompositionAttributes cmp_attr_ = (CompositionAttributes){.path_=nullptr, .cmp_type_=CompositionRelationType::COMPOSITION_PHRASE};
 };
 
 class RelationGraph {
@@ -42,9 +44,7 @@ public:
     };
 
     struct EdgeProperties {
-        const RelationType relation_type;
-        const CompositionAttributes composition_attributes;
-        const std::shared_ptr<structure::PathTree> link;
+        const std::shared_ptr<RelationAttribute> attribute;
     };
 
     typedef boost::adjacency_list<boost::vecS, 

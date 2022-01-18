@@ -427,7 +427,6 @@ namespace ieml::structure {
         return res;
     }
 
-
     PathTree::Set PathTree::Register::get_or_create_product(const std::shared_ptr<PathNode>& node, const std::vector<PathTree::Set>& children_list) {
         return get_or_create_product((PathNode::Set){node}, children_list);
     }
@@ -441,10 +440,10 @@ namespace ieml::structure {
         store_.insert({key, item});
         return item;
     }
+
     std::shared_ptr<PathTree> PathTree::Register::get_or_create(const std::shared_ptr<PathNode>& node) {
         return get_or_create(node, Set{});
     }
-
 
     std::shared_ptr<PathTree> PathTree::Register::buildFromPaths(std::vector<std::shared_ptr<Path>> paths) {
         const auto node = paths[0]->getNode();
@@ -528,7 +527,7 @@ namespace ieml::structure {
         return res;
     };
 
-    PathTree::Set PathTree::singular_sequences(std::shared_ptr<PathTree>& pt) {
+    PathTree::Set PathTree::singular_sequences(const std::shared_ptr<PathTree>& pt) {
         switch (pt->getNode()->getPathType()) {
             case PathType::ROOT:
                 return {pt};

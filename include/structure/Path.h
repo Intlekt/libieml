@@ -339,8 +339,7 @@ private:
 
 class PathTree : public Element {
 public:
-    virtual ElementType getElementType() const {return ElementType::PATH_TREE;};
-
+    virtual ElementType getElementType() const override {return ElementType::PATH_TREE;};
 
     std::string to_string() const;
 
@@ -353,14 +352,7 @@ public:
                                      node_->getPathType() == +PathType::JUNCTION_PHRASE || 
                                      node_->getPathType() == +PathType::JUNCTION_CATEGORY || 
                                      node_->getPathType() == +PathType::JUNCTION_INFLECTION;};
-
-    // bool operator==(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) == 0;};
-    // bool operator!=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) != 0;};
-
-    // bool operator< (const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) <  0;};
-    // bool operator> (const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) >  0;};
-    // bool operator<=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) <= 0;};
-    // bool operator>=(const PathTree& rhs) const {return comp(node_, children_, rhs.node_, rhs.children_) >= 0;};
+    bool is_paradigm() const {return node_->getPathType() == +PathType::PARADIGM;}
 
     struct CompareFunctor {
         bool operator()(const std::shared_ptr<PathTree>& l, const std::shared_ptr<PathTree>& r) const {
@@ -408,14 +400,13 @@ public:
     std::vector<SubPathTree> find_sub_tree(std::function<bool(const std::shared_ptr<PathTree>&)> f,
                                            std::function<bool(const std::shared_ptr<PathTree>&)> should_stop) const;
 
-    static Set singular_sequences(std::shared_ptr<PathTree>& pt);
+    static Set singular_sequences(const std::shared_ptr<PathTree>& pt);
 
     std::shared_ptr<PathNode> getNode() const {return node_;}
     std::vector<std::shared_ptr<PathTree>> getChildrenAsVector() const;
     const Set getChildren() const {return children_;};
 
-
-    virtual size_t hash() const {return hash_;};
+    virtual size_t hash() const override {return hash_;};
 
 private:
     PathTree(const std::shared_ptr<PathNode>& node, const Set& children) : 
@@ -443,18 +434,12 @@ private:
     const Set children_;
 
 
-    static int comp(const std::shared_ptr<PathNode>& nodeA, const Set& childrenA, 
-                    const std::shared_ptr<PathNode>& nodeB, const Set& childrenB);
+    static int comp(const std::shared_ptr<PathNode>&, const Set&, 
+                    const std::shared_ptr<PathNode>&, const Set&);
 
-    virtual int comp_element_(const Element& o_elem) const;
-
-
+    virtual int comp_element_(const Element&) const override;
 };
-
-
 }
-
-
 
 namespace std {
 template<>
@@ -465,22 +450,6 @@ struct hash<ieml::structure::PathNode>
         return hash<string>{}(s.to_string());
     }
 };
-
-
-// template<>
-// struct hash<ieml::structure::PathTree>
-// {
-//     size_t operator()(const ieml::structure::PathTree& s) const noexcept
-//     {
-//         size_t seed = 0;
-//         hash_combine(seed, *s.getNode());
-
-//         for (auto& c: s.getChildrenAsVector())
-//             hash_combine(seed, *c);
-
-//         return seed;
-//     }
-// };
 
 }
 
