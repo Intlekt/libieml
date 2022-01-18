@@ -14,6 +14,7 @@ add_executable(registerer_test grammar/test_parser.cpp
                                structure/test_namespace.cpp
                                structure/test_word.cpp
                                relation/test_composition.cpp
+                               relation/test_inclusion.cpp
                                relation/test_graph.cpp)
 
 add_dependencies(registerer_test gtest gtest_main IEMLParser_shared)
