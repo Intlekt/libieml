@@ -8,7 +8,7 @@
 #include <set>
 
 #include "structure/CategoryRegister.h"
-#include "structure/Path.h"
+#include "structure/path/PathTree.h"
 #include "structure/Namespace.h"
 #include "SourceMapping.h"
 

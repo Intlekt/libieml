@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "ast/interfaces/AST.h"
-#include "structure/Path.h"
+#include "structure/path/PathTree.h"
 #include "ParserContextManager.h"
 
 namespace ieml {

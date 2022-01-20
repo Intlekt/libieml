@@ -10,7 +10,7 @@
 #include "ast/interfaces/AST.h"
 #include "ast/interfaces/IJunction.h"
 
-#include "structure/Path.h"
+#include "structure/path/PathNode.h"
 #include "ParserContextManager.h"
 
 

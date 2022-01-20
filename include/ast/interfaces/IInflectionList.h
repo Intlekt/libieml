@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "ast/interfaces/AST.h"
-#include "structure/Path.h"
+#include "structure/path/PathNode.h"
 #include "ParserContextManager.h"
 
 #include "structure/Constants.h"

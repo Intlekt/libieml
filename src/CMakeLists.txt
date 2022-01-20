@@ -66,7 +66,9 @@ set(IEMLParser_src ${ANTLR_IEMLParser_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/IemlParser.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ParserJsonSerializer.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/Program.cpp
-                   ${CMAKE_CURRENT_LIST_DIR}/structure/Path.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathNode.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/path/Path.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathTree.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/relation/RelationGraph.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/relation/Composition.cpp
@@ -78,6 +80,7 @@ set(IEMLParser_include ${PROJECT_SOURCE_DIR}/include
                        ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json
                        ${PROJECT_SOURCE_DIR}/thirdparty/better_enums
                        ${BOOST_INCLUDE_DIR})
+
 
 # IEMLParser_object
 add_library (IEMLParser_object OBJECT ${IEMLParser_src})

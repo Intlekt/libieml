@@ -11,7 +11,7 @@
 #include "relation/Composition.h"
 #include "relation/RelationGraph.h"
 #include "ParserJsonSerializer.h"
-#include "structure/Path.h"
+#include "structure/path/PathTree.h"
 #include "structure/LanguageString.h"
 
 #include "test_utils.h"

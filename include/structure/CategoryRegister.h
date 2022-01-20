@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#include "structure/Path.h"
+#include "structure/path/PathTree.h"
 #include "structure/Constants.h"
 #include "structure/Namespace.h"
 

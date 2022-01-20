@@ -12,7 +12,7 @@
 #include "ast/PhraseLine.h"
 
 #include "ParserContextManager.h"
-#include "structure/Path.h"
+#include "structure/path/PathNode.h"
 
 
 namespace ieml {

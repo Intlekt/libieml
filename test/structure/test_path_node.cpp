@@ -7,7 +7,7 @@
 
 #include "gtest/gtest.h"
 
-#include "structure/Path.h"
+#include "structure/path/PathTree.h"
 #include "structure/Constants.h"
 
 

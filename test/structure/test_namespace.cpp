@@ -8,7 +8,7 @@
 
 #include "structure/Namespace.h"
 #include "structure/LanguageString.h"
-#include "structure/Path.h"
+#include "structure/path/PathTree.h"
 
 
 using namespace ieml::structure;

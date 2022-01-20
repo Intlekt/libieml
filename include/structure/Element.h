@@ -1,5 +1,6 @@
 #pragma once
 
+#include "structure/Constants.h"
 
 #include <memory>
 #include <exception>

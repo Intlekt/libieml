@@ -5,7 +5,7 @@
 #include "ast/Constants.h"
 #include "ast/Identifier.h"
 #include "ast/interfaces/AST.h"
-#include "structure/Path.h"
+#include "structure/path/PathTree.h"
 
 
 namespace ieml {

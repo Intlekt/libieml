@@ -7,7 +7,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 
-#include "structure/Path.h"
+#include "structure/path/PathTree.h"
 
 
 

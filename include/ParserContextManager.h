@@ -4,7 +4,7 @@
 
 #include "structure/Namespace.h"
 #include "structure/Constants.h"
-#include "structure/Path.h"
+#include "structure/path/PathTree.h"
 #include "structure/Word.h"
 #include "structure/LanguageString.h"
 #include "structure/WordRegister.h"
