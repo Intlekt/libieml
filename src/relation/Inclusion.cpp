@@ -2,6 +2,7 @@
 
 
 void ieml::relation::buildInclusionRelationGraph(RelationGraph& graph, 
+                                                 ieml::structure::PathTree::Register& register_,
                                                  const ieml::structure::CategoryRegister& creg, 
                                                  const ieml::structure::WordRegister& wreg) {
 
@@ -16,7 +17,7 @@ void ieml::relation::buildInclusionRelationGraph(RelationGraph& graph,
         if (creg.getDefinitionType(it->first) != +ieml::structure::DefinitionType::PARADIGM) continue;
 
         // for all subphrase in phrase
-        for (auto& subphrase : it->first->find_sub_tree(is_phrase, is_phrase)) {
+        for (auto& subphrase : it->first->find_sub_tree(register_, is_phrase, is_phrase)) {
             graph.add_relation((Relation){
                 .source=it->first,
                 .target=subphrase.second,

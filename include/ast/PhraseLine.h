@@ -90,16 +90,16 @@ private:
 
 };
 
-class JunctionPhraseLine : public PhraseLine, public IJunction<AuxiliarySubPhraseLine, structure::AuxiliaryJunctionIndexPathNode, structure::AuxiliaryJunctionPathNode, structure::RoleType> {
+class JunctionPhraseLine : public PhraseLine, public IJunctionList<AuxiliarySubPhraseLine, structure::AuxiliaryJunctionIndexPathNode, structure::AuxiliaryJunctionPathNode, structure::RoleType> {
 public:
     JunctionPhraseLine(std::shared_ptr<CharRange>&& char_range,
                        std::vector<std::shared_ptr<AuxiliarySubPhraseLine>>&& sub_phrases,
-                       std::shared_ptr<Identifier>&& junction_identifier,
+                       std::shared_ptr<IJunction>&& junction_identifier,
                        int role_type,
                        bool accentuation) : 
         AST(std::move(char_range)),
         PhraseLine(role_type, accentuation),
-        IJunction<AuxiliarySubPhraseLine, structure::AuxiliaryJunctionIndexPathNode, structure::AuxiliaryJunctionPathNode, structure::RoleType>(std::move(sub_phrases), std::move(junction_identifier)) {}
+        IJunctionList<AuxiliarySubPhraseLine, structure::AuxiliaryJunctionIndexPathNode, structure::AuxiliaryJunctionPathNode, structure::RoleType>(std::move(sub_phrases), std::move(junction_identifier)) {}
 
     std::string to_string() const override {
         return phrase_line_to_string() + junction_to_string();

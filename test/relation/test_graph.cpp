@@ -59,7 +59,7 @@ TEST(ieml_relation_test_case, test_graph_compilation_error_not_null) {
     auto cregister = parser.getContext()->getCategoryRegister();
     auto mapping = parser.getContext()->getSourceMapping();
     ieml::relation::RelationGraph graph;
-    ieml::relation::buildCompositionRelationGraph(graph, cregister, wregister);
+    ieml::relation::buildCompositionRelationGraph(graph, parser.getContext()->getPathTreeRegister(), cregister, wregister);
     auto result = ieml::parser::binaryGraphToJson(graph, cregister, wregister, mapping);
 
     EXPECT_NE(result["nodes"], nullptr);

@@ -53,7 +53,7 @@ TEST(ieml_grammar_test_case, composition_graph_json_serialization) {
     auto wregister = parser.getContext()->getWordRegister();
     auto cregister = parser.getContext()->getCategoryRegister();
     auto mapping = parser.getContext()->getSourceMapping();
-    ieml::relation::buildCompositionRelationGraph(graph, cregister, wregister);
+    ieml::relation::buildCompositionRelationGraph(graph, parser.getContext()->getPathTreeRegister(), cregister, wregister);
     ieml::parser::binaryGraphToJson(graph, cregister, wregister, mapping).dump();
 }
 

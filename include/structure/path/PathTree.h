@@ -2,7 +2,7 @@
 
 #include "structure/Element.h"
 #include "structure/path/PathNode.h"
-#include "structure/path/Path.h"
+// #include "structure/path/Path.h"
 
 
 namespace ieml::structure {
@@ -12,6 +12,14 @@ public:
     virtual ElementType getElementType() const override {return ElementType::PATH_TREE;};
 
     std::string to_string() const;
+
+    bool is_path() const {
+        if (children_.size() > 1) {
+            return false;
+        } else if (children_.size() == 1) {
+            return (*children_.begin())->is_path();
+        } else return true;
+    };
 
     bool is_phrase() const {return node_->getPathType() == +PathType::ROOT;};
 
@@ -40,7 +48,7 @@ public:
         std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node, const Set& children);
         std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node) ;
 
-        std::shared_ptr<PathTree> buildFromPaths(std::vector<std::shared_ptr<Path>> paths);
+        std::shared_ptr<PathTree> buildFromPaths(const Set& paths);
 
     private:
         struct eqKey {
@@ -58,25 +66,55 @@ public:
         std::unordered_map<Key, std::shared_ptr<PathTree>, hashKey, eqKey> store_;
     };
 
-    typedef std::pair<std::shared_ptr<Path>, std::shared_ptr<PathTree>> SubPathTree;
+    typedef std::pair<std::shared_ptr<PathTree>, std::shared_ptr<PathTree>> SubPathTree;
 
-    /*
-     * Return all matching SubPathTree
-     *
-     * parameters:
-     *  - f : the matching function
-     *  - sub_occurence : if we return the match of children of matched tree
+    /**
+     * @brief Return all matching SubPathTree in the PathTree that match a function. The second parameter return True when the search must stop. 
+     * 
+     * @param reg path tree register
+     * @param f the matching function
+     * @param should_stop if we return the match of children of matched tree
+     * @return std::vector<SubPathTree> 
      */
-    std::vector<SubPathTree> find_sub_tree(std::function<bool(const std::shared_ptr<PathTree>&)> f,
+    std::vector<SubPathTree> find_sub_tree(PathTree::Register& reg,
+                                           std::function<bool(const std::shared_ptr<PathTree>&)> f,
                                            std::function<bool(const std::shared_ptr<PathTree>&)> should_stop) const;
 
+    /**
+     * @brief Return the Set of singular sequence of a PathTree
+     * Singular sequences are :
+     *  - for a paradigm : the children of the paradigm node.
+     *  - for a non paradigm : the pathtree itself
+     * 
+     * @param pt the path tree
+     * @return Set the singular sequence set
+     */
     static Set singular_sequences(const std::shared_ptr<PathTree>& pt);
+
+    /**
+     * @brief Return the path set that correspond to this path tree.
+     * 
+     * @param pt 
+     * @return Path::Set 
+     */
+    static Set paths(const std::shared_ptr<PathTree>& pt);
+
+    /**
+     * @brief Return the path tree that correspond to this path set, if possible
+     * 
+     * @param paths 
+     * @return Path::Set 
+     */
+    static PathTree fromPaths(const Set& paths);
+
 
     std::shared_ptr<PathNode> getNode() const {return node_;}
     std::vector<std::shared_ptr<PathTree>> getChildrenAsVector() const;
     const Set getChildren() const {return children_;};
 
     virtual size_t hash() const override {return hash_;};
+
+    bool is_valid() const;
 
 private:
     PathTree(const std::shared_ptr<PathNode>& node, const Set& children) : 

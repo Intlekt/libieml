@@ -120,6 +120,11 @@ public:
   virtual antlrcpp::Any visitCategory_paradigm(iemlParser::Category_paradigmContext *context) override;
 
   /**
+   * WORD
+   */
+  virtual antlrcpp::Any visitWord(iemlParser::WordContext *context) override;
+
+  /**
    *  LANGUAGE STRING
    */
   virtual antlrcpp::Any visitLanguage_string(iemlParser::Language_stringContext *ctx) override;
@@ -128,6 +133,27 @@ public:
    *  IDENTIFIER
    */
   virtual antlrcpp::Any visitIdentifier(iemlParser::IdentifierContext *ctx) override;
+
+  /**
+   * JUNCTION
+   */
+  virtual antlrcpp::Any visitJunction(iemlParser::JunctionContext *context) override;
+
+  /**
+   * PATH
+   */
+  virtual antlrcpp::Any visitPath(iemlParser::PathContext *context) override;
+
+  /**
+   * PATH NODE
+   */
+  virtual antlrcpp::Any visitPath_node__root(iemlParser::Path_node__rootContext *context) override;
+  virtual antlrcpp::Any visitPath_node__paradigm(iemlParser::Path_node__paradigmContext *context) override;
+  virtual antlrcpp::Any visitPath_node__auxiliary(iemlParser::Path_node__auxiliaryContext *context) override;
+  virtual antlrcpp::Any visitPath_node__inflection(iemlParser::Path_node__inflectionContext *context) override;
+  virtual antlrcpp::Any visitPath_node__word(iemlParser::Path_node__wordContext *context) override;
+  virtual antlrcpp::Any visitPath_node__junction(iemlParser::Path_node__junctionContext *context) override;
+  virtual antlrcpp::Any visitPath_node__role_number(iemlParser::Path_node__role_numberContext *context) override;
 
   /**
    *  REFERENCE

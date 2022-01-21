@@ -21,7 +21,7 @@ std::string RootPathNode::to_string() const { return "#"; };
 bool ParadigmPathNode::accept_next(const PathNode& next) const {
     switch (next.getPathType())
     {
-    case PathType::ROOT:
+    case PathType::PARADIGM_INDEX:
         return true;
     default:
         return false;
@@ -29,6 +29,19 @@ bool ParadigmPathNode::accept_next(const PathNode& next) const {
 };
 PathType ParadigmPathNode::getPathType() const {return PathType::PARADIGM;};
 std::string ParadigmPathNode::to_string() const { return "{}"; };
+
+bool ParadigmIndexPathNode::accept_next(const PathNode& next) const {
+    switch (next.getPathType())
+    {
+    case PathType::ROOT:
+        return true;
+    default:
+        return false;
+    }
+};
+PathType ParadigmIndexPathNode::getPathType() const {return PathType::PARADIGM_INDEX;};
+std::string ParadigmIndexPathNode::to_string() const { return std::to_string(index_); };
+
 
 bool RoleNumberPathNode::accept_next(const PathNode& next) const {
     switch (next.getPathType())

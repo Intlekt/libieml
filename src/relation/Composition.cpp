@@ -8,7 +8,8 @@ using namespace ieml::relation;
 
 
 
-void ieml::relation::buildCompositionRelationGraph(RelationGraph& graph, 
+void ieml::relation::buildCompositionRelationGraph(RelationGraph& graph,
+                                                   ieml::structure::PathTree::Register& register_,
                                                    const ieml::structure::CategoryRegister& creg, 
                                                    const ieml::structure::WordRegister& wreg) {
     
@@ -33,7 +34,7 @@ void ieml::relation::buildCompositionRelationGraph(RelationGraph& graph,
 
     for (auto it = creg.categories_begin(); it != creg.categories_end(); ++it) {
         // for all subphrase in phrase
-        for (auto& subphrase : it->first->find_sub_tree(is_phrase, is_phrase)) {
+        for (auto& subphrase : it->first->find_sub_tree(register_, is_phrase, is_phrase)) {
             graph.add_relation((Relation){
                 .source    = it->first,
                 .target    = subphrase.second,
@@ -45,7 +46,7 @@ void ieml::relation::buildCompositionRelationGraph(RelationGraph& graph,
         }
 
         // inflections
-        for (auto& inflections : it->first->find_sub_tree(&ieml::structure::PathTree::is_inflection, is_phrase)) {
+        for (auto& inflections : it->first->find_sub_tree(register_, &ieml::structure::PathTree::is_inflection, is_phrase)) {
             for (auto& inflection: inflections.second->getNode()->getWords()) {
                 graph.add_relation((Relation){
                     .source    = it->first,
@@ -58,7 +59,7 @@ void ieml::relation::buildCompositionRelationGraph(RelationGraph& graph,
             }
         }
         // auxiliaries
-        for (auto& auxiliaries : it->first->find_sub_tree(&ieml::structure::PathTree::is_auxiliary, is_phrase)) {
+        for (auto& auxiliaries : it->first->find_sub_tree(register_, &ieml::structure::PathTree::is_auxiliary, is_phrase)) {
             for (auto& auxiliary: auxiliaries.second->getNode()->getWords()) {
                 graph.add_relation((Relation){
                     .source    = it->first,
@@ -71,7 +72,7 @@ void ieml::relation::buildCompositionRelationGraph(RelationGraph& graph,
             }
         }
         // junctions
-        for (auto& junctions : it->first->find_sub_tree(&ieml::structure::PathTree::is_junction, is_phrase)) {
+        for (auto& junctions : it->first->find_sub_tree(register_, &ieml::structure::PathTree::is_junction, is_phrase)) {
             for (auto& junction: junctions.second->getNode()->getWords()) {
                 graph.add_relation((Relation){
                     .source    = it->first,
@@ -84,7 +85,7 @@ void ieml::relation::buildCompositionRelationGraph(RelationGraph& graph,
             }
         }
         // words
-        for (auto& words : it->first->find_sub_tree(&ieml::structure::PathTree::is_word, is_phrase)) {
+        for (auto& words : it->first->find_sub_tree(register_, &ieml::structure::PathTree::is_word, is_phrase)) {
             for (auto& word: words.second->getNode()->getWords()) {
                 graph.add_relation((Relation){
                     .source    = it->first,

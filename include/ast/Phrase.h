@@ -102,14 +102,14 @@ private:
 };
 
 
-class JunctionPhrase : public Phrase, public IJunction<Phrase, structure::PhraseJunctionIndexPathNode, structure::PhraseJunctionPathNode, Empty> {
+class JunctionPhrase : public Phrase, public IJunctionList<Phrase, structure::PhraseJunctionIndexPathNode, structure::PhraseJunctionPathNode, Empty> {
 public:
     JunctionPhrase(std::shared_ptr<CharRange>&& char_range,
                    std::vector<std::shared_ptr<Phrase>>&& phrases,
-                   std::shared_ptr<Identifier>&& junction_identifier) : 
+                   std::shared_ptr<IJunction>&& junction_identifier) : 
         AST(std::move(char_range)),
         Phrase(), 
-        IJunction<Phrase, structure::PhraseJunctionIndexPathNode, structure::PhraseJunctionPathNode, Empty>(std::move(phrases), std::move(junction_identifier)) {}
+        IJunctionList<Phrase, structure::PhraseJunctionIndexPathNode, structure::PhraseJunctionPathNode, Empty>(std::move(phrases), std::move(junction_identifier)) {}
 
     std::string to_string() const override {
         return "(" + junction_to_string() + ")";

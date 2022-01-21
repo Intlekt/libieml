@@ -11,6 +11,7 @@ BETTER_ENUM(ElementType, char, WORD, PATH_TREE);
 
 BETTER_ENUM(PathType, char,
     PARADIGM,
+    PARADIGM_INDEX,
     ROOT,
     ROLE,
     JUNCTION_PHRASE,

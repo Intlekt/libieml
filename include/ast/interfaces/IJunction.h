@@ -3,7 +3,6 @@
 #include <memory>
 
 #include "ast/Constants.h"
-#include "ast/Identifier.h"
 #include "ast/interfaces/AST.h"
 #include "structure/path/PathTree.h"
 
@@ -13,11 +12,17 @@ namespace AST {
 
 struct Empty {};
 
-template<class T, class IndexPathNode, class JunctionPathNode, class CheckArgument >
-class IJunction {
+class IJunction: public virtual AST {
 public:
-    IJunction(std::vector<std::shared_ptr<T>>&& items,
-              std::shared_ptr<Identifier>&& junction_identifier) : 
+    virtual std::shared_ptr<structure::JunctionWord> check_junction(parser::ParserContextManager& ctx) const = 0;
+};
+
+
+template<class T, class IndexPathNode, class JunctionPathNode, class CheckArgument >
+class IJunctionList {
+public:
+    IJunctionList(std::vector<std::shared_ptr<T>>&& items,
+              std::shared_ptr<IJunction>&& junction_identifier) : 
         items_(std::move(items)),
         junction_identifier_(std::move(junction_identifier)) {
             static_assert(std::is_base_of<AST, T>::value, "T is not an AST.");
@@ -46,13 +51,9 @@ public:
             children_list.push_back(jonction_index_list);
         }
 
-        auto junction_type = ctx.getWordRegister().resolve_junction(structure::LanguageString(ctx.getLanguage(), junction_identifier_->getName()));
+        const auto& junction_type = junction_identifier_->check_junction(ctx);
 
         if (junction_type == nullptr) {
-            ctx.getErrorManager().visitorError(
-                junction_identifier_->getCharRange(),
-                "Undefined junction identifer '" + junction_identifier_->getName() + "'."
-            );
             return {nullptr};
         }
 
@@ -60,9 +61,6 @@ public:
             return {nullptr};
         
         return ctx.getPathTreeRegister().get_or_create_product(std::make_shared<JunctionPathNode>(junction_type), children_list);
-
-
-        // return ctx.getPathTreeRegister().get_or_create(std::make_shared<structure::RootPathNode>(), {junction});
     };
 
 protected:
@@ -70,7 +68,7 @@ protected:
     std::string junction_to_string() const {
         std::ostringstream os;
 
-        os << "&" << junction_identifier_->getName() << " [";
+        os << junction_identifier_->to_string() << " [";
 
         bool first = true;
         for (auto&& item : items_) {
@@ -84,7 +82,7 @@ protected:
         return os.str();
     }
 
-    std::shared_ptr<Identifier> junction_identifier_;
+    std::shared_ptr<IJunction> junction_identifier_;
     std::vector<std::shared_ptr<T>> items_;
 };
 

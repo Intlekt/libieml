@@ -14,6 +14,7 @@
 #include "IEMLGrammarVisitor.h"
 
 #include "ast/Program.h"
+#include "structure/path/PathTree.h"
 
 namespace ieml {
 namespace parser {

@@ -125,7 +125,7 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
     auto wregister = context->getWordRegister();
 
     ieml::relation::RelationGraph graph;
-    ieml::relation::buildCompositionRelationGraph(graph, cregister, wregister);
+    ieml::relation::buildCompositionRelationGraph(graph, context->getPathTreeRegister(), cregister, wregister);
 
     auto language = context->getLanguage();
     

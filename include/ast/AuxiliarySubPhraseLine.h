@@ -80,15 +80,15 @@ private:
 
 class JunctionAuxiliarySubPhraseLine : 
     public AuxiliarySubPhraseLine, 
-    public IJunction<InflectedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, structure::RoleType> {
+    public IJunctionList<InflectedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, structure::RoleType> {
 public:
     JunctionAuxiliarySubPhraseLine(std::shared_ptr<CharRange>&& char_range,
                                    std::shared_ptr<IAuxiliary>&& auxiliary,
                                    std::vector<std::shared_ptr<InflectedCategory>>&& flexed_categories,
-                                   std::shared_ptr<Identifier>&& junction_type) :
+                                   std::shared_ptr<IJunction>&& junction_type) :
         AST(std::move(char_range)),
         AuxiliarySubPhraseLine(std::move(auxiliary)),
-        IJunction<InflectedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, structure::RoleType>(std::move(flexed_categories), std::move(junction_type)) {}
+        IJunctionList<InflectedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, structure::RoleType>(std::move(flexed_categories), std::move(junction_type)) {}
 
     std::string to_string() const override {
         return auxiliary_to_string() + junction_to_string();

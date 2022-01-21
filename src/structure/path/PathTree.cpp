@@ -47,13 +47,16 @@ std::shared_ptr<PathTree> PathTree::Register::get_or_create(const std::shared_pt
     return get_or_create(node, Set{});
 }
 
-std::shared_ptr<PathTree> PathTree::Register::buildFromPaths(std::vector<std::shared_ptr<Path>> paths) {
-    const auto node = paths[0]->getNode();
+std::shared_ptr<PathTree> PathTree::Register::buildFromPaths(const PathTree::Set& paths) {
+    if (paths.size() == 0) 
+        return nullptr;
+    
+    const auto& node = (*paths.begin())->getNode();
     PathType path_type(PathType::ROOT);
-    if (paths[0]->getNext())
-        path_type = paths[0]->getNext()->getNode()->getPathType();
+    if ((*paths.begin())->getChildren().size() != 0)
+        path_type = (*(*paths.begin())->getChildren().begin())->getNode()->getPathType();
 
-    std::unordered_map<PathNode*, std::vector<std::shared_ptr<Path>>> children_paths;
+    std::unordered_map<PathNode*, PathTree::Set> children_paths;
 
     for (auto path : paths) {
         // maybe change that to test equality by value ?
@@ -61,7 +64,7 @@ std::shared_ptr<PathTree> PathTree::Register::buildFromPaths(std::vector<std::sh
         if (*path->getNode() != *node)
             throw std::invalid_argument("All path does not share the same prefix: had '" + node->to_string() + "', got '" + path->getNode()->to_string() + "'.");
 
-        auto subpath = path->getNext();
+        auto subpath = *path->getChildren().begin();
         if (subpath) {
             if (subpath->getNode()->getPathType() != path_type)
                 throw std::invalid_argument("All subpath does not share the same path type: had '" + std::string(path_type._to_string()) + "', got '" \
@@ -70,7 +73,7 @@ std::shared_ptr<PathTree> PathTree::Register::buildFromPaths(std::vector<std::sh
             if (children_paths.count(subpath->getNode().get()) < 1) {
                 children_paths.insert({subpath->getNode().get(), {subpath}});
             } else {
-                children_paths[subpath->getNode().get()].push_back(subpath);
+                children_paths[subpath->getNode().get()].insert(subpath);
             }
         }
     }
@@ -110,19 +113,20 @@ std::vector<std::shared_ptr<PathTree>> PathTree::getChildrenAsVector() const {
     return v;
 };
 
-std::vector<PathTree::SubPathTree> PathTree::find_sub_tree(std::function<bool(const std::shared_ptr<PathTree>&)> f,
-                                        std::function<bool(const std::shared_ptr<PathTree>&)> should_stop) const {
+std::vector<PathTree::SubPathTree> PathTree::find_sub_tree(PathTree::Register& register_,
+                                                           std::function<bool(const std::shared_ptr<PathTree>&)> f,
+                                                           std::function<bool(const std::shared_ptr<PathTree>&)> should_stop) const {
     std::vector<SubPathTree> res;
     for (auto& child: children_) {
         bool matched = f(child);
-        if (matched) res.push_back(SubPathTree{std::make_shared<Path>(node_), child});
+        if (matched) res.push_back(SubPathTree{register_.get_or_create(node_), child});
         
         if (!should_stop(child)) {
-            auto child_res = child->find_sub_tree(f, should_stop);
+            auto child_res = child->find_sub_tree(register_, f, should_stop);
             res.reserve(res.size() + child_res.size());
 
             for (auto& item: child_res) {
-                res.push_back(SubPathTree{std::make_shared<Path>(node_, item.first), item.second});
+                res.push_back(SubPathTree{register_.get_or_create(node_, {item.first}), item.second});
             }
         }
     }
@@ -139,6 +143,22 @@ PathTree::Set PathTree::singular_sequences(const std::shared_ptr<PathTree>& pt) 
             throw std::invalid_argument("Invalid path type for singular sequences " + std::string(pt->getNode()->getPathType()._to_string()));
     }
 };
+
+PathTree::Set PathTree::paths(const std::shared_ptr<PathTree>& pt) {
+
+};
+
+
+bool PathTree::is_valid() const {
+    if (children_.size() != 0) {
+        for (const auto& c: children_) {
+            if (!node_->accept_next(*c->getNode())) return false;
+            if (!c->is_valid()) return false;
+        }
+    }
+    return true;
+};
+
 
 int PathTree::comp(const std::shared_ptr<PathNode>& nodeA, const PathTree::Set& childrenA, 
                     const std::shared_ptr<PathNode>& nodeB, const PathTree::Set& childrenB) {

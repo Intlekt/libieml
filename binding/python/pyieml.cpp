@@ -31,12 +31,14 @@ PYBIND11_MODULE(pyieml, m) {
             return ieml::parser::parserToJson(e).dump();
         })
         .def("composition_graph_json", [](const ieml::parser::IEMLParser &e) {
-            auto wregister = e.getContext()->getWordRegister();
-            auto cregister = e.getContext()->getCategoryRegister();
-            auto mapping = e.getContext()->getSourceMapping();
+            auto& pathtree_register = e.getContext()->getPathTreeRegister();
+
+            auto& wregister = e.getContext()->getWordRegister();
+            auto& cregister = e.getContext()->getCategoryRegister();
+            auto& mapping = e.getContext()->getSourceMapping();
             ieml::relation::RelationGraph graph;
-            ieml::relation::buildCompositionRelationGraph(graph, cregister, wregister);
-            ieml::relation::buildInclusionRelationGraph(graph, cregister, wregister);
+            ieml::relation::buildCompositionRelationGraph(graph, pathtree_register, cregister, wregister);
+            ieml::relation::buildInclusionRelationGraph(graph, pathtree_register, cregister, wregister);
             return ieml::parser::binaryGraphToJson(graph, cregister, wregister, mapping).dump();
         });
 

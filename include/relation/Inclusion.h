@@ -20,6 +20,9 @@ public:
 };
 
 
-void buildInclusionRelationGraph(RelationGraph&, const ieml::structure::CategoryRegister&, const ieml::structure::WordRegister&);
+void buildInclusionRelationGraph(RelationGraph&, 
+                                 ieml::structure::PathTree::Register&,
+                                 const ieml::structure::CategoryRegister&, 
+                                 const ieml::structure::WordRegister&);
 
 }

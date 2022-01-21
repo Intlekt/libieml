@@ -41,7 +41,7 @@ TEST(ieml_relation_test_case, inclusion) {
     const auto& node1 = creg.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "node1"));
 
     ieml::relation::RelationGraph relgraph;
-    ieml::relation::buildInclusionRelationGraph(relgraph, creg, wreg);
+    ieml::relation::buildInclusionRelationGraph(relgraph, parser.getContext()->getPathTreeRegister(), creg, wreg);
     auto& node_register = relgraph.getRegister();
     auto& graph = relgraph.getGraph();
 
