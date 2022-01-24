@@ -27,48 +27,49 @@ using namespace ieml::structure;
 }
 
 
-// TEST(ieml_structure_test_case, path_serialization) {
+TEST(ieml_structure_test_case, path_serialization) {
+    PathTree::Register reg;
 
-//     std::set<std::shared_ptr<InflectionWord>> plr{std::make_shared<InflectionWord>("we.", InflectionType::NOUN)};
-//     std::set<std::shared_ptr<InflectionWord>> plr_sing{std::make_shared<InflectionWord>("we.", InflectionType::NOUN), std::make_shared<InflectionWord>("wa.", InflectionType::NOUN)};
-//     {
-//         auto path = std::make_shared<PathTree>(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")), nullptr);
-//         auto path1 = std::make_shared<PathTree>(std::make_shared<InflectionPathNode>(plr), path);
-//         auto path2 = std::make_shared<PathTree>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), path1);
+    std::set<std::shared_ptr<InflectionWord>> plr{std::make_shared<InflectionWord>("we.", InflectionType::NOUN)};
+    std::set<std::shared_ptr<InflectionWord>> plr_sing{std::make_shared<InflectionWord>("we.", InflectionType::NOUN), std::make_shared<InflectionWord>("wa.", InflectionType::NOUN)};
+    {
+        auto path = reg.get_or_create(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")));
+        auto path1 = reg.get_or_create(std::make_shared<InflectionPathNode>(plr), {path});
+        auto path2 = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), {path1});
         
-//         EXPECT_TRUE(path2->is_valid()) << "Invalid argument should not have been thrown on path.";
-//         EXPECT_EQ(path2->to_string(), "/0/~'we.'/'wa.'") << "Invalid path serialization";
-//     }
-//     {
-//         auto path = std::make_shared<PathTree>(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")), nullptr);
-//         auto path1 = std::make_shared<PathTree>(std::make_shared<InflectionPathNode>(plr_sing), path);
-//         auto path2 = std::make_shared<PathTree>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), path1);
+        EXPECT_TRUE(path2->is_valid()) << "Invalid argument should not have been thrown on path.";
+        EXPECT_EQ(path2->to_string_path(), R"(/0/~"we."/"wa.")") << "Invalid path serialization";
+    }
+    {
+        auto path = reg.get_or_create(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")));
+        auto path1 = reg.get_or_create(std::make_shared<InflectionPathNode>(plr_sing), {path});
+        auto path2 = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), {path1});
 
-//         EXPECT_TRUE(path2->is_valid()) << "Invalid argument should not have been thrown on path.";
-//         EXPECT_EQ(path2->to_string(), "/0/~'wa.'~'we.'/'wa.'") << "Invalid path serialization";
-//     }
-//     {
-//         auto path = std::make_shared<PathTree>(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")), nullptr);
-//         auto path1 = std::make_shared<PathTree>(std::make_shared<InflectionPathNode>(plr_sing), path);
-//         auto path2 = std::make_shared<PathTree>(std::make_shared<AuxiliaryPathNode>(
-//             std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT)), path1);
-//         auto path3 = std::make_shared<PathTree>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), path2);
+        EXPECT_TRUE(path2->is_valid()) << "Invalid argument should not have been thrown on path.";
+        EXPECT_EQ(path2->to_string_path(), R"(/0/~"wa."~"we."/"wa.")") << "Invalid path serialization";
+    }
+    {
+        auto path = reg.get_or_create(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")));
+        auto path1 = reg.get_or_create(std::make_shared<InflectionPathNode>(plr_sing), {path});
+        auto path2 = reg.get_or_create(std::make_shared<AuxiliaryPathNode>(
+            std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT)), {path1});
+        auto path3 = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), {path2});
 
-//         EXPECT_TRUE(path3->is_valid()) << "Invalid argument should not have been thrown on path.";
-//         EXPECT_EQ(path3->to_string(), "/0/*'wa.'/~'wa.'~'we.'/'wa.'") << "Invalid path serialization";
-//     }
-//     {
-//         auto path = std::make_shared<PathTree>(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")), nullptr);
-//         auto path1 = std::make_shared<PathTree>(std::make_shared<CategoryJunctionIndexPathNode>(0), path);
-//         auto path2 = std::make_shared<PathTree>(std::make_shared<CategoryJunctionPathNode>(std::make_shared<JunctionWord>("E:E:A:.")), path1);
-//         auto path3 = std::make_shared<PathTree>(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT)), path2);
-//         auto path4 = std::make_shared<PathTree>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), path3);
+        EXPECT_TRUE(path3->is_valid()) << "Invalid argument should not have been thrown on path.";
+        EXPECT_EQ(path3->to_string_path(), R"(/0/*"wa."/~"wa."~"we."/"wa.")") << "Invalid path serialization";
+    }
+    {
+        auto path = reg.get_or_create(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")));
+        auto path1 = reg.get_or_create(std::make_shared<CategoryJunctionIndexPathNode>(0), {path});
+        auto path2 = reg.get_or_create(std::make_shared<CategoryJunctionPathNode>(std::make_shared<JunctionWord>("E:E:A:.")), {path1});
+        auto path3 = reg.get_or_create(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT)), {path2});
+        auto path4 = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), {path3});
 
-//         EXPECT_TRUE(path4->is_valid()) << "Invalid argument should not have been thrown on path.";
-//         EXPECT_EQ(path4->to_string(), "/0/*'wa.'/&'E:E:A:.'/[0]/'wa.'") << "Invalid path serialization";
-//     }
+        EXPECT_TRUE(path4->is_valid()) << "Invalid argument should not have been thrown on path.";
+        EXPECT_EQ(path4->to_string_path(), R"(/0/*"wa."/&"E:E:A:."/[0]/"wa.")") << "Invalid path serialization";
+    }
     
-// }
+}
 
 TEST(ieml_structure_test_case, path_from_string) {
     ieml::parser::IEMLParserErrorListener error_listener;
@@ -125,57 +126,55 @@ TEST(ieml_structure_test_case, path_tree_comparison) {
     EXPECT_GE(*tree2, *tree1);
     EXPECT_GT(*tree2, *tree1);
 }
-// TEST(ieml_structure_test_case, path_tree_building) {
-//     {
+TEST(ieml_structure_test_case, path_tree_building) {
+    {
+        PathTree::Register reg;
 
-//         std::shared_ptr<PathTree> a;
-//         {
-//             auto path = std::make_shared<PathTree>(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")), nullptr);
-//             auto path1 = std::make_shared<PathTree>(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT)), path);
-//             a = std::make_shared<PathTree>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), path1);
-//         }
-//         std::shared_ptr<PathTree> b;
-//         {
-//             auto path = std::make_shared<PathTree>(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")), nullptr);
-//             auto path1 = std::make_shared<PathTree>(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>("we.", RoleType::ROOT)), path);
-//             b = std::make_shared<PathTree>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), path1);
-//         }
+        std::shared_ptr<PathTree> a;
+        {
+            auto path = reg.get_or_create(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")));
+            auto path1 = reg.get_or_create(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT)), {path});
+            a = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), {path1});
+        }
+        std::shared_ptr<PathTree> b;
+        {
+            auto path = reg.get_or_create(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")));
+            auto path1 = reg.get_or_create(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>("we.", RoleType::ROOT)), {path});
+            b = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), {path1});
+        }
 
-//         PathTree::Register reg;
-//         auto pathTree = reg.buildFromPaths({a, b});
+        auto pathTree = reg.buildFromPaths({a, b});
 
-//         EXPECT_EQ(*pathTree->getNode(), *a->getNode());
-//         EXPECT_EQ(*pathTree->getNode(), *b->getNode());
+        EXPECT_EQ(*pathTree->getNode(), *a->getNode());
+        EXPECT_EQ(*pathTree->getNode(), *b->getNode());
 
-//         EXPECT_EQ(*pathTree->getChildrenAsVector()[0]->getNode(), *a->getChildrenAsVector()[0]->getNode());
-//         EXPECT_EQ(*pathTree->getChildrenAsVector()[1]->getNode(), *b->getChildrenAsVector()[0]->getNode());
+        EXPECT_EQ(*pathTree->getChildrenAsVector()[0]->getNode(), *a->getChildrenAsVector()[0]->getNode());
+        EXPECT_EQ(*pathTree->getChildrenAsVector()[1]->getNode(), *b->getChildrenAsVector()[0]->getNode());
 
-//         EXPECT_EQ(*pathTree->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getNode(), *a->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getNode());
-//         EXPECT_EQ(*pathTree->getChildrenAsVector()[1]->getChildrenAsVector()[0]->getNode(), *b->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getNode());
-//     }
-// }
+        EXPECT_EQ(*pathTree->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getNode(), *a->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getNode());
+        EXPECT_EQ(*pathTree->getChildrenAsVector()[1]->getChildrenAsVector()[0]->getNode(), *b->getChildrenAsVector()[0]->getChildrenAsVector()[0]->getNode());
+    }
+}
 
-// TEST(ieml_structure_test_case, path_tree_building_error) {
+TEST(ieml_structure_test_case, path_tree_building_error) {
+    PathTree::Register reg;
+    {
+        auto a = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT));
+        auto b = reg.get_or_create(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT)));
+        EXPECT_THROW(reg.buildFromPaths({a, b}), std::invalid_argument);
+    }
+    {
 
-//     {
-//         auto a = std::make_shared<PathTree>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), nullptr);
-//         auto b = std::make_shared<PathTree>(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT)), nullptr);
-//         PathTree::Register reg;
-//         EXPECT_THROW(reg.buildFromPaths({a, b}), std::invalid_argument);
-//     }
-//     {
+        auto a = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), 
+            {reg.get_or_create(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT)))});
 
-//         auto a = std::make_shared<PathTree>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), 
-//             std::make_shared<PathTree>(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT)), nullptr));
-
-//         auto b = std::make_shared<PathTree>(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), 
-//             std::make_shared<PathTree>(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")), nullptr));
+        auto b = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), 
+            {reg.get_or_create(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>("wa.")))});
         
-//         PathTree::Register reg;
-//         EXPECT_THROW(reg.buildFromPaths({a, b}), std::invalid_argument);
-//     }
+        EXPECT_THROW(reg.buildFromPaths({a, b}), std::invalid_argument);
+    }
 
-// }
+}
 
 TEST(ieml_structure_test_case, path_tree_register) {
     PathTree::Register reg;

@@ -557,7 +557,7 @@ namespace ieml::parser {
 
   antlrcpp::Any IEMLGrammarVisitor::visitPath_node__auxiliary(iemlParser::Path_node__auxiliaryContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary_, "Invalid auxiliary for a path definition.", true);
-    CAST_OR_RETURN_IF_NULL(ctx, Auxiliary, auxiliary_, PathNode);
+    CAST_OR_RETURN_IF_NULL(ctx, IAuxiliary, auxiliary_, PathNode);
     RETURN_VISITOR_RESULT(PathNode, AuxiliaryPathNode, std::move(auxiliary_));
   }
 

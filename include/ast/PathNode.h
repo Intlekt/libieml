@@ -188,7 +188,7 @@ private:
 class AuxiliaryPathNode: public virtual AST, public PathNode  {
 public:
     AuxiliaryPathNode(std::shared_ptr<CharRange>&& char_range,
-                      std::shared_ptr<Auxiliary>&& auxiliary) : 
+                      std::shared_ptr<IAuxiliary>&& auxiliary) : 
             AST(std::move(char_range)),
             PathNode(),
             auxiliary_(std::move(auxiliary)) {}
@@ -218,7 +218,7 @@ private:
         return {*auxiliary_set.begin()};
     };
 
-    const std::shared_ptr<Auxiliary> auxiliary_;
+    const std::shared_ptr<IAuxiliary> auxiliary_;
 };
  
 class InflectionListPathNode: public virtual AST, public PathNode {
