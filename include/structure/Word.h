@@ -16,7 +16,7 @@ public:
 
     virtual ElementType getElementType() const {return ElementType::WORD;};
 
-    virtual std::string to_string() const { return "'" + script_ + "'"; };
+    virtual std::string to_string() const { return "\"" + script_ + "\""; };
 
     std::string getScript() const {return script_;};
 
@@ -26,6 +26,7 @@ public:
         auto hasher = std::hash<std::string>();
         return hasher(script_);
     };
+
 
 protected:
     virtual int comp_element_(const Element& o_word) const {
@@ -76,10 +77,10 @@ public:
     /**
      * NOUN inflection can be anywhere, but VERB inflections can only be in ROOT. 
      */
-    bool accept_role(RoleType role_type) {
+    bool accept_role(RoleType role_type) const {
         return (type_ == +InflectionType::NOUN || role_type == +RoleType::ROOT);
     }
-    virtual WordType getWordType() const {return WordType::INFLECTION;};
+    virtual WordType getWordType() const override {return WordType::INFLECTION;};
 
 private:
     const InflectionType type_;
@@ -125,17 +126,17 @@ struct hash<ieml::structure::JunctionWord> {
 };
 }
 
-STD_HASH_SHARED_PTR(ieml::structure::CategoryWord);
-STD_HASH_SHARED_PTR(ieml::structure::AuxiliaryWord);
-STD_HASH_SHARED_PTR(ieml::structure::InflectionWord);
-STD_HASH_SHARED_PTR(ieml::structure::JunctionWord);
+STD_HASH_SHARED_PTR(ieml::structure::CategoryWord)
+STD_HASH_SHARED_PTR(ieml::structure::AuxiliaryWord)
+STD_HASH_SHARED_PTR(ieml::structure::InflectionWord)
+STD_HASH_SHARED_PTR(ieml::structure::JunctionWord)
 
-STD_LESS_SHARED_PTR(ieml::structure::CategoryWord);
-STD_LESS_SHARED_PTR(ieml::structure::AuxiliaryWord);
-STD_LESS_SHARED_PTR(ieml::structure::InflectionWord);
-STD_LESS_SHARED_PTR(ieml::structure::JunctionWord);
+STD_LESS_SHARED_PTR(ieml::structure::CategoryWord)
+STD_LESS_SHARED_PTR(ieml::structure::AuxiliaryWord)
+STD_LESS_SHARED_PTR(ieml::structure::InflectionWord)
+STD_LESS_SHARED_PTR(ieml::structure::JunctionWord)
 
-STD_EQUAL_TO_SHARED_PTR(ieml::structure::CategoryWord);
-STD_EQUAL_TO_SHARED_PTR(ieml::structure::AuxiliaryWord);
-STD_EQUAL_TO_SHARED_PTR(ieml::structure::InflectionWord);
-STD_EQUAL_TO_SHARED_PTR(ieml::structure::JunctionWord);
+STD_EQUAL_TO_SHARED_PTR(ieml::structure::CategoryWord)
+STD_EQUAL_TO_SHARED_PTR(ieml::structure::AuxiliaryWord)
+STD_EQUAL_TO_SHARED_PTR(ieml::structure::InflectionWord)
+STD_EQUAL_TO_SHARED_PTR(ieml::structure::JunctionWord)

@@ -8,11 +8,11 @@
 using namespace ieml::parser;
 
 void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::syntaxError(
-                Recognizer *recognizer, 
+                __attribute__ ((unused)) Recognizer *recognizer, 
                 Token *offendingSymbol, size_t line,
                 size_t charPositionInLine, 
                 const std::string &msg, 
-                std::exception_ptr e) {
+                __attribute__ ((unused)) std::exception_ptr e) {
     
     size_t char_len;
     if (offendingSymbol != nullptr)
@@ -28,26 +28,40 @@ void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::syntaxError(
             charPositionInLine, 
             charPositionInLine + char_len
         ), msg));
-};
-void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::reportAmbiguity(Parser *recognizer, const dfa::DFA &dfa, size_t startIndex, size_t stopIndex, bool exact,
-                                              const antlrcpp::BitSet &ambigAlts, atn::ATNConfigSet *configs) {
+}
+
+void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::reportAmbiguity(__attribute__ ((unused)) Parser *recognizer, 
+                                                                             __attribute__ ((unused)) const dfa::DFA &dfa, 
+                                                                             __attribute__ ((unused)) size_t startIndex, 
+                                                                             __attribute__ ((unused)) size_t stopIndex, 
+                                                                             __attribute__ ((unused)) bool exact,
+                                                                             __attribute__ ((unused)) const antlrcpp::BitSet &ambigAlts, 
+                                                                             __attribute__ ((unused)) atn::ATNConfigSet *configs) {
 
 
-};
-void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::reportAttemptingFullContext(Parser *recognizer, const dfa::DFA &dfa, size_t startIndex, size_t stopIndex,
-                                                          const antlrcpp::BitSet &conflictingAlts, atn::ATNConfigSet *configs) {
+}
+void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::reportAttemptingFullContext(__attribute__ ((unused)) Parser *recognizer, 
+                                                                                         __attribute__ ((unused)) const dfa::DFA &dfa, 
+                                                                                         __attribute__ ((unused)) size_t startIndex, 
+                                                                                         __attribute__ ((unused)) size_t stopIndex, 
+                                                                                         __attribute__ ((unused)) const antlrcpp::BitSet &conflictingAlts, 
+                                                                                         __attribute__ ((unused)) atn::ATNConfigSet *configs) {
 
-};
-void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::reportContextSensitivity(Parser *recognizer, const dfa::DFA &dfa, size_t startIndex, size_t stopIndex,
-                                                       size_t prediction, atn::ATNConfigSet *configs) {
+}
+void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::reportContextSensitivity(__attribute__ ((unused)) Parser *recognizer, 
+                                                                                      __attribute__ ((unused)) const dfa::DFA &dfa, 
+                                                                                      __attribute__ ((unused)) size_t startIndex, 
+                                                                                      __attribute__ ((unused)) size_t stopIndex,
+                                                                                      __attribute__ ((unused)) size_t prediction, 
+                                                                                      __attribute__ ((unused)) atn::ATNConfigSet *configs) {
 
-};
+}
 
 void IEMLParserErrorListener::visitorError(const ieml::AST::CharRange& char_range, const std::string &msg) {
     error_manager_.registerError(new VisitorError(char_range, msg));
-};
+}
 
 void IEMLParserErrorListener::parseError(const ieml::AST::CharRange& char_range, const std::string &msg) {
     error_manager_.registerError(new ParseError(char_range, msg));
-};
+}
 

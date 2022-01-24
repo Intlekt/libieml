@@ -16,13 +16,14 @@
 
 using namespace ieml::structure;
 
-#define PARSE_PATH_VALID(s, ctx) {                                      \
-    auto p = ieml::parser::parsePath(ctx, s);                                 \
-    EXPECT_NE(p, nullptr) << "Unable to parse path : " << s;            \
-    if (p) {                                                            \
-        EXPECT_EQ(p->to_string(), s);                                   \
-        EXPECT_NO_THROW(p->is_valid()) << "Invalid path parsed : " << s;   \
-    }                                                                   \
+#define PARSE_PATH_VALID(s, ctx) {                                          \
+    auto p = ieml::parser::parsePath(ctx, s, true);                         \
+    EXPECT_NE(p, nullptr) << "Unable to parse path : " << s;                \
+    if (p) {                                                                \
+        EXPECT_TRUE(p->is_path());                                          \
+        EXPECT_EQ(p->to_string_path(), s);                                  \
+        EXPECT_NO_THROW(p->is_valid()) << "Invalid path parsed : " << s;    \
+    }                                                                       \
 }
 
 
@@ -81,9 +82,8 @@ TEST(ieml_structure_test_case, path_from_string) {
     wregister.define_auxiliary(std::make_shared<Name>(s), std::make_shared<AuxiliaryWord>("a.", RoleType::ROOT));
     PARSE_PATH_VALID(R"(/*"a.")", ctx);
     PARSE_PATH_VALID("/0", ctx);
-    PARSE_PATH_VALID("/0/*'a.'/'wa.'", ctx);
-    PARSE_PATH_VALID("/#/0/*'a.'/'wa.'", ctx);
-
+    PARSE_PATH_VALID(R"(/0/*"a."/"wa.")", ctx);
+    PARSE_PATH_VALID(R"(/#/0/*"a."/"wa.")", ctx);
 
     EXPECT_EQ(*ieml::parser::parsePath(ctx, "/#/0"), *ieml::parser::parsePath(ctx, "/#/0"));
 }

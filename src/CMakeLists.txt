@@ -88,6 +88,8 @@ set_property(TARGET IEMLParser_object PROPERTY POSITION_INDEPENDENT_CODE True)
 target_include_directories(IEMLParser_object PUBLIC ${IEMLParser_include})
 add_dependencies(IEMLParser_object antlr4_static external_boost)
 
+target_compile_options(IEMLParser_object PRIVATE -Wall -Wextra -Wpedantic -Werror)
+
 # IEMLParser_shared
 add_library(IEMLParser_shared SHARED $<TARGET_OBJECTS:IEMLParser_object>)
 target_link_libraries(IEMLParser_shared PUBLIC antlr4_static)

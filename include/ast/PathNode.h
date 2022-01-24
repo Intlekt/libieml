@@ -22,8 +22,6 @@ public:
                                                    const structure::RoleType& current_role,
                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) {
-        if (begin == end) 
-            return {};
 
         const auto& node_list = _check_path_node(ctx, current_role, begin, end);
         if (node_list.size() == 0) return {nullptr};
@@ -33,7 +31,9 @@ public:
             next_role = (*node_list.begin())->getRoleType();
         }
 
-        const auto& children = (*begin)->check_path_node(ctx, next_role, begin + 1, end);
+        ieml::structure::PathTree::Set children;
+        if (begin != end) 
+            children = (*begin)->check_path_node(ctx, next_role, begin + 1, end);
 
         std::shared_ptr<ieml::structure::PathTree> current;
         auto last_children = children;
@@ -86,21 +86,21 @@ public:
 
 private:
 
-    virtual std::vector<std::shared_ptr<ieml::structure::PathNode>> _check_path_node(parser::ParserContextManager& ctx, 
-                                                                                    const structure::RoleType& current_role,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
+    virtual std::vector<std::shared_ptr<ieml::structure::PathNode>> _check_path_node(__attribute__((unused)) parser::ParserContextManager& ctx, 
+                                                                                     __attribute__((unused)) const structure::RoleType& current_role,
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
         return {std::make_shared<ieml::structure::RootPathNode>()};
     };
 };
 
-class ParadigmPathNode: public virtual PathNode, public virtual AST {
+class ParadigmPathNode: public virtual AST, public virtual PathNode {
 public:
     ParadigmPathNode(std::shared_ptr<CharRange>&& char_range,
                      size_t index) : 
             AST(std::move(char_range)),
-            index_(index),
-            PathNode() {}
+            PathNode(),
+            index_(index) {}
 
     virtual std::string to_string() const override {
         return "{" + std::to_string(index_) + "}";
@@ -108,10 +108,10 @@ public:
     virtual PathType getPathType() const override {return PathType::PARADIGM;};
 
 private:
-    virtual std::vector<std::shared_ptr<ieml::structure::PathNode>> _check_path_node(parser::ParserContextManager& ctx, 
-                                                                                    const structure::RoleType& current_role,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
+    virtual std::vector<std::shared_ptr<ieml::structure::PathNode>> _check_path_node(__attribute__((unused)) parser::ParserContextManager& ctx, 
+                                                                                     __attribute__((unused)) const structure::RoleType& current_role,
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
         return {
             std::make_shared<ieml::structure::ParadigmPathNode>(),
             std::make_shared<ieml::structure::ParadigmIndexPathNode>(index_)
@@ -121,15 +121,15 @@ private:
     const size_t index_;
 };
 
-class JunctionPathNode: public virtual PathNode, public virtual AST {
+class JunctionPathNode: public virtual AST, public PathNode {
 public:
     JunctionPathNode(std::shared_ptr<CharRange>&& char_range,
                      std::shared_ptr<IJunction>&& junction_type,
                      size_t index) : 
             AST(std::move(char_range)),
+            PathNode(),
             junction_type_(std::move(junction_type)),
-            index_(index),
-            PathNode() {}
+            index_(index) {}
 
     virtual std::string to_string() const override {
         return "&" + junction_type_->to_string() + "[" + std::to_string(index_) + "]";
@@ -138,10 +138,10 @@ public:
 
 
 private:
-    virtual std::vector<std::shared_ptr<ieml::structure::PathNode>> _check_path_node(parser::ParserContextManager& ctx, 
-                                                                                    const structure::RoleType& current_role,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
+    virtual std::vector<std::shared_ptr<ieml::structure::PathNode>> _check_path_node(__attribute__((unused)) parser::ParserContextManager& ctx, 
+                                                                                     __attribute__((unused)) const structure::RoleType& current_role,
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
         
         const auto& junction = junction_type_->check_junction(ctx);
         if (junction == nullptr) return {};
@@ -185,13 +185,13 @@ private:
     const size_t index_;
 };
  
-class AuxiliaryPathNode: public virtual PathNode, public virtual AST {
+class AuxiliaryPathNode: public virtual AST, public PathNode  {
 public:
     AuxiliaryPathNode(std::shared_ptr<CharRange>&& char_range,
                       std::shared_ptr<Auxiliary>&& auxiliary) : 
             AST(std::move(char_range)),
-            auxiliary_(std::move(auxiliary)),
-            PathNode() {}
+            PathNode(),
+            auxiliary_(std::move(auxiliary)) {}
 
     virtual std::string to_string() const override {
         return auxiliary_->to_string();
@@ -201,8 +201,8 @@ public:
 private:
     virtual std::vector<std::shared_ptr<ieml::structure::PathNode>> _check_path_node(parser::ParserContextManager& ctx, 
                                                                                     const structure::RoleType& current_role,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
         const auto& auxiliary_set = auxiliary_->check_auxiliary(ctx, current_role);
 
         if (auxiliary_set.size() != 1) {
@@ -221,13 +221,13 @@ private:
     const std::shared_ptr<Auxiliary> auxiliary_;
 };
  
-class InflectionListPathNode: public virtual PathNode, public virtual AST {
+class InflectionListPathNode: public virtual AST, public PathNode {
 public:
     InflectionListPathNode(std::shared_ptr<CharRange>&& char_range,
                            std::shared_ptr<InflectionList>&& inflection_list) : 
             AST(std::move(char_range)),
-            inflection_list_(std::move(inflection_list)),
-            PathNode() {}
+            PathNode(),
+            inflection_list_(std::move(inflection_list)) {}
 
     virtual std::string to_string() const override {
         return inflection_list_->to_string();
@@ -237,8 +237,8 @@ public:
 private:
     virtual std::vector<std::shared_ptr<ieml::structure::PathNode>> _check_path_node(parser::ParserContextManager& ctx, 
                                                                                     const structure::RoleType& current_role,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
         const auto& inflection_list_set = inflection_list_->check_inflection_list(ctx, current_role);
 
         if (inflection_list_set.size() != 1) {
@@ -257,13 +257,13 @@ private:
     const std::shared_ptr<InflectionList> inflection_list_;
 };
 
-class WordPathNode: public virtual PathNode, public virtual AST {
+class WordPathNode: public virtual AST, public PathNode {
 public:
     WordPathNode(std::shared_ptr<CharRange>&& char_range,
                  std::shared_ptr<Word>&& word) : 
             AST(std::move(char_range)),
-            word_(std::move(word)),
-            PathNode() {}
+            PathNode(),
+            word_(std::move(word)) {}
 
     virtual std::string to_string() const override {
         return word_->to_string();
@@ -272,9 +272,9 @@ public:
 
 private:
     virtual std::vector<std::shared_ptr<ieml::structure::PathNode>> _check_path_node(parser::ParserContextManager& ctx, 
-                                                                                    const structure::RoleType& current_role,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
+                                                                                     __attribute__((unused)) const structure::RoleType& current_role,
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
         const auto& word_node = word_->check_category_word(ctx);
 
         if (!word_node) return {};
@@ -285,13 +285,13 @@ private:
     const std::shared_ptr<Word> word_;
 };
 
-class RoleNumberPathNode: public virtual PathNode, public virtual AST {
+class RoleNumberPathNode: public virtual AST, public PathNode {
 public:
     RoleNumberPathNode(std::shared_ptr<CharRange>&& char_range,
                        size_t role_number) : 
             AST(std::move(char_range)),
-            role_number_(role_number),
-            PathNode() {}
+            PathNode(),
+            role_number_(role_number) {}
 
     virtual std::string to_string() const override {
         return std::to_string(role_number_);
@@ -300,9 +300,9 @@ public:
 
 private:
     virtual std::vector<std::shared_ptr<ieml::structure::PathNode>> _check_path_node(parser::ParserContextManager& ctx, 
-                                                                                    const structure::RoleType& current_role,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
-                                                                                    const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
+                                                                                     __attribute__((unused)) const structure::RoleType& current_role,
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& begin,
+                                                                                     __attribute__((unused)) const std::vector<std::shared_ptr<PathNode>>::const_iterator& end) override {
         auto type = structure::RoleType::_from_integral_nothrow(role_number_);
 
         if (!type) {

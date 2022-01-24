@@ -10,8 +10,7 @@ std::string Program::to_string() const {
     for (auto && declaration: declarations_) {
         os << declaration->to_string() << std::endl;
     }
-    return os.str();
-    
-};
+    return os.str();   
+}
 
 }

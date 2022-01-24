@@ -13,7 +13,7 @@
 
 namespace ieml::relation {
 
-BETTER_ENUM(RelationType, char, COMPOSITION, INCLUSION, LINK);
+BETTER_ENUM(RelationType, char, COMPOSITION, INCLUSION, LINK)
 
 class RelationAttribute {
 public:
@@ -23,9 +23,15 @@ public:
 };
 
 struct Relation {
+    Relation(std::shared_ptr<structure::Element> source_, 
+             std::shared_ptr<structure::Element> target_, 
+             std::shared_ptr<RelationAttribute> attribute_) : 
+        source(source_), 
+        target(target_), 
+        attribute(attribute_) {}
+
     const std::shared_ptr<structure::Element> source; 
     const std::shared_ptr<structure::Element> target;
-
     const std::shared_ptr<RelationAttribute> attribute;
 
     // const CompositionAttributes cmp_attr_ = (CompositionAttributes){.path_=nullptr, .cmp_type_=CompositionRelationType::COMPOSITION_PHRASE};
@@ -40,10 +46,15 @@ public:
     void add_relation(const Relation& relation);
 
     struct VertexProperties {
+        VertexProperties(std::shared_ptr<structure::Element> element_) : element(element_) {}
+        VertexProperties() : element(nullptr) {}
+
         const std::shared_ptr<structure::Element> element;
     };
 
     struct EdgeProperties {
+        EdgeProperties(std::shared_ptr<RelationAttribute> attribute_) : attribute(attribute_) {}
+
         const std::shared_ptr<RelationAttribute> attribute;
     };
 

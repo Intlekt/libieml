@@ -12,7 +12,7 @@ RelationGraph::Vertex RelationGraph::Register::get_or_create(const std::shared_p
         return it->second;
 
     const Vertex& vertex = add_vertex(
-        (VertexProperties){.element=element},
+        VertexProperties(element),
         graph
     );
     vertex_map_.insert({element, vertex});
@@ -30,6 +30,6 @@ void RelationGraph::add_relation(const Relation& relation) {
     
     add_edge(source, 
              target, 
-             (EdgeProperties){.attribute = relation.attribute}, 
+             EdgeProperties(relation.attribute), 
              graph_);
 }

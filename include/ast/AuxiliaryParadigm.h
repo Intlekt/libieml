@@ -11,7 +11,7 @@ namespace ieml::AST {
 class AuxiliaryParadigm : virtual public AST, public IAuxiliary {
 public:
     AuxiliaryParadigm(std::shared_ptr<CharRange>&& char_range,
-                      std::vector<std::shared_ptr<Auxiliary>>&& auxiliaries) : 
+                      std::vector<std::shared_ptr<IAuxiliary>>&& auxiliaries) : 
         AST(std::move(char_range)),
         auxiliaries_(std::move(auxiliaries)) {}
     
@@ -56,7 +56,7 @@ public:
     }
 
 private:
-    const std::vector<std::shared_ptr<Auxiliary>> auxiliaries_;
+    const std::vector<std::shared_ptr<IAuxiliary>> auxiliaries_;
 
 };
 

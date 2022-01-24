@@ -33,7 +33,10 @@ category_paradigm       : PARADIGM_START categories+=category            (PARADI
 inflection_list: (FLEXION_MARK inflections+=identifier)+ ;
 inflection_list_paradigm: PARADIGM_START inflection_lists+=inflection_list (PARADIGM_SEP inflection_lists+=inflection_list)* PARADIGM_END;
 
-auxiliary: AUXILIARY_MARK identifier_=identifier ;                                                                                        
+auxiliary: AUXILIARY_MARK identifier_=identifier      # auxiliary__identifier
+         | AUXILIARY_MARK word_=word                  # auxiliary__word
+         ;
+
 auxiliary_paradigm: PARADIGM_START identifiers+=auxiliary (PARADIGM_SEP identifiers+=auxiliary)* PARADIGM_END;
 
 auxiliary_simple_or_paradigm: auxiliary_=auxiliary            # auxiliary_simple_or_paradigm__simple

@@ -28,15 +28,15 @@ private:
     const DeclarationType declaration_type_;
 };
 
-class CategoryDeclaration: public Declaration, public ITranslatable {
+class CategoryDeclaration: public virtual AST, public Declaration, public ITranslatable {
 public:
     CategoryDeclaration(std::shared_ptr<CharRange>&& char_range, 
                         std::vector<std::shared_ptr<LanguageString>>&& translations,
                         std::shared_ptr<Phrase>&& phrase,
                         DeclarationType declaration_type) : 
         AST(std::move(char_range)), 
-        ITranslatable(std::move(translations)),
         Declaration(declaration_type),
+        ITranslatable(std::move(translations)),
         phrase_(std::move(phrase)) {};
 
     std::string to_string() const override {
@@ -230,15 +230,15 @@ private:
     std::shared_ptr<Word> word_;
 };
 
-class ToolWordDeclaration: public Declaration, public ITranslatable {
+class ToolWordDeclaration: public virtual AST, public Declaration, public ITranslatable {
 public:
     ToolWordDeclaration(std::shared_ptr<CharRange>&& char_range, 
                         std::vector<std::shared_ptr<LanguageString>>&& translations,
                         std::shared_ptr<Word>&& word,
                         DeclarationType declaration_type) : 
         AST(std::move(char_range)),
+        Declaration(declaration_type),
         ITranslatable(std::move(translations)),
-        Declaration(declaration_type), 
         word_(std::move(word)) {};
 
 protected:

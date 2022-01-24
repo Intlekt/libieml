@@ -30,7 +30,7 @@ PathTree::Set PathTree::Register::get_or_create_product(const PathNode::Set& nod
 }
 
 PathTree::Set PathTree::Register::get_or_create_product(const std::shared_ptr<PathNode>& node, const std::vector<PathTree::Set>& children_list) {
-    return get_or_create_product((PathNode::Set){node}, children_list);
+    return get_or_create_product(PathNode::Set{node}, children_list);
 }
 
 std::shared_ptr<PathTree> PathTree::Register::get_or_create(const std::shared_ptr<PathNode>& node, const PathTree::Set& children) {
@@ -111,7 +111,7 @@ std::vector<std::shared_ptr<PathTree>> PathTree::getChildrenAsVector() const {
     }
 
     return v;
-};
+}
 
 std::vector<PathTree::SubPathTree> PathTree::find_sub_tree(PathTree::Register& register_,
                                                            std::function<bool(const std::shared_ptr<PathTree>&)> f,
@@ -131,7 +131,7 @@ std::vector<PathTree::SubPathTree> PathTree::find_sub_tree(PathTree::Register& r
         }
     }
     return res;
-};
+}
 
 PathTree::Set PathTree::singular_sequences(const std::shared_ptr<PathTree>& pt) {
     switch (pt->getNode()->getPathType()) {
@@ -142,11 +142,11 @@ PathTree::Set PathTree::singular_sequences(const std::shared_ptr<PathTree>& pt) 
         default:
             throw std::invalid_argument("Invalid path type for singular sequences " + std::string(pt->getNode()->getPathType()._to_string()));
     }
-};
+}
 
-PathTree::Set PathTree::paths(const std::shared_ptr<PathTree>& pt) {
-
-};
+PathTree::Set PathTree::paths(__attribute__((unused)) const std::shared_ptr<PathTree>& pt) {
+    return {};
+}
 
 
 bool PathTree::is_valid() const {
@@ -157,7 +157,7 @@ bool PathTree::is_valid() const {
         }
     }
     return true;
-};
+}
 
 
 int PathTree::comp(const std::shared_ptr<PathNode>& nodeA, const PathTree::Set& childrenA, 
@@ -178,9 +178,9 @@ int PathTree::comp(const std::shared_ptr<PathNode>& nodeA, const PathTree::Set& 
         return it == childrenA.end() ? -1 : 1;
     } else 
         return *nodeA < *nodeB ? -1 : 1;
-};
+}
 
 int PathTree::comp_element_(const Element& o_elem) const {
     const auto& o = dynamic_cast<const PathTree&>(o_elem);
     return comp(node_, children_, o.getNode(), o.getChildren());
-};
+}

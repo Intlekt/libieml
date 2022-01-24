@@ -26,11 +26,6 @@ public:
     }
 
     std::string unescape_value(const std::string& s) const {
-        //remove starting ' and trailing '
-        // unescape:
-        // \' -> '
-        // \\ -> \ 
-
         std::string s_ = s.substr(1, s.size() - 2);
         s_ = std::regex_replace(s_, std::regex("\\'"), "'");
         s_ = std::regex_replace(s_, std::regex("\\\\"), "\\");

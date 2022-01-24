@@ -20,8 +20,8 @@
 #define RETURN_VISITOR_RESULT_NO_ARGS(ReturnType, DerivedType) \
   return antlrcpp::Any(VisitorResult<ReturnType>(std::make_unique<DerivedType>(charRangeFromContext(ctx))));
 
-#define RETURN_VISITOR_RESULT(ReturnType, DerivedType, args...) \
-  return antlrcpp::Any(VisitorResult<ReturnType>(std::make_unique<DerivedType>(charRangeFromContext(ctx), args)));
+#define RETURN_VISITOR_RESULT(ReturnType, DerivedType, ...) \
+  return antlrcpp::Any(VisitorResult<ReturnType>(std::make_unique<DerivedType>(charRangeFromContext(ctx), __VA_ARGS__)));
 
 #define RETURN_VISITOR_RESULT_MOVE(ReturnType, UNIQUE_PTR) \
   return antlrcpp::Any(VisitorResult<ReturnType>(std::move(UNIQUE_PTR)));
@@ -46,7 +46,7 @@ if (Context->Attribute) {\
 
 #define CHECK_SYNTAX_ERROR_LIST(ErrorListener, Context, Type, Attribute, Message) \
 std::vector<std::shared_ptr<Type>> Attribute;\
-bool valid_##Attribute = true; \
+__attribute__ ((unused)) bool valid_##Attribute = true; \
 for (auto child: Context->Attribute) { \
   auto t_tmp = visit(child); \
   if (t_tmp.isNull()) { \
@@ -324,14 +324,22 @@ namespace ieml::parser {
   /**
    * AUXILIARY
    */  
-  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary(iemlParser::AuxiliaryContext *ctx) {
-    CHECK_SYNTAX_ERROR(error_listener_, ctx, identifier_, "Invalid auxiliary identifier in phrase line.", true);
+  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary__identifier(iemlParser::Auxiliary__identifierContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, identifier_, "Invalid auxiliary identifier in a phrase line or a path.", true);
     CAST_OR_RETURN_IF_NULL(ctx, Identifier, identifier_, Auxiliary);
     
-    RETURN_VISITOR_RESULT(Auxiliary, Auxiliary, std::move(identifier_));
+    RETURN_VISITOR_RESULT(IAuxiliary, Auxiliary, std::move(identifier_));
   }
+
+  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary__word(iemlParser::Auxiliary__wordContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid auxiliary word in a phrase line or a path.", true);
+    CAST_OR_RETURN_IF_NULL(ctx, Word, word_, Auxiliary);
+    
+    RETURN_VISITOR_RESULT(IAuxiliary, WordAuxiliary, std::move(word_));
+  }
+
   antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary_paradigm(iemlParser::Auxiliary_paradigmContext *ctx) {
-    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Auxiliary, identifiers, "Invalid auxiliary in auxiliary paradigm.");
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, IAuxiliary, identifiers, "Invalid auxiliary in an auxiliary paradigm.");
     CAST_OR_RETURN_IF_NULL_LIST(identifiers, IAuxiliary);
 
     RETURN_VISITOR_RESULT(IAuxiliary, AuxiliaryParadigm, std::move(identifiers));
@@ -342,10 +350,11 @@ namespace ieml::parser {
    */  
   antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary_simple_or_paradigm__simple(iemlParser::Auxiliary_simple_or_paradigm__simpleContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary_, "Invalid auxiliary.", true);
-    CAST_OR_RETURN_IF_NULL(ctx, Auxiliary, auxiliary_, IAuxiliary);
+    CAST_OR_RETURN_IF_NULL(ctx, IAuxiliary, auxiliary_, IAuxiliary);
 
     RETURN_VISITOR_RESULT_MOVE(IAuxiliary, auxiliary_);
   }
+
   antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary_simple_or_paradigm__paradigm(iemlParser::Auxiliary_simple_or_paradigm__paradigmContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary_, "Invalid auxiliary paradigm.", true);
     CAST_OR_RETURN_IF_NULL(ctx, IAuxiliary, auxiliary_, IAuxiliary);
@@ -411,7 +420,8 @@ namespace ieml::parser {
     CAST_OR_RETURN_IF_NULL(ctx, ICategory, category_, InflectedCategory);
 
     RETURN_VISITOR_RESULT(InflectedCategory, InflectedCategory, std::move(inflection_list_), std::move(category_), std::vector<std::shared_ptr<Reference>>{});
-  };
+  }
+
   antlrcpp::Any IEMLGrammarVisitor::visitInflected_category__inflection_and_category_paradigm(iemlParser::Inflected_category__inflection_and_category_paradigmContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, inflection_list_, "Invalid inflection list in inflected category.", true);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a substitution list of category.", true);
@@ -420,7 +430,7 @@ namespace ieml::parser {
     CAST_OR_RETURN_IF_NULL(ctx, CategoryParadigm, category_, InflectedCategory);
 
     RETURN_VISITOR_RESULT(InflectedCategory, InflectedCategory, std::move(inflection_list_), std::move(category_), std::vector<std::shared_ptr<Reference>>{});
-  };
+  }
 
 
   /**
@@ -453,7 +463,7 @@ namespace ieml::parser {
     CAST_OR_RETURN_IF_NULL_LIST(categories, CategoryParadigm);
 
     RETURN_VISITOR_RESULT(CategoryParadigm, CategoryParadigm, std::move(categories));
-  };
+  }
 
   /**
    *  WORD
@@ -518,7 +528,7 @@ namespace ieml::parser {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, junction_type, "Invalid identifier for a junction.", true);
     CAST_OR_RETURN_IF_NULL(ctx, Identifier, junction_type, IJunction);
     RETURN_VISITOR_RESULT(IJunction, Junction, std::move(junction_type));
-  };
+  }
 
   /**
    * PATH

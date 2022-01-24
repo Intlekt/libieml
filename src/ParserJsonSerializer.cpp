@@ -104,8 +104,8 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
                            ieml::parser::ParserContextManager& ctx) {
     static_assert(std::is_base_of_v<ieml::structure::Word, WordType>, "WordType must derive from ieml::structure::Word");
 
-    auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(word));
-    const ieml::AST::CharRange& range = ast->getCharRange();
+    // auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(word));
+    // const ieml::AST::CharRange& range = ast->getCharRange();
 
     auto name = ctx.getWordRegister().getName(word);
 
@@ -148,7 +148,7 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
         {"language", language._to_string()},
         {"elements", elements}
     };
-};
+}
 
 nlohmann::json ieml::parser::serializeNode(const structure::CategoryRegister& categories, 
                              const structure::WordRegister& words,
@@ -181,13 +181,12 @@ nlohmann::json ieml::parser::serializeNode(const structure::CategoryRegister& ca
         {"names", names},
         {"range", char_range}
     };
-};
+}
 
 nlohmann::json ieml::parser::binaryGraphToJson(ieml::relation::RelationGraph& relation_graph,
                                                const structure::CategoryRegister& categories,
                                                const structure::WordRegister& words,
                                                const SourceMapping& mapping) {
-    size_t id = 0;
     std::unordered_set<ieml::relation::RelationGraph::Vertex> nodes_set;
     
     nlohmann::json nodes = nlohmann::json::array();
@@ -218,4 +217,4 @@ nlohmann::json ieml::parser::binaryGraphToJson(ieml::relation::RelationGraph& re
         {"nodes", nodes},
         {"relations", relations}
     };
-};
+}

@@ -62,7 +62,7 @@ public:
     virtual std::string to_string() const override;
 
 private:
-    virtual int comp(const PathNode& a) const {return 0;};
+    virtual int comp(__attribute__((unused)) const PathNode& a) const {return 0;};
 };
 
 class ParadigmPathNode : public PathNode {
@@ -72,7 +72,7 @@ public:
     virtual std::string to_string() const override;
 
 private:
-    virtual int comp(const PathNode& a) const {return 0;};
+    virtual int comp(__attribute__((unused)) const PathNode& a) const {return 0;};
 };
 
 class ParadigmIndexPathNode : public PathNode {

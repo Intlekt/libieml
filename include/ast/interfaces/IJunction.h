@@ -22,7 +22,7 @@ template<class T, class IndexPathNode, class JunctionPathNode, class CheckArgume
 class IJunctionList {
 public:
     IJunctionList(std::vector<std::shared_ptr<T>>&& items,
-              std::shared_ptr<IJunction>&& junction_identifier) : 
+                  std::shared_ptr<IJunction>&& junction_identifier) : 
         items_(std::move(items)),
         junction_identifier_(std::move(junction_identifier)) {
             static_assert(std::is_base_of<AST, T>::value, "T is not an AST.");
@@ -81,9 +81,9 @@ protected:
         os << "]";
         return os.str();
     }
-
-    std::shared_ptr<IJunction> junction_identifier_;
+    
     std::vector<std::shared_ptr<T>> items_;
+    std::shared_ptr<IJunction> junction_identifier_;
 };
 
 }

@@ -14,9 +14,9 @@ bool RootPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType RootPathNode::getPathType() const {return PathType::ROOT;};
-std::string RootPathNode::to_string() const { return "#"; };
+}
+PathType RootPathNode::getPathType() const {return PathType::ROOT;}
+std::string RootPathNode::to_string() const { return "#"; }
 
 bool ParadigmPathNode::accept_next(const PathNode& next) const {
     switch (next.getPathType())
@@ -26,9 +26,9 @@ bool ParadigmPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType ParadigmPathNode::getPathType() const {return PathType::PARADIGM;};
-std::string ParadigmPathNode::to_string() const { return "{}"; };
+}
+PathType ParadigmPathNode::getPathType() const {return PathType::PARADIGM;}
+std::string ParadigmPathNode::to_string() const { return "{}"; }
 
 bool ParadigmIndexPathNode::accept_next(const PathNode& next) const {
     switch (next.getPathType())
@@ -38,9 +38,9 @@ bool ParadigmIndexPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType ParadigmIndexPathNode::getPathType() const {return PathType::PARADIGM_INDEX;};
-std::string ParadigmIndexPathNode::to_string() const { return std::to_string(index_); };
+}
+PathType ParadigmIndexPathNode::getPathType() const {return PathType::PARADIGM_INDEX;}
+std::string ParadigmIndexPathNode::to_string() const { return std::to_string(index_); }
 
 
 bool RoleNumberPathNode::accept_next(const PathNode& next) const {
@@ -56,8 +56,8 @@ bool RoleNumberPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType RoleNumberPathNode::getPathType() const {return PathType::ROLE;};
+}
+PathType RoleNumberPathNode::getPathType() const {return PathType::ROLE;}
 std::string RoleNumberPathNode::to_string() const {return std::to_string(role_type_);}
 
 std::string JunctionPathNode::to_string() const {
@@ -72,8 +72,8 @@ bool PhraseJunctionPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType PhraseJunctionPathNode::getPathType() const {return PathType::JUNCTION_PHRASE;};
+}
+PathType PhraseJunctionPathNode::getPathType() const {return PathType::JUNCTION_PHRASE;}
 
 bool AuxiliaryJunctionPathNode::accept_next(const PathNode& next) const {
     switch (next.getPathType())
@@ -83,8 +83,8 @@ bool AuxiliaryJunctionPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType AuxiliaryJunctionPathNode::getPathType() const {return PathType::JUNCTION_AUXILIARY;};
+}
+PathType AuxiliaryJunctionPathNode::getPathType() const {return PathType::JUNCTION_AUXILIARY;}
 
 bool InflectionJunctionPathNode::accept_next(const PathNode& next) const {
     switch (next.getPathType())
@@ -94,8 +94,8 @@ bool InflectionJunctionPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType InflectionJunctionPathNode::getPathType() const {return PathType::JUNCTION_INFLECTION;};
+}
+PathType InflectionJunctionPathNode::getPathType() const {return PathType::JUNCTION_INFLECTION;}
 
 bool CategoryJunctionPathNode::accept_next(const PathNode& next) const {
     switch (next.getPathType())
@@ -105,8 +105,8 @@ bool CategoryJunctionPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType CategoryJunctionPathNode::getPathType() const {return PathType::JUNCTION_CATEGORY;};
+}
+PathType CategoryJunctionPathNode::getPathType() const {return PathType::JUNCTION_CATEGORY;}
 
 std::string JunctionIndexPathNode::to_string() const {
     return "[" + std::to_string(index_) + "]";;
@@ -120,8 +120,8 @@ bool PhraseJunctionIndexPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType PhraseJunctionIndexPathNode::getPathType() const {return PathType::JUNCTION_PHRASE_INDEX;};
+}
+PathType PhraseJunctionIndexPathNode::getPathType() const {return PathType::JUNCTION_PHRASE_INDEX;}
 
 bool AuxiliaryJunctionIndexPathNode::accept_next(const PathNode& next) const {
     switch (next.getPathType())
@@ -132,8 +132,8 @@ bool AuxiliaryJunctionIndexPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType AuxiliaryJunctionIndexPathNode::getPathType() const {return PathType::JUNCTION_AUXILIARY_INDEX;};
+}
+PathType AuxiliaryJunctionIndexPathNode::getPathType() const {return PathType::JUNCTION_AUXILIARY_INDEX;}
 
 bool InflectionJunctionIndexPathNode::accept_next(const PathNode& next) const {
     switch (next.getPathType())
@@ -144,8 +144,8 @@ bool InflectionJunctionIndexPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType InflectionJunctionIndexPathNode::getPathType() const {return PathType::JUNCTION_INFLECTION_INDEX;};
+}
+PathType InflectionJunctionIndexPathNode::getPathType() const {return PathType::JUNCTION_INFLECTION_INDEX;}
 
 bool CategoryJunctionIndexPathNode::accept_next(const PathNode& next) const {
     switch (next.getPathType())
@@ -157,8 +157,8 @@ bool CategoryJunctionIndexPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType CategoryJunctionIndexPathNode::getPathType() const {return PathType::JUNCTION_CATEGORY_INDEX;};
+}
+PathType CategoryJunctionIndexPathNode::getPathType() const {return PathType::JUNCTION_CATEGORY_INDEX;}
 
 bool AuxiliaryPathNode::accept_next(const PathNode& next) const {
     switch (next.getPathType())
@@ -172,8 +172,8 @@ bool AuxiliaryPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType AuxiliaryPathNode::getPathType() const {return PathType::AUXILIARY;};
+}
+PathType AuxiliaryPathNode::getPathType() const {return PathType::AUXILIARY;}
 std::string AuxiliaryPathNode::to_string() const {
     return "*" + auxiliary_type_->to_string();
 }
@@ -188,8 +188,8 @@ bool InflectionPathNode::accept_next(const PathNode& next) const {
     default:
         return false;
     }
-};
-PathType InflectionPathNode::getPathType() const {return PathType::INFLECTION;};
+}
+PathType InflectionPathNode::getPathType() const {return PathType::INFLECTION;}
 std::string InflectionPathNode::to_string() const {
     std::ostringstream os;
     for (auto& inflection: inflections_)
@@ -198,10 +198,10 @@ std::string InflectionPathNode::to_string() const {
     return os.str();
 }
 
-bool WordPathNode::accept_next(const PathNode& next) const {
+bool WordPathNode::accept_next(__attribute__((unused)) const PathNode& next) const {
     return false;
-};
-PathType WordPathNode::getPathType() const {return PathType::WORD;};
+}
+PathType WordPathNode::getPathType() const {return PathType::WORD;}
 std::string WordPathNode::to_string() const {
     return word_->to_string();
 }

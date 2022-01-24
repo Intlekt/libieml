@@ -18,8 +18,8 @@ using namespace ieml::AST;
 
 class IEMLGrammarVisitor: public iemlVisitor {
 private:
-  IEMLParserErrorListener* error_listener_;
   const std::string file_id_;
+  IEMLParserErrorListener* error_listener_;
 
   std::shared_ptr<CharRange> charRangeFromToken(antlr4::Token* token) const ;
   std::shared_ptr<CharRange> charRangeFromContext(antlr4::ParserRuleContext* ctx) const ;
@@ -88,7 +88,8 @@ public:
   /**
    * AUXILIARY
    */  
-  virtual antlrcpp::Any visitAuxiliary(iemlParser::AuxiliaryContext *ctx) override;
+  virtual antlrcpp::Any visitAuxiliary__identifier(iemlParser::Auxiliary__identifierContext *context) override;
+  virtual antlrcpp::Any visitAuxiliary__word(iemlParser::Auxiliary__wordContext *context) override;
   virtual antlrcpp::Any visitAuxiliary_paradigm(iemlParser::Auxiliary_paradigmContext *ctx) override;
 
   /**

@@ -39,15 +39,13 @@ public:
         {
         case ieml::structure::WordType::AUXILIARY:
             return namespace_auxiliary_.find(std::dynamic_pointer_cast<structure::AuxiliaryWord>(word))->second;
-            break;
         case ieml::structure::WordType::JUNCTION:
             return namespace_junction_.find(std::dynamic_pointer_cast<structure::JunctionWord>(word))->second;
-            break;
         case ieml::structure::WordType::INFLECTION:
             return namespace_inflection_.find(std::dynamic_pointer_cast<structure::InflectionWord>(word))->second;
-            break;
+        default:
+            return nullptr;
         }
-        return nullptr;
     };
 
 

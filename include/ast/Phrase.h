@@ -115,7 +115,7 @@ public:
         return "(" + junction_to_string() + ")";
     }
     
-    virtual structure::PathTree::Set check_junction_item(parser::ParserContextManager& ctx, size_t i, Empty a) const override {
+    virtual structure::PathTree::Set check_junction_item(parser::ParserContextManager& ctx, size_t i, __attribute__((unused)) Empty a) const override {
         return items_[i]->check_phrase(ctx);
     };
 

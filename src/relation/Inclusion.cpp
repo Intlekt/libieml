@@ -4,7 +4,7 @@
 void ieml::relation::buildInclusionRelationGraph(RelationGraph& graph, 
                                                  ieml::structure::PathTree::Register& register_,
                                                  const ieml::structure::CategoryRegister& creg, 
-                                                 const ieml::structure::WordRegister& wreg) {
+                                                 __attribute__((unused)) const ieml::structure::WordRegister& wreg) {
 
     auto is_phrase = [&creg](const std::shared_ptr<ieml::structure::PathTree>& t){
         return t->is_phrase() && creg.category_is_defined(t);
@@ -18,11 +18,11 @@ void ieml::relation::buildInclusionRelationGraph(RelationGraph& graph,
 
         // for all subphrase in phrase
         for (auto& subphrase : it->first->find_sub_tree(register_, is_phrase, is_phrase)) {
-            graph.add_relation((Relation){
-                .source=it->first,
-                .target=subphrase.second,
-                .attribute=std::make_shared<InclusionAttribute>()
-            });
+            graph.add_relation(Relation(
+                it->first,
+                subphrase.second,
+                std::make_shared<InclusionAttribute>()
+            ));
         }
     }
 }

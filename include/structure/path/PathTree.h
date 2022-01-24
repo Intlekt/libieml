@@ -116,6 +116,13 @@ public:
 
     bool is_valid() const;
 
+    std::string to_string_path() const {
+        auto r = "/" + node_->to_string();
+        if (children_.size() != 0)
+            r += (*children_.begin())->to_string_path();
+        return r;
+    }
+
 private:
     PathTree(const std::shared_ptr<PathNode>& node, const Set& children) : 
         node_(node), children_(children), hash_(hash_internal(node, children)) {}
@@ -137,10 +144,10 @@ private:
         return seed;
     }
 
-    const size_t hash_;
     const std::shared_ptr<PathNode> node_;
     const Set children_;
-
+    const size_t hash_;
+    
 
     static int comp(const std::shared_ptr<PathNode>&, const Set&, 
                     const std::shared_ptr<PathNode>&, const Set&);

@@ -25,9 +25,9 @@ public:
                       std::shared_ptr<ICategory>&& category,
                       std::vector<std::shared_ptr<Reference>>&& references) :
         AST(std::move(char_range)),
+        IReferencable(std::move(references)),
         inflection_list_(std::move(inflections)),
-        category_(std::move(category)),
-        IReferencable(std::move(references)) {}
+        category_(std::move(category)) {}
 
     std::string to_string() const override {
         std::ostringstream os;

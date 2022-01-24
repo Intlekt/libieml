@@ -15,6 +15,8 @@ public:
       ICategory(),
       word_str_(word_str) {}
 
+    std::string getScript() const {return word_str_;};
+
     virtual std::string to_string() const override {
         return "\"" + word_str_ + "\"";
     }
@@ -40,7 +42,7 @@ public:
         return std::make_shared<structure::WordPathNode>(word);
     };
 
-    virtual std::shared_ptr<structure::CategoryWord> check_word(parser::ParserContextManager& ctx) const {
+    virtual std::shared_ptr<structure::CategoryWord> check_word(__attribute__((unused)) parser::ParserContextManager& ctx) const {
         return std::make_shared<structure::CategoryWord>(word_str_);
     };
 
