@@ -50,15 +50,30 @@ public:
         if (!phrase || !name) {
             return;
         }
-
+        bool valid = true;
         if (ctx.getCategoryRegister().category_is_defined(phrase)) {
             ctx.getErrorManager().visitorError(
                 getCharRange(), 
                 "Cannot redefine phrase " + phrase->to_string() + ", it has already been defined before."
             );
-            return;
+            valid = false;
         }
         
+        for (const auto& ls: *name) {
+            if (ctx.getCategoryRegister().resolve_category(ls.second)) {
+                ctx.getErrorManager().visitorError(
+                    getCharRange(), 
+                    "Cannot redefine language string '" + std::string(ls.second.language()._to_string()) +
+                    ":" + ls.second.value() + "' with another category, it has already been defined before."
+                );
+
+                valid = false;
+            }
+        }
+
+        if (!valid)
+            return;
+
         ctx.getSourceMapping().register_mapping(phrase, this);
         define_category(ctx, name, phrase);
     };
@@ -168,14 +183,48 @@ public:
                                  std::shared_ptr<structure::Name>& name, 
                                  std::shared_ptr<structure::PathTree>& phrase) const override {
         
+        auto invariant = ieml::structure::PathTree::paradigm_invariant(ctx.getPathTreeRegister(), phrase);
+        if (invariant == nullptr) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(), 
+                "Cannot define a paradigm with an empty invariant."
+            );
+            return;
+        }
+
+        if (!ctx.getCategoryRegister().category_is_defined(invariant)) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(), 
+                "Cannot define a paradigm when its node invariant has not been defined."
+            );
+            return;
+        }
+
+        if (ctx.getCategoryRegister().getDefinitionType(invariant) != +ieml::structure::DefinitionType::NODE) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(), 
+                "The invariant of this paradigm has not been defined as a node."
+            );
+            return;
+        }
+
+        if (ctx.getParadigmRegister().resolve_paradigm(invariant)) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(), 
+                "A paradigm with the same node invariant has already been defined."
+            );
+            return;
+        }
+
         ctx.getCategoryRegister().define_category(name, phrase, structure::DefinitionType::PARADIGM);
+        ctx.getParadigmRegister().define_paradigm(ctx.getPathTreeRegister(), phrase);
     }
 
 protected:
     virtual std::shared_ptr<structure::PathTree> _check_phrase(ieml::parser::ParserContextManager& ctx) const override {
-        auto phrase_set = getPhrase()->check_phrase(ctx);
+        auto phrase_list = getPhrase()->check_phrase(ctx);
 
-        if (phrase_set.size() == 1) {
+        if (phrase_list.size() == 1) {
             ctx.getErrorManager().visitorError(
                 getCharRange(), 
                 "A @paranode declaration must define a paradigm category."
@@ -183,9 +232,19 @@ protected:
             return nullptr;
         }
 
+        structure::PathTree::Set children;
+
+        for (size_t i = 0; i < phrase_list.size(); ++i) {
+            children.insert({
+                ctx.getPathTreeRegister().get_or_create(
+                    std::make_shared<structure::ParadigmIndexPathNode>(i), 
+                    {phrase_list[i]}
+                )});
+        }
+
         return ctx.getPathTreeRegister().get_or_create(
             std::make_shared<structure::ParadigmPathNode>(), 
-            phrase_set);
+            children);
     };
 
 };

@@ -40,7 +40,7 @@ public:
         return os.str();
     }
 
-    structure::PathTree::Set check_flexed_category(parser::ParserContextManager& ctx, structure::RoleType role_type) const {
+    structure::PathTree::Vector check_flexed_category(parser::ParserContextManager& ctx, structure::RoleType role_type) const {
         auto category_set = category_->check_category(ctx);
         if (inflection_list_ != nullptr) {
             auto inflection_nodes = inflection_list_->check_inflection_list(ctx, role_type);

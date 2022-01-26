@@ -31,7 +31,7 @@ using namespace ieml::parser;
 
 
 TEST(ieml_relation_test_case, inclusion) {
-    PARSE_NO_ERRORS(R"(@word "a". @word "b". @node en:node0 (0 #"a"). @node en:node1 (0 #"b"). @paranode en:paranode (0 #{"a";"b"}).)");
+    PARSE_NO_ERRORS(R"(@word "a". @word "b". @node en:invariant (0 #"a"). @node en:node0 (0 #"a", 1 #"a"). @node en:node1 (0 #"a", 1 #"b"). @paranode en:paranode (0 #"a", 1 #{"a";"b"}).)");
 
     auto wreg = parser.getContext()->getWordRegister();
     auto creg = parser.getContext()->getCategoryRegister();
@@ -39,6 +39,10 @@ TEST(ieml_relation_test_case, inclusion) {
     const auto& paradigm = creg.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "paranode"));
     const auto& node0 = creg.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "node0"));
     const auto& node1 = creg.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "node1"));
+
+    ASSERT_NE(paradigm, nullptr);
+    ASSERT_NE(node0, nullptr);
+    ASSERT_NE(node1, nullptr);
 
     ieml::relation::RelationGraph relgraph;
     ieml::relation::buildInclusionRelationGraph(relgraph, parser.getContext()->getPathTreeRegister(), creg, wreg);

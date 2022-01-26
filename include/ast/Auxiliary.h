@@ -20,7 +20,7 @@ public:
         return "*" + identifier_->to_string();
     }
 
-    virtual structure::PathNode::Set check_auxiliary(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+    virtual structure::PathNode::Vector check_auxiliary(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         auto auxiliary = ctx.getWordRegister().resolve_auxiliary(structure::LanguageString(ctx.getLanguage(), identifier_->getName()));
 
         if (!auxiliary) {
@@ -58,7 +58,7 @@ public:
         return "*" + word_->to_string();
     }
 
-    virtual structure::PathNode::Set check_auxiliary(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+    virtual structure::PathNode::Vector check_auxiliary(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         auto word = ctx.getWordRegister().get_word(word_->getScript());
 
         if (!word) {

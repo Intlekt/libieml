@@ -31,8 +31,8 @@ public:
         os << "}";
         return os.str();
     }   
-    virtual structure::PathTree::Set check_category(parser::ParserContextManager& ctx) const override {
-        structure::PathTree::Set children_paradigm;
+    virtual structure::PathTree::Vector check_category(parser::ParserContextManager& ctx) const override {
+        structure::PathTree::Vector children_paradigm;
 
         bool valid = true;
         for (size_t i = 0; i < categories_.size(); i++) {
@@ -42,7 +42,7 @@ public:
                     valid = false;
                     continue;
                 }
-                children_paradigm.insert(child);
+                children_paradigm.push_back(child);
             }
         }
 

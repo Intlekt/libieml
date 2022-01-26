@@ -9,6 +9,7 @@
 #include "structure/LanguageString.h"
 #include "structure/WordRegister.h"
 #include "structure/CategoryRegister.h"
+#include "structure/ParadigmRegister.h"
 #include "SyntaxError.h"
 #include "SourceMapping.h"
 
@@ -26,6 +27,7 @@ public:
     structure::PathTree::Register& getPathTreeRegister() {return path_tree_register_;};
     structure::CategoryRegister& getCategoryRegister() {return category_register_;};
     structure::WordRegister& getWordRegister() {return word_register_;};
+    structure::ParadigmRegister& getParadigmRegister() {return paradigm_register_;};
     parser::SourceMapping& getSourceMapping() {return source_mapping_;};
 
 
@@ -53,6 +55,7 @@ private:
 
     structure::CategoryRegister category_register_;
     structure::WordRegister word_register_;
+    structure::ParadigmRegister paradigm_register_;
 
     parser::IEMLParserErrorListener* error_manager_;
 

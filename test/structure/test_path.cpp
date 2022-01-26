@@ -221,3 +221,34 @@ TEST(ieml_structure_test_case, path_tree_register) {
         EXPECT_EQ(container->getChildrenAsVector()[0]->getChildrenAsVector()[0], included);
     }
 }
+
+
+TEST(ieml_structure_test_case, path_tree_invariant) {
+    PARSE_NO_ERRORS(R"(@word "wa.". @word "a.". @word "b.". @node en:root (0 #"wa."). @node en:node0 (0 #"wa.", 1 #"a."). @node en:node1 (0 #"wa.", 1 #"b.").)");
+    auto context = parser.getContext();
+    
+    auto root = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::EN, "root"));
+    auto node0 = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::EN, "node0"));
+    auto node1 = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::EN, "node1"));
+
+    ASSERT_NE(root, nullptr);
+    ASSERT_NE(node0, nullptr);
+    ASSERT_NE(node1, nullptr);
+
+    auto reg = context->getPathTreeRegister();
+
+    auto paradigm = reg.get_or_create(std::make_shared<ParadigmPathNode>(), 
+            {reg.get_or_create(std::make_shared<ParadigmIndexPathNode>(0), {node0}),
+             reg.get_or_create(std::make_shared<ParadigmIndexPathNode>(1), {node1})});
+
+    ASSERT_NE(paradigm, nullptr);
+
+    ASSERT_TRUE(paradigm->is_valid());
+    ASSERT_TRUE(paradigm->is_paradigm());
+
+    auto invariant = PathTree::paradigm_invariant(reg, paradigm);
+
+    ASSERT_NE(invariant, nullptr);
+
+    EXPECT_EQ(invariant, root);
+}   

@@ -29,8 +29,8 @@ public:
         return os.str();
     }
 
-    virtual structure::PathNode::Set check_inflection_list(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
-        structure::PathNode::Set res;
+    virtual structure::PathNode::Vector check_inflection_list(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+        structure::PathNode::Vector res;
         for (auto& inflection_list: inflection_lists_) {
             auto pathnode_set = inflection_list->check_inflection_list(ctx, role_type);
 
@@ -45,7 +45,7 @@ public:
             if (!*pathnode_set.begin())
                 return {nullptr};
 
-            res.insert(*pathnode_set.begin());
+            res.push_back(*pathnode_set.begin());
         }
 
         return res;

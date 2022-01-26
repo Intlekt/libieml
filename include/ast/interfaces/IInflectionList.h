@@ -12,7 +12,7 @@ namespace ieml::AST {
 
 class IInflectionList : virtual public AST {
 public:
-    virtual structure::PathNode::Set check_inflection_list(parser::ParserContextManager& ctx, structure::RoleType role_type) const = 0;
+    virtual structure::PathNode::Vector check_inflection_list(parser::ParserContextManager& ctx, structure::RoleType role_type) const = 0;
 };
 
 }

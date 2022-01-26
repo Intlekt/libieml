@@ -50,6 +50,7 @@ public:
 
 
     typedef std::set<std::shared_ptr<PathNode>> Set;
+    typedef std::vector<std::shared_ptr<PathNode>> Vector;
 
 private:
     virtual int comp(const PathNode& a) const = 0;

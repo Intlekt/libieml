@@ -28,24 +28,24 @@ public:
             static_assert(std::is_base_of<AST, T>::value, "T is not an AST.");
         };
 
-    virtual structure::PathTree::Set check_junction_item(parser::ParserContextManager& ctx, size_t i, CheckArgument arg) const = 0;
+    virtual structure::PathTree::Vector check_junction_item(parser::ParserContextManager& ctx, size_t i, CheckArgument arg) const = 0;
 
-    structure::PathTree::Set check_junction(parser::ParserContextManager& ctx, CheckArgument arg) const {
+    structure::PathTree::Vector check_junction(parser::ParserContextManager& ctx, CheckArgument arg) const {
 
-        std::vector<structure::PathTree::Set> children_list;
+        std::vector<structure::PathTree::Vector> children_list;
 
         bool valid = true;
         for (size_t i = 0; i < items_.size(); ++i) {
 
             auto phrase_set = check_junction_item(ctx, i, arg);
 
-            structure::PathTree::Set jonction_index_list;
+            structure::PathTree::Vector jonction_index_list;
             for (auto& phrase: phrase_set) {
                 if (phrase == nullptr) {
                     valid = false;
                     continue;
                 }
-                jonction_index_list.insert(ctx.getPathTreeRegister().get_or_create(std::make_shared<IndexPathNode>(i), {phrase}));
+                jonction_index_list.push_back(ctx.getPathTreeRegister().get_or_create(std::make_shared<IndexPathNode>(i), {phrase}));
             }
 
             children_list.push_back(jonction_index_list);

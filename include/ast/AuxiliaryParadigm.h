@@ -31,8 +31,8 @@ public:
 
     }
 
-    virtual structure::PathNode::Set check_auxiliary(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
-        structure::PathNode::Set res;
+    virtual structure::PathNode::Vector check_auxiliary(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+        structure::PathNode::Vector res;
 
         for (auto& auxiliary: auxiliaries_) {
             auto aux_set = auxiliary->check_auxiliary(ctx, role_type);
@@ -49,7 +49,7 @@ public:
                 return {nullptr};
             }
 
-            res.insert(*aux_set.begin());
+            res.push_back(*aux_set.begin());
         }
 
         return res;

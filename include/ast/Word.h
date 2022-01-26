@@ -21,7 +21,7 @@ public:
         return "\"" + word_str_ + "\"";
     }
 
-    virtual structure::PathTree::Set check_category(parser::ParserContextManager& ctx) const {
+    virtual structure::PathTree::Vector check_category(parser::ParserContextManager& ctx) const {
         const auto& word = check_category_word(ctx);
         if (!word) return {nullptr};
 

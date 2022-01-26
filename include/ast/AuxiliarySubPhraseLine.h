@@ -16,7 +16,7 @@ public:
     AuxiliarySubPhraseLine(std::shared_ptr<IAuxiliary>&& auxiliary) : 
         auxiliary_(std::move(auxiliary)) {}
 
-    structure::PathTree::Set check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const {
+    structure::PathTree::Vector check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const {
         auto child_set = _check_auxiliary_subline(ctx, role_type);
 
         if (auxiliary_) {
@@ -41,7 +41,7 @@ protected:
      * @param role_type 
      * @return structure::PathTree::Set 
      */
-    virtual structure::PathTree::Set _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const = 0;
+    virtual structure::PathTree::Vector _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const = 0;
 
     std::string auxiliary_to_string() const {
         if (auxiliary_)
@@ -69,7 +69,7 @@ public:
     }
 
 protected:
-    virtual structure::PathTree::Set _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+    virtual structure::PathTree::Vector _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         return flexed_category_->check_flexed_category(ctx, role_type);
     };
 
@@ -95,11 +95,11 @@ public:
     }
 
 protected:
-    virtual structure::PathTree::Set _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+    virtual structure::PathTree::Vector _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         return check_junction(ctx, role_type);
     };
 
-    virtual structure::PathTree::Set check_junction_item(parser::ParserContextManager& ctx, size_t i, structure::RoleType role_type) const override {
+    virtual structure::PathTree::Vector check_junction_item(parser::ParserContextManager& ctx, size_t i, structure::RoleType role_type) const override {
         return items_[i]->check_flexed_category(ctx, role_type);
     };
 };

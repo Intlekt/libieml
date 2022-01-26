@@ -6,7 +6,7 @@ using namespace ieml::structure;
 
 
 
-PathTree::Set PathTree::Register::get_or_create_product(const PathNode::Set& node_set, const std::vector<PathTree::Set>& children_list) {
+PathTree::Vector PathTree::Register::get_or_create_product(const PathNode::Vector& node_set, const std::vector<PathTree::Vector>& children_list) {
     size_t size = 1;
     for (auto& set : children_list) size *= set.size();
 
@@ -21,16 +21,16 @@ PathTree::Set PathTree::Register::get_or_create_product(const PathNode::Set& nod
         }
     }
 
-    Set res;
+    Vector res;
     for (auto& children: bins)
         for (auto& node: node_set)
-            res.insert(get_or_create(node, children));
+            res.push_back(get_or_create(node, children));
 
     return res;
 }
 
-PathTree::Set PathTree::Register::get_or_create_product(const std::shared_ptr<PathNode>& node, const std::vector<PathTree::Set>& children_list) {
-    return get_or_create_product(PathNode::Set{node}, children_list);
+PathTree::Vector PathTree::Register::get_or_create_product(const std::shared_ptr<PathNode>& node, const std::vector<PathTree::Vector>& children_list) {
+    return get_or_create_product(PathNode::Vector{node}, children_list);
 }
 
 std::shared_ptr<PathTree> PathTree::Register::get_or_create(const std::shared_ptr<PathNode>& node, const PathTree::Set& children) {
@@ -133,20 +133,62 @@ std::vector<PathTree::SubPathTree> PathTree::find_sub_tree(PathTree::Register& r
     return res;
 }
 
-PathTree::Set PathTree::singular_sequences(const std::shared_ptr<PathTree>& pt) {
+PathTree::Vector PathTree::singular_sequences(const std::shared_ptr<PathTree>& pt) {
+    PathTree::Vector res;
     switch (pt->getNode()->getPathType()) {
         case PathType::ROOT:
             return {pt};
         case PathType::PARADIGM:
-            return pt->getChildren();
+            for (auto& p_index: pt->getChildren()) {
+                // the child of PARADIGM is PARADIGM_INDEX
+                const auto& children = p_index->getChildren();
+                auto ss_it = children.begin();
+                if (ss_it == children.end())             
+                    throw std::invalid_argument("Invalid path sequence for singular sequences " + pt->to_string_path());
+
+                res.push_back(*ss_it);
+            }
+            return res;
         default:
             throw std::invalid_argument("Invalid path type for singular sequences " + std::string(pt->getNode()->getPathType()._to_string()));
     }
 }
 
-PathTree::Set PathTree::paths(__attribute__((unused)) const std::shared_ptr<PathTree>& pt) {
-    return {};
+PathTree::Set PathTree::paths(PathTree::Register& reg, const std::shared_ptr<PathTree>& pt) {
+    if (pt->is_path())
+        return {pt};
+    
+    PathTree::Set res;
+    for (const auto& child: pt->children_) {
+        for (const auto& subpath: paths(reg, child)) {
+            res.insert(reg.get_or_create(pt->node_, {subpath}));
+        }
+    }
+
+    return res;
 }
+
+std::shared_ptr<PathTree> PathTree::paradigm_invariant(PathTree::Register& reg, const std::shared_ptr<PathTree>& paradigm) {
+    PathTree::Vector singular_sequences = PathTree::singular_sequences(paradigm);
+
+    auto it = singular_sequences.begin();
+    PathTree::Set invariant_paths = PathTree::paths(reg, *it);
+
+    ++it;
+    while (it != singular_sequences.end()) {
+        PathTree::Set ss_paths = PathTree::paths(reg, *it);
+        PathTree::Set out;
+        std::copy_if(invariant_paths.begin(), 
+                     invariant_paths.end(), 
+                     std::inserter(out, out.begin()), 
+                     [&ss_paths](const std::shared_ptr<PathTree>& pt){return ss_paths.count(pt) != 0;});
+        invariant_paths = out;
+        ++it;
+    }
+
+    return reg.buildFromPaths(invariant_paths);
+}
+
 
 
 bool PathTree::is_valid() const {

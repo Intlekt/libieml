@@ -21,9 +21,9 @@ class Phrase: virtual public AST, public ICategory, public IReferenceValue {
 public:
     Phrase() : ICategory(), IReferenceValue() {}
 
-    virtual structure::PathTree::Set check_phrase(parser::ParserContextManager& ctx) const = 0;
+    virtual structure::PathTree::Vector check_phrase(parser::ParserContextManager& ctx) const = 0;
 
-    virtual structure::PathTree::Set check_category(parser::ParserContextManager& ctx) const {
+    virtual structure::PathTree::Vector check_category(parser::ParserContextManager& ctx) const {
         return check_phrase(ctx);
     };
 
@@ -55,10 +55,10 @@ public:
         return os.str();
     }
 
-    virtual structure::PathTree::Set check_phrase(parser::ParserContextManager& ctx) const override {
+    virtual structure::PathTree::Vector check_phrase(parser::ParserContextManager& ctx) const override {
         std::unordered_set<structure::RoleType> seen_nodes;
         
-        std::vector<structure::PathTree::Set> children_list;
+        std::vector<structure::PathTree::Vector> children_list;
 
         bool valid = true;
         for (const auto& line: phrase_lines_) {
@@ -115,11 +115,12 @@ public:
         return "(" + junction_to_string() + ")";
     }
     
-    virtual structure::PathTree::Set check_junction_item(parser::ParserContextManager& ctx, size_t i, __attribute__((unused)) Empty a) const override {
+    virtual structure::PathTree::Vector check_junction_item(parser::ParserContextManager& ctx, size_t i, 
+                                                            __attribute__((unused)) Empty a) const override {
         return items_[i]->check_phrase(ctx);
     };
 
-    virtual structure::PathTree::Set check_phrase(parser::ParserContextManager& ctx) const override {
+    virtual structure::PathTree::Vector check_phrase(parser::ParserContextManager& ctx) const override {
         return check_junction(ctx, {});
     }
 };

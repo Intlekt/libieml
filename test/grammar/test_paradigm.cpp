@@ -14,7 +14,7 @@ using namespace ieml::parser;
 
 
 TEST(ieml_grammar_test_case, paradigm_definition) {
-    IEMLParser parser(R"(@word "a". @word "b". @node en:node0 (0 #"a"). @node en:node1 (0 #"b"). @paranode en:paranode (0 #{"a";"b"}).)");
+    IEMLParser parser(R"(@word "a". @word "b". @node en:invariant (0 #"a"). @node en:node0 (0 #"a", 1 #"a"). @node en:node1 (0 #"a", 1 #"b"). @paranode en:paranode (0 #"a", 1 #{"a";"b"}).)");
 
     try {
         parser.parse();
@@ -36,8 +36,8 @@ TEST(ieml_grammar_test_case, paradigm_definition) {
     const auto& node0 = creg.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "node0"));
     const auto& node1 = creg.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "node1"));
 
-    EXPECT_EQ(ieml::structure::PathTree::singular_sequences(paradigm), (ieml::structure::PathTree::Set{node0, node1}));
+    EXPECT_EQ(ieml::structure::PathTree::singular_sequences(paradigm), (ieml::structure::PathTree::Vector{node0, node1}));
 
-    EXPECT_EQ(paradigm->getChildrenAsVector()[0], node0);
-    EXPECT_EQ(paradigm->getChildrenAsVector()[1], node1);
+    EXPECT_EQ(paradigm->getChildrenAsVector()[0]->getChildrenAsVector()[0], node0);
+    EXPECT_EQ(paradigm->getChildrenAsVector()[1]->getChildrenAsVector()[0], node1);
 };

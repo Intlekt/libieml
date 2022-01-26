@@ -31,7 +31,7 @@ public:
         return os.str();
     }
 
-    virtual structure::PathNode::Set check_inflection_list(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+    virtual structure::PathNode::Vector check_inflection_list(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         std::set<std::shared_ptr<structure::InflectionWord>> inflections;
 
         bool valid = true;

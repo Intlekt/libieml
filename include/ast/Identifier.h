@@ -27,7 +27,7 @@ public:
         return name_;
     }
 
-    virtual structure::PathTree::Set check_category(parser::ParserContextManager& ctx) const {        
+    virtual structure::PathTree::Vector check_category(parser::ParserContextManager& ctx) const {        
         std::shared_ptr<structure::PathTree> phrase = ctx.getCategoryRegister().resolve_category(structure::LanguageString(ctx.getLanguage(), name_));
 
         if (phrase == nullptr) {
