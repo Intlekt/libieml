@@ -85,6 +85,15 @@ nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::Pat
         references.push_back(graph[tgt].element->uid());
     }
 
+    nlohmann::json singular_sequences = nlohmann::json::array();
+    for (const auto& ss: ieml::structure::PathTree::singular_sequences(category)) {
+        singular_sequences.push_back(ss->uid());
+    }
+
+    nlohmann::json invariant = nullptr;
+    if (category->is_paradigm())
+        invariant = ieml::structure::PathTree::paradigm_invariant(ctx.getPathTreeRegister(), category)->uid();
+
     return {
         {"id", category->uid()},
         {"range", charRangeToJson(range)},
@@ -93,6 +102,8 @@ nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::Pat
         {"type", "CATEGORY"},
 
         {"category_type", node_type},
+        {"invariant", invariant},
+        {"singular_sequences", singular_sequences},
         {"references", references},
         {"back_references", back_references}
     };
@@ -109,9 +120,14 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
 
     auto name = ctx.getWordRegister().getName(word);
 
+    nlohmann::json name_json = nullptr;
+    if (name)
+        name_json = nameToJson(*name);
+
+
     return {
         {"id", word->uid()},
-        {"translations", nameToJson(*name)},
+        {"translations", name_json},
         // {"user_defined", user_defined},
         {"type", "WORD"},
         {"word_type", word->getWordType()._to_string()}
@@ -134,6 +150,9 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
     for (auto it = cregister.categories_begin(); it != cregister.categories_end(); ++it)
         elements[it->first->uid()] = categoryToJson(it->first, *context, graph.getRegister(), graph.getGraph());
     
+    for (auto it = wregister.category_word_begin(); it != wregister.category_word_end(); ++it)
+        elements[it->second->uid()] = _wordToJson<ieml::structure::CategoryWord>(it->second, *context);
+
     for (auto it = wregister.auxiliaries_begin(); it != wregister.auxiliaries_end(); ++it)
         elements[it->first->uid()] = _wordToJson<ieml::structure::AuxiliaryWord>(it->first, *context);
 

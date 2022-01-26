@@ -137,6 +137,7 @@ PathTree::Vector PathTree::singular_sequences(const std::shared_ptr<PathTree>& p
     PathTree::Vector res;
     switch (pt->getNode()->getPathType()) {
         case PathType::ROOT:
+        case PathType::JUNCTION_PHRASE:
             return {pt};
         case PathType::PARADIGM:
             for (auto& p_index: pt->getChildren()) {

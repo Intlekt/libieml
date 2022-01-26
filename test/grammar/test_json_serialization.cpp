@@ -12,6 +12,7 @@
 #include "ParserJsonSerializer.h"
 
 #include "relation/Composition.h"
+#include <nlohmann/json.hpp>
 
 
 TEST(ieml_grammar_test_case, json_serialization) {
@@ -31,6 +32,28 @@ TEST(ieml_grammar_test_case, json_serialization) {
     parser.parse();
 
     auto res = ieml::parser::parserToJson(parser);
+
+    // check that all the id that are defined in the json are present
+
+    for (nlohmann::json::iterator it = res["elements"].begin(); it != res["elements"].end(); ++it) {
+        auto v = it.value();
+        EXPECT_EQ(it.key(), v["id"]);
+
+        if (v["type"] == "CATEGORY") {
+            for (auto ref: v["back_references"])
+                EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing back_references " + std::string(ref) + " of " + it.key();
+            for (auto ref: v["references"])
+                EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing references " + std::string(ref) + " of " + it.key();
+            for (auto ref: v["singular_sequences"])
+                EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing singular_sequences " + std::string(ref) + " of " + it.key();
+
+            if (v["category_type"] == "PARADIGM") {
+                EXPECT_NE(v["invariant"], nullptr);
+                EXPECT_TRUE(res["elements"].contains(v["invariant"])) << "Not containing invariant " + std::string(v["invariant"]) + " of " + it.key();
+            }
+        }
+    }
+
 }
 
 TEST(ieml_grammar_test_case, composition_graph_json_serialization) {
@@ -54,7 +77,7 @@ TEST(ieml_grammar_test_case, composition_graph_json_serialization) {
     auto cregister = parser.getContext()->getCategoryRegister();
     auto mapping = parser.getContext()->getSourceMapping();
     ieml::relation::buildCompositionRelationGraph(graph, parser.getContext()->getPathTreeRegister(), cregister, wregister);
-    ieml::parser::binaryGraphToJson(graph, cregister, wregister, mapping).dump();
+    auto json = ieml::parser::binaryGraphToJson(graph, cregister, wregister, mapping).dump();
 }
 
 TEST(ieml_grammar_test_case, unique_id_pathtree) {
