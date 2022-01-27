@@ -2,14 +2,14 @@ grammar ieml;
 
 program : declarations+=declaration* EOF;
 
-declaration : COMPONENT  language_strings+=language_string+ phrase_=phrase                               DECLARATION_END    # componentDeclaration
-            | NODE       language_strings+=language_string+ phrase_=phrase                               DECLARATION_END    # nodeDeclaration
-            | PARANODE   language_strings+=language_string+ phrase_=phrase                               DECLARATION_END    # paranodeDeclaration
-            | WORD                                                                     word_=word        DECLARATION_END    # wordDeclaration
-            | INFLECTION language_strings+=language_string+ inflection_type=IDENTIFIER word_=word        DECLARATION_END    # inflectionDeclaration
-            | AUXILIARY  language_strings+=language_string+ role_type=INTEGER          word_=word        DECLARATION_END    # auxiliaryDeclaration
-            | JUNCTION   language_strings+=language_string+                            word_=word        DECLARATION_END    # junctionDeclaration
-            | LANGUAGE   language=identifier                                                             DECLARATION_END    # languageDeclaration
+declaration : COMPONENT  language_strings+=language_string+                                     phrase_=phrase            DECLARATION_END    # componentDeclaration
+            | NODE       language_strings+=language_string+                                     phrase_=phrase            DECLARATION_END    # nodeDeclaration
+            | PARANODE   language_strings+=language_string+ dimensions+=dimension_definition+   phrase_=phrase            DECLARATION_END    # paranodeDeclaration
+            | WORD                                                                              word_=word                DECLARATION_END    # wordDeclaration
+            | INFLECTION language_strings+=language_string+ inflection_type=IDENTIFIER          word_=word                DECLARATION_END    # inflectionDeclaration
+            | AUXILIARY  language_strings+=language_string+ role_type=INTEGER                   word_=word                DECLARATION_END    # auxiliaryDeclaration
+            | JUNCTION   language_strings+=language_string+                                     word_=word                DECLARATION_END    # junctionDeclaration
+            | LANGUAGE   language=identifier                                                                              DECLARATION_END    # languageDeclaration
             ;
 
 phrase : PARENTHESIS_START phrase_lines+=phrase_line (COMMA phrase_lines+=phrase_line)* PARENTHESIS_END                        # phrase__lines
@@ -78,7 +78,10 @@ path_node : CATEGORY_MARK                                                       
           | INTEGER                                                                         # path_node__role_number
           ;
 
+dimension_definition : dimension_mark=DIMENSION_MARK paths+=path (PARADIGM_SEP paths+=path)*;
+
 LANGUAGE_STRING_MARK : [a-z][a-z]':';
+DIMENSION_MARK : [1-9]'d:';
 
 STRING : '"'(~'"'|'\\"')*'"';
 
@@ -130,6 +133,3 @@ AUXILIARY : '@auxiliary';
 JUNCTION : '@junction';
 PARANODE: '@paranode';
 TABLE: '@table';
-// REFERENCE_ID : 'id';
-// REFERENCE_DATATYPE : 'dt';
-// REFERENCE_VALUE : 'va';

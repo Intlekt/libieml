@@ -9,6 +9,7 @@
 #include "ast/Word.h"
 #include "ast/Constants.h"
 #include "ast/Phrase.h"
+#include "ast/DimensionDefinition.h"
 #include "ParserContextManager.h"
 
 
@@ -169,13 +170,15 @@ class ParanodeDeclaration: public CategoryDeclaration {
 public:
     ParanodeDeclaration(std::shared_ptr<CharRange>&& char_range, 
                         std::vector<std::shared_ptr<LanguageString>>&& translations,
+                        std::vector<std::shared_ptr<DimensionDefinition>>&& dimensions,
                         std::shared_ptr<Phrase>&& phrase) : 
         AST(std::move(char_range)), 
         CategoryDeclaration(
             nullptr,
             std::move(translations),
             std::move(phrase),
-            DeclarationType::PARANODE) {};
+            DeclarationType::PARANODE),
+        dimension_definitions_(std::move(dimensions)) {};
 
     virtual std::string getDeclarationString() const override {return "@paranode";};
 
@@ -246,6 +249,9 @@ protected:
             std::make_shared<structure::ParadigmPathNode>(), 
             children);
     };
+
+private:
+    const std::vector<std::shared_ptr<DimensionDefinition>> dimension_definitions_;
 
 };
 

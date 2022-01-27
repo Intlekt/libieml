@@ -63,9 +63,9 @@ TEST(ieml_grammar_test_case, inflection_decl_valid_noun_test_verb)             T
 TEST(ieml_grammar_test_case, inflection_decl_valid_verb)             TEST_PARSE_NO_ERRORS(R"(@inflection en:test VERB "wa.".)");
 TEST(ieml_grammar_test_case, inflection_decl_valid_multi_trad)       TEST_PARSE_NO_ERRORS(R"(@inflection en:test en:test2 VERB "wa.".)");
 TEST(ieml_grammar_test_case, component_decl)                         TEST_PARSE_NO_ERRORS(R"(@word "wa.". @component en:test (0 #"wa."). @component en:test2 (0 #test).)");
-TEST(ieml_grammar_test_case, paradigm_category)                      TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:invariant (0 #"wa."). @paranode en:test2 (0 #"wa.", 1 #{"wa."; "we."}).)");
-TEST(ieml_grammar_test_case, paradigm_auxiliary)                     TEST_PARSE_NO_ERRORS(R"(@word "wa.". @auxiliary en:aux0 1 "we.". @auxiliary en:aux1 1 "wo.". @node en:invariant (0 #"wa."). @paranode en:test2 (0 #"wa.", 1 {*aux0 ; *aux1} #"wa.").)");
-TEST(ieml_grammar_test_case, paradigm_inflection)                    TEST_PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:infl0 NOUN "we.". @inflection en:infl1 NOUN "wo.". @node en:invariant (0 #"wa."). @paranode en:test2 (0 #"wa.", 1 {~infl0; ~infl1} #"wa.").)");
+TEST(ieml_grammar_test_case, paradigm_category)                      TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:invariant (0 #"wa."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 #{"wa."; "we."}).)");
+TEST(ieml_grammar_test_case, paradigm_auxiliary)                     TEST_PARSE_NO_ERRORS(R"(@word "wa.". @auxiliary en:aux0 1 "we.". @auxiliary en:aux1 1 "wo.". @node en:invariant (0 #"wa."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {*aux0 ; *aux1} #"wa.").)");
+TEST(ieml_grammar_test_case, paradigm_inflection)                    TEST_PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:infl0 NOUN "we.". @inflection en:infl1 NOUN "wo.". @node en:invariant (0 #"wa."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {~infl0; ~infl1} #"wa.").)");
 
 
 

@@ -14,7 +14,7 @@ using namespace ieml::parser;
 
 
 TEST(ieml_grammar_test_case, paradigm_definition) {
-    IEMLParser parser(R"(@word "a". @word "b". @node en:invariant (0 #"a"). @node en:node0 (0 #"a", 1 #"a"). @node en:node1 (0 #"a", 1 #"b"). @paranode en:paranode (0 #"a", 1 #{"a";"b"}).)");
+    IEMLParser parser(R"(@word "a". @word "b". @node en:invariant (0 #"a"). @node en:node0 (0 #"a", 1 #"a"). @node en:node1 (0 #"a", 1 #"b"). @paranode en:paranode 1d:/#/1 (0 #"a", 1 #{"a";"b"}).)");
 
     try {
         parser.parse();

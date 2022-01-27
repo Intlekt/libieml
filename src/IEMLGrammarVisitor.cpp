@@ -16,6 +16,7 @@
 #include "ast/AuxiliaryParadigm.h"
 #include "ast/Path.h"
 #include "ast/Junction.h"
+#include "ast/DimensionDefinition.h"
 
 #define RETURN_VISITOR_RESULT_NO_ARGS(ReturnType, DerivedType) \
   return antlrcpp::Any(VisitorResult<ReturnType>(std::make_unique<DerivedType>(charRangeFromContext(ctx))));
@@ -153,12 +154,14 @@ namespace ieml::parser {
 
   antlrcpp::Any IEMLGrammarVisitor::visitParanodeDeclaration(iemlParser::ParanodeDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase definition in node declaration.", true);
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, DimensionDefinition, dimensions, "Invalid dimension definition.");
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
     CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, Declaration);
     CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
+    CAST_OR_RETURN_IF_NULL_LIST(dimensions, Declaration);
 
-    RETURN_VISITOR_RESULT(Declaration, ParanodeDeclaration, std::move(language_strings), std::move(phrase_));
+    RETURN_VISITOR_RESULT(Declaration, ParanodeDeclaration, std::move(language_strings), std::move(dimensions), std::move(phrase_));
   }
 
   antlrcpp::Any IEMLGrammarVisitor::visitWordDeclaration(iemlParser::WordDeclarationContext *ctx) {    
@@ -602,6 +605,25 @@ namespace ieml::parser {
     size_t role_number = std::stoi(ctx->INTEGER()->getText());
 
     RETURN_VISITOR_RESULT(PathNode, RoleNumberPathNode, role_number);
+  }
+
+  /**
+   * DIMENSION DEFINITION
+   */
+  antlrcpp::Any IEMLGrammarVisitor::visitDimension_definition(iemlParser::Dimension_definitionContext *ctx) {
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Path, paths, "Invalid path list for a paranode dimension definition.");
+
+    if (!ctx->dimension_mark) {
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid dimension mark for paranode dimension definition.");
+      RETURN_VISITOR_RESULT_ERROR(DimensionDefinition);
+    }
+
+    auto dimension_mark = ctx->dimension_mark->getText();
+    const size_t dimension_index = std::stoi(dimension_mark.substr(0, dimension_mark.find("d")));
+
+    CAST_OR_RETURN_IF_NULL_LIST(paths, DimensionDefinition);
+
+    RETURN_VISITOR_RESULT(DimensionDefinition, DimensionDefinition, dimension_index, std::move(paths))
   }
 
   /**
