@@ -1,6 +1,15 @@
 #include "IEMLGrammarVisitor.h"
 
-#include "ast/Declaration.h"
+#include "ast/interfaces/IDeclaration.h"
+#include "ast/declaration/AuxiliaryDeclaration.h"
+#include "ast/declaration/CategoryDeclaration.h"
+#include "ast/declaration/ComponentDeclaration.h"
+#include "ast/declaration/InflectionDeclaration.h"
+#include "ast/declaration/JunctionDeclaration.h"
+#include "ast/declaration/LanguageDeclaration.h"
+#include "ast/declaration/NodeDeclaration.h"
+#include "ast/declaration/ParanodeDeclaration.h"
+#include "ast/declaration/WordDeclaration.h"
 #include "ast/Constants.h"
 #include "ast/Identifier.h"
 #include "ast/Program.h"
@@ -121,7 +130,7 @@ namespace ieml::parser {
    */
 
   antlrcpp::Any IEMLGrammarVisitor::visitProgram(iemlParser::ProgramContext *ctx) {
-    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Declaration, declarations, "Invalid declaration.");
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, IDeclaration, declarations, "Invalid declaration.");
     // CAST_OR_RETURN_IF_NULL_LIST(declarations, Program);
 
     RETURN_VISITOR_RESULT(Program, Program, std::move(declarations));
@@ -136,20 +145,20 @@ namespace ieml::parser {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase definition in component declaration.", true);
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
-    CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, Declaration);
-    CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
+    CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, IDeclaration);
+    CAST_OR_RETURN_IF_NULL_LIST(language_strings, IDeclaration);
 
-    RETURN_VISITOR_RESULT(Declaration, ComponentDeclaration, std::move(language_strings), std::move(phrase_));
+    RETURN_VISITOR_RESULT(IDeclaration, ComponentDeclaration, std::move(language_strings), std::move(phrase_));
   }
 
   antlrcpp::Any IEMLGrammarVisitor::visitNodeDeclaration(iemlParser::NodeDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase definition in node declaration.", true);
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
-    CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, Declaration);
-    CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
+    CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, IDeclaration);
+    CAST_OR_RETURN_IF_NULL_LIST(language_strings, IDeclaration);
 
-    RETURN_VISITOR_RESULT(Declaration, NodeDeclaration, std::move(language_strings), std::move(phrase_));
+    RETURN_VISITOR_RESULT(IDeclaration, NodeDeclaration, std::move(language_strings), std::move(phrase_));
   }
 
   antlrcpp::Any IEMLGrammarVisitor::visitParanodeDeclaration(iemlParser::ParanodeDeclarationContext *ctx) {
@@ -157,19 +166,19 @@ namespace ieml::parser {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, DimensionDefinition, dimensions, "Invalid dimension definition.");
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
-    CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, Declaration);
-    CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
-    CAST_OR_RETURN_IF_NULL_LIST(dimensions, Declaration);
+    CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, IDeclaration);
+    CAST_OR_RETURN_IF_NULL_LIST(language_strings, IDeclaration);
+    CAST_OR_RETURN_IF_NULL_LIST(dimensions, IDeclaration);
 
-    RETURN_VISITOR_RESULT(Declaration, ParanodeDeclaration, std::move(language_strings), std::move(dimensions), std::move(phrase_));
+    RETURN_VISITOR_RESULT(IDeclaration, ParanodeDeclaration, std::move(language_strings), std::move(dimensions), std::move(phrase_));
   }
 
   antlrcpp::Any IEMLGrammarVisitor::visitWordDeclaration(iemlParser::WordDeclarationContext *ctx) {    
     CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for a word declaration.", true);
 
-    CAST_OR_RETURN_IF_NULL(ctx, Word, word_, Declaration);
+    CAST_OR_RETURN_IF_NULL(ctx, Word, word_, IDeclaration);
 
-    RETURN_VISITOR_RESULT(Declaration, WordDeclaration, std::move(word_));
+    RETURN_VISITOR_RESULT(IDeclaration, WordDeclaration, std::move(word_));
   }
 
   antlrcpp::Any IEMLGrammarVisitor::visitInflectionDeclaration(iemlParser::InflectionDeclarationContext *ctx) {
@@ -183,11 +192,11 @@ namespace ieml::parser {
     
     CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for an inflection declaration.", true);
 
-    CAST_OR_RETURN_IF_NULL(ctx, Word, word_, Declaration);
-    if (inflection_type == nullptr) RETURN_VISITOR_RESULT_ERROR(Declaration);
-    CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
+    CAST_OR_RETURN_IF_NULL(ctx, Word, word_, IDeclaration);
+    if (inflection_type == nullptr) RETURN_VISITOR_RESULT_ERROR(IDeclaration);
+    CAST_OR_RETURN_IF_NULL_LIST(language_strings, IDeclaration);
 
-    RETURN_VISITOR_RESULT(Declaration, 
+    RETURN_VISITOR_RESULT(IDeclaration, 
                           InflectionDeclaration,
                           std::move(language_strings),
                           std::move(inflection_type),
@@ -204,14 +213,14 @@ namespace ieml::parser {
       accepted_role_type = std::stoi(ctx->role_type->getText());
 
     if (accepted_role_type == -1)
-      RETURN_VISITOR_RESULT_ERROR(Declaration);
+      RETURN_VISITOR_RESULT_ERROR(IDeclaration);
 
     CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for an auxiliary declaration.", true);
 
-    CAST_OR_RETURN_IF_NULL(ctx, Word, word_, Declaration);
-    CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
+    CAST_OR_RETURN_IF_NULL(ctx, Word, word_, IDeclaration);
+    CAST_OR_RETURN_IF_NULL_LIST(language_strings, IDeclaration);
 
-    RETURN_VISITOR_RESULT(Declaration, 
+    RETURN_VISITOR_RESULT(IDeclaration, 
                           AuxiliaryDeclaration,
                           std::move(language_strings),
                           accepted_role_type,
@@ -223,10 +232,10 @@ namespace ieml::parser {
 
     CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for a junction declaration.", true);
 
-    CAST_OR_RETURN_IF_NULL(ctx, Word, word_, Declaration);
-    CAST_OR_RETURN_IF_NULL_LIST(language_strings, Declaration);
+    CAST_OR_RETURN_IF_NULL(ctx, Word, word_, IDeclaration);
+    CAST_OR_RETURN_IF_NULL_LIST(language_strings, IDeclaration);
  
-    RETURN_VISITOR_RESULT(Declaration, 
+    RETURN_VISITOR_RESULT(IDeclaration, 
                           JunctionDeclaration,
                           std::move(language_strings),
                           std::move(word_));
@@ -237,7 +246,7 @@ namespace ieml::parser {
 
     CAST_OR_RETURN_IF_NULL(ctx, Identifier, language, LanguageDeclaration);
 
-    RETURN_VISITOR_RESULT(Declaration, 
+    RETURN_VISITOR_RESULT(IDeclaration, 
                           LanguageDeclaration,
                           std::move(language));
   }
