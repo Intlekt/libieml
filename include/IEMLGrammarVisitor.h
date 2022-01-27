@@ -82,7 +82,8 @@ public:
   /**
    * INFLEXION LIST
    */
-  virtual antlrcpp::Any visitInflection_list(iemlParser::Inflection_listContext *ctx) override;
+  virtual antlrcpp::Any visitInflection_list__identifiers(iemlParser::Inflection_list__identifiersContext *ctx) override;
+  virtual antlrcpp::Any visitInflection_list__words(iemlParser::Inflection_list__wordsContext *ctx) override;
   virtual antlrcpp::Any visitInflection_list_paradigm(iemlParser::Inflection_list_paradigmContext *ctx) override;
 
   /**

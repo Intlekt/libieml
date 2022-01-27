@@ -308,14 +308,22 @@ namespace ieml::parser {
   /**
    * INFLEXION LIST
    */
-  antlrcpp::Any IEMLGrammarVisitor::visitInflection_list(iemlParser::Inflection_listContext *ctx) {
-    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Identifier, inflections, "Invalid inflection identifiers in phrase line.");
-    CAST_OR_RETURN_IF_NULL_LIST(inflections, InflectionList);
+  antlrcpp::Any IEMLGrammarVisitor::visitInflection_list__identifiers(iemlParser::Inflection_list__identifiersContext *ctx) {
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Identifier, inflections, "Invalid inflection identifiers in phrase line or path.");
+    CAST_OR_RETURN_IF_NULL_LIST(inflections, IInflectionList);
 
-    RETURN_VISITOR_RESULT(InflectionList, InflectionList, std::move(inflections));
+    RETURN_VISITOR_RESULT(IInflectionList, InflectionList, std::move(inflections));
   }
+
+  antlrcpp::Any IEMLGrammarVisitor::visitInflection_list__words(iemlParser::Inflection_list__wordsContext *ctx) {
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Word, words, "Invalid inflection words in phrase line or path.");
+    CAST_OR_RETURN_IF_NULL_LIST(words, IInflectionList);
+
+    RETURN_VISITOR_RESULT(IInflectionList, WordInflectionList, std::move(words));
+  }
+
   antlrcpp::Any IEMLGrammarVisitor::visitInflection_list_paradigm(iemlParser::Inflection_list_paradigmContext *ctx) {
-    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, InflectionList, inflection_lists, "Invalid inflection list in inflection paradigm.");
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, IInflectionList, inflection_lists, "Invalid inflection list in inflection paradigm.");
     CAST_OR_RETURN_IF_NULL_LIST(inflection_lists, IInflectionList);
 
     RETURN_VISITOR_RESULT(IInflectionList, InflectionListParadigm, std::move(inflection_lists));
@@ -397,7 +405,7 @@ namespace ieml::parser {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a category : an identifier, a phrase or a word.", true);
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Reference, references, "Invalid reference.");
 
-    CAST_OR_RETURN_IF_NULL(ctx, InflectionList, inflection_list_, InflectedCategory);
+    CAST_OR_RETURN_IF_NULL(ctx, IInflectionList, inflection_list_, InflectedCategory);
     CAST_OR_RETURN_IF_NULL(ctx, ICategory, category_, InflectedCategory);
     CAST_OR_RETURN_IF_NULL_LIST(references, InflectedCategory);
 
@@ -407,7 +415,7 @@ namespace ieml::parser {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, inflection_list_, "Invalid inflection list in inflected category.", false);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a substitution list of category.", true);
     
-    CAST_OR_RETURN_IF_NULL(ctx, InflectionList, inflection_list_, InflectedCategory);
+    CAST_OR_RETURN_IF_NULL(ctx, IInflectionList, inflection_list_, InflectedCategory);
     CAST_OR_RETURN_IF_NULL(ctx, CategoryParadigm, category_, InflectedCategory);
 
     RETURN_VISITOR_RESULT(InflectedCategory, InflectedCategory, std::move(inflection_list_), std::move(category_), std::vector<std::shared_ptr<Reference>>{});
@@ -563,7 +571,7 @@ namespace ieml::parser {
 
   antlrcpp::Any IEMLGrammarVisitor::visitPath_node__inflection(iemlParser::Path_node__inflectionContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, inflection_list_, "Invalid inflection list for a path definition.", true);
-    CAST_OR_RETURN_IF_NULL(ctx, InflectionList, inflection_list_, PathNode);
+    CAST_OR_RETURN_IF_NULL(ctx, IInflectionList, inflection_list_, PathNode);
     RETURN_VISITOR_RESULT(PathNode, InflectionListPathNode, std::move(inflection_list_));
   }
 

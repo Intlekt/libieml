@@ -11,7 +11,7 @@ namespace ieml::AST {
 class InflectionListParadigm: virtual public AST, public IInflectionList {
 public:
     InflectionListParadigm(std::shared_ptr<CharRange>&& char_range,
-                           std::vector<std::shared_ptr<InflectionList>>&& inflection_lists) : 
+                           std::vector<std::shared_ptr<IInflectionList>>&& inflection_lists) : 
         AST(std::move(char_range)),
         inflection_lists_(std::move(inflection_lists)) {}
 
@@ -52,7 +52,7 @@ public:
     }
 
 private:
-    const std::vector<std::shared_ptr<InflectionList>> inflection_lists_;
+    const std::vector<std::shared_ptr<IInflectionList>> inflection_lists_;
 
 };
 }

@@ -224,7 +224,7 @@ private:
 class InflectionListPathNode: public virtual AST, public PathNode {
 public:
     InflectionListPathNode(std::shared_ptr<CharRange>&& char_range,
-                           std::shared_ptr<InflectionList>&& inflection_list) : 
+                           std::shared_ptr<IInflectionList>&& inflection_list) : 
             AST(std::move(char_range)),
             PathNode(),
             inflection_list_(std::move(inflection_list)) {}
@@ -254,7 +254,7 @@ private:
         return {*inflection_list_set.begin()};
     }
 
-    const std::shared_ptr<InflectionList> inflection_list_;
+    const std::shared_ptr<IInflectionList> inflection_list_;
 };
 
 class WordPathNode: public virtual AST, public PathNode {

@@ -115,9 +115,6 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
                            ieml::parser::ParserContextManager& ctx) {
     static_assert(std::is_base_of_v<ieml::structure::Word, WordType>, "WordType must derive from ieml::structure::Word");
 
-    // auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(word));
-    // const ieml::AST::CharRange& range = ast->getCharRange();
-
     auto name = ctx.getWordRegister().getName(word);
 
     nlohmann::json name_json = nullptr;
@@ -128,7 +125,6 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
     return {
         {"id", word->uid()},
         {"translations", name_json},
-        // {"user_defined", user_defined},
         {"type", "WORD"},
         {"word_type", word->getWordType()._to_string()}
     };
