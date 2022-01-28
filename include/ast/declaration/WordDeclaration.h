@@ -7,7 +7,7 @@
 
 namespace ieml::AST {
 
-class WordDeclaration: public IDeclaration {
+class WordDeclaration: public virtual AST, public IDeclaration {
 public:
     WordDeclaration(std::shared_ptr<CharRange>&& char_range, 
                     std::shared_ptr<Word>&& word) : 

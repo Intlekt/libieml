@@ -52,6 +52,7 @@ std::shared_ptr<PathTree> PathTree::Register::buildFromPaths(const PathTree::Set
         return nullptr;
     
     const auto& node = (*paths.begin())->getNode();
+
     PathType path_type(PathType::ROOT);
     if ((*paths.begin())->getChildren().size() != 0)
         path_type = (*(*paths.begin())->getChildren().begin())->getNode()->getPathType();
@@ -59,13 +60,12 @@ std::shared_ptr<PathTree> PathTree::Register::buildFromPaths(const PathTree::Set
     std::unordered_map<PathNode*, PathTree::Set> children_paths;
 
     for (auto path : paths) {
-        // maybe change that to test equality by value ?
-        // will have issues with junction 
         if (*path->getNode() != *node)
             throw std::invalid_argument("All path does not share the same prefix: had '" + node->to_string() + "', got '" + path->getNode()->to_string() + "'.");
 
-        auto subpath = *path->getChildren().begin();
-        if (subpath) {
+        auto children = path->getChildren();
+        if (children.size() != 0) {
+            auto subpath = *children.begin();
             if (subpath->getNode()->getPathType() != path_type)
                 throw std::invalid_argument("All subpath does not share the same path type: had '" + std::string(path_type._to_string()) + "', got '" \
                                                 + std::string(subpath->getNode()->getPathType()._to_string()) + "'.");

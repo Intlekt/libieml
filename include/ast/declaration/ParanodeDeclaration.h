@@ -7,7 +7,7 @@
 
 namespace ieml::AST {
 
-class ParanodeDeclaration: public CategoryDeclaration {
+class ParanodeDeclaration: public virtual AST, public CategoryDeclaration {
 public:
     ParanodeDeclaration(std::shared_ptr<CharRange>&& char_range, 
                         std::vector<std::shared_ptr<LanguageString>>&& translations,

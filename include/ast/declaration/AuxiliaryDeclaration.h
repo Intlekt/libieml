@@ -6,7 +6,7 @@
 
 namespace ieml::AST {
 
-class AuxiliaryDeclaration: public ToolWordDeclaration {
+class AuxiliaryDeclaration: public virtual AST, public ToolWordDeclaration {
 public:
     AuxiliaryDeclaration(std::shared_ptr<CharRange>&& char_range, 
                          std::vector<std::shared_ptr<LanguageString>>&& translations,

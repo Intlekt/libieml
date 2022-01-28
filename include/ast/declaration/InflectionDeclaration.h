@@ -6,7 +6,7 @@
 
 namespace ieml::AST {
 
-class InflectionDeclaration: public ToolWordDeclaration {
+class InflectionDeclaration: public virtual AST, public ToolWordDeclaration {
 public:
     InflectionDeclaration(std::shared_ptr<CharRange>&& char_range, 
                           std::vector<std::shared_ptr<LanguageString>>&& translations,

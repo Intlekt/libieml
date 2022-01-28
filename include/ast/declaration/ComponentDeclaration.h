@@ -6,7 +6,7 @@
 
 namespace ieml::AST {
 
-class ComponentDeclaration: public SingularCategoryDeclaration {
+class ComponentDeclaration: public virtual AST, public SingularCategoryDeclaration {
 public:
     ComponentDeclaration(std::shared_ptr<CharRange>&& char_range, 
                          std::vector<std::shared_ptr<LanguageString>>&& translations,
