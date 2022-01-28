@@ -66,6 +66,14 @@ set(IEMLParser_src ${ANTLR_IEMLParser_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/IemlParser.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ParserJsonSerializer.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/Program.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/CategoryDeclaration.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/AuxiliaryDeclaration.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/JunctionDeclaration.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/InflectionDeclaration.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/ParanodeDeclaration.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/LanguageDeclaration.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/SingularCategoryDeclaration.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/WordDeclaration.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathNode.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathTree.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathParser.cpp

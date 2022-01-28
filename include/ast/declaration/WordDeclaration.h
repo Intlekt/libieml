@@ -1,10 +1,11 @@
 #pragma once
 
+
 #include "ast/interfaces/IDeclaration.h"
+#include "ast/Word.h"
 
 
 namespace ieml::AST {
-
 
 class WordDeclaration: public IDeclaration {
 public:
@@ -15,38 +16,14 @@ public:
         word_(std::move(word)) {};
 
 
-    std::string to_string() const {
-        return getDeclarationString() + " " + word_->to_string() + " .";
-    };
+    virtual std::string to_string() const override;
 
-    void check_declaration(ieml::parser::ParserContextManager& ctx) override {
-        auto word = word_->check_word(ctx);
-
-        if (!word) {
-            return;
-        }
-
-        auto& wregister = ctx.getWordRegister();
-
-        if (wregister.word_is_defined(word)) {
-            ctx.getErrorManager().visitorError(
-                getCharRange(), 
-                "Cannot redefine word " + word->to_string() + " as a category word, it has already been defined before."
-            );
-            return;
-        }
-
-        ctx.getSourceMapping().register_mapping(word, this);
-        wregister.define_word(word);
-    };
+    virtual void check_declaration(ieml::parser::ParserContextManager& ctx) const override;
 
     virtual std::string getDeclarationString() const override {return "@word";};
 
 private:
     std::shared_ptr<Word> word_;
 };
-
-
-
 
 }

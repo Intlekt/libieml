@@ -15,7 +15,7 @@ class SourceMapping {
 public:
     SourceMapping() {};
 
-    void register_mapping(std::shared_ptr<ieml::structure::PathTree> path_tree, ieml::AST::AST* declaration) {
+    void register_mapping(std::shared_ptr<ieml::structure::PathTree> path_tree, const ieml::AST::AST* declaration) {
         map_categories_.insert({
             path_tree,
             declaration
@@ -29,7 +29,7 @@ public:
         return it->second;
     }
 
-    void register_mapping(std::shared_ptr<ieml::structure::Word> word, ieml::AST::AST* declaration) {
+    void register_mapping(std::shared_ptr<ieml::structure::Word> word, const ieml::AST::AST* declaration) {
         map_words_.insert({
             word,
             declaration

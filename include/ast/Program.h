@@ -12,7 +12,7 @@
 namespace ieml::AST {
 class Program: virtual public AST {
 public:
-    Program(std::shared_ptr<CharRange> char_range,
+    Program(std::shared_ptr<CharRange>&& char_range,
             std::vector<std::shared_ptr<IDeclaration>>&& declarations) : 
         AST(std::move(char_range)), 
         declarations_(std::move(declarations)) {}

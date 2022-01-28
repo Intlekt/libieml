@@ -5,6 +5,7 @@
 #include "ast/interfaces/ITranslatable.h"
 #include "ast/Word.h"
 
+
 namespace ieml::AST {
 
 class ToolWordDeclaration: public virtual AST, public IDeclaration, public ITranslatable {

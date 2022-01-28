@@ -21,5 +21,4 @@ public:
     virtual std::string getDeclarationString() const override {return "@node";};
 };
 
-
 }

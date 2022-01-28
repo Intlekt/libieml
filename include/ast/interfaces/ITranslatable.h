@@ -39,7 +39,7 @@ public:
         return os.str();
     };
 
-    std::shared_ptr<structure::Name> check_translatable(parser::ParserContextManager& ctx) {
+    std::shared_ptr<structure::Name> check_translatable(parser::ParserContextManager& ctx) const {
         std::unordered_multiset<structure::LanguageString> names;
 
         bool valid = true;

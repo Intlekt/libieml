@@ -6,8 +6,6 @@
 
 namespace ieml::AST {
 
-
-
 class SingularCategoryDeclaration: public CategoryDeclaration {
 public:
     SingularCategoryDeclaration(std::shared_ptr<CharRange>&& char_range, 
@@ -25,30 +23,11 @@ public:
 
     virtual void define_category(ieml::parser::ParserContextManager& ctx, 
                                  std::shared_ptr<structure::Name>& name, 
-                                 std::shared_ptr<structure::PathTree>& phrase) const override {
-        ctx.getCategoryRegister().define_category(name, phrase, 
-            (getDeclarationType() == +DeclarationType::NODE ? 
-                structure::DefinitionType::NODE : 
-                structure::DefinitionType::COMPONENT)
-        );
-    }
+                                 std::shared_ptr<structure::PathTree>& phrase) const override;
 
 protected:
-    virtual std::shared_ptr<structure::PathTree> _check_phrase(ieml::parser::ParserContextManager& ctx) const override {
-        auto phrase_set = getPhrase()->check_phrase(ctx);
-
-        if (phrase_set.size() != 1) {
-            ctx.getErrorManager().visitorError(
-                getCharRange(), 
-                "Paradigms can only be defined with a @paranode declaration."
-            );
-            return nullptr;
-        }
-
-        return *phrase_set.begin();
-    };
+    virtual std::shared_ptr<structure::PathTree> _check_phrase(ieml::parser::ParserContextManager& ctx) const override;
 
 };
-
 
 }

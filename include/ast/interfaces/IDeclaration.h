@@ -12,7 +12,7 @@ public:
     IDeclaration(DeclarationType declaration_type) : 
         declaration_type_(declaration_type) {};
 
-    virtual void check_declaration(ieml::parser::ParserContextManager& ctx) = 0;
+    virtual void check_declaration(ieml::parser::ParserContextManager& ctx) const = 0;
 
     virtual std::string getDeclarationString() const = 0;
     DeclarationType getDeclarationType() const {return declaration_type_;};
