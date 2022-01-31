@@ -49,7 +49,47 @@ public:
         std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node, const Set& children);
         std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node) ;
 
+        /**
+         * @brief Build a PathTree from a paths Set. If the paths Set does not describe a valid PathTree, the function throws std::invalid_argument.
+         * 
+         * @param paths 
+         * @return std::shared_ptr<PathTree> 
+         */
         std::shared_ptr<PathTree> buildFromPaths(const Set& paths);
+
+        /**
+         * @brief Build a path tree Vector containing path trees formed by the cross product of variant_paths added to the invariant_paths. 
+         * The order of the cross product is conserved in the output.
+         * 
+         * @param invariant_paths the path vector that is included in each of the resulting path trees.
+         * @param variant_paths the path vector vector which exacly one path of each path vector is included in each of the resulting path trees.
+         * @return Vector 
+         */
+        Vector buildFromPaths_product(const Set& invariant_paths, const std::vector<Vector>& variant_paths);
+
+
+        /**
+         * @brief Return a vector of the vector of path in `path_tree` that have `path` as prefix, one such vector for each singular sequences of `path_tree`. If path_tree is singular,
+         * returns only a vector of one element
+         * 
+         * @param path_tree 
+         * @param path 
+         * @return std::vector<Vector> 
+         */
+        std::vector<Set> expand_path(const std::shared_ptr<PathTree>& path_tree, const Set& prefixes);
+
+
+        /**
+         * @brief Return the path set that correspond to this path tree.
+         * 
+         * @param pt 
+         * @return Path::Set 
+         */
+        Set paths(const std::shared_ptr<PathTree>& pt);
+
+        
+        Set invariant_paths(const std::shared_ptr<PathTree>&);
+
 
     private:
         struct eqKey {
@@ -93,16 +133,6 @@ public:
     static Vector singular_sequences(const std::shared_ptr<PathTree>& pt);
 
     /**
-     * @brief Return the path set that correspond to this path tree.
-     * 
-     * @param pt 
-     * @return Path::Set 
-     */
-    static Set paths(PathTree::Register& reg, const std::shared_ptr<PathTree>& pt);
-
-    static std::shared_ptr<PathTree> paradigm_invariant(PathTree::Register&, const std::shared_ptr<PathTree>&);
-
-    /**
      * @brief Return the path tree that correspond to this path set, if possible
      * 
      * @param paths 
@@ -115,6 +145,27 @@ public:
     const Set getChildren() const {return children_;};
 
     virtual size_t hash() const override {return hash_;};
+
+
+    /**
+     * @brief True if this is a prefix for path_tree. If path_tree is a paradigm, return True if all of the singular sequence of this paradigm have this as 
+     * a prefix.
+     * 
+     * @param path_tree 
+     * @return true 
+     * @return false 
+     */
+    bool is_prefix(const std::shared_ptr<PathTree>& path_tree) const;
+
+    /**
+     * @brief True if this is a prefix path for path_tree. This method works for path_Tree that are singular sequences, (is_paradigm() == false)
+     * 
+     * @param path_tree 
+     * @return true 
+     * @return false 
+     */
+    bool is_prefix_singular(const std::shared_ptr<PathTree>& path_tree) const;
+
 
     /**
      * @brief Recursively checks the validity of the sequence of node path.

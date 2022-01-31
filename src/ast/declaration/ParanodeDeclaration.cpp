@@ -7,7 +7,8 @@ void ParanodeDeclaration::define_category(ieml::parser::ParserContextManager& ct
                                           std::shared_ptr<structure::Name>& name, 
                                           std::shared_ptr<structure::PathTree>& phrase) const {
     
-    auto invariant = ieml::structure::PathTree::paradigm_invariant(ctx.getPathTreeRegister(), phrase);
+    auto& reg = ctx.getPathTreeRegister();
+    auto invariant = reg.buildFromPaths(reg.invariant_paths(phrase));
     if (invariant == nullptr) {
         ctx.getErrorManager().visitorError(
             getCharRange(), 
@@ -40,8 +41,10 @@ void ParanodeDeclaration::define_category(ieml::parser::ParserContextManager& ct
         return;
     }
 
-    ctx.getCategoryRegister().define_category(name, phrase, structure::DefinitionType::PARADIGM);
-    ctx.getParadigmRegister().define_paradigm(ctx.getPathTreeRegister(), phrase);
+    ctx.getCategoryRegister().define_category(name, phrase, structure::DefinitionType::PARADIGM);    
+
+    const auto& dimensions = _check_dimension_definitions(ctx, phrase);
+    ctx.getParadigmRegister().define_paradigm(ctx.getPathTreeRegister(), phrase, dimensions);
 }
 
 std::shared_ptr<ieml::structure::PathTree> ParanodeDeclaration::_check_phrase(ieml::parser::ParserContextManager& ctx) const {
@@ -70,6 +73,11 @@ std::shared_ptr<ieml::structure::PathTree> ParanodeDeclaration::_check_phrase(ie
         children);
 }
 
-std::vector<ieml::structure::PathTree::Set> ParanodeDeclaration::_check_dimension_definitions(__attribute__((unused)) ieml::parser::ParserContextManager& ctx) const {
-    return {};
+std::vector<ieml::structure::PathTree::Set> ParanodeDeclaration::_check_dimension_definitions(ieml::parser::ParserContextManager& ctx, 
+                                                                                              const std::shared_ptr<structure::PathTree>& phrase) const {
+    std::vector<ieml::structure::PathTree::Set> dimensions;
+    for (auto dim: dimension_definitions_)
+        dimensions.push_back(dim->check_dimension_definitions(ctx, phrase));
+
+    return dimensions;
 }

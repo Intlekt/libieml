@@ -5,6 +5,7 @@
 #include "ast/Constants.h"
 #include "ast/interfaces/AST.h"
 #include "structure/path/PathTree.h"
+#include "ParserContextManager.h"
 
 
 namespace ieml {

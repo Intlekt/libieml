@@ -29,7 +29,8 @@ public:
 protected:
     virtual std::shared_ptr<structure::PathTree> _check_phrase(ieml::parser::ParserContextManager& ctx) const override;
 
-    std::vector<structure::PathTree::Set> _check_dimension_definitions(ieml::parser::ParserContextManager& ctx) const;
+    std::vector<structure::PathTree::Set> _check_dimension_definitions(ieml::parser::ParserContextManager& ctx,
+                                                                       const std::shared_ptr<structure::PathTree>& phrase) const;
 
 private:
     const std::vector<std::shared_ptr<DimensionDefinition>> dimension_definitions_;

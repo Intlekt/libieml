@@ -246,7 +246,7 @@ TEST(ieml_structure_test_case, path_tree_invariant) {
     ASSERT_TRUE(paradigm->is_valid());
     ASSERT_TRUE(paradigm->is_paradigm());
 
-    auto invariant = PathTree::paradigm_invariant(reg, paradigm);
+    auto invariant = reg.buildFromPaths(reg.invariant_paths(paradigm));
 
     ASSERT_NE(invariant, nullptr);
 

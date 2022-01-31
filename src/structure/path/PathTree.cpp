@@ -87,6 +87,44 @@ std::shared_ptr<PathTree> PathTree::Register::buildFromPaths(const PathTree::Set
     return get_or_create(node, children);
 }
 
+PathTree::Vector PathTree::Register::buildFromPaths_product(const PathTree::Set& invariant_paths, const std::vector<PathTree::Vector>& variant_paths) {
+    size_t size = 1;
+    for (const auto& child: variant_paths) 
+        size *= child.size();
+
+    std::vector<PathTree::Set> bins(size);
+    for (size_t i = 0; i < size; ++i) 
+        bins[i].insert(invariant_paths.begin(), invariant_paths.end());
+
+    for (const auto& variant: variant_paths)
+        for (size_t i = 0; i < size / variant.size(); ++i)
+            for (size_t j = 0; j < variant.size(); ++j)
+                bins[i * variant.size() + j].insert(variant[j]);
+    
+    Vector res;
+    for (auto& bin: bins)
+        res.push_back(buildFromPaths(bin));
+
+    return res;
+}
+
+std::vector<PathTree::Set> PathTree::Register::expand_path(const std::shared_ptr<PathTree>& path_tree, 
+                                                           const Set& prefixes) {
+    std::vector<PathTree::Set> res;
+
+    for (const auto& ss : singular_sequences(path_tree)) {
+        Set set;
+        
+        for (const auto& path: paths(ss)) 
+            for (const auto& prefix: prefixes)
+                if (prefix->is_prefix(path))
+                    set.insert(path);
+
+        res.push_back(set);
+    }
+
+    return res;
+}
 
 std::string PathTree::to_string() const {
     std::stringstream os;
@@ -155,29 +193,29 @@ PathTree::Vector PathTree::singular_sequences(const std::shared_ptr<PathTree>& p
     }
 }
 
-PathTree::Set PathTree::paths(PathTree::Register& reg, const std::shared_ptr<PathTree>& pt) {
+PathTree::Set PathTree::Register::paths(const std::shared_ptr<PathTree>& pt) {
     if (pt->is_path())
         return {pt};
     
     PathTree::Set res;
     for (const auto& child: pt->children_) {
-        for (const auto& subpath: paths(reg, child)) {
-            res.insert(reg.get_or_create(pt->node_, {subpath}));
+        for (const auto& subpath: paths(child)) {
+            res.insert(get_or_create(pt->node_, {subpath}));
         }
     }
 
     return res;
 }
 
-std::shared_ptr<PathTree> PathTree::paradigm_invariant(PathTree::Register& reg, const std::shared_ptr<PathTree>& paradigm) {
+PathTree::Set PathTree::Register::invariant_paths(const std::shared_ptr<PathTree>& paradigm) {
     PathTree::Vector singular_sequences = PathTree::singular_sequences(paradigm);
 
     auto it = singular_sequences.begin();
-    PathTree::Set invariant_paths = PathTree::paths(reg, *it);
+    PathTree::Set invariant_paths = paths(*it);
 
     ++it;
     while (it != singular_sequences.end()) {
-        PathTree::Set ss_paths = PathTree::paths(reg, *it);
+        PathTree::Set ss_paths = paths(*it);
         PathTree::Set out;
         std::copy_if(invariant_paths.begin(), 
                      invariant_paths.end(), 
@@ -187,10 +225,27 @@ std::shared_ptr<PathTree> PathTree::paradigm_invariant(PathTree::Register& reg, 
         ++it;
     }
 
-    return reg.buildFromPaths(invariant_paths);
+    return invariant_paths;
 }
 
+bool PathTree::is_prefix_singular(const std::shared_ptr<PathTree>& path_tree) const {
+    if (children_.size() == 0) return true;
+    if (path_tree->children_.size() == 0) return false;
 
+    return *node_ == *path_tree->node_ && (*children_.begin())->is_prefix_singular(*path_tree->children_.begin());
+}
+
+bool PathTree::is_prefix(const std::shared_ptr<PathTree>& path_tree) const {
+    if (!is_path()) 
+        throw std::invalid_argument("is_prefix must be called on a path.");
+    
+    for (const auto& ss: singular_sequences(path_tree))
+        if (!is_prefix_singular(ss))
+            return false;
+    
+
+    return true;
+}
 
 bool PathTree::is_valid() const {
     if (children_.size() != 0) {
@@ -227,3 +282,4 @@ int PathTree::comp_element_(const Element& o_elem) const {
     const auto& o = dynamic_cast<const PathTree&>(o_elem);
     return comp(node_, children_, o.getNode(), o.getChildren());
 }
+

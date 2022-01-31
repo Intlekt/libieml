@@ -91,8 +91,10 @@ nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::Pat
     }
 
     nlohmann::json invariant = nullptr;
-    if (category->is_paradigm())
-        invariant = ieml::structure::PathTree::paradigm_invariant(ctx.getPathTreeRegister(), category)->uid();
+    if (category->is_paradigm()) {
+        auto& reg = ctx.getPathTreeRegister();
+        invariant = reg.buildFromPaths(reg.invariant_paths(category))->uid();
+    }
 
     return {
         {"id", category->uid()},

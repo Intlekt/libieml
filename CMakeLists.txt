@@ -14,7 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 configure_file(IEMLConfig.h.in IEMLConfig.h)
 
-set(CMAKE_CXX_FLAGS_DEBUG "-g -O3")
+# set(CMAKE_CXX_FLAGS_DEBUG "-g -O3")
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/src)
 

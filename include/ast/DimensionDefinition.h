@@ -18,19 +18,9 @@ public:
         dimension_index_(dimension_index),
         paths_(std::move(paths)) {}
 
-    virtual std::string to_string() const override {
-        std::stringstream os;
-        os << dimension_index_ << "d: ";
+    virtual std::string to_string() const override;
 
-        bool first = true;
-        for (auto&& path: paths_) {
-            if (first) first = false;
-            else       os << ";";
-            os << path->to_string();
-        }
-
-        return os.str();
-    }
+    ieml::structure::PathTree::Set check_dimension_definitions(ieml::parser::ParserContextManager& ctx, const std::shared_ptr<ieml::structure::PathTree>& paradigm) const;
 
 private:
     const size_t dimension_index_;

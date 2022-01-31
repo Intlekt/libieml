@@ -9,9 +9,6 @@ set (ANTLR4_TAG fb661e891d2db191af4369695651906865c4959f)
 # add external build for antlrcpp
 include( ExternalAntlr4Cpp )
 
-# required if linking to static library
-# add_definitions(-DANTLR4CPP_STATIC)
-
 message(STATUS "Found antlr4cpp includes: ${ANTLR4_INCLUDE_DIRS} ")
 set(ANTLR_EXECUTABLE ${CMAKE_SOURCE_DIR}/thirdparty/antlr/antlr-4.9.2-complete.jar)
 
@@ -42,18 +39,11 @@ ExternalProject_Add(external_boost
                     BUILD_COMMAND     ""
                     INSTALL_COMMAND   mkdir ${BOOST_INCLUDE_DIR} && cp -R ${boost_INSTALL}/src/external_boost/boost ${BOOST_INCLUDE_DIR}/boost
                     )
-                    # BUILD_IN_SOURCE 1
-                    # CONFIGURE_COMMAND ./bootstrap.sh
-                    #                   --with-libraries=graph
-                    #                   --prefix=<INSTALL_DIR>
-                    # BUILD_COMMAND     ./b2 install link=static variant=release threading=multi runtime-link=static
-                    # INSTALL_COMMAND   ""
-                    # INSTALL_DIR ${boost_INSTALL} )
 
+                    
 #########################
 # IEMLParser
 #########################
-
 include_directories(${ANTLR4_INCLUDE_DIRS} 
                     ${ANTLR_IEMLParser_OUTPUT_DIR}
                     ${PROJECT_SOURCE_DIR}/include
@@ -66,6 +56,7 @@ set(IEMLParser_src ${ANTLR_IEMLParser_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/IemlParser.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ParserJsonSerializer.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/Program.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/DimensionDefinition.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/CategoryDeclaration.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/AuxiliaryDeclaration.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/JunctionDeclaration.cpp
@@ -78,6 +69,7 @@ set(IEMLParser_src ${ANTLR_IEMLParser_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathTree.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathParser.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/ParadigmLayout.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/relation/RelationGraph.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/relation/Composition.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/relation/Inclusion.cpp)

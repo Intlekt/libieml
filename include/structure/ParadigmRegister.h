@@ -1,6 +1,7 @@
 #pragma once
 
 #include "structure/path/PathTree.h"
+#include "structure/ParadigmLayout.h"
 
 
 namespace ieml::structure {
@@ -8,10 +9,10 @@ namespace ieml::structure {
 class ParadigmRegister {
 public:
 
-    void define_paradigm(PathTree::Register& reg, const std::shared_ptr<PathTree>& paradigm) {
-        auto invariant = PathTree::paradigm_invariant(reg, paradigm);
+    void define_paradigm(PathTree::Register& reg, const std::shared_ptr<PathTree>& paradigm, const std::vector<ieml::structure::PathTree::Set> dimension_paths) {
+        auto invariant = reg.buildFromPaths(reg.invariant_paths(paradigm));
         
-        paradigms_.insert({paradigm});
+        paradigms_.insert({paradigm, ParadigmLayout::buildFromPathTree(reg, paradigm, dimension_paths)});
         invariant_to_paradigm_.insert({invariant, paradigm});
     }
 
@@ -40,7 +41,8 @@ private:
      */
     std::unordered_map<std::shared_ptr<PathTree>, std::shared_ptr<PathTree>> invariant_to_paradigm_;
 
-    std::unordered_set<std::shared_ptr<PathTree>> paradigms_;
+    std::unordered_map<std::shared_ptr<PathTree>, ParadigmLayout> paradigms_;
+
 
 };
 
