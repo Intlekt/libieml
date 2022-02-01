@@ -25,7 +25,7 @@ ieml::structure::PathTree::Set DimensionDefinition::check_dimension_definitions(
     for (auto& path: paths_) {
         const auto& pt_path = path->check_path(ctx);
 
-        if (!pt_path->is_prefix(paradigm)) {
+        if (!pt_path->is_contained(paradigm)) {
             ctx.getErrorManager().visitorError(
                 getCharRange(), 
                 "Invalid path for paradigm dimension definition, the path is not defined in the paradigm."

@@ -30,28 +30,29 @@ ParadigmLayout ParadigmLayout::buildFromPathTree(
     std::fill(curr_coords.begin(), curr_coords.end(), 0);
 
     std::vector<std::unordered_map<PathTree::Set, size_t, hashKey, eqKey>> dim_path_to_coordinate(dimension_paths.size());
-    std::vector<Coordinate> coordinates;
+    std::unordered_map<std::shared_ptr<PathTree>, Coordinate> coordinates;
 
     for (const auto& sseq: PathTree::singular_sequences(paradigm)) {
         Coordinate coordinate;
 
         for (size_t d = 0; d < dimension_paths.size(); ++d) {
             auto expanded = *reg.expand_path(sseq, dimension_paths[d]).begin();
+            auto& dim_coordinates = dim_path_to_coordinate[d];
 
-            auto it = dim_path_to_coordinate[d].find(expanded);
+            auto it = dim_coordinates.find(expanded);
 
             size_t coord;
-            if (it == dim_path_to_coordinate[d].end()) {
-                dim_path_to_coordinate[d].insert({expanded, curr_coords[d]});
+            if (it == dim_coordinates.end()) {
+                dim_coordinates.insert({expanded, curr_coords[d]});
                 coord = curr_coords[d];
                 curr_coords[d] += 1;
-            } else {
+            } else 
                 coord = it->second;
-            }
+            
             coordinate.push_back(coord);
         }
-        coordinates.push_back(coordinate);
+        coordinates.insert({sseq, coordinate});
     }
     
-    return ParadigmLayout(dimension_paths.size(), coordinates);
+    return ParadigmLayout(curr_coords, coordinates);
 }

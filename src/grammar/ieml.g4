@@ -81,7 +81,7 @@ path_node : CATEGORY_MARK                                                       
 dimension_definition : dimension_mark=DIMENSION_MARK paths+=path (PARADIGM_SEP paths+=path)*;
 
 LANGUAGE_STRING_MARK : [a-z][a-z]':';
-DIMENSION_MARK : [1-9]'d:';
+DIMENSION_MARK : [1-3]'d:';
 
 STRING : '"'(~'"'|'\\"')*'"';
 

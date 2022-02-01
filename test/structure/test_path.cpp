@@ -252,3 +252,41 @@ TEST(ieml_structure_test_case, path_tree_invariant) {
 
     EXPECT_EQ(invariant, root);
 }   
+
+TEST(ieml_structure_test_case, path_prefix) {
+    ieml::parser::IEMLParserErrorListener error_listener;
+    ieml::parser::ParserContextManager ctx(&error_listener);
+    auto& wregister = ctx.getWordRegister();
+    wregister.define_word(std::make_shared<CategoryWord>("wa."));
+
+
+    auto p0 = ieml::parser::parsePath(ctx, R"(/#/0/"wa.")", true);   
+    auto p1 = ieml::parser::parsePath(ctx, R"(/#/1/"wa.")", true);
+
+    EXPECT_FALSE(p0->is_prefix(p1));
+
+
+    p0 = ieml::parser::parsePath(ctx, R"(/#/0)", true);   
+    p1 = ieml::parser::parsePath(ctx, R"(/#/1/"wa.")", true);
+
+    EXPECT_FALSE(p0->is_prefix(p1));
+}
+
+TEST(ieml_structure_test_case, path_is_contained) {
+    ieml::parser::IEMLParserErrorListener error_listener;
+    ieml::parser::ParserContextManager ctx(&error_listener);
+    auto& wregister = ctx.getWordRegister();
+    wregister.define_word(std::make_shared<CategoryWord>("wa."));
+
+
+    auto p0 = ieml::parser::parsePath(ctx, R"(/#/0/"wa.")", true);   
+    auto p1 = ieml::parser::parsePath(ctx, R"(/#/1/"wa.")", true);
+
+    EXPECT_FALSE(p0->is_contained(p1));
+
+
+    p0 = ieml::parser::parsePath(ctx, R"(/#/0)", true);   
+    p1 = ieml::parser::parsePath(ctx, R"(/#/1/"wa.")", true);
+
+    EXPECT_FALSE(p0->is_contained(p1));
+}

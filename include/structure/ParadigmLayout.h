@@ -11,18 +11,31 @@ namespace ieml::structure {
 class ParadigmLayout {
 public:
     static ParadigmLayout buildFromPathTree(
-        ieml::structure::PathTree::Register& reg,
-        const std::shared_ptr<ieml::structure::PathTree> path_tree,
-        const std::vector<ieml::structure::PathTree::Set> dimension_paths);
+        PathTree::Register& reg,
+        const std::shared_ptr<PathTree> path_tree,
+        const std::vector<PathTree::Set> dimension_paths);
 
     typedef std::vector<size_t> Coordinate;
+
+    std::vector<size_t> getShape() const {return shape_;}
+
+    const Coordinate& getCoordinate(const std::shared_ptr<PathTree>& ss) const {
+        const auto& it = positions_.find(ss);
+
+        if (it == positions_.end())
+            throw std::invalid_argument("Argument not a singular sequence of the paradigm of this layout.");
+
+        return it->second;
+    }; 
+
 private:
-    ParadigmLayout(size_t nb_dimensions, const std::vector<Coordinate> positions) :
-        nb_dimensions_(nb_dimensions),
+    ParadigmLayout(const std::vector<size_t>& shape, 
+                   const std::unordered_map<std::shared_ptr<PathTree>, Coordinate>& positions) :
+        shape_(shape),
         positions_(positions) {}
 
-    const size_t nb_dimensions_;
-    const std::vector<Coordinate> positions_;
+    const std::vector<size_t> shape_;
+    const std::unordered_map<std::shared_ptr<PathTree>, Coordinate> positions_;
 };
 
 }

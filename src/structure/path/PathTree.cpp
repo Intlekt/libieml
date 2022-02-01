@@ -11,14 +11,12 @@ PathTree::Vector PathTree::Register::get_or_create_product(const PathNode::Vecto
     for (auto& set : children_list) size *= set.size();
 
     std::vector<Set> bins(size);
+    size_t curr_size = 1;
     for (auto& set : children_list) {
-        size_t i = 0;
-        for (auto& child: set) {
-            for (size_t j = 0; j < size / set.size(); ++j)
-                bins[j * set.size() + i].insert(child);
+        for (size_t i = 0; i < size; ++i)
+            bins[i].insert(set[(i / curr_size) % set.size()]);
 
-            ++i;
-        }
+        curr_size *= set.size();
     }
 
     Vector res;
@@ -228,11 +226,43 @@ PathTree::Set PathTree::Register::invariant_paths(const std::shared_ptr<PathTree
     return invariant_paths;
 }
 
-bool PathTree::is_prefix_singular(const std::shared_ptr<PathTree>& path_tree) const {
+bool PathTree::is_contained_singular(const std::shared_ptr<PathTree>& path_tree) const {
+    if (*node_ != *path_tree->node_) return false;
     if (children_.size() == 0) return true;
     if (path_tree->children_.size() == 0) return false;
 
-    return *node_ == *path_tree->node_ && (*children_.begin())->is_prefix_singular(*path_tree->children_.begin());
+    const auto& child = *children_.begin();
+
+    for (const auto& pt_child: path_tree->children_)
+        if (child->is_contained_singular(pt_child))
+            return true;
+
+    return false;
+}
+
+bool PathTree::is_contained(const std::shared_ptr<PathTree>& path_tree) const {
+    if (!is_path()) 
+        throw std::invalid_argument("is_prefix must be called on a path.");
+    
+    for (const auto& ss: singular_sequences(path_tree))
+        if (!is_contained_singular(ss))
+            return false;
+    
+    return true;
+}
+
+bool PathTree::is_prefix_singular(const std::shared_ptr<PathTree>& path_tree) const {
+    if (*node_ != *path_tree->node_) return false;
+    if (children_.size() == 0) return true;
+    if (path_tree->children_.size() == 0) return false;
+
+    const auto& child = *children_.begin();
+
+    for (const auto& pt_child: path_tree->children_)
+        if (!child->is_prefix_singular(pt_child))
+            return false;
+
+    return true;
 }
 
 bool PathTree::is_prefix(const std::shared_ptr<PathTree>& path_tree) const {
@@ -243,7 +273,6 @@ bool PathTree::is_prefix(const std::shared_ptr<PathTree>& path_tree) const {
         if (!is_prefix_singular(ss))
             return false;
     
-
     return true;
 }
 

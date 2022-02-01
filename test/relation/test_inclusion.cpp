@@ -31,7 +31,11 @@ using namespace ieml::parser;
 
 
 TEST(ieml_relation_test_case, inclusion) {
-    PARSE_NO_ERRORS(R"(@word "a". @word "b". @node en:invariant (0 #"a"). @node en:node0 (0 #"a", 1 #"a"). @node en:node1 (0 #"a", 1 #"b"). @paranode en:paranode 1d:/#/1 (0 #"a", 1 #{"a";"b"}).)");
+    PARSE_NO_ERRORS(R"(@word "a". @word "b". 
+                       @node en:invariant (0 #"a"). 
+                       @node en:node0 (0 #"a", 1 #"a"). 
+                       @node en:node1 (0 #"a", 1 #"b"). 
+                       @paranode en:paranode 1d:/#/1 (0 #"a", 1 #{"a";"b"}).)");
 
     auto wreg = parser.getContext()->getWordRegister();
     auto creg = parser.getContext()->getCategoryRegister();

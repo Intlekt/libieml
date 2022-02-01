@@ -34,6 +34,10 @@ public:
         return it->second;
     }
 
+    const ParadigmLayout& get_layout(const std::shared_ptr<PathTree>& paradigm) const {
+        return paradigms_.find(paradigm)->second;
+    }
+
 private:
 
     /**

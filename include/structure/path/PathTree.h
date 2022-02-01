@@ -166,6 +166,8 @@ public:
      */
     bool is_prefix_singular(const std::shared_ptr<PathTree>& path_tree) const;
 
+    bool is_contained_singular(const std::shared_ptr<PathTree>& path_tree) const;
+    bool is_contained(const std::shared_ptr<PathTree>& path_tree) const;
 
     /**
      * @brief Recursively checks the validity of the sequence of node path.
