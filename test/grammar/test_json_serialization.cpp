@@ -47,10 +47,12 @@ TEST(ieml_grammar_test_case, json_serialization) {
             for (auto ref: v["singular_sequences"])
                 EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing singular_sequences " + std::string(ref) + " of " + it.key();
 
-            if (v["category_type"] == "PARADIGM") {
-                EXPECT_NE(v["invariant"], nullptr);
-                EXPECT_TRUE(res["elements"].contains(v["invariant"])) << "Not containing invariant " + std::string(v["invariant"]) + " of " + it.key();
-            }
+            EXPECT_TRUE(res["elements"].contains(v["invariant"])) << "Not containing invariant " + std::string(v["invariant"]) + " of " + it.key();
+
+            for (auto ref: v["paradigms"])
+                EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing paradigms " + std::string(ref) + " of " + it.key();
+
+            EXPECT_LE(v["nDimension"], 3);
         }
     }
 

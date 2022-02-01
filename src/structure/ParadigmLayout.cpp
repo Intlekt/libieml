@@ -31,6 +31,7 @@ ParadigmLayout ParadigmLayout::buildFromPathTree(
 
     std::vector<std::unordered_map<PathTree::Set, size_t, hashKey, eqKey>> dim_path_to_coordinate(dimension_paths.size());
     std::unordered_map<std::shared_ptr<PathTree>, Coordinate> coordinates;
+    std::unordered_map<Coordinate, std::shared_ptr<PathTree>, HashCoordinate, EqCoordinate> path_trees;
 
     for (const auto& sseq: PathTree::singular_sequences(paradigm)) {
         Coordinate coordinate;
@@ -52,7 +53,8 @@ ParadigmLayout ParadigmLayout::buildFromPathTree(
             coordinate.push_back(coord);
         }
         coordinates.insert({sseq, coordinate});
+        path_trees.insert({coordinate, sseq});
     }
     
-    return ParadigmLayout(curr_coords, coordinates);
+    return ParadigmLayout(curr_coords, coordinates, path_trees);
 }

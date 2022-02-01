@@ -57,6 +57,23 @@ nlohmann::json ieml::parser::errorManagerToJson(const IEMLParserErrorListener& e
     return error_list;
 }
 
+
+nlohmann::json _paradigmLayoutToJson(const ieml::structure::ParadigmLayout& layout,
+                                     const std::vector<size_t>& coords_prefix) {
+    
+    if (coords_prefix.size() == layout.getShape().size()) return layout.at(coords_prefix)->uid();
+
+    size_t curr_dim = coords_prefix.size();
+
+    nlohmann::json arr = nlohmann::json::array();
+    for (size_t i = 0; i < layout.getShape()[curr_dim]; ++i) {
+        std::vector<size_t> prefix(coords_prefix.begin(), coords_prefix.end());
+        prefix.push_back(i);
+        arr.push_back(_paradigmLayoutToJson(layout, prefix));
+    }
+    return arr;
+}
+
 nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::PathTree> category, 
                                             ieml::parser::ParserContextManager& ctx,
                                             ieml::relation::RelationGraph::Register& register_,
@@ -90,24 +107,40 @@ nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::Pat
         singular_sequences.push_back(ss->uid());
     }
 
-    nlohmann::json invariant = nullptr;
+    const auto& preg = ctx.getParadigmRegister();
+
+    nlohmann::json nDimension = 0;
+    nlohmann::json invariant = category->uid();
+    nlohmann::json layout = nullptr;
     if (category->is_paradigm()) {
         auto& reg = ctx.getPathTreeRegister();
         invariant = reg.buildFromPaths(reg.invariant_paths(category))->uid();
+        const auto& playout = preg.get_layout(category);
+        nDimension = playout.getShape().size();
+        layout = _paradigmLayoutToJson(playout, {});
+    }
+
+    nlohmann::json paradigms = nlohmann::json::array();
+    for (const auto& paradigm: preg.resolve_paradigms(category)) {
+        paradigms.push_back(paradigm->uid());
     }
 
     return {
         {"id", category->uid()},
         {"range", charRangeToJson(range)},
-        // {"user_defined", user_defined},
+
         {"translations", nameToJson(*name)},
         {"type", "CATEGORY"},
 
         {"category_type", node_type},
-        {"invariant", invariant},
-        {"singular_sequences", singular_sequences},
         {"references", references},
-        {"back_references", back_references}
+        {"back_references", back_references},
+
+        {"singular_sequences", singular_sequences},
+        {"invariant", invariant},
+        {"paradigms", paradigms},
+        {"nDimension", nDimension},
+        {"layout", layout}
     };
 }
 
