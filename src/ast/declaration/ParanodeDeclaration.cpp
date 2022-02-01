@@ -33,13 +33,13 @@ void ParanodeDeclaration::define_category(ieml::parser::ParserContextManager& ct
         return;
     }
 
-    if (ctx.getParadigmRegister().resolve_paradigm(invariant)) {
-        ctx.getErrorManager().visitorError(
-            getCharRange(), 
-            "A paradigm with the same node invariant has already been defined."
-        );
-        return;
-    }
+    // if (ctx.getParadigmRegister().resolve_paradigms(invariant)) {
+    //     ctx.getErrorManager().visitorError(
+    //         getCharRange(), 
+    //         "A paradigm with the same node invariant has already been defined."
+    //     );
+    //     return;
+    // }
 
     ctx.getCategoryRegister().define_category(name, phrase, structure::DefinitionType::PARADIGM);    
 

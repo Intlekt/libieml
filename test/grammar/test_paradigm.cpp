@@ -69,9 +69,10 @@ TEST(ieml_grammar_test_case, paradigm_register) {
     ASSERT_NE(paradigm, nullptr);
     ASSERT_NE(invariant, nullptr);
 
-    const auto& paradigm_resolved = preg.resolve_paradigm(invariant);
+    const auto& paradigms_resolved = preg.resolve_paradigms(invariant);
 
-    ASSERT_EQ(paradigm_resolved, paradigm);
+    ASSERT_EQ(paradigms_resolved.size(), 1);
+    ASSERT_EQ(*paradigms_resolved.begin(), paradigm);
 }
 
 

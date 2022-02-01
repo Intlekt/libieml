@@ -26,12 +26,16 @@ public:
      * @param node 
      * @return std::shared_ptr<PathTree> 
      */
-    std::shared_ptr<PathTree> resolve_paradigm(const std::shared_ptr<PathTree>& node) const {
-        const auto it = invariant_to_paradigm_.find(node);
-        if (it == invariant_to_paradigm_.end())
-            return nullptr;
+    PathTree::Set resolve_paradigms(const std::shared_ptr<PathTree>& node) const {
+        auto it = invariant_to_paradigm_.find(node);
+        
+        PathTree::Set res;
+        while(it != invariant_to_paradigm_.end()) {
+            res.insert(it->second);
+            ++it;
+        }
 
-        return it->second;
+        return res;
     }
 
     const ParadigmLayout& get_layout(const std::shared_ptr<PathTree>& paradigm) const {
@@ -43,7 +47,7 @@ private:
     /**
      * @brief A hash map that links singular path tree to theirs corresponding paradigm.
      */
-    std::unordered_map<std::shared_ptr<PathTree>, std::shared_ptr<PathTree>> invariant_to_paradigm_;
+    std::unordered_multimap<std::shared_ptr<PathTree>, std::shared_ptr<PathTree>> invariant_to_paradigm_;
 
     std::unordered_map<std::shared_ptr<PathTree>, ParadigmLayout> paradigms_;
 
