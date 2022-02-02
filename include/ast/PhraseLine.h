@@ -5,6 +5,7 @@
 #include <set>
 
 #include "ast/Constants.h"
+#include "ast/RoleType.h"
 #include "ast/AuxiliarySubPhraseLine.h"
 
 #include "ast/interfaces/AST.h"
@@ -18,23 +19,16 @@ namespace ieml::AST {
 
 class PhraseLine : virtual public AST {
 public:
-    PhraseLine(int role_type,
+    PhraseLine(std::shared_ptr<RoleType>&& role_type,
                bool accentuation) : 
-        role_type_(role_type),
+        role_type_(std::move(role_type)),
         accentuation_(accentuation) {}
 
-    int getRoleType() const {return role_type_;}
+    std::shared_ptr<RoleType> getRoleType() const {return role_type_;}
     bool getAccentuation() const {return accentuation_;}
 
     structure::PathTree::Vector check_phrase_line(parser::ParserContextManager& ctx) const {
-        auto type = structure::RoleType::_from_integral_nothrow(role_type_);
-
-        if (!type) {
-            ctx.getErrorManager().visitorError(
-                getCharRange(), "Invalid role number, got '" + std::to_string(role_type_) + "'"
-            );
-            return {nullptr};
-        }
+        auto type = role_type_->check_role_type(ctx);
         auto child_set = _check_phrase_line(ctx, *type);
 
         if (!*child_set.begin() || !type) {
@@ -55,7 +49,7 @@ protected:
     std::string phrase_line_to_string() const {
         std::ostringstream os;
 
-        os << std::to_string(role_type_) << " ";
+        os << role_type_->to_string() << " ";
         if (accentuation_)
             os << "! ";
 
@@ -63,18 +57,18 @@ protected:
     }
 
 private:
-    const int role_type_;
+    const std::shared_ptr<RoleType> role_type_;
     const bool accentuation_;
 };
 
 class SimplePhraseLine : public PhraseLine {
 public:
     SimplePhraseLine(std::shared_ptr<CharRange>&& char_range,
-                     int role_type,
+                     std::shared_ptr<RoleType>&& role_type,
                      bool accentuation,
                      std::shared_ptr<AuxiliarySubPhraseLine>&& auxiliary_subline) : 
         AST(std::move(char_range)),
-        PhraseLine(role_type, accentuation),
+        PhraseLine(std::move(role_type), accentuation),
         auxiliary_subline_(std::move(auxiliary_subline)) {}
 
     std::string to_string() const override {
@@ -95,10 +89,10 @@ public:
     JunctionPhraseLine(std::shared_ptr<CharRange>&& char_range,
                        std::vector<std::shared_ptr<AuxiliarySubPhraseLine>>&& sub_phrases,
                        std::shared_ptr<IJunction>&& junction_identifier,
-                       int role_type,
+                       std::shared_ptr<RoleType>&& role_type,
                        bool accentuation) : 
         AST(std::move(char_range)),
-        PhraseLine(role_type, accentuation),
+        PhraseLine(std::move(role_type), accentuation),
         IJunctionList<AuxiliarySubPhraseLine, structure::AuxiliaryJunctionIndexPathNode, structure::AuxiliaryJunctionPathNode, structure::RoleType>(std::move(sub_phrases), std::move(junction_identifier)) {}
 
     std::string to_string() const override {

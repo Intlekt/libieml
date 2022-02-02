@@ -42,12 +42,30 @@ public:
 
     class Register {
     public:
+
+        /**
+         * @brief Unicity key for path tree object.
+         */
         typedef std::pair<std::shared_ptr<PathNode>, PathTree::Set> Key;
 
-        Vector get_or_create_product(const PathNode::Vector& node_set, const std::vector<Vector>& children_list);
-        Vector get_or_create_product(const std::shared_ptr<PathNode>& node, const std::vector<Vector>& children_list);
+        /**
+         * @brief Get or create PathTree object. If the same object exists in the register, it is returned.
+         * 
+         * @param node 
+         * @return std::shared_ptr<PathTree> 
+         */
         std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node, const Set& children);
-        std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node) ;
+        std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node);
+
+        /**
+         * @brief Get or create PathTree objects. Return the PathTree formed by the cartesian product on node and the cartesian product on the children_list.
+         * 
+         * @param node 
+         * @param children_list 
+         * @return Vector 
+         */
+        Vector get_or_create_product(const std::shared_ptr<PathNode>& node, const std::vector<Vector>& children_list);
+        Vector get_or_create_product(const PathNode::Vector& node_set, const std::vector<Vector>& children_list);
 
         /**
          * @brief Build a PathTree from a paths Set. If the paths Set does not describe a valid PathTree, the function throws std::invalid_argument.
@@ -88,6 +106,7 @@ public:
         Set paths(const std::shared_ptr<PathTree>& pt);
 
         
+
         Set invariant_paths(const std::shared_ptr<PathTree>&);
 
 
@@ -199,31 +218,14 @@ private:
     PathTree(const PathTree&) = delete;
     PathTree& operator=(const PathTree&) = delete;
 
-
-    static size_t hash_internal(const std::shared_ptr<PathNode>& node, const Set& children) {
-        size_t seed = 0;
-        hash_combine(seed, *node);
-
-        for (auto& c: children)
-            hash_combine(seed, c->hash());
-
-        return seed;
-    }
-
-    static size_t count_paths(const Set& children) {
-        if (children.size() == 0)
-            return 1;
-        size_t total = 0;
-        for (const auto& child: children)
-            total += count_paths(child->getChildren());
-
-        return total;
-    }
-
     const std::shared_ptr<PathNode> node_;
     const Set children_;
     const size_t hash_;
     const size_t nb_paths_;
+
+    static size_t hash_internal(const std::shared_ptr<PathNode>& node, const Set& children);
+
+    static size_t count_paths(const Set& children);
 
     static int comp(const std::shared_ptr<PathNode>&, const Set&, 
                     const std::shared_ptr<PathNode>&, const Set&);

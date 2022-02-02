@@ -277,6 +277,23 @@ bool PathTree::is_prefix(const std::shared_ptr<PathTree>& path_tree) const {
 }
 
 bool PathTree::is_valid() const {
+    // ensure that all the index are used for junction and paradigms
+    if (is_paradigm() || is_junction()) {
+        size_t i = 0;
+        for (auto const& c: children_) {
+            if (i != c->node_->getIndex()) return false;
+            ++i;
+        }
+    }
+
+    // ensure that the phrase has at least a root role
+    if (is_phrase()) {
+
+    }
+
+    // ensure that 
+
+
     if (children_.size() != 0) {
         for (const auto& c: children_) {
             if (!node_->accept_next(*c->getNode())) return false;
@@ -312,3 +329,22 @@ int PathTree::comp_element_(const Element& o_elem) const {
     return comp(node_, children_, o.getNode(), o.getChildren());
 }
 
+size_t PathTree::hash_internal(const std::shared_ptr<PathNode>& node, const Set& children) {
+    size_t seed = 0;
+    hash_combine(seed, *node);
+
+    for (auto& c: children)
+        hash_combine(seed, c->hash());
+
+    return seed;
+}
+
+size_t PathTree::count_paths(const Set& children) {
+    if (children.size() == 0)
+        return 1;
+    size_t total = 0;
+    for (const auto& child: children)
+        total += count_paths(child->getChildren());
+
+    return total;
+}

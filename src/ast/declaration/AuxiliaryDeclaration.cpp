@@ -5,20 +5,13 @@ using namespace ieml::AST;
 
 
 std::string AuxiliaryDeclaration::to_string() const {
-    return getDeclarationString() + " " + translations_to_string() + " " + std::to_string(accepted_role_type_) + " " + word_->to_string() + " .";
+    return getDeclarationString() + " " + translations_to_string() + " " + accepted_role_type_->to_string() + " " + word_->to_string() + " .";
 }
 
 void AuxiliaryDeclaration::check_declaration(ieml::parser::ParserContextManager& ctx) const {
     auto name = check_translatable(ctx);
-
-    auto role_type = structure::RoleType::_from_integral_nothrow(accepted_role_type_);
-    if (!role_type) {
-        ctx.getErrorManager().visitorError(
-            getCharRange(), "Invalid role number for auxiliary declaration, got '" + std::to_string(accepted_role_type_) + "'"
-        );
-        return;
-    }
-
+    
+    auto role_type = accepted_role_type_->check_role_type(ctx);
     auto word = word_->check_word(ctx);
 
     if (!name | !word | !role_type) {

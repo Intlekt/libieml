@@ -163,6 +163,12 @@ public:
   virtual antlrcpp::Any visitDimension_definition(iemlParser::Dimension_definitionContext *context) override;
   
   /**
+   * ROLE TYPE
+   */
+  virtual antlrcpp::Any visitRole_type__integer(iemlParser::Role_type__integerContext *context) override;
+  virtual antlrcpp::Any visitRole_type__identifier(iemlParser::Role_type__identifierContext *context) override;
+
+  /**
    *  REFERENCE
    */
   virtual antlrcpp::Any visitReference(iemlParser::ReferenceContext *ctx) override;

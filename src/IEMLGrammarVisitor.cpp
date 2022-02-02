@@ -26,6 +26,7 @@
 #include "ast/Path.h"
 #include "ast/Junction.h"
 #include "ast/DimensionDefinition.h"
+#include "ast/RoleType.h"
 
 #define RETURN_VISITOR_RESULT_NO_ARGS(ReturnType, DerivedType) \
   return antlrcpp::Any(VisitorResult<ReturnType>(std::make_unique<DerivedType>(charRangeFromContext(ctx))));
@@ -205,25 +206,17 @@ namespace ieml::parser {
 
   antlrcpp::Any IEMLGrammarVisitor::visitAuxiliaryDeclaration(iemlParser::AuxiliaryDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
-
-    int accepted_role_type = -1;
-    if (!ctx->role_type)
-      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid role number for an auxiliary declaration.");
-    else
-      accepted_role_type = std::stoi(ctx->role_type->getText());
-
-    if (accepted_role_type == -1)
-      RETURN_VISITOR_RESULT_ERROR(IDeclaration);
-
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, role_type_, "Invalid role number for an auxiliary declaration.", true);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for an auxiliary declaration.", true);
 
     CAST_OR_RETURN_IF_NULL(ctx, Word, word_, IDeclaration);
+    CAST_OR_RETURN_IF_NULL(ctx, RoleType, role_type_, IDeclaration);
     CAST_OR_RETURN_IF_NULL_LIST(language_strings, IDeclaration);
 
     RETURN_VISITOR_RESULT(IDeclaration, 
                           AuxiliaryDeclaration,
                           std::move(language_strings),
-                          accepted_role_type,
+                          std::move(role_type_),
                           std::move(word_));
   }
 
@@ -278,31 +271,19 @@ namespace ieml::parser {
    */
 
   antlrcpp::Any IEMLGrammarVisitor::visitPhrase_line__sub_phrase_line_auxiliary(iemlParser::Phrase_line__sub_phrase_line_auxiliaryContext *ctx) {
-    int role_type = -1;
-    if (!ctx->role_type)
-      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid role number.");
-    else
-      role_type = std::stoi(ctx->INTEGER()->getSymbol()->getText());
-    
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, role_type_, "Invalid role type.", true);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, sub_phrase, "Invalid sub phrase line : invalid auxiliary, inflection, category or references.", true);
 
     CAST_OR_RETURN_IF_NULL(ctx, AuxiliarySubPhraseLine, sub_phrase, PhraseLine);
-    
-    if (role_type == -1)
-      RETURN_VISITOR_RESULT_ERROR(PhraseLine);
+    CAST_OR_RETURN_IF_NULL(ctx, RoleType, role_type_, PhraseLine);
 
     bool accentuation = ctx->accentuation;
 
-    RETURN_VISITOR_RESULT(PhraseLine, SimplePhraseLine, role_type, accentuation, std::move(sub_phrase))
+    RETURN_VISITOR_RESULT(PhraseLine, SimplePhraseLine, std::move(role_type_), accentuation, std::move(sub_phrase))
   }
 
   antlrcpp::Any IEMLGrammarVisitor::visitPhrase_line__jonction_auxiliary(iemlParser::Phrase_line__jonction_auxiliaryContext *ctx) {
-    int role_type = -1;
-    if (!ctx->role_type)
-      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid role number.");
-    else
-      role_type = std::stoi(ctx->role_type->getText());
-
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, role_type_, "Invalid role type.", true);
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, AuxiliarySubPhraseLine, sub_phrases, "Invalid sub phrase in phrase line junction.");
     CHECK_SYNTAX_ERROR(error_listener_, ctx, junction_, "Invalid junction identifier in phrase line junction.", true);
 
@@ -310,11 +291,9 @@ namespace ieml::parser {
 
     CAST_OR_RETURN_IF_NULL_LIST(sub_phrases, PhraseLine);
     CAST_OR_RETURN_IF_NULL(ctx, IJunction, junction_, PhraseLine);
-
-    if (role_type == -1)
-      RETURN_VISITOR_RESULT_ERROR(PhraseLine);
+    CAST_OR_RETURN_IF_NULL(ctx, RoleType, role_type_, PhraseLine);
     
-    RETURN_VISITOR_RESULT(PhraseLine, JunctionPhraseLine, std::move(sub_phrases), std::move(junction_), role_type, accentuation);
+    RETURN_VISITOR_RESULT(PhraseLine, JunctionPhraseLine, std::move(sub_phrases), std::move(junction_), std::move(role_type_), accentuation);
   }
 
   /**
@@ -634,6 +613,29 @@ namespace ieml::parser {
 
     RETURN_VISITOR_RESULT(DimensionDefinition, DimensionDefinition, dimension_index, std::move(paths))
   }
+
+  /**
+   * ROLE TYPE
+   */
+  antlrcpp::Any IEMLGrammarVisitor::visitRole_type__integer(iemlParser::Role_type__integerContext *ctx) {
+    int role_type = -1;
+    if (!ctx->INTEGER())
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid role number.");
+    else
+      role_type = std::stoi(ctx->INTEGER()->getSymbol()->getText());
+    
+    if (role_type == -1)
+      RETURN_VISITOR_RESULT_ERROR(RoleType);
+
+    RETURN_VISITOR_RESULT(RoleType, IntegerRoleType, role_type);
+  }
+  antlrcpp::Any IEMLGrammarVisitor::visitRole_type__identifier(iemlParser::Role_type__identifierContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, identifier_, "Invalid identifier for role type.", true);
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, identifier_, RoleType);
+
+    RETURN_VISITOR_RESULT(RoleType, IdentifierRoleType, std::move(identifier_));
+  }
+
 
   /**
    *  REFERENCE

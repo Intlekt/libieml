@@ -7,7 +7,7 @@ declaration : COMPONENT  language_strings+=language_string+                     
             | PARANODE   language_strings+=language_string+ dimensions+=dimension_definition+   phrase_=phrase            DECLARATION_END    # paranodeDeclaration
             | WORD                                                                              word_=word                DECLARATION_END    # wordDeclaration
             | INFLECTION language_strings+=language_string+ inflection_type=IDENTIFIER          word_=word                DECLARATION_END    # inflectionDeclaration
-            | AUXILIARY  language_strings+=language_string+ role_type=INTEGER                   word_=word                DECLARATION_END    # auxiliaryDeclaration
+            | AUXILIARY  language_strings+=language_string+ role_type_=role_type                   word_=word             DECLARATION_END    # auxiliaryDeclaration
             | JUNCTION   language_strings+=language_string+                                     word_=word                DECLARATION_END    # junctionDeclaration
             | LANGUAGE   language=identifier                                                                              DECLARATION_END    # languageDeclaration
             ;
@@ -16,8 +16,8 @@ phrase : PARENTHESIS_START phrase_lines+=phrase_line (COMMA phrase_lines+=phrase
        | PARENTHESIS_START junction_=junction JUNCTION_OPEN phrases+=phrase phrases+=phrase+ JUNCTION_CLOSE PARENTHESIS_END    # phrase__junction
        ;
 
-phrase_line : role_type=INTEGER accentuation=SEMANTIC_ACCENT? sub_phrase=sub_phrase_line_auxiliary                           # phrase_line__sub_phrase_line_auxiliary
-            | role_type=INTEGER accentuation=SEMANTIC_ACCENT? junction_=junction
+phrase_line : role_type_=role_type accentuation=SEMANTIC_ACCENT? sub_phrase=sub_phrase_line_auxiliary                           # phrase_line__sub_phrase_line_auxiliary
+            | role_type_=role_type accentuation=SEMANTIC_ACCENT? junction_=junction
               JUNCTION_OPEN sub_phrases+=sub_phrase_line_auxiliary sub_phrases+=sub_phrase_line_auxiliary+ JUNCTION_CLOSE    # phrase_line__jonction_auxiliary
             ;
 
@@ -79,6 +79,11 @@ path_node : CATEGORY_MARK                                                       
           ;
 
 dimension_definition : dimension_mark=DIMENSION_MARK paths+=path (PARADIGM_SEP paths+=path)*;
+
+role_type : INTEGER       # role_type__integer
+          | identifier_=identifier    # role_type__identifier
+          ;
+
 
 LANGUAGE_STRING_MARK : [a-z][a-z]':';
 DIMENSION_MARK : [1-3]'d:';

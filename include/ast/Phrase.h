@@ -90,7 +90,14 @@ public:
 
         if (!valid)
             return {nullptr};
-        
+
+        if (seen_nodes.find(structure::RoleType::ROOT) == seen_nodes.end()) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(),
+                "Missing root role."
+            );
+            return {nullptr};
+        }
 
         return ctx.getPathTreeRegister().get_or_create_product(std::make_shared<structure::RootPathNode>(), children_list);
     };
