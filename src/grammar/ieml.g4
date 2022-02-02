@@ -21,7 +21,9 @@ phrase_line : role_type_=role_type accentuation=SEMANTIC_ACCENT? sub_phrase=sub_
               JUNCTION_OPEN sub_phrases+=sub_phrase_line_auxiliary sub_phrases+=sub_phrase_line_auxiliary+ JUNCTION_CLOSE    # phrase_line__jonction_auxiliary
             ;
 
-junction : JUNCTION_MARK junction_type=identifier;
+junction : JUNCTION_MARK identifier_=identifier       # junction__identifier
+         | JUNCTION_MARK word_=word                   # junction__word
+         ;
 
 category : identifier_=identifier # category__identifier
          | phrase_=phrase         # category__phrase

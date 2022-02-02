@@ -28,6 +28,7 @@
 #include "ast/DimensionDefinition.h"
 #include "ast/RoleType.h"
 
+
 #define RETURN_VISITOR_RESULT_NO_ARGS(ReturnType, DerivedType) \
   return antlrcpp::Any(VisitorResult<ReturnType>(std::make_unique<DerivedType>(charRangeFromContext(ctx))));
 
@@ -523,10 +524,15 @@ namespace ieml::parser {
   /**
    * JUNCTION
    */
-  antlrcpp::Any IEMLGrammarVisitor::visitJunction(iemlParser::JunctionContext *ctx) {
-    CHECK_SYNTAX_ERROR(error_listener_, ctx, junction_type, "Invalid identifier for a junction.", true);
-    CAST_OR_RETURN_IF_NULL(ctx, Identifier, junction_type, IJunction);
-    RETURN_VISITOR_RESULT(IJunction, Junction, std::move(junction_type));
+  antlrcpp::Any IEMLGrammarVisitor::visitJunction__identifier(iemlParser::Junction__identifierContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, identifier_, "Invalid identifier for a junction.", true);
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, identifier_, IJunction);
+    RETURN_VISITOR_RESULT(IJunction, Junction, std::move(identifier_));
+  }
+  antlrcpp::Any IEMLGrammarVisitor::visitJunction__word(iemlParser::Junction__wordContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for a junction.", true);
+    CAST_OR_RETURN_IF_NULL(ctx, Word, word_, IJunction);
+    RETURN_VISITOR_RESULT(IJunction, WordJunction, std::move(word_));
   }
 
   /**

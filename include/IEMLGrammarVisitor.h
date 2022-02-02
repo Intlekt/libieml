@@ -139,7 +139,8 @@ public:
   /**
    * JUNCTION
    */
-  virtual antlrcpp::Any visitJunction(iemlParser::JunctionContext *context) override;
+  virtual antlrcpp::Any visitJunction__identifier(iemlParser::Junction__identifierContext *context) override;
+  virtual antlrcpp::Any visitJunction__word(iemlParser::Junction__wordContext *context) override;
 
   /**
    * PATH
