@@ -47,7 +47,7 @@ public:
                     ctx.getErrorManager().visitorError(
                         getCharRange(),
                         "Invalid path definition, a " + std::string((*it_node)->getPathType()._to_string()) + 
-                        "path node cannot be followed by a " + std::string(child->getNode()->getPathType()._to_string()) + " path node."
+                        " path node cannot be followed by a " + std::string(child->getNode()->getPathType()._to_string()) + " path node."
                     );
 
                     return {nullptr};

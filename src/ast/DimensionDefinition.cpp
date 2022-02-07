@@ -25,6 +25,11 @@ ieml::structure::PathTree::Set DimensionDefinition::check_dimension_definitions(
     for (auto& path: paths_) {
         const auto& pt_path = path->check_path(ctx);
 
+        if (!pt_path) {
+            valid = false;
+            continue;
+        }
+
         if (!pt_path->is_contained(paradigm)) {
             ctx.getErrorManager().visitorError(
                 getCharRange(), 

@@ -78,7 +78,7 @@ TEST(ieml_grammar_test_case, paradigm_inflection)                               
 TEST(ieml_grammar_test_case, inflection_list_word)                                   TEST_PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:infl NOUN "we.". @node en:test (0 #"wa.", 1 ~"we." #"wa.").)");
 TEST(ieml_grammar_test_case, auxiliary_word)                                         TEST_PARSE_NO_ERRORS(R"(@word "wa.". @auxiliary en:aux 1 "we.". @node en:test (0 #"wa.", 1 *"we." #"wa.").)");
 TEST(ieml_grammar_test_case, junction_word)                                          TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "wo.". @junction en:junc "we.". @node en:test (0 #"wa.", 1 &"we." [#"wa." #"wo."]).)");
-
+TEST(ieml_grammar_test_case, paranode_1d)                                            TEST_PARSE_NO_ERRORS(R"(@word "wa". @word "wo". @node en:eqweq (0 #"wa"). @paranode en:fr 1d:/#/1 (0 #"wa", 1 #{"wa"; "wo"}).)");
 
                 
 TEST(ieml_grammar_test_case, no_root)                                                TEST_PARSE_ERRORS(R"(@word "wa.". @inflection en:noun NOUN "a.". @component en:test (1 ~noun #"wa.") .)");
@@ -102,4 +102,5 @@ TEST(ieml_grammar_test_case, invalid_inflection)                                
 TEST(ieml_grammar_test_case, multiple_paranode_same_invariant)                       TEST_PARSE_ERRORS(R"(@word "wa.". @word "we.". @node en:test (0 #"wa."). @paranode en:test2 (0 #"wa.", 1 #{"wa.";"we."}). @paranode en:test3 (0 #"wa.", 2 #{"wa.";"we."}).)");
 TEST(ieml_grammar_test_case, paradigm_empty_invariant)                               TEST_PARSE_ERRORS(R"(@word "wa.". @word "we.". @paranode en:test2 (0 #{"wa."; "we."}).)");
 TEST(ieml_grammar_test_case, paradigm_invalid_invariant)                             TEST_PARSE_ERRORS(R"(@word "wa.". @word "we.". @node en:invariant (1 #"wa."). @paranode en:test2 (0 #{"wa."; "we."}, 1 #"wa.").)");
-                
+
+TEST(ieml_grammar_test_case, paradigm_invalid_variation)                             TEST_PARSE_ERRORS(R"(@word "wa".@node en:eqweq (0 #"wa", 1 #"wa").@paranode en:fr 1d:/#/1 (0 #"wa", 1 #{"wa"; "wa"}).)");

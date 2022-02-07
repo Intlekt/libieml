@@ -2,7 +2,6 @@
 #########################
 # ANTLR4
 #########################
-LIST( APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 
 set (ANTLR4_TAG fb661e891d2db191af4369695651906865c4959f)
 
