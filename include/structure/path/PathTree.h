@@ -165,6 +165,7 @@ public:
 
     virtual size_t hash() const override {return hash_;};
 
+    static std::vector<PathTree::Set> cartesian_product(const std::vector<PathTree::Vector>& children_list);
 
     /**
      * @brief True if this is a prefix for path_tree. If path_tree is a paradigm, return True if all of the singular sequence of this paradigm have this as 

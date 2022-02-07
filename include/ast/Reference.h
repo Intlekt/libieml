@@ -5,9 +5,9 @@
 #include <sstream>
 
 #include "ast/interfaces/AST.h"
-#include "ast/interfaces/IReferenceValue.h"
+#include "ast/PartialPathTree.h"
 
-#include "ast/Identifier.h"
+#include "ast/Variable.h"
 #include "ast/Constants.h"
 
 
@@ -17,30 +17,20 @@ namespace AST {
 class Reference : virtual public AST {
 public:
     Reference(std::shared_ptr<CharRange>&& char_range,
-              std::shared_ptr<int>&& identifier, 
-              std::shared_ptr<Identifier>&& reference_type, 
-              std::shared_ptr<IReferenceValue>&& value) : 
+              std::shared_ptr<Variable>&& variable) : 
         AST(std::move(char_range)),
-        identifier_(std::move(identifier)), 
-        reference_type_(std::move(reference_type)), 
-        value_(std::move(value)) {};
+        variable_(std::move(variable)) {};
 
     std::string to_string() const override {
-        std::ostringstream os;
-        os << "<";
-        if (identifier_)
-            os << "id " << *identifier_ << " "; 
+        return "<" + variable_->to_string() + ">";
+    }
 
-        os << "dt " << reference_type_->getName() << " ";
-        os << "va " << value_->to_string() << ">";
-
-        return os.str();
+    PartialPathTree::PositionedVariable check_reference(__attribute__((unused)) ieml::parser::ParserContextManager& ctx) const {
+        return {nullptr, variable_};
     }
 
 private:
-    std::shared_ptr<int> identifier_;
-    std::shared_ptr<Identifier> reference_type_;
-    std::shared_ptr<IReferenceValue>value_;
+    std::shared_ptr<Variable> variable_;
 };
 
 }}

@@ -10,6 +10,10 @@
 namespace ieml::structure {
 class CategoryRegister {
 public:
+    void define_link(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::PathTree> phrase) {
+        define_category(name, phrase, DefinitionType::LINK);
+    }
+
     void define_category(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::PathTree> phrase, DefinitionType type) {
         if (definition_types_.count(phrase) > 0) 
             throw std::invalid_argument("Category already defined.");

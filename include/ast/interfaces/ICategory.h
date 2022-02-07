@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "ast/interfaces/AST.h"
+#include "ast/PartialPathTree.h"
 #include "structure/path/PathTree.h"
 #include "ParserContextManager.h"
 
@@ -13,7 +14,7 @@ class ICategory : virtual public AST{
 public:
     ICategory() {}
 
-    virtual structure::PathTree::Vector check_category(parser::ParserContextManager& ctx) const = 0;
+    virtual PartialPathTree::Optional check_category(parser::ParserContextManager& ctx) const = 0;
 };
 
 }

@@ -16,10 +16,15 @@ void CategoryDeclaration::check_declaration(ieml::parser::ParserContextManager& 
         return;
     }
     bool valid = true;
-    if (ctx.getCategoryRegister().category_is_defined(phrase)) {
+
+    if (phrase->getPathTrees().size() != 1)
+        throw std::invalid_argument("Only single path trees permitted at this points");
+    
+    auto phrase_path_tree = *phrase->getPathTrees().begin();
+    if (ctx.getCategoryRegister().category_is_defined(phrase_path_tree)) {
         ctx.getErrorManager().visitorError(
             getCharRange(), 
-            "Cannot redefine phrase " + phrase->to_string() + ", it has already been defined before."
+            "Cannot redefine phrase " + phrase_path_tree->to_string() + ", it has already been defined before."
         );
         valid = false;
     }
@@ -39,6 +44,6 @@ void CategoryDeclaration::check_declaration(ieml::parser::ParserContextManager& 
     if (!valid)
         return;
 
-    ctx.getSourceMapping().register_mapping(phrase, this);
-    define_category(ctx, name, phrase);
+    ctx.getSourceMapping().register_mapping(phrase_path_tree, this);
+    define_category(ctx, name, *phrase);
 }

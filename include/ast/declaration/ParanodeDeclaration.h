@@ -25,9 +25,9 @@ public:
 
     virtual void define_category(ieml::parser::ParserContextManager& ctx, 
                                  std::shared_ptr<structure::Name>& name, 
-                                 std::shared_ptr<structure::PathTree>& phrase) const override;
+                                 const PartialPathTree& phrase) const override;
 protected:
-    virtual std::shared_ptr<structure::PathTree> _check_phrase(ieml::parser::ParserContextManager& ctx) const override;
+    virtual PartialPathTree::Optional _check_phrase(ieml::parser::ParserContextManager& ctx) const override;
 
     std::vector<structure::PathTree::Set> _check_dimension_definitions(ieml::parser::ParserContextManager& ctx,
                                                                        const std::shared_ptr<structure::PathTree>& phrase) const;

@@ -21,11 +21,11 @@ public:
         return "\"" + word_str_ + "\"";
     }
 
-    virtual structure::PathTree::Vector check_category(parser::ParserContextManager& ctx) const {
+    virtual PartialPathTree::Optional check_category(parser::ParserContextManager& ctx) const {
         const auto& word = check_category_word(ctx);
-        if (!word) return {nullptr};
+        if (!word) return {};
 
-        return {ctx.getPathTreeRegister().get_or_create(word)};
+        return PartialPathTree({ctx.getPathTreeRegister().get_or_create(word)}, {});
     };
 
     virtual std::shared_ptr<structure::PathNode> check_category_word(parser::ParserContextManager& ctx) const {

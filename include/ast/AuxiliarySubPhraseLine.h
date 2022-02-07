@@ -16,17 +16,17 @@ public:
     AuxiliarySubPhraseLine(std::shared_ptr<IAuxiliary>&& auxiliary) : 
         auxiliary_(std::move(auxiliary)) {}
 
-    structure::PathTree::Vector check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const {
+    PartialPathTree::Optional check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const {
         auto child_set = _check_auxiliary_subline(ctx, role_type);
 
         if (auxiliary_) {
             auto auxiliary_nodes = auxiliary_->check_auxiliary(ctx, role_type);
 
-            if(!*child_set.begin() || !*auxiliary_nodes.begin()) {
-                return {nullptr};
+            if(!child_set || !*auxiliary_nodes.begin()) {
+                return {};
             }
             
-            return ctx.getPathTreeRegister().get_or_create_product(auxiliary_nodes, {child_set});
+            return child_set->prepend_node_product(ctx.getPathTreeRegister(), auxiliary_nodes);
         } else  
             return child_set;
         
@@ -41,7 +41,7 @@ protected:
      * @param role_type 
      * @return structure::PathTree::Set 
      */
-    virtual structure::PathTree::Vector _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const = 0;
+    virtual PartialPathTree::Optional _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const = 0;
 
     std::string auxiliary_to_string() const {
         if (auxiliary_)
@@ -69,7 +69,7 @@ public:
     }
 
 protected:
-    virtual structure::PathTree::Vector _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+    virtual PartialPathTree::Optional _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         return flexed_category_->check_flexed_category(ctx, role_type);
     };
 
@@ -95,11 +95,11 @@ public:
     }
 
 protected:
-    virtual structure::PathTree::Vector _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+    virtual PartialPathTree::Optional _check_auxiliary_subline(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         return check_junction(ctx, role_type);
     };
 
-    virtual structure::PathTree::Vector check_junction_item(parser::ParserContextManager& ctx, size_t i, structure::RoleType role_type) const override {
+    virtual PartialPathTree::Optional check_junction_item(parser::ParserContextManager& ctx, size_t i, structure::RoleType role_type) const override {
         return items_[i]->check_flexed_category(ctx, role_type);
     };
 };

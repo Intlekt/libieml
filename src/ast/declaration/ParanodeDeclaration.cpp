@@ -5,10 +5,12 @@ using namespace ieml::AST;
 
 void ParanodeDeclaration::define_category(ieml::parser::ParserContextManager& ctx, 
                                           std::shared_ptr<structure::Name>& name, 
-                                          std::shared_ptr<structure::PathTree>& phrase) const {
+                                          const PartialPathTree& phrase) const {
     
+    auto phrase_pt = *phrase.getPathTrees().begin();
+
     auto& reg = ctx.getPathTreeRegister();
-    auto invariant = reg.buildFromPaths(reg.invariant_paths(phrase));
+    auto invariant = reg.buildFromPaths(reg.invariant_paths(phrase_pt));
     if (invariant == nullptr) {
         ctx.getErrorManager().visitorError(
             getCharRange(), 
@@ -33,44 +35,47 @@ void ParanodeDeclaration::define_category(ieml::parser::ParserContextManager& ct
         return;
     }
 
-    // if (ctx.getParadigmRegister().resolve_paradigms(invariant)) {
-    //     ctx.getErrorManager().visitorError(
-    //         getCharRange(), 
-    //         "A paradigm with the same node invariant has already been defined."
-    //     );
-    //     return;
-    // }
+    ctx.getCategoryRegister().define_category(name, phrase_pt, structure::DefinitionType::PARADIGM);    
 
-    ctx.getCategoryRegister().define_category(name, phrase, structure::DefinitionType::PARADIGM);    
-
-    const auto& dimensions = _check_dimension_definitions(ctx, phrase);
-    ctx.getParadigmRegister().define_paradigm(ctx.getPathTreeRegister(), phrase, dimensions);
+    const auto& dimensions = _check_dimension_definitions(ctx, phrase_pt);
+    ctx.getParadigmRegister().define_paradigm(ctx.getPathTreeRegister(), phrase_pt, dimensions);
 }
 
-std::shared_ptr<ieml::structure::PathTree> ParanodeDeclaration::_check_phrase(ieml::parser::ParserContextManager& ctx) const {
+PartialPathTree::Optional ParanodeDeclaration::_check_phrase(ieml::parser::ParserContextManager& ctx) const {
     auto phrase_list = getPhrase()->check_phrase(ctx);
 
-    if (phrase_list.size() == 1) {
+    if (!phrase_list)
+        return {};
+
+    if (phrase_list->getPathTrees().size() == 1) {
         ctx.getErrorManager().visitorError(
             getCharRange(), 
             "A @paranode declaration must define a paradigm category."
         );
-        return nullptr;
+        return {};
     }
 
     structure::PathTree::Set children;
 
-    for (size_t i = 0; i < phrase_list.size(); ++i) {
+    for (size_t i = 0; i < phrase_list->getPathTrees().size(); ++i) {
         children.insert({
             ctx.getPathTreeRegister().get_or_create(
                 std::make_shared<structure::ParadigmIndexPathNode>(i), 
-                {phrase_list[i]}
+                {phrase_list->getPathTrees()[i]}
             )});
     }
 
-    return ctx.getPathTreeRegister().get_or_create(
-        std::make_shared<structure::ParadigmPathNode>(), 
-        children);
+    if (phrase_list->getReferences().size() != 0) {
+        ctx.getErrorManager().visitorError(
+            getCharRange(), 
+            "Paradigms cannot have references."
+        );
+        return {};
+    }
+
+    return PartialPathTree({ctx.getPathTreeRegister().get_or_create(
+                                std::make_shared<structure::ParadigmPathNode>(), 
+                                children)}, {});
 }
 
 std::vector<ieml::structure::PathTree::Set> ParanodeDeclaration::_check_dimension_definitions(ieml::parser::ParserContextManager& ctx, 

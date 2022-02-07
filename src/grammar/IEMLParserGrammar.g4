@@ -1,13 +1,17 @@
-grammar ieml;
+parser grammar IEMLParserGrammar;
+
+options { tokenVocab=IEMLLexerGrammar; }
+
 
 program : declarations+=declaration* EOF;
 
 declaration : COMPONENT  language_strings+=language_string+                                     phrase_=phrase            DECLARATION_END    # componentDeclaration
             | NODE       language_strings+=language_string+                                     phrase_=phrase            DECLARATION_END    # nodeDeclaration
             | PARANODE   language_strings+=language_string+ dimensions+=dimension_definition+   phrase_=phrase            DECLARATION_END    # paranodeDeclaration
+            | LINK       language_strings+=language_string+                                     phrase_=phrase            DECLARATION_END    # linkDeclaration
             | WORD                                                                              word_=word                DECLARATION_END    # wordDeclaration
             | INFLECTION language_strings+=language_string+ inflection_type=IDENTIFIER          word_=word                DECLARATION_END    # inflectionDeclaration
-            | AUXILIARY  language_strings+=language_string+ role_type_=role_type                   word_=word             DECLARATION_END    # auxiliaryDeclaration
+            | AUXILIARY  language_strings+=language_string+ role_type_=role_type                word_=word                DECLARATION_END    # auxiliaryDeclaration
             | JUNCTION   language_strings+=language_string+                                     word_=word                DECLARATION_END    # junctionDeclaration
             | LANGUAGE   language=identifier                                                                              DECLARATION_END    # languageDeclaration
             ;
@@ -52,13 +56,15 @@ sub_phrase_line_auxiliary : auxiliary_=auxiliary_simple_or_paradigm?          in
                             JUNCTION_OPEN inflected_categories+=inflected_category inflected_categories+=inflected_category+ JUNCTION_CLOSE      # sub_phrase_line_auxiliary__jonction
                           ;
 
-inflected_category : inflection_list_=inflection_list?                CATEGORY_MARK category_=category references+=reference*        #inflected_category__singular 
-                   | inflection_list_=inflection_list?                CATEGORY_MARK category_=category_paradigm                      #inflected_category__category_paradigm
-                   | inflection_list_=inflection_list_paradigm        CATEGORY_MARK category_=category                               #inflected_category__inflection_paradigm
-                   | inflection_list_=inflection_list_paradigm        CATEGORY_MARK category_=category_paradigm                      #inflected_category__inflection_and_category_paradigm
+inflected_category : inflection_list_=inflection_list?                CATEGORY_MARK category_=category            references+=reference*    #inflected_category__singular 
+                   | inflection_list_=inflection_list?                CATEGORY_MARK category_=category_paradigm                             #inflected_category__category_paradigm
+                   | inflection_list_=inflection_list_paradigm        CATEGORY_MARK category_=category                                      #inflected_category__inflection_paradigm
+                   | inflection_list_=inflection_list_paradigm        CATEGORY_MARK category_=category_paradigm                             #inflected_category__inflection_and_category_paradigm
                    ;
 
-reference : REFERENCE_OPEN (id=INTEGER)? data_type=IDENTIFIER value=reference_value REFERENCE_CLOSE;
+variable: VARIABLE;
+
+reference : REFERENCE_OPEN variable_=variable REFERENCE_CLOSE;
 
 reference_value: identifier_=identifier  # reference_value__identifier
                | value=STRING            # reference_value__STRING
@@ -82,61 +88,8 @@ path_node : CATEGORY_MARK                                                       
 
 dimension_definition : dimension_mark=DIMENSION_MARK paths+=path (PARADIGM_SEP paths+=path)*;
 
-role_type : INTEGER       # role_type__integer
+role_type : INTEGER                   # role_type__integer
           | identifier_=identifier    # role_type__identifier
           ;
-
-
-LANGUAGE_STRING_MARK : [a-z][a-z]':';
-DIMENSION_MARK : [1-3]'d:';
-
-STRING : '"'(~'"'|'\\"')*'"';
-
+   
 identifier : identifiers+=IDENTIFIER+ ;
-
-IDENTIFIER : [a-zA-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ\-][0-9a-zA-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ'\-]*;
-
-
-FLEXION_MARK : '~' ;
-JUNCTION_MARK : '&' ;
-AUXILIARY_MARK : '*' ;
-CATEGORY_MARK : '#' ;
-
-PATH_SEPARATOR : '/';
-
-JUNCTION_OPEN : '[' ;
-JUNCTION_CLOSE : ']' ;
-
-REFERENCE_OPEN : '<' ;
-REFERENCE_CLOSE : '>' ;
-
-SEMANTIC_ACCENT : '!' ;
-
-DECLARATION_MARK : '@' ;
-DECLARATION_END : '.' ;
-
-PARADIGM_START : '{' ;
-PARADIGM_END : '}' ;
-PARADIGM_SEP : ';' ;
-
-PARENTHESIS_START : '(';
-PARENTHESIS_END : ')';
-COMMA : ',';
-
-
-INTEGER : [0-9]+ ;
-
-
-COMMENT :  '//' ~( '\r' | '\n' )* -> skip;
-
-WS: [ \t\n] -> skip ;
-
-LANGUAGE : '@language';
-COMPONENT : '@component';
-NODE : '@node';
-WORD : '@word';
-INFLECTION : '@inflection';
-AUXILIARY : '@auxiliary';
-JUNCTION : '@junction';
-PARANODE: '@paranode';
-TABLE: '@table';

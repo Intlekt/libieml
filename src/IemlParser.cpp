@@ -5,20 +5,19 @@
 
 using namespace ieml::parser;
 
-
 IEMLParser::FileParser::FileParser(const std::string& file_id, const std::string& input_str, IEMLParserErrorListener* error_listener) {
     input_ = new antlr4::ANTLRInputStream(input_str);
 
     visitor_ = std::make_shared<IEMLGrammarVisitor>(file_id, error_listener);
 
     auto antlr_listener = error_listener->getANTLR4ErrorListener(file_id);
-    lexer_ = new ieml_generated::iemlLexer(input_);
+    lexer_ = new ieml_generated::IEMLLexerGrammar(input_);
     lexer_->removeErrorListeners();
     lexer_->addErrorListener(antlr_listener);
 
     tokens_ = new antlr4::CommonTokenStream(lexer_);
 
-    parser_ = new ieml_generated::iemlParser(tokens_);
+    parser_ = new ieml_generated::IEMLParserGrammar(tokens_);
     parser_->removeErrorListeners();
     parser_->addErrorListener(antlr_listener);
 

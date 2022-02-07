@@ -10,6 +10,7 @@
 #include "ast/declaration/NodeDeclaration.h"
 #include "ast/declaration/ParanodeDeclaration.h"
 #include "ast/declaration/WordDeclaration.h"
+#include "ast/declaration/LinkDeclaration.h"
 #include "ast/Constants.h"
 #include "ast/Identifier.h"
 #include "ast/Program.h"
@@ -131,7 +132,7 @@ namespace ieml::parser {
    * PROGRAM
    */
 
-  antlrcpp::Any IEMLGrammarVisitor::visitProgram(iemlParser::ProgramContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitProgram(IEMLParserGrammar::ProgramContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, IDeclaration, declarations, "Invalid declaration.");
     // CAST_OR_RETURN_IF_NULL_LIST(declarations, Program);
 
@@ -143,7 +144,7 @@ namespace ieml::parser {
    * DECLARATION
    */
 
-  antlrcpp::Any IEMLGrammarVisitor::visitComponentDeclaration(iemlParser::ComponentDeclarationContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitComponentDeclaration(IEMLParserGrammar::ComponentDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase definition in component declaration.", true);
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
@@ -153,7 +154,7 @@ namespace ieml::parser {
     RETURN_VISITOR_RESULT(IDeclaration, ComponentDeclaration, std::move(language_strings), std::move(phrase_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitNodeDeclaration(iemlParser::NodeDeclarationContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitNodeDeclaration(IEMLParserGrammar::NodeDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase definition in node declaration.", true);
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
@@ -163,7 +164,7 @@ namespace ieml::parser {
     RETURN_VISITOR_RESULT(IDeclaration, NodeDeclaration, std::move(language_strings), std::move(phrase_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitParanodeDeclaration(iemlParser::ParanodeDeclarationContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitParanodeDeclaration(IEMLParserGrammar::ParanodeDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase definition in node declaration.", true);
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, DimensionDefinition, dimensions, "Invalid dimension definition.");
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
@@ -175,7 +176,17 @@ namespace ieml::parser {
     RETURN_VISITOR_RESULT(IDeclaration, ParanodeDeclaration, std::move(language_strings), std::move(dimensions), std::move(phrase_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitWordDeclaration(iemlParser::WordDeclarationContext *ctx) {    
+  antlrcpp::Any IEMLGrammarVisitor::visitLinkDeclaration(IEMLParserGrammar::LinkDeclarationContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase definition in node declaration.", true);
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
+
+    CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, IDeclaration);
+    CAST_OR_RETURN_IF_NULL_LIST(language_strings, IDeclaration);
+
+    RETURN_VISITOR_RESULT(IDeclaration, LinkDeclaration, std::move(language_strings), std::move(phrase_));
+  }
+
+  antlrcpp::Any IEMLGrammarVisitor::visitWordDeclaration(IEMLParserGrammar::WordDeclarationContext *ctx) {    
     CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for a word declaration.", true);
 
     CAST_OR_RETURN_IF_NULL(ctx, Word, word_, IDeclaration);
@@ -183,7 +194,7 @@ namespace ieml::parser {
     RETURN_VISITOR_RESULT(IDeclaration, WordDeclaration, std::move(word_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitInflectionDeclaration(iemlParser::InflectionDeclarationContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitInflectionDeclaration(IEMLParserGrammar::InflectionDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
     std::shared_ptr<Identifier> inflection_type;
@@ -205,7 +216,7 @@ namespace ieml::parser {
                           std::move(word_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliaryDeclaration(iemlParser::AuxiliaryDeclarationContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliaryDeclaration(IEMLParserGrammar::AuxiliaryDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
     CHECK_SYNTAX_ERROR(error_listener_, ctx, role_type_, "Invalid role number for an auxiliary declaration.", true);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for an auxiliary declaration.", true);
@@ -221,7 +232,7 @@ namespace ieml::parser {
                           std::move(word_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitJunctionDeclaration(iemlParser::JunctionDeclarationContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitJunctionDeclaration(IEMLParserGrammar::JunctionDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
 
     CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for a junction declaration.", true);
@@ -235,7 +246,7 @@ namespace ieml::parser {
                           std::move(word_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitLanguageDeclaration(iemlParser::LanguageDeclarationContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitLanguageDeclaration(IEMLParserGrammar::LanguageDeclarationContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, language, "Invalid language type.", true);
 
     CAST_OR_RETURN_IF_NULL(ctx, Identifier, language, LanguageDeclaration);
@@ -249,14 +260,14 @@ namespace ieml::parser {
    * PHRASE
    */
 
-  antlrcpp::Any IEMLGrammarVisitor::visitPhrase__lines(iemlParser::Phrase__linesContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitPhrase__lines(IEMLParserGrammar::Phrase__linesContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, PhraseLine, phrase_lines, "Invalid phrase lines.");    
     CAST_OR_RETURN_IF_NULL_LIST(phrase_lines, Phrase);
 
     RETURN_VISITOR_RESULT(Phrase, SimplePhrase, std::move(phrase_lines));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitPhrase__junction(iemlParser::Phrase__junctionContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitPhrase__junction(IEMLParserGrammar::Phrase__junctionContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Phrase, phrases, "Invalid phrases in phrase junction.");
     CHECK_SYNTAX_ERROR(error_listener_, ctx, junction_, "Invalid junction identifier in phrase junction.", true);
 
@@ -271,7 +282,7 @@ namespace ieml::parser {
    * PHRASELINE
    */
 
-  antlrcpp::Any IEMLGrammarVisitor::visitPhrase_line__sub_phrase_line_auxiliary(iemlParser::Phrase_line__sub_phrase_line_auxiliaryContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitPhrase_line__sub_phrase_line_auxiliary(IEMLParserGrammar::Phrase_line__sub_phrase_line_auxiliaryContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, role_type_, "Invalid role type.", true);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, sub_phrase, "Invalid sub phrase line : invalid auxiliary, inflection, category or references.", true);
 
@@ -283,7 +294,7 @@ namespace ieml::parser {
     RETURN_VISITOR_RESULT(PhraseLine, SimplePhraseLine, std::move(role_type_), accentuation, std::move(sub_phrase))
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitPhrase_line__jonction_auxiliary(iemlParser::Phrase_line__jonction_auxiliaryContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitPhrase_line__jonction_auxiliary(IEMLParserGrammar::Phrase_line__jonction_auxiliaryContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, role_type_, "Invalid role type.", true);
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, AuxiliarySubPhraseLine, sub_phrases, "Invalid sub phrase in phrase line junction.");
     CHECK_SYNTAX_ERROR(error_listener_, ctx, junction_, "Invalid junction identifier in phrase line junction.", true);
@@ -300,21 +311,21 @@ namespace ieml::parser {
   /**
    * INFLEXION LIST
    */
-  antlrcpp::Any IEMLGrammarVisitor::visitInflection_list__identifiers(iemlParser::Inflection_list__identifiersContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitInflection_list__identifiers(IEMLParserGrammar::Inflection_list__identifiersContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Identifier, inflections, "Invalid inflection identifiers in phrase line or path.");
     CAST_OR_RETURN_IF_NULL_LIST(inflections, IInflectionList);
 
     RETURN_VISITOR_RESULT(IInflectionList, InflectionList, std::move(inflections));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitInflection_list__words(iemlParser::Inflection_list__wordsContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitInflection_list__words(IEMLParserGrammar::Inflection_list__wordsContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Word, words, "Invalid inflection words in phrase line or path.");
     CAST_OR_RETURN_IF_NULL_LIST(words, IInflectionList);
 
     RETURN_VISITOR_RESULT(IInflectionList, WordInflectionList, std::move(words));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitInflection_list_paradigm(iemlParser::Inflection_list_paradigmContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitInflection_list_paradigm(IEMLParserGrammar::Inflection_list_paradigmContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, IInflectionList, inflection_lists, "Invalid inflection list in inflection paradigm.");
     CAST_OR_RETURN_IF_NULL_LIST(inflection_lists, IInflectionList);
 
@@ -324,21 +335,21 @@ namespace ieml::parser {
   /**
    * AUXILIARY
    */  
-  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary__identifier(iemlParser::Auxiliary__identifierContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary__identifier(IEMLParserGrammar::Auxiliary__identifierContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, identifier_, "Invalid auxiliary identifier in a phrase line or a path.", true);
     CAST_OR_RETURN_IF_NULL(ctx, Identifier, identifier_, Auxiliary);
     
     RETURN_VISITOR_RESULT(IAuxiliary, Auxiliary, std::move(identifier_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary__word(iemlParser::Auxiliary__wordContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary__word(IEMLParserGrammar::Auxiliary__wordContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid auxiliary word in a phrase line or a path.", true);
     CAST_OR_RETURN_IF_NULL(ctx, Word, word_, Auxiliary);
     
     RETURN_VISITOR_RESULT(IAuxiliary, WordAuxiliary, std::move(word_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary_paradigm(iemlParser::Auxiliary_paradigmContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary_paradigm(IEMLParserGrammar::Auxiliary_paradigmContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, IAuxiliary, identifiers, "Invalid auxiliary in an auxiliary paradigm.");
     CAST_OR_RETURN_IF_NULL_LIST(identifiers, IAuxiliary);
 
@@ -348,14 +359,14 @@ namespace ieml::parser {
   /**
    * AUXILIARY SIMPLE OR PARADIGM
    */  
-  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary_simple_or_paradigm__simple(iemlParser::Auxiliary_simple_or_paradigm__simpleContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary_simple_or_paradigm__simple(IEMLParserGrammar::Auxiliary_simple_or_paradigm__simpleContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary_, "Invalid auxiliary.", true);
     CAST_OR_RETURN_IF_NULL(ctx, IAuxiliary, auxiliary_, IAuxiliary);
 
     RETURN_VISITOR_RESULT_MOVE(IAuxiliary, auxiliary_);
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary_simple_or_paradigm__paradigm(iemlParser::Auxiliary_simple_or_paradigm__paradigmContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitAuxiliary_simple_or_paradigm__paradigm(IEMLParserGrammar::Auxiliary_simple_or_paradigm__paradigmContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary_, "Invalid auxiliary paradigm.", true);
     CAST_OR_RETURN_IF_NULL(ctx, IAuxiliary, auxiliary_, IAuxiliary);
 
@@ -366,7 +377,7 @@ namespace ieml::parser {
    * SUB PHRASELINE with AUXILIARY
    */
 
-  antlrcpp::Any IEMLGrammarVisitor::visitSub_phrase_line_auxiliary__no_junction(iemlParser::Sub_phrase_line_auxiliary__no_junctionContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitSub_phrase_line_auxiliary__no_junction(IEMLParserGrammar::Sub_phrase_line_auxiliary__no_junctionContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary_, "Invalid auxiliary identifier.", false);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, inflected_category_, "Missing a category : an identifier, a phrase or a word.", true);
 
@@ -376,7 +387,7 @@ namespace ieml::parser {
     RETURN_VISITOR_RESULT(AuxiliarySubPhraseLine, SimpleAuxiliarySubPhraseLine, std::move(auxiliary_), std::move(inflected_category_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitSub_phrase_line_auxiliary__jonction(iemlParser::Sub_phrase_line_auxiliary__jonctionContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitSub_phrase_line_auxiliary__jonction(IEMLParserGrammar::Sub_phrase_line_auxiliary__jonctionContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary_, "Invalid auxiliary identifier.", true);
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, InflectedCategory, inflected_categories, "Invalid inflected categories in auxiliarized phrase line junction.");
     CHECK_SYNTAX_ERROR(error_listener_, ctx, junction_, "Invalid junction type identifier.", true);
@@ -392,7 +403,7 @@ namespace ieml::parser {
   /**
    * INFLEXED CATEGORY (SUB PHRASELINE without AUXILIARY)
    */
-  antlrcpp::Any IEMLGrammarVisitor::visitInflected_category__singular(iemlParser::Inflected_category__singularContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitInflected_category__singular(IEMLParserGrammar::Inflected_category__singularContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, inflection_list_, "Invalid inflection list in inflected category.", false);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a category : an identifier, a phrase or a word.", true);
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Reference, references, "Invalid reference.");
@@ -403,7 +414,7 @@ namespace ieml::parser {
 
     RETURN_VISITOR_RESULT(InflectedCategory, InflectedCategory, std::move(inflection_list_), std::move(category_), std::move(references));
   }
-  antlrcpp::Any IEMLGrammarVisitor::visitInflected_category__category_paradigm(iemlParser::Inflected_category__category_paradigmContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitInflected_category__category_paradigm(IEMLParserGrammar::Inflected_category__category_paradigmContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, inflection_list_, "Invalid inflection list in inflected category.", false);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a substitution list of category.", true);
     
@@ -412,7 +423,7 @@ namespace ieml::parser {
 
     RETURN_VISITOR_RESULT(InflectedCategory, InflectedCategory, std::move(inflection_list_), std::move(category_), std::vector<std::shared_ptr<Reference>>{});
   }
-  antlrcpp::Any IEMLGrammarVisitor::visitInflected_category__inflection_paradigm(iemlParser::Inflected_category__inflection_paradigmContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitInflected_category__inflection_paradigm(IEMLParserGrammar::Inflected_category__inflection_paradigmContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, inflection_list_, "Invalid inflection list in inflected category.", true);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a substitution list of category.", true);
     
@@ -422,7 +433,7 @@ namespace ieml::parser {
     RETURN_VISITOR_RESULT(InflectedCategory, InflectedCategory, std::move(inflection_list_), std::move(category_), std::vector<std::shared_ptr<Reference>>{});
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitInflected_category__inflection_and_category_paradigm(iemlParser::Inflected_category__inflection_and_category_paradigmContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitInflected_category__inflection_and_category_paradigm(IEMLParserGrammar::Inflected_category__inflection_and_category_paradigmContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, inflection_list_, "Invalid inflection list in inflected category.", true);
     CHECK_SYNTAX_ERROR(error_listener_, ctx, category_, "Missing a substitution list of category.", true);
     
@@ -437,27 +448,27 @@ namespace ieml::parser {
    *  CATEGORY
    */
 
-  antlrcpp::Any IEMLGrammarVisitor::visitCategory__identifier(iemlParser::Category__identifierContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitCategory__identifier(IEMLParserGrammar::Category__identifierContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, identifier_, "Invalid identifier for a category.", true);
     CAST_OR_RETURN_IF_NULL(ctx, Identifier, identifier_, ICategory);
 
     RETURN_VISITOR_RESULT_MOVE(ICategory, identifier_);
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitCategory__phrase(iemlParser::Category__phraseContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitCategory__phrase(IEMLParserGrammar::Category__phraseContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase for a category.", true);
     CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, ICategory);
 
     RETURN_VISITOR_RESULT_MOVE(ICategory, phrase_);
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitCategory__word(iemlParser::Category__wordContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitCategory__word(IEMLParserGrammar::Category__wordContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for a category.", true);
     CAST_OR_RETURN_IF_NULL(ctx, Word, word_, ICategory);
     RETURN_VISITOR_RESULT_MOVE(ICategory, word_);
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitCategory_paradigm(iemlParser::Category_paradigmContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitCategory_paradigm(IEMLParserGrammar::Category_paradigmContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, ICategory, categories, "Invalid category list for a paradigm declaration.");
 
     CAST_OR_RETURN_IF_NULL_LIST(categories, CategoryParadigm);
@@ -469,7 +480,7 @@ namespace ieml::parser {
    *  WORD
    */
 
-  antlrcpp::Any IEMLGrammarVisitor::visitWord(iemlParser::WordContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitWord(IEMLParserGrammar::WordContext *ctx) {
     if (!ctx->word_) {
       error_listener_->parseError(*charRangeFromContext(ctx), "Invalid word for a category.");
       RETURN_VISITOR_RESULT_ERROR(Word);
@@ -485,7 +496,7 @@ namespace ieml::parser {
    *  LANGUAGE STRING
    */
 
-  antlrcpp::Any IEMLGrammarVisitor::visitLanguage_string(iemlParser::Language_stringContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitLanguage_string(IEMLParserGrammar::Language_stringContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, value, "Invalid identifier value for language string.", true);
     if (!ctx->language) {
       error_listener_->parseError(*charRangeFromContext(ctx), "Invalid language identifier for language string.");
@@ -504,7 +515,7 @@ namespace ieml::parser {
    *  IDENTIFIER
    */
 
-  antlrcpp::Any IEMLGrammarVisitor::visitIdentifier(iemlParser::IdentifierContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitIdentifier(IEMLParserGrammar::IdentifierContext *ctx) {
     if (ctx->identifiers.empty()) {
       error_listener_->parseError(*charRangeFromContext(ctx), "Invalid identifier : empty identifier.");
       RETURN_VISITOR_RESULT_ERROR(Identifier);
@@ -524,12 +535,12 @@ namespace ieml::parser {
   /**
    * JUNCTION
    */
-  antlrcpp::Any IEMLGrammarVisitor::visitJunction__identifier(iemlParser::Junction__identifierContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitJunction__identifier(IEMLParserGrammar::Junction__identifierContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, identifier_, "Invalid identifier for a junction.", true);
     CAST_OR_RETURN_IF_NULL(ctx, Identifier, identifier_, IJunction);
     RETURN_VISITOR_RESULT(IJunction, Junction, std::move(identifier_));
   }
-  antlrcpp::Any IEMLGrammarVisitor::visitJunction__word(iemlParser::Junction__wordContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitJunction__word(IEMLParserGrammar::Junction__wordContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for a junction.", true);
     CAST_OR_RETURN_IF_NULL(ctx, Word, word_, IJunction);
     RETURN_VISITOR_RESULT(IJunction, WordJunction, std::move(word_));
@@ -538,7 +549,7 @@ namespace ieml::parser {
   /**
    * PATH
    */
-  antlrcpp::Any IEMLGrammarVisitor::visitPath(iemlParser::PathContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitPath(IEMLParserGrammar::PathContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, PathNode, path_nodes, "Invalid path node list for a path definition.");
     CAST_OR_RETURN_IF_NULL_LIST(path_nodes, Path);
     RETURN_VISITOR_RESULT(Path, Path, std::move(path_nodes));
@@ -547,11 +558,11 @@ namespace ieml::parser {
   /**
    * PATH NODE
    */
-  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__root(iemlParser::Path_node__rootContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__root(IEMLParserGrammar::Path_node__rootContext *ctx) {
     RETURN_VISITOR_RESULT_NO_ARGS(PathNode, RootPathNode);
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__paradigm(iemlParser::Path_node__paradigmContext *ctx) {  
+  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__paradigm(IEMLParserGrammar::Path_node__paradigmContext *ctx) {  
     if (!ctx->INTEGER()) {
       error_listener_->parseError(*charRangeFromContext(ctx), "Invalid paradigm index.");
       RETURN_VISITOR_RESULT_ERROR(PathNode);
@@ -560,25 +571,25 @@ namespace ieml::parser {
     RETURN_VISITOR_RESULT(PathNode, ParadigmPathNode, index);
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__auxiliary(iemlParser::Path_node__auxiliaryContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__auxiliary(IEMLParserGrammar::Path_node__auxiliaryContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, auxiliary_, "Invalid auxiliary for a path definition.", true);
     CAST_OR_RETURN_IF_NULL(ctx, IAuxiliary, auxiliary_, PathNode);
     RETURN_VISITOR_RESULT(PathNode, AuxiliaryPathNode, std::move(auxiliary_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__inflection(iemlParser::Path_node__inflectionContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__inflection(IEMLParserGrammar::Path_node__inflectionContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, inflection_list_, "Invalid inflection list for a path definition.", true);
     CAST_OR_RETURN_IF_NULL(ctx, IInflectionList, inflection_list_, PathNode);
     RETURN_VISITOR_RESULT(PathNode, InflectionListPathNode, std::move(inflection_list_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__word(iemlParser::Path_node__wordContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__word(IEMLParserGrammar::Path_node__wordContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for a path definition.", true);
     CAST_OR_RETURN_IF_NULL(ctx, Word, word_, PathNode);
     RETURN_VISITOR_RESULT(PathNode, WordPathNode, std::move(word_));
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__junction(iemlParser::Path_node__junctionContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__junction(IEMLParserGrammar::Path_node__junctionContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, junction_, "Invalid junction identifier for a path definition.", true);
     
     if (!ctx->INTEGER()) {
@@ -591,7 +602,7 @@ namespace ieml::parser {
     RETURN_VISITOR_RESULT(PathNode, JunctionPathNode, std::move(junction_), index);
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__role_number(iemlParser::Path_node__role_numberContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitPath_node__role_number(IEMLParserGrammar::Path_node__role_numberContext *ctx) {
     if (!ctx->INTEGER()) {
       error_listener_->parseError(*charRangeFromContext(ctx), "Invalid role number");
       RETURN_VISITOR_RESULT_ERROR(PathNode);
@@ -604,7 +615,7 @@ namespace ieml::parser {
   /**
    * DIMENSION DEFINITION
    */
-  antlrcpp::Any IEMLGrammarVisitor::visitDimension_definition(iemlParser::Dimension_definitionContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitDimension_definition(IEMLParserGrammar::Dimension_definitionContext *ctx) {
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Path, paths, "Invalid path list for a paranode dimension definition.");
 
     if (!ctx->dimension_mark) {
@@ -623,7 +634,7 @@ namespace ieml::parser {
   /**
    * ROLE TYPE
    */
-  antlrcpp::Any IEMLGrammarVisitor::visitRole_type__integer(iemlParser::Role_type__integerContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitRole_type__integer(IEMLParserGrammar::Role_type__integerContext *ctx) {
     int role_type = -1;
     if (!ctx->INTEGER())
       error_listener_->parseError(*charRangeFromContext(ctx), "Invalid role number.");
@@ -635,36 +646,36 @@ namespace ieml::parser {
 
     RETURN_VISITOR_RESULT(RoleType, IntegerRoleType, role_type);
   }
-  antlrcpp::Any IEMLGrammarVisitor::visitRole_type__identifier(iemlParser::Role_type__identifierContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitRole_type__identifier(IEMLParserGrammar::Role_type__identifierContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, identifier_, "Invalid identifier for role type.", true);
     CAST_OR_RETURN_IF_NULL(ctx, Identifier, identifier_, RoleType);
 
     RETURN_VISITOR_RESULT(RoleType, IdentifierRoleType, std::move(identifier_));
   }
 
+  /** 
+   *  VARIABLE
+   */
+  antlrcpp::Any IEMLGrammarVisitor::visitVariable(IEMLParserGrammar::VariableContext *ctx) {
+    if (!ctx->VARIABLE()) {
+      error_listener_->parseError(*charRangeFromContext(ctx), "Missing variable name.");
+      RETURN_VISITOR_RESULT_ERROR(Variable);
+    } 
+
+    const std::string name = ctx->VARIABLE()->getText();
+
+    RETURN_VISITOR_RESULT(Variable, Variable, std::move(name));
+  }
 
   /**
    *  REFERENCE
    */
 
-  antlrcpp::Any IEMLGrammarVisitor::visitReference(iemlParser::ReferenceContext *ctx) {
-    std::shared_ptr<int> ref_id = nullptr;
-    if (ctx->id) {
-      int i = std::stoi(ctx->id->getText());
-      ref_id = std::move(std::make_unique<int>(i));
-    }
+  antlrcpp::Any IEMLGrammarVisitor::visitReference(IEMLParserGrammar::ReferenceContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, variable_, "Invalid variable for reference.", true);
+    CAST_OR_RETURN_IF_NULL(ctx, Variable, variable_, Reference);
 
-    CHECK_SYNTAX_ERROR(error_listener_, ctx, value, "Invalid value in reference.", true);
-
-    if (!ctx->data_type) {
-      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid datatype identifier.");
-      RETURN_VISITOR_RESULT_ERROR(Reference);
-    }
-
-    CAST_OR_RETURN_IF_NULL(ctx, IReferenceValue, value, Reference);
-    auto data_type = std::move(std::make_unique<Identifier>(charRangeFromToken(ctx->data_type), ctx->data_type->getText()));
-
-    RETURN_VISITOR_RESULT(Reference, Reference, std::move(ref_id), std::move(data_type), std::move(value));
+    RETURN_VISITOR_RESULT(Reference, Reference, std::move(variable_));
   }
 
 
@@ -672,14 +683,14 @@ namespace ieml::parser {
    *  REFERENCE VALUE
    */
 
-  antlrcpp::Any IEMLGrammarVisitor::visitReference_value__identifier(iemlParser::Reference_value__identifierContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitReference_value__identifier(IEMLParserGrammar::Reference_value__identifierContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, identifier_, "Invalid identifier for reference value.", true);
     CAST_OR_RETURN_IF_NULL(ctx, Identifier, identifier_, IReferenceValue);
 
     RETURN_VISITOR_RESULT_MOVE(IReferenceValue, identifier_);
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitReference_value__STRING(iemlParser::Reference_value__STRINGContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitReference_value__STRING(IEMLParserGrammar::Reference_value__STRINGContext *ctx) {
     if (!ctx->value) {
       error_listener_->parseError(*charRangeFromContext(ctx), "Invalid string for reference value.");
       RETURN_VISITOR_RESULT_ERROR(IReferenceValue);
@@ -688,7 +699,7 @@ namespace ieml::parser {
     RETURN_VISITOR_RESULT(IReferenceValue, ReferenceStringValue, ctx->value->getText());
   }
 
-  antlrcpp::Any IEMLGrammarVisitor::visitReference_value__phrase(iemlParser::Reference_value__phraseContext *ctx) {
+  antlrcpp::Any IEMLGrammarVisitor::visitReference_value__phrase(IEMLParserGrammar::Reference_value__phraseContext *ctx) {
     CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase for reference value.", true);
     CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, IReferenceValue);
 

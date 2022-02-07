@@ -5,22 +5,29 @@
 using namespace ieml::structure;
 
 
-
-PathTree::Vector PathTree::Register::get_or_create_product(const PathNode::Vector& node_set, const std::vector<PathTree::Vector>& children_list) {
+std::vector<PathTree::Set> PathTree::cartesian_product(const std::vector<PathTree::Vector>& children_list) {
     size_t size = 1;
-    for (auto& set : children_list) size *= set.size();
+    for (const auto& child: children_list) 
+        size *= child.size();
 
-    std::vector<Set> bins(size);
-    size_t curr_size = 1;
-    for (auto& set : children_list) {
+    std::vector<PathTree::Set> bins(size);
+
+    size_t curr_ratio = 1;
+    for (const auto& children: children_list) {
         for (size_t i = 0; i < size; ++i)
-            bins[i].insert(set[(i / curr_size) % set.size()]);
+            bins[i].insert(children[(i / curr_ratio) % children.size()]);
 
-        curr_size *= set.size();
+        curr_ratio *= children.size();
     }
 
+
+    return bins;
+}
+
+
+PathTree::Vector PathTree::Register::get_or_create_product(const PathNode::Vector& node_set, const std::vector<PathTree::Vector>& children_list) {
     Vector res;
-    for (auto& children: bins)
+    for (auto& children: cartesian_product(children_list))
         for (auto& node: node_set)
             res.push_back(get_or_create(node, children));
 
@@ -86,23 +93,11 @@ std::shared_ptr<PathTree> PathTree::Register::buildFromPaths(const PathTree::Set
 }
 
 PathTree::Vector PathTree::Register::buildFromPaths_product(const PathTree::Set& invariant_paths, const std::vector<PathTree::Vector>& variant_paths) {
-    size_t size = 1;
-    for (const auto& child: variant_paths) 
-        size *= child.size();
-
-    std::vector<PathTree::Set> bins(size);
-    for (size_t i = 0; i < size; ++i) 
-        bins[i].insert(invariant_paths.begin(), invariant_paths.end());
-
-    for (const auto& variant: variant_paths)
-        for (size_t i = 0; i < size / variant.size(); ++i)
-            for (size_t j = 0; j < variant.size(); ++j)
-                bins[i * variant.size() + j].insert(variant[j]);
-    
     Vector res;
-    for (auto& bin: bins)
+    for (auto& bin: cartesian_product(variant_paths)) {
+        bin.insert(invariant_paths.begin(), invariant_paths.end());
         res.push_back(buildFromPaths(bin));
-
+    }
     return res;
 }
 
@@ -287,11 +282,9 @@ bool PathTree::is_valid() const {
     }
 
     // ensure that the phrase has at least a root role
-    if (is_phrase()) {
+    // if (is_phrase()) {
 
-    }
-
-    // ensure that 
+    // }
 
 
     if (children_.size() != 0) {

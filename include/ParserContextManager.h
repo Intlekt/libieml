@@ -10,6 +10,7 @@
 #include "structure/WordRegister.h"
 #include "structure/CategoryRegister.h"
 #include "structure/ParadigmRegister.h"
+#include "structure/ReferenceSchemaRegister.h"
 #include "SyntaxError.h"
 #include "SourceMapping.h"
 
@@ -28,6 +29,7 @@ public:
     structure::CategoryRegister& getCategoryRegister() {return category_register_;};
     structure::WordRegister& getWordRegister() {return word_register_;};
     structure::ParadigmRegister& getParadigmRegister() {return paradigm_register_;};
+    structure::ReferenceSchemaRegister& getReferenceSchemaRegister() {return reference_schema_register_;};
     parser::SourceMapping& getSourceMapping() {return source_mapping_;};
 
 
@@ -56,6 +58,7 @@ private:
     structure::CategoryRegister category_register_;
     structure::WordRegister word_register_;
     structure::ParadigmRegister paradigm_register_;
+    structure::ReferenceSchemaRegister reference_schema_register_;
 
     parser::IEMLParserErrorListener* error_manager_;
 

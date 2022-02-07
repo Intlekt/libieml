@@ -21,9 +21,9 @@ class Phrase: virtual public AST, public ICategory, public IReferenceValue {
 public:
     Phrase() : ICategory(), IReferenceValue() {}
 
-    virtual structure::PathTree::Vector check_phrase(parser::ParserContextManager& ctx) const = 0;
+    virtual PartialPathTree::Optional check_phrase(parser::ParserContextManager& ctx) const = 0;
 
-    virtual structure::PathTree::Vector check_category(parser::ParserContextManager& ctx) const {
+    virtual PartialPathTree::Optional check_category(parser::ParserContextManager& ctx) const {
         return check_phrase(ctx);
     };
 
@@ -55,21 +55,22 @@ public:
         return os.str();
     }
 
-    virtual structure::PathTree::Vector check_phrase(parser::ParserContextManager& ctx) const override {
+    virtual PartialPathTree::Optional check_phrase(parser::ParserContextManager& ctx) const override {
         std::unordered_set<structure::RoleType> seen_nodes;
         
-        std::vector<structure::PathTree::Vector> children_list;
+        std::vector<PartialPathTree::Optional> children_list;
+        children_list.reserve(phrase_lines_.size());
 
         bool valid = true;
         for (const auto& line: phrase_lines_) {
             auto phrase_line_set = line->check_phrase_line(ctx);
 
-            if (!*phrase_line_set.begin()) {
+            if (!phrase_line_set) {
                 valid = false;
                 continue;
             }
             
-            auto role_number = std::dynamic_pointer_cast<structure::RoleNumberPathNode>((*phrase_line_set.begin())->getNode());
+            auto role_number = std::dynamic_pointer_cast<structure::RoleNumberPathNode>((*phrase_line_set->getPathTrees().begin())->getNode());
 
             if (!role_number) {
                 // should not occur
@@ -83,23 +84,25 @@ public:
                     valid = false;
                 } else {
                     seen_nodes.insert(role_number->getRoleType());
-                    children_list.push_back(phrase_line_set);
+                    children_list.emplace_back(std::move(phrase_line_set));
                 }
             }
         }
 
         if (!valid)
-            return {nullptr};
+            return {};
 
         if (seen_nodes.find(structure::RoleType::ROOT) == seen_nodes.end()) {
             ctx.getErrorManager().visitorError(
                 getCharRange(),
                 "Missing root role."
             );
-            return {nullptr};
+            return {};
         }
 
-        return ctx.getPathTreeRegister().get_or_create_product(std::make_shared<structure::RootPathNode>(), children_list);
+        return PartialPathTree::product(ctx.getPathTreeRegister(), 
+                                        std::make_shared<structure::RootPathNode>(), 
+                                        std::move(children_list));
     };
 
 
@@ -122,12 +125,12 @@ public:
         return "(" + junction_to_string() + ")";
     }
     
-    virtual structure::PathTree::Vector check_junction_item(parser::ParserContextManager& ctx, size_t i, 
+    virtual PartialPathTree::Optional check_junction_item(parser::ParserContextManager& ctx, size_t i, 
                                                             __attribute__((unused)) Empty a) const override {
         return items_[i]->check_phrase(ctx);
     };
 
-    virtual structure::PathTree::Vector check_phrase(parser::ParserContextManager& ctx) const override {
+    virtual PartialPathTree::Optional check_phrase(parser::ParserContextManager& ctx) const override {
         return check_junction(ctx, {});
     }
 };

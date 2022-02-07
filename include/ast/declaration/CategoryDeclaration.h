@@ -29,9 +29,9 @@ protected:
 
     virtual void define_category(ieml::parser::ParserContextManager& ctx, 
                                  std::shared_ptr<structure::Name>& name, 
-                                 std::shared_ptr<structure::PathTree>& phrase) const = 0;
+                                 const PartialPathTree& phrase) const = 0;
 
-    virtual std::shared_ptr<structure::PathTree> _check_phrase(ieml::parser::ParserContextManager& ctx) const = 0;
+    virtual PartialPathTree::Optional _check_phrase(ieml::parser::ParserContextManager& ctx) const = 0;
 
 private:
     const std::shared_ptr<Phrase> phrase_;

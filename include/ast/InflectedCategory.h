@@ -11,6 +11,7 @@
 #include "ast/interfaces/IInflectionList.h"
 #include "ast/Reference.h"
 #include "ast/Identifier.h"
+#include "ast/PartialPathTree.h"
 
 #include "structure/Word.h"
 #include "utils.h"
@@ -40,20 +41,26 @@ public:
         return os.str();
     }
 
-    structure::PathTree::Vector check_flexed_category(parser::ParserContextManager& ctx, structure::RoleType role_type) const {
+    PartialPathTree::Optional check_flexed_category(parser::ParserContextManager& ctx, structure::RoleType role_type) const {
+        auto references = check_references(ctx);
+
         auto category_set = category_->check_category(ctx);
+
+
         if (inflection_list_ != nullptr) {
             auto inflection_nodes = inflection_list_->check_inflection_list(ctx, role_type);
 
-            if (!*category_set.begin() || !*inflection_nodes.begin())
-                return {nullptr};
+            if (!category_set || !references || !*inflection_nodes.begin())
+                return {};
 
-            return ctx.getPathTreeRegister().get_or_create_product(
-                inflection_nodes,
-                {category_set}
-            );
-        } else 
-            return category_set;
+            return PartialPathTree::concat({std::move(category_set), std::move(references)})
+                        ->prepend_node_product(ctx.getPathTreeRegister(), inflection_nodes);
+
+        } else {
+            if (!category_set || !references)
+                return {};
+            return PartialPathTree::concat({std::move(category_set), std::move(references)});
+        }
     }
 
 private:

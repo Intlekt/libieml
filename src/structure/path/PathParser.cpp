@@ -2,8 +2,8 @@
 #include "ast/Path.h"
 #include "IEMLGrammarVisitor.h"
 #include "antlr4-runtime.h"
-#include "iemlLexer.h"
-#include "iemlParser.h"
+#include "IEMLLexerGrammar.h"
+#include "IEMLParserGrammar.h"
 
 
 
@@ -12,13 +12,13 @@ std::shared_ptr<ieml::structure::PathTree> ieml::parser::parsePath(parser::Parse
     IEMLParserErrorListener error_listener(error_stdout);
     auto antlr_listener = error_listener.getANTLR4ErrorListener("");
 
-    ieml_generated::iemlLexer lexer(&input);
+    ieml_generated::IEMLLexerGrammar lexer(&input);
     lexer.removeErrorListeners();
     lexer.addErrorListener(antlr_listener);
 
     antlr4::CommonTokenStream tokens(&lexer);
 
-    ieml_generated::iemlParser parser(&tokens);
+    ieml_generated::IEMLParserGrammar parser(&tokens);
     parser.removeErrorListeners();
     parser.addErrorListener(antlr_listener);
 

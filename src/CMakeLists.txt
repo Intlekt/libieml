@@ -14,11 +14,16 @@ set(ANTLR_EXECUTABLE ${CMAKE_SOURCE_DIR}/thirdparty/antlr/antlr-4.9.2-complete.j
 
 find_package(ANTLR REQUIRED)
 
-antlr_target(IEMLParser ${CMAKE_CURRENT_LIST_DIR}/grammar/ieml.g4 
-             PACKAGE ieml_generated VISITOR)
+antlr_target(IEMLLexerGrammar  ${CMAKE_CURRENT_LIST_DIR}/grammar/IEMLLexerGrammar.g4  LEXER
+             PACKAGE ieml_generated)
 
-message(STATUS "Generated parser at ${ANTLR_IEMLParser_OUTPUT_DIR} ")
+antlr_target(IEMLParserGrammar ${CMAKE_CURRENT_LIST_DIR}/grammar/IEMLParserGrammar.g4 PARSER
+             PACKAGE ieml_generated
+             DEPENDS_ANTLR IEMLLexerGrammar
+             COMPILE_FLAGS -lib ${ANTLR_IEMLLexerGrammar_OUTPUT_DIR}
+             VISITOR)
 
+message(STATUS "Generated parser at ${ANTLR_IEMLParserGrammar_OUTPUT_DIR} ")
 
 #########################
 # BOOST GRAPH
@@ -44,17 +49,14 @@ ExternalProject_Add(external_boost
 #########################
 # IEMLParser
 #########################
-include_directories(${ANTLR4_INCLUDE_DIRS} 
-                    ${ANTLR_IEMLParser_OUTPUT_DIR}
-                    ${PROJECT_SOURCE_DIR}/include
-                    ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json
-                    ${PROJECT_SOURCE_DIR}/thirdparty/better_enums)
 
-set(IEMLParser_src ${ANTLR_IEMLParser_CXX_OUTPUTS}
+set(IEMLParser_src ${ANTLR_IEMLLexerGrammar_CXX_OUTPUTS}
+                   ${ANTLR_IEMLParserGrammar_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/SyntaxError.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/IEMLGrammarVisitor.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/IemlParser.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ParserJsonSerializer.cpp
+
                    ${CMAKE_CURRENT_LIST_DIR}/ast/Program.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/DimensionDefinition.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/CategoryDeclaration.cpp
@@ -64,23 +66,30 @@ set(IEMLParser_src ${ANTLR_IEMLParser_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/ParanodeDeclaration.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/LanguageDeclaration.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/SingularCategoryDeclaration.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/LinkDeclaration.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/WordDeclaration.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/PartialPathTree.cpp
+
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/reference/ReferenceSchema.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathNode.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathTree.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathParser.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/ParadigmLayout.cpp
+
                    ${CMAKE_CURRENT_LIST_DIR}/relation/RelationGraph.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/relation/Composition.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/relation/Inclusion.cpp)
                    
 set(IEMLParser_include ${PROJECT_SOURCE_DIR}/include
                        ${ANTLR4_INCLUDE_DIRS}
-                       ${ANTLR_IEMLParser_OUTPUT_DIR}
+                       ${ANTLR_IEMLLexerGrammar_OUTPUT_DIR}
+                       ${ANTLR_IEMLParserGrammar_OUTPUT_DIR}
                        ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json
                        ${PROJECT_SOURCE_DIR}/thirdparty/better_enums
                        ${BOOST_INCLUDE_DIR})
 
+include_directories(${IEMLParser_include})
 
 # IEMLParser_object
 add_library (IEMLParser_object OBJECT ${IEMLParser_src})

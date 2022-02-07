@@ -5,7 +5,7 @@
 
 namespace ieml::structure {
 
-BETTER_ENUM(DefinitionType, char, NODE, COMPONENT, PARADIGM)
+BETTER_ENUM(DefinitionType, char, NODE, COMPONENT, PARADIGM, LINK)
 
 BETTER_ENUM(ElementType, char, WORD, PATH_TREE)
 
@@ -46,6 +46,7 @@ BETTER_ENUM(RoleType, char,
 )
 
 BETTER_ENUM(WordType, char, CATEGORY, INFLECTION, AUXILIARY, JUNCTION)
+
 
 }
 

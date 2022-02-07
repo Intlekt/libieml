@@ -6,6 +6,8 @@
 #include "ast/interfaces/AST.h"
 #include "ast/interfaces/ICategory.h"
 #include "ast/interfaces/IReferenceValue.h"
+#include "ast/PartialPathTree.h"
+
 #include "structure/LanguageString.h"
 
 
@@ -27,7 +29,7 @@ public:
         return name_;
     }
 
-    virtual structure::PathTree::Vector check_category(parser::ParserContextManager& ctx) const {        
+    virtual PartialPathTree::Optional check_category(parser::ParserContextManager& ctx) const {        
         std::shared_ptr<structure::PathTree> phrase = ctx.getCategoryRegister().resolve_category(structure::LanguageString(ctx.getLanguage(), name_));
 
         if (phrase == nullptr) {
@@ -36,10 +38,10 @@ public:
                 "Undefined category identifier '" + name_ + "'."
             );
 
-            return {nullptr};
+            return {};
         }
 
-        return structure::PathTree::singular_sequences(phrase);
+        return PartialPathTree(structure::PathTree::singular_sequences(phrase), {});
     };
 
 private:

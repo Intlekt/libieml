@@ -6,8 +6,8 @@
 #include <map>
 
 #include "antlr4-runtime.h"
-#include "iemlLexer.h"
-#include "iemlParser.h"
+#include "IEMLLexerGrammar.h"
+#include "IEMLParserGrammar.h"
 
 #include "SyntaxError.h"
 
@@ -34,8 +34,8 @@ public:
         FileParser(const FileParser&) = delete;
     private:
         antlr4::ANTLRInputStream* input_ = nullptr;
-        ieml_generated::iemlLexer* lexer_ = nullptr;
-        ieml_generated::iemlParser* parser_ = nullptr;
+        ieml_generated::IEMLLexerGrammar* lexer_ = nullptr;
+        ieml_generated::IEMLParserGrammar* parser_ = nullptr;
         antlr4::CommonTokenStream* tokens_ = nullptr;
 
         std::shared_ptr<IEMLGrammarVisitor> visitor_;

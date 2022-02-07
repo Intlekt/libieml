@@ -31,25 +31,23 @@ public:
         os << "}";
         return os.str();
     }   
-    virtual structure::PathTree::Vector check_category(parser::ParserContextManager& ctx) const override {
-        structure::PathTree::Vector children_paradigm;
+    virtual PartialPathTree::Optional check_category(parser::ParserContextManager& ctx) const override {
+        std::vector<PartialPathTree::Optional> children_paradigm;
 
         bool valid = true;
         for (size_t i = 0; i < categories_.size(); i++) {
-            auto children = categories_[i]->check_category(ctx);
-            for (auto& child: children) {
-                if (!child) {
-                    valid = false;
-                    continue;
-                }
-                children_paradigm.push_back(child);
+            auto child = categories_[i]->check_category(ctx);
+            if (!child) {
+                valid = false;
+                continue;
             }
+            children_paradigm.push_back(child);
         }
 
         if (!valid)
-            return {nullptr};
+            return {};
 
-        return children_paradigm;
+        return PartialPathTree::concat(std::move(children_paradigm));
     };
 
 

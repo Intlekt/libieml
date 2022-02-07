@@ -27,23 +27,20 @@ public:
     std::shared_ptr<RoleType> getRoleType() const {return role_type_;}
     bool getAccentuation() const {return accentuation_;}
 
-    structure::PathTree::Vector check_phrase_line(parser::ParserContextManager& ctx) const {
+    PartialPathTree::Optional check_phrase_line(parser::ParserContextManager& ctx) const {
         auto type = role_type_->check_role_type(ctx);
         auto child_set = _check_phrase_line(ctx, *type);
 
-        if (!*child_set.begin() || !type) {
-            return {nullptr};
+        if (!child_set || !type) {
+            return {};
         }
 
-        return ctx.getPathTreeRegister().get_or_create_product(
-            std::make_shared<structure::RoleNumberPathNode>(*type), 
-            {child_set}
-        );
+        return child_set->prepend_node(ctx.getPathTreeRegister(), std::make_shared<structure::RoleNumberPathNode>(*type));
     };
     
 
 protected:
-    virtual structure::PathTree::Vector _check_phrase_line(parser::ParserContextManager& ctx, structure::RoleType role_type) const = 0;
+    virtual PartialPathTree::Optional _check_phrase_line(parser::ParserContextManager& ctx, structure::RoleType role_type) const = 0;
 
 
     std::string phrase_line_to_string() const {
@@ -75,7 +72,7 @@ public:
         return phrase_line_to_string() + auxiliary_subline_->to_string();
     }
 protected:
-    structure::PathTree::Vector _check_phrase_line(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+    PartialPathTree::Optional _check_phrase_line(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         return auxiliary_subline_->check_auxiliary_subline(ctx, role_type);
     };
 
@@ -100,11 +97,11 @@ public:
     }
 
 protected:
-    virtual structure::PathTree::Vector check_junction_item(parser::ParserContextManager& ctx, size_t i, structure::RoleType role_type) const override {
+    virtual PartialPathTree::Optional check_junction_item(parser::ParserContextManager& ctx, size_t i, structure::RoleType role_type) const override {
         return items_[i]->check_auxiliary_subline(ctx, role_type);
     };
 
-    virtual structure::PathTree::Vector _check_phrase_line(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
+    virtual PartialPathTree::Optional _check_phrase_line(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
         return check_junction(ctx, role_type);
     }
 };
