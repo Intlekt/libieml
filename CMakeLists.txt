@@ -7,6 +7,7 @@ project(IEML VERSION 0.1)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+LIST( APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 
 # set(BUILD_TEST True)
 # set(BUILD_CHECK_ERRORS True)
@@ -26,17 +27,14 @@ if (${BUILD_TEST})
     add_subdirectory(test)
 endif()
 
-# add the executable
-if (${BUILD_CHECK_ERRORS})
-    message("Building IEML executable")
-
-    add_executable(IEML main.cxx)
-    target_link_libraries(IEML IEMLParser_shared)
-endif()
-
 if(${BUILD_PYBIND11})
     message("Building python wrapper")
 
     add_subdirectory(thirdparty/pybind11)
     add_subdirectory(binding/python)
+endif()
+
+if (${BUILD_DOC})
+    message("Building doc")
+    add_subdirectory(docs)
 endif()
