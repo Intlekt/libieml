@@ -42,6 +42,7 @@ set(SPHINX_SRC_FILES ${CMAKE_CURRENT_SOURCE_DIR}/index.rst
                      ${CMAKE_CURRENT_SOURCE_DIR}/usage/installation.rst
                      ${CMAKE_CURRENT_SOURCE_DIR}/usage/quickstart.rst
                      ${CMAKE_CURRENT_SOURCE_DIR}/usage/declarations/paradigms.rst
+                     ${CMAKE_CURRENT_SOURCE_DIR}/usage/declarations/path.rst
                      ${CMAKE_CURRENT_SOURCE_DIR}/api_reference/api_reference.rst)
 
 # Only regenerate Sphinx when:

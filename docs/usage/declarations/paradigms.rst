@@ -5,11 +5,31 @@ A `paradigm declaration` is a special case of a category declaration, so its acc
 
 To declare a paradigm in IEML, you use the :code:`@paranode` declaration. ::
 
+    @word "wa.".
+    @word "e." .
+    @word "a." .
+
+    @node
+        en: root
+        (
+            0 #"wa."
+        ).
+
+    @node 
+        en: varation1
+        (
+            0 #"e."
+        ).
+
+    @node
+        en: variation2
+        ( 
+            0 #"a."
+        ).
+
     @paranode 
-        en: "paradigm"
-
+        en: paradigm
         1d: /#/1
-
         (
             0 #root,
             1 #{varation1; variation2}
@@ -22,15 +42,14 @@ Invariant definition
 ----------------------------------------
 
 A `paradigm declaration` must have an invariant declared as a :code:`node`. 
-The invariant of a paradigm is the phrase composed by all the roles that are not composed by a substitution group.
+The invariant of a paradigm is the phrase composed by all the roles of the phrase that are not composed by a substitution group.
 For the previous `paradigm` :code:`translation`, the invariant must be declared like so ::
 
-    @node
-        en: "invariant of paradigm"
+    @node 
+        en: paradigm invariant
         (
             0 #root
         ).
-
 
 Dimension attribute
 -----------------------------------------
