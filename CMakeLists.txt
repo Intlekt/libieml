@@ -13,28 +13,29 @@ LIST( APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 # set(BUILD_CHECK_ERRORS True)
 # set(BUILD_PYBIND11 True)
 
-configure_file(IEMLConfig.h.in IEMLConfig.h)
 
 # set(CMAKE_CXX_FLAGS_DEBUG "-g -O3")
+if (DEFINED BUILD_TEST OR DEFINED BUILD_PYBIND11)
+    configure_file(IEMLConfig.h.in IEMLConfig.h)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/src)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/src)
 
+    if (DEFINED BUILD_TEST)
+        message("Building libieml ctest")
+        add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/googletest-release-1.11.0)
+        # test section
+        add_subdirectory(test)
+    endif()
 
-if (${BUILD_TEST})
-    message("Building libieml ctest")
-    add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/googletest-release-1.11.0)
-    # test section
-    add_subdirectory(test)
+    if(DEFINED BUILD_PYBIND11)
+        message("Building python wrapper")
+
+        add_subdirectory(thirdparty/pybind11)
+        add_subdirectory(binding/python)
+    endif()
 endif()
 
-if(${BUILD_PYBIND11})
-    message("Building python wrapper")
-
-    add_subdirectory(thirdparty/pybind11)
-    add_subdirectory(binding/python)
-endif()
-
-if (${BUILD_DOC})
+if (DEFINED BUILD_DOC)
     message("Building doc")
     add_subdirectory(docs)
 endif()
