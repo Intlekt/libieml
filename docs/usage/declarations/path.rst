@@ -64,7 +64,7 @@ Case 2 : Paradigm
 
     (
         0 #root,
-        1 #{first variation; second variation},
+        1 {#first variation; #second variation},
         2 {~first inflection; ~second inflection} #object
     )
 

@@ -32,7 +32,7 @@ To declare a paradigm in IEML, you use the :code:`@paranode` declaration. ::
         1d: /#/1
         (
             0 #root,
-            1 #{varation1; variation2}
+            1 {#varation1; #variation2}
         ).
 
 A `paradigm declaration` must declare a paradigm, meaning that the phrase declared cannot be singular, 
