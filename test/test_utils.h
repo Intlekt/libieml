@@ -16,5 +16,5 @@
       os << error->to_string() << std::endl;                        \
     }                                                               \
                                                                     \
-    EXPECT_EQ(parser.getSyntaxErrors().size(), 0) << os.str();      \
+    ASSERT_EQ(parser.getSyntaxErrors().size(), 0) << os.str();      \
 

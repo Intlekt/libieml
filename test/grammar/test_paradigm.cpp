@@ -15,7 +15,7 @@ using namespace ieml::parser;
 
 
 TEST(ieml_grammar_test_case, paradigm_definition) {
-    PARSE_NO_ERRORS(R"(@word "a". @word "b". @node en:invariant (0 #"a"). @node en:node0 (0 #"a", 1 #"a"). @node en:node1 (0 #"a", 1 #"b"). @paranode en:paranode 1d:/#/1 (0 #"a", 1 #{"a";"b"}).)");
+    PARSE_NO_ERRORS(R"(@word "a". @word "b". @node en:invariant (0 #"a"). @node en:node0 (0 #"a", 1 #"a"). @node en:node1 (0 #"a", 1 #"b"). @paranode en:paranode 1d:/#/1 (0 #"a", 1 {#"a";#"b"}).)");
 
     const auto& ctx = parser.getContext();
     const auto& creg = ctx->getCategoryRegister();
@@ -41,7 +41,7 @@ TEST(ieml_grammar_test_case, paradigm_definition_2d) {
                        @node en:node1 (0 #"a", 1 #"b", 2 #"a").
                        @node en:node2 (0 #"a", 1 #"a", 2 #"b").
                        @node en:node3 (0 #"a", 1 #"b", 2 #"b").
-                       @paranode en:paranode 1d:/#/1 2d:/#/2 (0 #"a", 1 #{"a";"b"}, 2 #{"a";"b"}).)");
+                       @paranode en:paranode 1d:/#/1 2d:/#/2 (0 #"a", 1 {#"a";#"b"}, 2 {#"a";#"b"}).)");
 
     const auto& ctx = parser.getContext();
     const auto& creg = ctx->getCategoryRegister();
@@ -53,13 +53,19 @@ TEST(ieml_grammar_test_case, paradigm_definition_2d) {
     const auto& node2 = creg.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "node2"));
     const auto& node3 = creg.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "node3"));
 
+    ASSERT_NE(paradigm, nullptr);
+    ASSERT_NE(node0, nullptr);
+    ASSERT_NE(node1, nullptr);
+    ASSERT_NE(node2, nullptr);
+    ASSERT_NE(node3, nullptr);
+
     ASSERT_EQ(ieml::structure::PathTree::singular_sequences(paradigm), 
               ieml::structure::PathTree::Vector({node0, node1, node2, node3}));
 };
 
 
 TEST(ieml_grammar_test_case, paradigm_register) {
-    PARSE_NO_ERRORS(R"(@word "a". @word "b". @node en:invariant (0 #"a"). @paranode en:paranode 1d:/#/1 (0 #"a", 1 #{"a";"b"}).)");
+    PARSE_NO_ERRORS(R"(@word "a". @word "b". @node en:invariant (0 #"a"). @paranode en:paranode 1d:/#/1 (0 #"a", 1 {#"a";#"b"}).)");
     const auto& ctx = parser.getContext();
     const auto& creg = ctx->getCategoryRegister();
     const auto& preg = ctx->getParadigmRegister();
@@ -83,7 +89,7 @@ TEST(ieml_grammar_test_case, paradigm_dimension_definition) {
                        @node en:node1 (0 #"a", 1 #"a", 2 #"b").
                        @node en:node2 (0 #"a", 1 #"b", 2 #"a").
                        @node en:node3 (0 #"a", 1 #"b", 2 #"b").
-                       @paranode en:paranode 1d:/#/1 2d:/#/2 (0 #"a", 1 #{"a";"b"}, 2 #{"a";"b"}).)");
+                       @paranode en:paranode 1d:/#/1 2d:/#/2 (0 #"a", 1 {#"a";#"b"}, 2 {#"a";#"b"}).)");
 
     const auto& ctx = parser.getContext();
     const auto& creg = ctx->getCategoryRegister();

@@ -29,9 +29,9 @@ junction : JUNCTION_MARK identifier_=identifier       # junction__identifier
          | JUNCTION_MARK word_=word                   # junction__word
          ;
 
-category : identifier_=identifier # category__identifier
-         | phrase_=phrase         # category__phrase
-         | word_=word             # category__word
+category : CATEGORY_MARK identifier_=identifier # category__identifier
+         | CATEGORY_MARK phrase_=phrase         # category__phrase
+         | CATEGORY_MARK word_=word             # category__word
          ;
 
 category_paradigm       : PARADIGM_START categories+=category            (PARADIGM_SEP categories+=category)*            PARADIGM_END;
@@ -56,10 +56,10 @@ sub_phrase_line_auxiliary : auxiliary_=auxiliary_simple_or_paradigm?          in
                             JUNCTION_OPEN inflected_categories+=inflected_category inflected_categories+=inflected_category+ JUNCTION_CLOSE      # sub_phrase_line_auxiliary__jonction
                           ;
 
-inflected_category : inflection_list_=inflection_list?                CATEGORY_MARK category_=category            references+=reference*    #inflected_category__singular 
-                   | inflection_list_=inflection_list?                CATEGORY_MARK category_=category_paradigm                             #inflected_category__category_paradigm
-                   | inflection_list_=inflection_list_paradigm        CATEGORY_MARK category_=category                                      #inflected_category__inflection_paradigm
-                   | inflection_list_=inflection_list_paradigm        CATEGORY_MARK category_=category_paradigm                             #inflected_category__inflection_and_category_paradigm
+inflected_category : inflection_list_=inflection_list?                category_=category            references+=reference*    #inflected_category__singular 
+                   | inflection_list_=inflection_list?                category_=category_paradigm                             #inflected_category__category_paradigm
+                   | inflection_list_=inflection_list_paradigm        category_=category                                      #inflected_category__inflection_paradigm
+                   | inflection_list_=inflection_list_paradigm        category_=category_paradigm                             #inflected_category__inflection_and_category_paradigm
                    ;
 
 variable: VARIABLE;
