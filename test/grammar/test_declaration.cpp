@@ -104,4 +104,6 @@ TEST(ieml_grammar_test_case, paradigm_empty_invariant)                          
 TEST(ieml_grammar_test_case, paradigm_invalid_invariant)                             TEST_PARSE_ERRORS(R"(@word "wa.". @word "we.". @node en:invariant (1 #"wa."). @paranode en:test2 (0 #{"wa."; "we."}, 1 #"wa.").)");
 
 TEST(ieml_grammar_test_case, paradigm_invalid_variation)                             TEST_PARSE_ERRORS(R"(@word "wa".@node en:eqweq (0 #"wa", 1 #"wa").@paranode en:fr 1d:/#/1 (0 #"wa", 1 #{"wa"; "wa"}).)");
-TEST(ieml_grammar_test_case, paradigm_invalid_variation_2)                           TEST_PARSE_ERRORS(R"(@word "wa". @word "wo". @node en:eqweq (0 #"wa"). @paranode en:fr 1d:/#/0/"wa" (0 #"wa", 1 #{"wa"; "wo"}).)")
+TEST(ieml_grammar_test_case, paradigm_invalid_variation_2)                           TEST_PARSE_ERRORS(R"(@word "wa". @word "wo". @node en:eqweq (0 #"wa"). @paranode en:fr 1d:/#/0/"wa" (0 #"wa", 1 #{"wa"; "wo"}).)");
+TEST(ieml_grammar_test_case, paradigm_invalid_dimension)                             TEST_PARSE_ERRORS(R"(@word "wa".@word "wo".@node en:eqweq (0 #"wa").@paranode en:fr 2d:/#/1 (0 #"wa", 1 #{"wa"; "wo"}).)");
+TEST(ieml_grammar_test_case, paradigm_invalid_dimension_not_a_variation)             TEST_PARSE_ERRORS(R"(@word "wa". @word "wo". @node en:eqweq (0 #"wa"). @paranode en:fr 1d:/#/0 (0 #"wa", 1 #{"wa"; "wo"}).)");

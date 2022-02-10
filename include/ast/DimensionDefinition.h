@@ -20,6 +20,8 @@ public:
 
     virtual std::string to_string() const override;
 
+    size_t getDimensionIndex() const {return dimension_index_;};
+
     ieml::structure::PathTree::Set check_dimension_definitions(ieml::parser::ParserContextManager& ctx, const std::shared_ptr<ieml::structure::PathTree>& paradigm) const;
 
 private:
