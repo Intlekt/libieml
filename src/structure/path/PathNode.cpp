@@ -52,6 +52,7 @@ bool RoleNumberPathNode::accept_next(const PathNode& next) const {
     case PathType::INFLECTION:
     case PathType::JUNCTION_CATEGORY:
     case PathType::WORD:
+    case PathType::ROOT:
         return true;
     default:
         return false;
