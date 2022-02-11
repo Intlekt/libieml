@@ -14,6 +14,7 @@ declaration : COMPONENT  language_strings+=language_string+                     
             | AUXILIARY  language_strings+=language_string+ role_type_=role_type                word_=word                DECLARATION_END    # auxiliaryDeclaration
             | JUNCTION   language_strings+=language_string+                                     word_=word                DECLARATION_END    # junctionDeclaration
             | LANGUAGE   language=identifier                                                                              DECLARATION_END    # languageDeclaration
+            | TABLE                                                    (category_mappings+=invariant_paranode_mapping)+   DECLARATION_END    # tableDeclaration
             ;
 
 phrase : PARENTHESIS_START phrase_lines+=phrase_line (COMMA phrase_lines+=phrase_line)* PARENTHESIS_END                        # phrase__lines
@@ -35,6 +36,8 @@ category : CATEGORY_MARK identifier_=identifier # category__identifier
          ;
 
 category_paradigm       : PARADIGM_START categories+=category            (PARADIGM_SEP categories+=category)*            PARADIGM_END;
+
+invariant_paranode_mapping : CATEGORY_MARK invariant=identifier MAPPING paranode=identifier;
 
 inflection_list: (FLEXION_MARK inflections+=identifier)+  # inflection_list__identifiers
                | (FLEXION_MARK words+=word)+              # inflection_list__words

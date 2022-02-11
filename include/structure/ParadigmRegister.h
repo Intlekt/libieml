@@ -42,6 +42,12 @@ public:
         return paradigms_.find(paradigm)->second;
     }
 
+    typedef std::unordered_map<std::shared_ptr<PathTree>, std::shared_ptr<PathTree>> Table;
+
+    void register_table(const Table& table) {
+        tables_.push_back(table);
+    }
+
 private:
 
     /**
@@ -51,7 +57,7 @@ private:
 
     std::unordered_map<std::shared_ptr<PathTree>, ParadigmLayout> paradigms_;
 
-
+    std::vector<Table> tables_;
 };
 
 }

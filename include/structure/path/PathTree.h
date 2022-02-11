@@ -101,14 +101,20 @@ public:
          * @brief Return the path set that correspond to this path tree.
          * 
          * @param pt 
-         * @return Path::Set 
+         * @return Set 
          */
         Set paths(const std::shared_ptr<PathTree>& pt);
 
         
-
+        /**
+         * @brief Return the invariant path Set of a PathTree. For a singular sequence, return the same as paths. For a paradigm, return the intersection
+         * of paths for each of the singular sequences.
+         * 
+         * @return Set 
+         */
         Set invariant_paths(const std::shared_ptr<PathTree>&);
 
+        
 
     private:
         struct eqKey {

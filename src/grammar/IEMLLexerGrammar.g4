@@ -33,7 +33,8 @@ PARADIGM_SEP         : ';' ;
 PARENTHESIS_START    : '(';
 PARENTHESIS_END      : ')';
 COMMA                : ',';
-   
+
+MAPPING              : '->';
 
 VARIABLE             : '$'[0-9a-zA-Z]+;
 

@@ -29,7 +29,7 @@ public:
         return name_;
     }
 
-    virtual PartialPathTree::Optional check_category(parser::ParserContextManager& ctx) const {        
+    virtual PartialPathTree::Optional check_category(parser::ParserContextManager& ctx) const override {        
         std::shared_ptr<structure::PathTree> phrase = ctx.getCategoryRegister().resolve_category(structure::LanguageString(ctx.getLanguage(), name_));
 
         if (phrase == nullptr) {
@@ -42,6 +42,30 @@ public:
         }
 
         return PartialPathTree(structure::PathTree::singular_sequences(phrase), {});
+    };
+
+    std::optional<std::shared_ptr<ieml::structure::PathTree>> check_paradigm(parser::ParserContextManager& ctx) const {
+        auto phrase = ctx.getCategoryRegister().resolve_category(structure::LanguageString(ctx.getLanguage(), name_));
+
+        if (phrase == nullptr) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(),
+                "Undefined paradigm identifier '" + name_ + "'."
+            );
+
+            return {};
+        }
+
+        if (!phrase->is_paradigm()) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(),
+                "Not a paradigm identifier '" + name_ + "'."
+            );
+
+            return {};
+        }
+
+        return phrase;
     };
 
 private:

@@ -56,8 +56,12 @@ set(IEMLParser_src ${ANTLR_IEMLLexerGrammar_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/IemlParser.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ParserJsonSerializer.cpp
 
+
                    ${CMAKE_CURRENT_LIST_DIR}/ast/Program.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/DimensionDefinition.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/PartialPathTree.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/InvariantParanodeMapping.cpp
+
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/CategoryDeclaration.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/AuxiliaryDeclaration.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/JunctionDeclaration.cpp
@@ -67,7 +71,8 @@ set(IEMLParser_src ${ANTLR_IEMLLexerGrammar_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/SingularCategoryDeclaration.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/LinkDeclaration.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/WordDeclaration.cpp
-                   ${CMAKE_CURRENT_LIST_DIR}/ast/PartialPathTree.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/TableDeclaration.cpp
+
 
                    ${CMAKE_CURRENT_LIST_DIR}/structure/reference/ReferenceSchema.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathNode.cpp
@@ -75,6 +80,7 @@ set(IEMLParser_src ${ANTLR_IEMLLexerGrammar_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathParser.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/ParadigmLayout.cpp
+
 
                    ${CMAKE_CURRENT_LIST_DIR}/relation/RelationGraph.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/relation/Composition.cpp

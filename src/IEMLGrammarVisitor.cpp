@@ -11,6 +11,7 @@
 #include "ast/declaration/ParanodeDeclaration.h"
 #include "ast/declaration/WordDeclaration.h"
 #include "ast/declaration/LinkDeclaration.h"
+#include "ast/declaration/TableDeclaration.h"
 #include "ast/Constants.h"
 #include "ast/Identifier.h"
 #include "ast/Program.h"
@@ -256,6 +257,15 @@ namespace ieml::parser {
                           std::move(language));
   }
 
+  antlrcpp::Any IEMLGrammarVisitor::visitTableDeclaration(IEMLParserGrammar::TableDeclarationContext *ctx) {
+    CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, InvariantParanodeMapping, category_mappings, "Invalid invariant to paranode mappings.");    
+    CAST_OR_RETURN_IF_NULL_LIST(category_mappings, IDeclaration);
+
+    RETURN_VISITOR_RESULT(IDeclaration, 
+                          TableDeclaration,
+                          std::move(category_mappings));
+  }
+
   /**
    * PHRASE
    */
@@ -474,6 +484,18 @@ namespace ieml::parser {
     CAST_OR_RETURN_IF_NULL_LIST(categories, CategoryParadigm);
 
     RETURN_VISITOR_RESULT(CategoryParadigm, CategoryParadigm, std::move(categories));
+  }
+
+  /**
+   *  INVARIANT TO PARANODE MAPPING
+   */
+  antlrcpp::Any IEMLGrammarVisitor::visitInvariant_paranode_mapping(IEMLParserGrammar::Invariant_paranode_mappingContext *ctx) {
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, invariant, "Invalid invariant identifier for a invariant to paranode mapping.", true);
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, invariant, InvariantParanodeMapping);
+    CHECK_SYNTAX_ERROR(error_listener_, ctx, paranode, "Invalid paranode identifier for a invariant to paranode mapping.", true);
+    CAST_OR_RETURN_IF_NULL(ctx, Identifier, paranode, InvariantParanodeMapping);
+    
+    RETURN_VISITOR_RESULT(InvariantParanodeMapping, InvariantParanodeMapping, std::move(invariant), std::move(paranode));
   }
 
   /**

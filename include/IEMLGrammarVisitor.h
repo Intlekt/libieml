@@ -67,7 +67,8 @@ public:
   virtual antlrcpp::Any visitAuxiliaryDeclaration(IEMLParserGrammar::AuxiliaryDeclarationContext *context) override;
   virtual antlrcpp::Any visitJunctionDeclaration(IEMLParserGrammar::JunctionDeclarationContext *context) override;
   virtual antlrcpp::Any visitLanguageDeclaration(IEMLParserGrammar::LanguageDeclarationContext *context) override;
-
+  virtual antlrcpp::Any visitTableDeclaration(IEMLParserGrammar::TableDeclarationContext *context) override;
+  
   /**
    * PHRASE
    */
@@ -121,6 +122,11 @@ public:
   virtual antlrcpp::Any visitCategory__phrase(IEMLParserGrammar::Category__phraseContext *ctx) override;
   virtual antlrcpp::Any visitCategory__word(IEMLParserGrammar::Category__wordContext *ctx) override;
   virtual antlrcpp::Any visitCategory_paradigm(IEMLParserGrammar::Category_paradigmContext *context) override;
+
+  /**
+   *  INVARIANT TO PARANODE MAPPING
+   */
+  virtual antlrcpp::Any visitInvariant_paranode_mapping(IEMLParserGrammar::Invariant_paranode_mappingContext *context) override;
 
   /**
    * WORD
