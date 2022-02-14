@@ -57,3 +57,6 @@ parser = pyieml.Parser("""@component fr"test" (0 ~nom #'wa.') . """)
 parser.parse()
 print([e.to_json() for e in parser.errors()])
 ```
+
+### Build the doc
+#### Requirements

@@ -28,7 +28,7 @@ TEST(ieml_grammar_test_case, json_serialization) {
         file.close();
     }
 
-    auto parser = ieml::parser::IEMLParser(o.str());
+    auto parser = ieml::parser::IEMLParser({"default"}, {o.str()});
     parser.parse();
 
     auto res = ieml::parser::parserToJson(parser);
@@ -38,6 +38,9 @@ TEST(ieml_grammar_test_case, json_serialization) {
     for (nlohmann::json::iterator it = res["elements"].begin(); it != res["elements"].end(); ++it) {
         auto v = it.value();
         EXPECT_EQ(it.key(), v["id"]);
+
+        std::string file_id = v["range"]["file_id"];
+        EXPECT_EQ(file_id, std::string("default"));
 
         if (v["type"] == "CATEGORY") {
             for (auto ref: v["back_references"])

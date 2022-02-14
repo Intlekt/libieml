@@ -25,8 +25,6 @@ nlohmann::json nameToJson(const ieml::structure::Name& name);
 
 nlohmann::json errorManagerToJson(const IEMLParserErrorListener& error_manager);
 
-nlohmann::json paradigmLayoutToJson(const ieml::structure::ParadigmLayout& layout);
-
 nlohmann::json categoryToJson(std::shared_ptr<ieml::structure::PathTree>, 
                               ieml::parser::ParserContextManager&,
                               ieml::relation::RelationGraph::Register&,
@@ -38,7 +36,9 @@ nlohmann::json serializeNode(const structure::CategoryRegister&,
                              const structure::WordRegister&,
                              const SourceMapping&,
                              const std::shared_ptr<structure::Element>&);
-                             
+
+nlohmann::json serializeTable();
+
 nlohmann::json binaryGraphToJson(ieml::relation::RelationGraph&,
                                  const structure::CategoryRegister&,
                                  const structure::WordRegister&,

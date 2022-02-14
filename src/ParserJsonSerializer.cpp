@@ -155,10 +155,14 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
     nlohmann::json name_json = nullptr;
     if (name)
         name_json = nameToJson(*name);
+    
+    auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(word));
+    const ieml::AST::CharRange& range = ast->getCharRange();
 
 
     return {
         {"id", word->uid()},
+        {"range", charRangeToJson(range)},
         {"translations", name_json},
         {"type", "WORD"},
         {"word_type", word->getWordType()._to_string()}

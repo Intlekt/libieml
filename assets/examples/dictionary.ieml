@@ -172,26 +172,26 @@
 
 // E:O:.O:.-
 @inflection 
-	fr:adverbe -traduction-
-	en:adverb -translation-
+	fr:adverbe
+	en:adverb
 	VERB
 	"E:U:.U:.-".
 
 @inflection 
-	fr:verbe -traduction-
-	en:verb -translation-
+	fr:verbe
+	en:verb
 	VERB
 	"E:U:.A:.-".
 
 @inflection 
-	fr:adjectif -traduction-
-	en:adjective -translation-
+	fr:adjectif
+	en:adjective
 	VERB
 	"E:A:.U:.-".
 
 @inflection 
-	fr:nom -traduction-
-	en:noun -translation-
+	fr:nom
+	en:noun
 	VERB
 	"E:A:.A:.-".
 
