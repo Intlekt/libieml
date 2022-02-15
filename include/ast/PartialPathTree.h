@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 
 #include "structure/path/PathTree.h"
 #include "ast/Variable.h"
