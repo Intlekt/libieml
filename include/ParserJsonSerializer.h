@@ -32,6 +32,8 @@ nlohmann::json categoryToJson(std::shared_ptr<ieml::structure::PathTree>,
 
 nlohmann::json parserToJson(const IEMLParser& parser);
 
+nlohmann::json serializeTable(const ieml::structure::Table& table);
+
 nlohmann::json serializeNode(const structure::CategoryRegister&, 
                              const structure::WordRegister&,
                              const SourceMapping&,

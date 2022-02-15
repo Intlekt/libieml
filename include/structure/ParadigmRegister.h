@@ -1,6 +1,7 @@
 #pragma once
 
 #include "structure/path/PathTree.h"
+#include "structure/Table.h"
 #include "structure/ParadigmLayout.h"
 
 
@@ -42,10 +43,12 @@ public:
         return paradigms_.find(paradigm)->second;
     }
 
-    typedef std::unordered_map<std::shared_ptr<PathTree>, std::shared_ptr<PathTree>> Table;
-
     void register_table(const Table& table) {
         tables_.push_back(table);
+    }
+
+    const std::vector<Table>& getTables() const {
+        return tables_;
     }
 
 private:

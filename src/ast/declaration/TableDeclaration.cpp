@@ -1,4 +1,5 @@
 #include "ast/declaration/TableDeclaration.h"
+#include "structure/Table.h"
 
 
 using namespace ieml::AST;
@@ -13,7 +14,7 @@ void TableDeclaration::check_declaration(ieml::parser::ParserContextManager& ctx
     
     std::shared_ptr<ieml::structure::PathTree> root;
     std::unordered_set<std::shared_ptr<ieml::structure::PathTree>> accepted_invariant;
-    ieml::structure::ParadigmRegister::Table invariant_to_paradigm;
+    ieml::structure::Table::InvariantMapping invariant_to_paradigm;
     
     bool failed = false;
 
@@ -61,6 +62,6 @@ void TableDeclaration::check_declaration(ieml::parser::ParserContextManager& ctx
     if (failed)
         return;
 
-    ctx.getParadigmRegister().register_table(invariant_to_paradigm);
+    ctx.getParadigmRegister().register_table(ieml::structure::Table(root, invariant_to_paradigm));
     return;
 }

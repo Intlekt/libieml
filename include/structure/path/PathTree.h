@@ -39,6 +39,7 @@ public:
 
     typedef std::set<std::shared_ptr<PathTree>, CompareFunctor> Set;
     typedef std::vector<std::shared_ptr<PathTree>> Vector;
+    typedef std::shared_ptr<PathTree> Ptr;
 
     class Register {
     public:

@@ -2,7 +2,7 @@
 
 #include "ast/interfaces/AST.h"
 #include "relation/Composition.h"
-#include "relation/Composition.h"
+#include "structure/Table.h"
 #include <functional>
 #include <locale>
 
@@ -168,6 +168,25 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
     };
 }
 
+nlohmann::json ieml::parser::serializeTable(const ieml::structure::Table& table) {
+    // auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(word));
+    // const ieml::AST::CharRange& range = ast->getCharRange();
+
+    
+
+    auto invariant_mapping = nlohmann::json::object();
+
+    for (auto& invariant_pair: table.getInvariantMapping()) {
+        invariant_mapping[invariant_pair.first->uid()] = invariant_pair.second->uid();
+    }
+
+    return {
+        // {"range", charRangeToJson(range)},
+        {"root", table.getRoot()->uid()},
+        {"invariant_mapping", invariant_mapping}
+    };
+}
+
 nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
     auto errors = ieml::parser::errorManagerToJson(parser.getErrorListener());
     auto context = parser.getContext();
@@ -196,10 +215,16 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
     for (auto it = wregister.junctions_begin(); it != wregister.junctions_end(); ++it)
         elements[it->first->uid()] = _wordToJson<ieml::structure::JunctionWord>(it->first, *context);
   
+    nlohmann::json tables = nlohmann::json::array();
+    for (auto table: context->getParadigmRegister().getTables()) {
+        tables.push_back(serializeTable(table));
+    }
+
     return {
         {"errors", errors},
         {"language", language._to_string()},
-        {"elements", elements}
+        {"elements", elements},
+        {"tables", tables}
     };
 }
 

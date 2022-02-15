@@ -15,21 +15,21 @@ There is a type of path node for all the possible syntactic position in a phrase
   ==================  ==================================================   ==================================================================================================================================================================================== ============================================================================================================================================================
     Path Node Type    Form                                                  Meaning                                                                                                                                                                               Accept next                
   ==================  ==================================================   ==================================================================================================================================================================================== ============================================================================================================================================================
-  **Root**               :code:`#`                                            Represents a phrase.                                                                                                                                                               **RoleNumber**, **Junction**
-  **RoleNumber**         :code:`%d`                                           Represents the phrase line with role :code:`%d` in a phrase.                                                                                                                       **Junction**, **Auxiliary**, **InflectionList**, **Word**, **Root**
-  **Paradigm**           :code:`{%d}`                                         Represents the :code:`%d` singular sequence of a phrase.                                                                                                                           **Root**
-  **Auxiliary**          :code:`*%word` :code:`*%identifier`                  Represents the flexed subphrase line with auxiliary identified by :code:`*%word` or :code:`*%identifier` in a phrase line.                                                         **Junction**, **InflectionList**, **Word**, **Root**
-  **InflectionList**     :code:`~%word~%word...` :code:`~%identifier...`      Represents the category with flexing list :code:`~%word~%word...` or :code:`~%identifier...` in a flexed subphrase line.                                                           **Junction**, **Word**, **Root**
-  **Word**               :code:`%word`                                        Represents the category word `%word`.                                                                                                                                              nothing
-  **Junction**           :code:`%word[%d]` :code:`%identifier[%d]`            Represents the phrase or sub phrase line at position :code:`%d` in the :code:`%word[%d]` or :code:`%identifier[%d]` junction.                                                      Same as the element preceding the junction path node, except another **Junction** node.
+  **Root**               :code:`#`                                           Represents a phrase.                                                                                                                                                                **RoleNumber**, **Junction**
+  **RoleNumber**         :code:`%d`                                          Represents the phrase line with role :code:`%d` in a phrase.                                                                                                                        **Junction**, **Auxiliary**, **InflectionList**, **Word**, **Root**
+  **Paradigm**           :code:`{%d}`                                        Represents the :code:`%d` singular sequence of a phrase.                                                                                                                            **Root**
+  **Auxiliary**          :code:`*%word` :code:`*%identifier`                 Represents the flexed subphrase line with auxiliary identified by :code:`*%word` or :code:`*%identifier` in a phrase line.                                                          **Junction**, **InflectionList**, **Word**, **Root**
+  **InflectionList**     :code:`~%word~%word...` :code:`~%identifier...`     Represents the category with flexing list :code:`~%word~%word...` or :code:`~%identifier...` in a flexed subphrase line.                                                            **Junction**, **Word**, **Root**
+  **Word**               :code:`%word`                                       Represents the category word `%word`.                                                                                                                                               nothing
+  **Junction**           :code:`%word[%d]` :code:`%identifier[%d]`           Represents the phrase or sub phrase line at position :code:`%d` in the :code:`%word[%d]` or :code:`%identifier[%d]` junction.                                                       Same as the element preceding the junction path node, except another **Junction** node.
   ==================  ==================================================   ==================================================================================================================================================================================== ============================================================================================================================================================
 
 
 .. topic:: Legend  
 
-  :code:`%d` represents a digit.
-  :code:`%word` represents a script word.
-  :code:`%identifier` represents an identifier.
+  - :code:`%d` represents a digit. All the index are 0-indexed.
+  - :code:`%word` represents a script word.
+  - :code:`%identifier` represents an identifier.
 
 
 Examples
