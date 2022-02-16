@@ -21,7 +21,7 @@ public:
     virtual void check_declaration(ieml::parser::ParserContextManager& ctx) const override;
     
     virtual std::string getDeclarationString() const override {return "@inflection";};
-
+    
 private:
     const std::shared_ptr<Identifier> type_;
 };

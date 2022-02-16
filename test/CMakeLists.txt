@@ -15,7 +15,8 @@ add_executable(libieml_test grammar/test_parser.cpp
                             structure/test_word.cpp
                             relation/test_composition.cpp
                             relation/test_inclusion.cpp
-                            relation/test_graph.cpp)
+                            relation/test_graph.cpp
+                            erroneous_file/test_erroneous_file.cpp)
 
 add_dependencies(libieml_test gtest gtest_main IEMLParser_shared)
 
