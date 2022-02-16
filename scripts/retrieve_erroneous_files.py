@@ -19,8 +19,8 @@ if __name__ == '__main__':
     stdout, stderr = subprocess.Popen(f"ssh -i {args.credential} {args.host} ./ieml-project/retrieve_errors.sh", shell=True, stdout=subprocess.PIPE).communicate()
 
     raw = stdout.decode('utf8')
-    with open(os.path.join(args.output_folder, f"raw"), 'w') as fp:
-        fp.write(raw)
+    # with open(os.path.join(args.output_folder, f"raw"), 'w') as fp:
+    #     fp.write(raw)
 
     files = json.loads(raw)
 
