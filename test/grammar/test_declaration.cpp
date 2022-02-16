@@ -34,8 +34,13 @@
     for (auto& error : parser.getSyntaxErrors()) {                  \
       os << error->to_string() << std::endl;                        \
     }                                                               \
+    std::ostringstream os_w;                                        \
+    for (auto& warn : parser.getSyntaxWarnings()) {                 \
+      os_w << warn->to_string() << std::endl;                       \
+    }                                                               \
                                                                     \
     EXPECT_EQ(parser.getSyntaxErrors().size(), 0) << os.str();      \
+    EXPECT_EQ(parser.getSyntaxWarnings().size(), 0) << os_w.str();  \
 }
 
 #define TEST_PARSE_ERRORS(Str) {                                    \
@@ -48,6 +53,25 @@
                                                                     \
     EXPECT_NE(parser.getSyntaxErrors().size(), 0);                  \
 }
+
+
+#define TEST_PARSE_WARNINGS(Str) {                                  \
+    IEMLParser parser(Str);                                         \
+    try {                                                           \
+      parser.parse();                                               \
+    } catch (std::exception& e) {                                   \
+      EXPECT_TRUE(false) << e.what();                               \
+    }                                                               \
+                                                                    \
+    std::ostringstream os;                                          \
+    for (auto& error : parser.getSyntaxErrors()) {                  \
+      os << error->to_string() << std::endl;                        \
+    }                                                               \
+                                                                    \
+    EXPECT_EQ(parser.getSyntaxErrors().size(), 0) << os.str();      \
+    EXPECT_NE(parser.getSyntaxWarnings().size(), 0);                \
+}
+
 
 using namespace ieml::parser;
 
@@ -72,19 +96,20 @@ TEST(ieml_grammar_test_case, auxiliary_role_identifier_cause)                   
 TEST(ieml_grammar_test_case, auxiliary_role_identifier_time)                         TEST_PARSE_NO_ERRORS(R"(@auxiliary en:test TIME "a".)");
 TEST(ieml_grammar_test_case, auxiliary_role_identifier_location)                     TEST_PARSE_NO_ERRORS(R"(@auxiliary en:test LOCATION "a".)");
 TEST(ieml_grammar_test_case, auxiliary_role_identifier_intention)                    TEST_PARSE_NO_ERRORS(R"(@auxiliary en:test INTENTION "a".)");
-TEST(ieml_grammar_test_case, paradigm_category)                                      TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:invariant (0 #"wa."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {#"wa."; #"we."}).)");
-TEST(ieml_grammar_test_case, paradigm_auxiliary)                                     TEST_PARSE_NO_ERRORS(R"(@word "wa.". @auxiliary en:aux0 1 "we.". @auxiliary en:aux1 1 "wo.". @node en:invariant (0 #"wa."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {*aux0 ; *aux1} #"wa.").)");
-TEST(ieml_grammar_test_case, paradigm_inflection)                                    TEST_PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:infl0 NOUN "we.". @inflection en:infl1 NOUN "wo.". @node en:invariant (0 #"wa."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {~infl0; ~infl1} #"wa.").)");
+TEST(ieml_grammar_test_case, paradigm_category)                                      TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:ss0 (0 #"wa.", 1 #"wa."). @node en:ss1 (0 #"wa.", 1 #"we."). @node en:invariant (0 #"wa."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {#"wa."; #"we."}).)");
+TEST(ieml_grammar_test_case, paradigm_auxiliary)                                     TEST_PARSE_NO_ERRORS(R"(@word "wa.". @auxiliary en:aux0 1 "we.". @auxiliary en:aux1 1 "wo.". @node en:ss0 (0 #"wa.", 1 *aux0 #"wa."). @node en:ss1 (0 #"wa.", 1 *aux1 #"wa."). @node en:invariant (0 #"wa."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {*aux0 ; *aux1} #"wa.").)");
+TEST(ieml_grammar_test_case, paradigm_inflection)                                    TEST_PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:infl0 NOUN "we.". @inflection en:infl1 NOUN "wo.". @node en:ss0 (0 #"wa.", 1 ~"we." #"wa.").@node en:ss1 (0 #"wa.", 1 ~"wo." #"wa."). @node en:invariant (0 #"wa."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {~infl0; ~infl1} #"wa.").)");
 TEST(ieml_grammar_test_case, inflection_list_word)                                   TEST_PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:infl NOUN "we.". @node en:test (0 #"wa.", 1 ~"we." #"wa.").)");
 TEST(ieml_grammar_test_case, auxiliary_word)                                         TEST_PARSE_NO_ERRORS(R"(@word "wa.". @auxiliary en:aux 1 "we.". @node en:test (0 #"wa.", 1 *"we." #"wa.").)");
 TEST(ieml_grammar_test_case, junction_word)                                          TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "wo.". @junction en:junc "we.". @node en:test (0 #"wa.", 1 &"we." [#"wa." #"wo."]).)");
-TEST(ieml_grammar_test_case, paranode_1d)                                            TEST_PARSE_NO_ERRORS(R"(@word "wa". @word "wo". @node en:eqweq (0 #"wa"). @paranode en:fr 1d:/#/1 (0 #"wa", 1 {#"wa"; #"wo"}).)");
-TEST(ieml_grammar_test_case, multiple_paranode_same_invariant)                       TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:test (0 #"wa."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @paranode en:test3 1d:/#/2 (0 #"wa.", 2 {#"wa.";#"we."}).)");
+TEST(ieml_grammar_test_case, paranode_1d)                                            TEST_PARSE_NO_ERRORS(R"(@word "wa". @word "wo". @node en:eqweq (0 #"wa"). @node en:ss0 (0 #"wa", 1 #"wa").@node en:ss1 (0 #"wa", 1 #"wo"). @paranode en:fr 1d:/#/1 (0 #"wa", 1 {#"wa"; #"wo"}).)");
+TEST(ieml_grammar_test_case, multiple_paranode_same_invariant)                       TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:test (0 #"wa."). @node en:inv01 (0 #"wa.", 1 #"wa."). @node en:ss32 (0 #"wa.", 2 #"we."). @node en:inv012 (0 #"wa.", 2 #"wa."). @node en:ss3 (0 #"wa.", 1 #"we."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @paranode en:test3 1d:/#/2 (0 #"wa.", 2 {#"wa.";#"we."}).)");
 
-TEST(ieml_grammar_test_case, table_declaration)                                      TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:test (0 #"wa."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @paranode en:test3 1d:/#/2 (0 #"wa.", 2 {#"wa.";#"we."}). @table #test -> test2.)");
-TEST(ieml_grammar_test_case, table_declaration_twice)                                TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:test (0 #"wa."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @paranode en:test3 1d:/#/2 (0 #"wa.", 2 {#"wa.";#"we."}). @table #test -> test2.@table #test -> test3.)");
-TEST(ieml_grammar_test_case, table_declaration_2_level)                              TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:inv0 (0 #"wa."). @paranode en:para0 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @node en:inv01 (0 #"wa.", 1 #"wa."). @paranode en:para01 1d:/#/2 (0 #"wa.", 1 #"wa.", 2 {#"wa.";#"we."}). @table #inv0 -> para0 #inv01 -> para01.)");
+TEST(ieml_grammar_test_case, table_declaration)                                      TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:test (0 #"wa."). @node en:inv01 (0 #"wa.", 1 #"wa."). @node en:ss32 (0 #"wa.", 2 #"we."). @node en:inv012 (0 #"wa.", 2 #"wa."). @node en:ss3 (0 #"wa.", 1 #"we."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @paranode en:test3 1d:/#/2 (0 #"wa.", 2 {#"wa.";#"we."}). @table #test -> test2.)");
+TEST(ieml_grammar_test_case, table_declaration_twice)                                TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:test (0 #"wa."). @node en:inv01 (0 #"wa.", 1 #"wa."). @node en:ss32 (0 #"wa.", 2 #"we."). @node en:inv012 (0 #"wa.", 2 #"wa."). @node en:ss3 (0 #"wa.", 1 #"we.").  @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @paranode en:test3 1d:/#/2 (0 #"wa.", 2 {#"wa.";#"we."}). @table #test -> test2.@table #test -> test3.)");
+TEST(ieml_grammar_test_case, table_declaration_2_level)                              TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:inv0 (0 #"wa."). @node en:inv01 (0 #"wa.", 1 #"wa."). @node en:ss3 (0 #"wa.", 1 #"we."). @node en:ss0 (0 #"wa.", 1 #"wa.", 2 #"wa."). @node en:ss1 (0 #"wa.", 1 #"wa.", 2 #"we.").@paranode en:para01 1d:/#/2 (0 #"wa.", 1 #"wa.", 2 {#"wa.";#"we."}).  @paranode en:para0 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}).  @table #inv0 -> para0 #inv01 -> para01.)");
                 
+// ERRORS
 TEST(ieml_grammar_test_case, no_root)                                                TEST_PARSE_ERRORS(R"(@word "wa.". @inflection en:noun NOUN "a.". @component en:test (1 ~noun #"wa.") .)");
 TEST(ieml_grammar_test_case, extra_comma_in_phrase_line)                             TEST_PARSE_ERRORS(R"(@word "wa.". @inflection en:noun VERB "a.". @component en:test (0 #(0 ~noun #"wa."),) .)");
 TEST(ieml_grammar_test_case, language_string_with_old_decl)                          TEST_PARSE_ERRORS(R"(@word "wa.". @inflection en:noun VERB "a.". @component fr'test' (0 #(0 ~noun #"wa."),) .)");
@@ -114,3 +139,7 @@ TEST(ieml_grammar_test_case, table_declaration_2_level_invalid_order)           
 TEST(ieml_grammar_test_case, table_declaration_invalid_invariant)                    TEST_PARSE_ERRORS(R"(@word "wa.". @word "we.". @node en:inv0 (0 #"wa."). @paranode en:para0 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @node en:test (0 #"wa.", 1 #"wa."). @table #test -> para0 .)");
 TEST(ieml_grammar_test_case, table_declaration_no_paranode)                          TEST_PARSE_ERRORS(R"(@word "wa.". @word "we.". @node en:inv0 (0 #"wa."). @paranode en:para0 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @node en:test (0 #"wa.", 1 #"wa."). @table #test -> inv0 .)");
 TEST(ieml_grammar_test_case, table_declaration_no_invariant)                         TEST_PARSE_ERRORS(R"(@word "wa.". @word "we.". @node en:inv0 (0 #"wa."). @paranode en:para0 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @node en:test (0 #"wa.", 1 #"wa."). @paranode en:para01 1d:/#/2 (0 #"wa.", 1 #"wa.", 2 {#"wa.";#"we."}). @table #para0 -> para01 .)");
+
+
+// WARNINGS
+TEST(ieml_grammar_test_case, test_warning_missing_singular_sequence)                 TEST_PARSE_WARNINGS(R"(@word "wa.". @word "we.". @node en:inv0 (0 #"wa."). @paranode en:para0 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}).)");

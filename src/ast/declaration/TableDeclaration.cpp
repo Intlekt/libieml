@@ -62,6 +62,12 @@ void TableDeclaration::check_declaration(ieml::parser::ParserContextManager& ctx
     if (failed)
         return;
 
-    ctx.getParadigmRegister().register_table(ieml::structure::Table(root, invariant_to_paradigm));
+    // TODO : ensure we cannot instiate multiple times the same table ? 
+    //          do we want unicity like the PathTrees ?
+    const auto table = std::make_shared<ieml::structure::Table>(root, invariant_to_paradigm);
+
+    ctx.getParadigmRegister().register_table(table);
+    ctx.getSourceMapping().register_mapping(table, this);
+
     return;
 }

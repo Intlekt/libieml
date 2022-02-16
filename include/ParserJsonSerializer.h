@@ -23,7 +23,7 @@ nlohmann::json syntaxErrorToJson(const SyntaxError& syntax_error);
 
 nlohmann::json nameToJson(const ieml::structure::Name& name);
 
-nlohmann::json errorManagerToJson(const IEMLParserErrorListener& error_manager);
+std::pair<nlohmann::json, nlohmann::json> errorManagerToJson(const IEMLParserErrorListener& error_manager);
 
 nlohmann::json categoryToJson(std::shared_ptr<ieml::structure::PathTree>, 
                               ieml::parser::ParserContextManager&,
@@ -32,14 +32,13 @@ nlohmann::json categoryToJson(std::shared_ptr<ieml::structure::PathTree>,
 
 nlohmann::json parserToJson(const IEMLParser& parser);
 
-nlohmann::json serializeTable(const ieml::structure::Table& table);
+nlohmann::json serializeTable(ieml::parser::ParserContextManager& ctx,
+                              const ieml::structure::Table::Ptr& table);
 
 nlohmann::json serializeNode(const structure::CategoryRegister&, 
                              const structure::WordRegister&,
                              const SourceMapping&,
                              const std::shared_ptr<structure::Element>&);
-
-nlohmann::json serializeTable();
 
 nlohmann::json binaryGraphToJson(ieml::relation::RelationGraph&,
                                  const structure::CategoryRegister&,

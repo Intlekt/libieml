@@ -189,7 +189,7 @@
 @word "o.y.-".
 
 @component en:plays a role (0 ~noun #"o.o.-") .
-@component en:express (0 ~noun #"o.u.-") .
+@component en:express2 (0 ~noun #"o.u.-") .
 @component en:starting point (0 ~noun #"o.i.-").
 @component en:arrival point (0 ~noun #"o.e.-").
 @component en:medium point (0 ~noun #"o.y.-").
@@ -551,7 +551,7 @@
 (
 0 #change,
 1 #grammatical mode,
-4 *same &and [#grammatical substance #grammatical attribute #IEML element paradigm]
+8 *same &and [#grammatical substance #grammatical attribute #IEML element paradigm]
 ).
 
 @node en:is in crossed relation with fr:est en relation croisée avec

@@ -43,11 +43,11 @@ public:
         return paradigms_.find(paradigm)->second;
     }
 
-    void register_table(const Table& table) {
+    void register_table(const Table::Ptr& table) {
         tables_.push_back(table);
     }
 
-    const std::vector<Table>& getTables() const {
+    const std::vector<Table::Ptr>& getTables() const {
         return tables_;
     }
 
@@ -60,7 +60,7 @@ private:
 
     std::unordered_map<std::shared_ptr<PathTree>, ParadigmLayout> paradigms_;
 
-    std::vector<Table> tables_;
+    std::vector<Table::Ptr> tables_;
 };
 
 }

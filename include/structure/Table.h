@@ -9,6 +9,8 @@ class Table {
 public:
     typedef std::unordered_map<PathTree::Ptr, PathTree::Ptr> InvariantMapping;
 
+    typedef std::shared_ptr<Table> Ptr;
+
     Table(PathTree::Ptr root,
           InvariantMapping invariant_mapping) : 
         root_(root),

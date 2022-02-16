@@ -18,7 +18,7 @@ namespace fs = std::filesystem;
 
 
 TEST(ieml_grammar_test_case, validate_exemples) {
-    for (const auto& file : fs::directory_iterator(TEST_IEML_GRAMMAR_FILES_FOLDER)) {
+    for (const auto& file : fs::directory_iterator(TEST_IEML_GRAMMAR_EXAMPLES_FOLDER)) {
       std::ifstream exampleFile(file.path());
       std::string exampleString, line;
       while (std::getline(exampleFile, line)) {

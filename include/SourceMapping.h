@@ -6,58 +6,117 @@
 #include "ast/interfaces/AST.h"
 #include "structure/path/PathTree.h"
 #include "structure/Word.h"
+#include "structure/Table.h"
 
 
 namespace ieml {
 namespace parser {
 
+/**
+ * @brief SourceMapping stores the relationship between structure object and their AST declaration.
+ * 
+ *  The mapped types are :
+ *      - ieml::structure::PathTree::Ptr
+ *      - ieml::structure::Word::Ptr
+ *      - ieml::structure::Table::Ptr
+ * 
+ */
 class SourceMapping {
 public:
     SourceMapping() {};
 
-    void register_mapping(std::shared_ptr<ieml::structure::PathTree> path_tree, const ieml::AST::AST* declaration) {
+    /**
+     * @brief Register the mapping between a PathTree pointer and its AST definition
+     * 
+     * @param path_tree 
+     * @param declaration 
+     */
+    void register_mapping(const ieml::structure::PathTree::Ptr path_tree, const ieml::AST::AST* declaration) {
         map_categories_.insert({
             path_tree,
             declaration
         });
     }
 
-    const ieml::AST::AST* resolve_mapping(std::shared_ptr<ieml::structure::PathTree> path_tree) const {
+    /**
+     * @brief Get the AST object registered for this PathTree pointer. Return nullptr if the PathTree pointer is not registered.
+     * 
+     * @param path_tree 
+     * @return const ieml::AST::AST* 
+     */
+    const ieml::AST::AST* resolve_mapping(const ieml::structure::PathTree::Ptr path_tree) const {
         auto it = map_categories_.find(path_tree);
         if (it == map_categories_.end()) 
             return nullptr;
         return it->second;
     }
 
-    void register_mapping(std::shared_ptr<ieml::structure::Word> word, const ieml::AST::AST* declaration) {
+    /**
+     * @brief Register a mapping between a Word pointer and its AST definition.
+     * 
+     * @param word 
+     * @param declaration 
+     */
+    void register_mapping(const ieml::structure::Word::Ptr& word, const ieml::AST::AST* declaration) {
         map_words_.insert({
             word,
             declaration
         });
     }
 
-    const ieml::AST::AST* resolve_mapping(std::shared_ptr<ieml::structure::Word> word) const {
+    /**
+     * @brief Get the AST object associated with this Word pointer. Return nullptr is the Word pointer is not registered.
+     * 
+     * @param word 
+     * @return const ieml::AST::AST* 
+     */
+    const ieml::AST::AST* resolve_mapping(const ieml::structure::Word::Ptr& word) const {
         auto it = map_words_.find(word);
         if (it == map_words_.end()) 
             return nullptr;
         return it->second;
     }
 
+    /**
+     * @brief Register a mapping between a Table definition pointer and its AST definition.
+     * 
+     * @param table 
+     * @param declaration 
+     */
+    void register_mapping(const ieml::structure::Table::Ptr& table, const ieml::AST::AST* declaration) {
+        map_tables_.insert({
+            table,
+            declaration
+        });
+    }
+
+    /**
+     * @brief Get the AST object associated with this Table pointer. Return nullptr is the Table pointer is not registered.
+     * 
+     * @param table 
+     * @return const ieml::AST::AST* 
+     */
+    const ieml::AST::AST* resolve_mapping(const ieml::structure::Table::Ptr& table) const {
+        auto it = map_tables_.find(table);
+        if (it == map_tables_.end()) 
+            return nullptr;
+        return it->second;
+    }
+
 private:
-    std::unordered_map<std::shared_ptr<ieml::structure::PathTree>, const ieml::AST::AST*> map_categories_;
-    
     struct WordHasher {
-        size_t operator()(const std::shared_ptr<ieml::structure::Word>& k) const {
+        size_t operator()(const ieml::structure::Word::Ptr& k) const {
             return std::hash<std::string>{}(k->getScript());
         }
     };
     struct WordEqual {
-        size_t operator()(const std::shared_ptr<ieml::structure::Word>& l, const std::shared_ptr<ieml::structure::Word>& r) const {
+        size_t operator()(const ieml::structure::Word::Ptr& l, const ieml::structure::Word::Ptr& r) const {
             return l->getScript() == r->getScript();
         }
     };
     
-    std::unordered_map<std::shared_ptr<ieml::structure::Word>, const ieml::AST::AST*, WordHasher, WordEqual> map_words_;
+    std::unordered_map<ieml::structure::Word::Ptr, const ieml::AST::AST*, WordHasher, WordEqual> map_words_;
+    std::unordered_map<ieml::structure::PathTree::Ptr, const ieml::AST::AST*> map_categories_;
+    std::unordered_map<ieml::structure::Table::Ptr, const ieml::AST::AST*> map_tables_;
 };
-
 }}

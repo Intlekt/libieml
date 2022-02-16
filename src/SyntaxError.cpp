@@ -65,3 +65,12 @@ void IEMLParserErrorListener::parseError(const ieml::AST::CharRange& char_range,
     error_manager_.registerError(new ParseError(char_range, msg));
 }
 
+
+void IEMLParserErrorListener::visitorWarning(const ieml::AST::CharRange& char_range, const std::string &msg) {
+    error_manager_.registerWarning(new VisitorError(char_range, msg));
+}
+
+void IEMLParserErrorListener::parseWarning(const ieml::AST::CharRange& char_range, const std::string &msg) {
+    error_manager_.registerWarning(new ParseError(char_range, msg));
+}
+

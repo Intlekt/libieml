@@ -14,6 +14,8 @@ class Word : public Element {
 public:
     Word(const std::string& s): script_(s) {}
 
+    typedef std::shared_ptr<Word> Ptr;
+
     virtual ElementType getElementType() const {return ElementType::WORD;};
 
     virtual std::string to_string() const { return "\"" + script_ + "\""; };

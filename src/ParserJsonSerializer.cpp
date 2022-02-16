@@ -49,12 +49,18 @@ nlohmann::json ieml::parser::nameToJson(const ieml::structure::Name& name) {
     return translations;
 }
 
-nlohmann::json ieml::parser::errorManagerToJson(const IEMLParserErrorListener& error_manager) {
+std::pair<nlohmann::json, nlohmann::json> ieml::parser::errorManagerToJson(const IEMLParserErrorListener& error_manager) {
     nlohmann::json error_list = nlohmann::json::array();
     for (auto& error: error_manager.getSyntaxErrors()) {
         error_list.push_back(syntaxErrorToJson(*error));
     }
-    return error_list;
+
+    nlohmann::json warning_list = nlohmann::json::array();
+    for (auto& warning: error_manager.getSyntaxWarnings()) {
+        warning_list.push_back(syntaxErrorToJson(*warning));
+    }
+
+    return {error_list, warning_list};
 }
 
 
@@ -168,27 +174,27 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
     };
 }
 
-nlohmann::json ieml::parser::serializeTable(const ieml::structure::Table& table) {
-    // auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(word));
-    // const ieml::AST::CharRange& range = ast->getCharRange();
+nlohmann::json ieml::parser::serializeTable(ieml::parser::ParserContextManager& ctx,
+                                            const ieml::structure::Table::Ptr& table) {
 
-    
+    auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(table));
+    const ieml::AST::CharRange& range = ast->getCharRange();
 
     auto invariant_mapping = nlohmann::json::object();
 
-    for (auto& invariant_pair: table.getInvariantMapping()) {
+    for (auto& invariant_pair: table->getInvariantMapping()) {
         invariant_mapping[invariant_pair.first->uid()] = invariant_pair.second->uid();
     }
 
     return {
-        // {"range", charRangeToJson(range)},
-        {"root", table.getRoot()->uid()},
+        {"range", charRangeToJson(range)},
+        {"root", table->getRoot()->uid()},
         {"invariant_mapping", invariant_mapping}
     };
 }
 
 nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
-    auto errors = ieml::parser::errorManagerToJson(parser.getErrorListener());
+    auto errors_and_warnings = ieml::parser::errorManagerToJson(parser.getErrorListener());
     auto context = parser.getContext();
     auto cregister = context->getCategoryRegister();
     auto wregister = context->getWordRegister();
@@ -216,12 +222,13 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
         elements[it->first->uid()] = _wordToJson<ieml::structure::JunctionWord>(it->first, *context);
   
     nlohmann::json tables = nlohmann::json::array();
-    for (auto table: context->getParadigmRegister().getTables()) {
-        tables.push_back(serializeTable(table));
+    for (const auto& table: context->getParadigmRegister().getTables()) {
+        tables.push_back(serializeTable(*context, table));
     }
 
     return {
-        {"errors", errors},
+        {"errors", errors_and_warnings.first},
+        {"warnings", errors_and_warnings.second},
         {"language", language._to_string()},
         {"elements", elements},
         {"tables", tables}

@@ -14,48 +14,52 @@
 #include "relation/Composition.h"
 #include <nlohmann/json.hpp>
 
+namespace fs = std::filesystem;
+
 
 TEST(ieml_grammar_test_case, json_serialization) {
-    std::ifstream file;
-    file.open (std::string(TEST_IEML_GRAMMAR_EXAMPLES_FOLDER) + "/ieml-grammar.ieml");
+    for (const auto& file_path : fs::directory_iterator(TEST_IEML_GRAMMAR_EXAMPLES_FOLDER)) {
+        std::ifstream file;
+        file.open (file_path.path());
 
-    std::string line;
-    std::stringstream o;
-    if (file.is_open()) {
-        while (getline (file, line)) {
-            o << line << '\n';
+        std::string line;
+        std::stringstream o;
+        if (file.is_open()) {
+            while (getline (file, line)) {
+                o << line << '\n';
+            }
+            file.close();
         }
-        file.close();
-    }
 
-    auto parser = ieml::parser::IEMLParser({"default"}, {o.str()});
-    parser.parse();
+        auto parser = ieml::parser::IEMLParser({"default"}, {o.str()});
+        parser.parse();
 
-    auto res = ieml::parser::parserToJson(parser);
+        auto res = ieml::parser::parserToJson(parser);
 
-    // check that all the id that are defined in the json are present
+        // check that all the id that are defined in the json are present
 
-    for (nlohmann::json::iterator it = res["elements"].begin(); it != res["elements"].end(); ++it) {
-        auto v = it.value();
-        EXPECT_EQ(it.key(), v["id"]);
+        for (nlohmann::json::iterator it = res["elements"].begin(); it != res["elements"].end(); ++it) {
+            auto v = it.value();
+            EXPECT_EQ(it.key(), v["id"]) << "Key not equal with the element id for key" + std::string(it.key()) + " in file " + std::string(file_path.path());
 
-        std::string file_id = v["range"]["file_id"];
-        EXPECT_EQ(file_id, std::string("default"));
+            std::string file_id = v["range"]["file_id"];
+            EXPECT_EQ(file_id, std::string("default"));
 
-        if (v["type"] == "CATEGORY") {
-            for (auto ref: v["back_references"])
-                EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing back_references " + std::string(ref) + " of " + it.key();
-            for (auto ref: v["references"])
-                EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing references " + std::string(ref) + " of " + it.key();
-            for (auto ref: v["singular_sequences"])
-                EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing singular_sequences " + std::string(ref) + " of " + it.key();
+            if (v["type"] == "CATEGORY") {
+                for (auto ref: v["back_references"])
+                    EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing back_references " + std::string(ref) + " of " + it.key() + " in file " + std::string(file_path.path());
+                for (auto ref: v["references"])
+                    EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing references " + std::string(ref) + " of " + it.key() + " in file " + std::string(file_path.path());
+                for (auto ref: v["singular_sequences"])
+                    EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing singular_sequences " + std::string(ref) + " of " + it.key() + " in file " + std::string(file_path.path());
 
-            EXPECT_TRUE(res["elements"].contains(v["invariant"])) << "Not containing invariant " + std::string(v["invariant"]) + " of " + it.key();
+                EXPECT_TRUE(res["elements"].contains(v["invariant"])) << "Not containing invariant " + std::string(v["invariant"]) + " of " + it.key() + " in file " + std::string(file_path.path());
 
-            for (auto ref: v["paradigms"])
-                EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing paradigms " + std::string(ref) + " of " + it.key();
+                for (auto ref: v["paradigms"])
+                    EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing paradigms " + std::string(ref) + " of " + it.key() + " in file " + std::string(file_path.path());
 
-            EXPECT_LE(v["nDimension"], 3);
+                EXPECT_LE(v["nDimension"], 3);
+            }
         }
     }
 

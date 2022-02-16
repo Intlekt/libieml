@@ -35,12 +35,20 @@ void ParanodeDeclaration::define_category(ieml::parser::ParserContextManager& ct
         return;
     }
 
-    ctx.getCategoryRegister().define_category(name, phrase_pt, structure::DefinitionType::PARADIGM);    
-
     const auto& dimensions = _check_dimension_definitions(ctx, phrase_pt);
     if (!dimensions)
         return;
     
+    for (const auto& singular_sequence: ieml::structure::PathTree::singular_sequences(phrase_pt)) {
+        if (!ctx.getCategoryRegister().category_is_defined(singular_sequence))         
+            ctx.getErrorManager().visitorWarning(
+                getCharRange(), 
+                "Missing singular sequence for paradigm : " + singular_sequence->to_string()
+            );
+
+    }
+
+    ctx.getCategoryRegister().define_category(name, phrase_pt, structure::DefinitionType::PARADIGM);    
     ctx.getParadigmRegister().define_paradigm(ctx.getPathTreeRegister(), phrase_pt, *dimensions);
 }
 
