@@ -46,6 +46,8 @@ TEST(ieml_grammar_test_case, json_serialization) {
             EXPECT_EQ(file_id, std::string("default"));
 
             if (v["type"] == "CATEGORY") {
+                EXPECT_TRUE(v.contains("translations")) << "Missing translations of " + it.key() + " in file " + std::string(file_path.path());
+
                 for (auto ref: v["back_references"])
                     EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing back_references " + std::string(ref) + " of " + it.key() + " in file " + std::string(file_path.path());
                 for (auto ref: v["references"])
@@ -61,8 +63,15 @@ TEST(ieml_grammar_test_case, json_serialization) {
                 EXPECT_LE(v["nDimension"], 3);
             }
         }
-    }
 
+        // check that the tables have valid ids
+        for (nlohmann::json::iterator it = res["tables"].begin(); it != res["tables"].end(); ++it) {
+            auto v = it.value();
+            EXPECT_TRUE(res["elements"].contains(v["root"])) << "Not table root id " + std::string(v["root"]) + " of " + it.key() + " in file " + std::string(file_path.path());
+
+               
+        }
+    }
 }
 
 TEST(ieml_grammar_test_case, composition_graph_json_serialization) {
