@@ -1,0 +1,5 @@
+.vscode
+build
+dist
+pyieml.egg-info
+venv
