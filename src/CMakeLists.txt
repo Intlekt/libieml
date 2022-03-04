@@ -13,6 +13,7 @@ set(ANTLR_EXECUTABLE ${CMAKE_SOURCE_DIR}/thirdparty/antlr/antlr-4.9.2-complete.j
 
 find_package(ANTLR REQUIRED)
 
+# Generate IEML Parser
 antlr_target(IEMLLexerGrammar  ${CMAKE_CURRENT_LIST_DIR}/grammar/IEMLLexerGrammar.g4  LEXER
              PACKAGE ieml_generated)
 
@@ -22,7 +23,20 @@ antlr_target(IEMLParserGrammar ${CMAKE_CURRENT_LIST_DIR}/grammar/IEMLParserGramm
              COMPILE_FLAGS -lib ${ANTLR_IEMLLexerGrammar_OUTPUT_DIR}
              VISITOR)
 
-message(STATUS "Generated parser at ${ANTLR_IEMLParserGrammar_OUTPUT_DIR} ")
+message(STATUS "Generated IEML parser at ${ANTLR_IEMLParserGrammar_OUTPUT_DIR} ")
+
+# Generate Script Parser
+antlr_target(ScriptLexerGrammar  ${CMAKE_CURRENT_LIST_DIR}/grammar/ScriptLexerGrammar.g4  LEXER
+             PACKAGE script_generated)
+
+antlr_target(ScriptParserGrammar ${CMAKE_CURRENT_LIST_DIR}/grammar/ScriptParserGrammar.g4 PARSER
+             PACKAGE script_generated
+             DEPENDS_ANTLR ScriptLexerGrammar
+             COMPILE_FLAGS -lib ${ANTLR_ScriptLexerGrammar_OUTPUT_DIR}
+             VISITOR)
+
+message(STATUS "Generated Script parser at ${ANTLR_ScriptParserGrammar_OUTPUT_DIR} ")
+
 
 #########################
 # BOOST GRAPH
@@ -51,9 +65,14 @@ ExternalProject_Add(external_boost
 
 set(IEMLParser_src ${ANTLR_IEMLLexerGrammar_CXX_OUTPUTS}
                    ${ANTLR_IEMLParserGrammar_CXX_OUTPUTS}
+                   ${ANTLR_ScriptLexerGrammar_CXX_OUTPUTS}
+                   ${ANTLR_ScriptParserGrammar_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/SyntaxError.cpp
-                   ${CMAKE_CURRENT_LIST_DIR}/IEMLGrammarVisitor.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/IemlParser.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/AbstractVisitor.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/IEMLGrammarVisitor.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ScriptParser.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ScriptGrammarVisitor.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ParserJsonSerializer.cpp
 
 
@@ -80,6 +99,10 @@ set(IEMLParser_src ${ANTLR_IEMLLexerGrammar_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathParser.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/ParadigmLayout.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/script/Script.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/script/PrimitiveScript.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/script/AdditiveScript.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/script/MultiplicativeScript.cpp
 
 
                    ${CMAKE_CURRENT_LIST_DIR}/relation/RelationGraph.cpp
@@ -90,6 +113,8 @@ set(IEMLParser_include ${PROJECT_SOURCE_DIR}/include
                        ${ANTLR4_INCLUDE_DIRS}
                        ${ANTLR_IEMLLexerGrammar_OUTPUT_DIR}
                        ${ANTLR_IEMLParserGrammar_OUTPUT_DIR}
+                       ${ANTLR_ScriptLexerGrammar_OUTPUT_DIR}
+                       ${ANTLR_ScriptParserGrammar_OUTPUT_DIR}
                        ${PROJECT_SOURCE_DIR}/thirdparty/nlohmann_json
                        ${PROJECT_SOURCE_DIR}/thirdparty/better_enums
                        ${BOOST_INCLUDE_DIR})

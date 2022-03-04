@@ -37,25 +37,3 @@ inline void hash_combine(size_t& seed, const T& v)
     seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2);
 }
 
-
-
-// template<class T> 
-// struct shared_ptr_hash {
-//     size_t operator()(const std::shared_ptr<T>& e) const {
-//         return std::hash<T>{}(*e);
-//     }
-// };
-
-// template<class T> 
-// struct shared_ptr_equal_to {
-//     size_t operator()(const std::shared_ptr<T>& l, const std::shared_ptr<T>& r) const {
-//         return std::equal_to<T>{}(*l, *r);
-//     }
-// };
-
-// template<class T> 
-// struct shared_ptr_less {
-//     size_t operator()(const std::shared_ptr<T>& l, const std::shared_ptr<T>& r) const {
-//         return std::less<T>{}(*l, *r);
-//     }
-// };

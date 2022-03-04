@@ -5,7 +5,8 @@
 
 using namespace ieml::parser;
 
-IEMLParser::FileParser::FileParser(const std::string& file_id, const std::string& input_str, IEMLParserErrorListener* error_listener) {
+IEMLParser::FileParser::FileParser(const std::string& file_id, const std::string& input_str, IEMLParserErrorListener* error_listener) : 
+        script_parser_(file_id, error_listener) {
     input_ = new antlr4::ANTLRInputStream(input_str);
 
     visitor_ = std::make_shared<IEMLGrammarVisitor>(file_id, error_listener);
@@ -20,7 +21,6 @@ IEMLParser::FileParser::FileParser(const std::string& file_id, const std::string
     parser_ = new ieml_generated::IEMLParserGrammar(tokens_);
     parser_->removeErrorListeners();
     parser_->addErrorListener(antlr_listener);
-
 }
 
 IEMLParser::FileParser::~FileParser() {
@@ -42,7 +42,6 @@ void IEMLParser::FileParser::parse() {
     
     ast_ = std::move(ast_t.as<IEMLGrammarVisitor::VisitorResult<Program>>().release());
 }
-
 
 
 IEMLParser::IEMLParser(const std::vector<std::string>& file_ids, 
