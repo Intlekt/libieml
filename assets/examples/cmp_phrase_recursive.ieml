@@ -1,9 +1,9 @@
 @language fr.
 
 @word "wa." .
-@inflection fr:verb VERB "a." .
-@inflection fr:nom VERB "b." .
-@inflection fr:futur VERB "c." .
+@inflection fr:verb class:VERB "a." .
+@inflection fr:nom class:VERB "b." .
+@inflection fr:futur class:VERB "c." .
 
 
 

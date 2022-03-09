@@ -73,7 +73,7 @@ TEST(ieml_grammar_test_case, no_crash_erroneous_files) {
 TEST(ieml_grammar_test_case, language_per_file) {
 
   IEMLParser parser(std::vector<std::string>{"file_0", "file_1"}, 
-                    std::vector<std::string>{R"(@language fr. @word "we.". @inflection fr:nom en:noun VERB "wa.". @node en:test (0 ~nom #"we.").)", 
+                    std::vector<std::string>{R"(@language fr. @word "we.". @inflection fr:nom en:noun class:VERB "wa.". @node en:test (0 ~nom #"we.").)", 
                                              R"(@language en. @node en: test2 (0 ~noun #test).)"});
   try {
     parser.parse();

@@ -21,6 +21,10 @@ IEMLParser::FileParser::FileParser(const std::string& file_id, const std::string
     parser_ = new ieml_generated::IEMLParserGrammar(tokens_);
     parser_->removeErrorListeners();
     parser_->addErrorListener(antlr_listener);
+
+    // use SSL prediction for parser
+    // I wrote the grammar so it not need context information, speeding the parser by x10
+    parser_->getInterpreter<atn::ParserATNSimulator>()->setPredictionMode(atn::PredictionMode::SLL);
 }
 
 IEMLParser::FileParser::~FileParser() {

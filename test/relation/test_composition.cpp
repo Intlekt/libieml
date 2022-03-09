@@ -35,7 +35,7 @@ using namespace ieml::relation;
 
 
 TEST(ieml_relation_test_case, basic_graph) {
-  PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:noun VERB "e.". @component en:included (0 ~noun #"wa."). @component en:container (0 #(0 ~noun #"wa.")).@component en:topcontainer (0 #(0 #(0 ~noun #"wa."))).)");
+  PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:noun class:VERB "e.". @component en:included (0 ~noun #"wa."). @component en:container (0 #(0 ~noun #"wa.")).@component en:topcontainer (0 #(0 #(0 ~noun #"wa."))).)");
 
   RelationGraph relgraph;
   std::shared_ptr<ieml::parser::ParserContextManager> context;

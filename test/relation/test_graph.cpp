@@ -31,9 +31,9 @@ TEST(ieml_relation_test_case, test_graph_compilation_error_not_null) {
 
 @junction fr:et "m." .
 
-@inflection fr:singulier NOUN "a." .
-@inflection fr:pluriel NOUN "b." .
-@inflection fr:nom VERB "c." .
+@inflection fr:singulier class:NOUN "a." .
+@inflection fr:pluriel class:NOUN "b." .
+@inflection fr:nom class:VERB "c." .
 
 @component 
     fr:le chien mange du paté sur le tapis 

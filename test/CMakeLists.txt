@@ -1,4 +1,5 @@
 set(TEST_IEML_GRAMMAR_FILES_FOLDER ${CMAKE_SOURCE_DIR}/assets/ieml_files)
+set(TEST_IEML_ALL_SCRIPTS_FILE ${CMAKE_SOURCE_DIR}/assets/dictionary_scripts.txt)
 set(TEST_IEML_GRAMMAR_EXAMPLES_FOLDER ${CMAKE_SOURCE_DIR}/assets/examples)
 set(TEST_IEML_ERRONEOUS_FILES_FOLDER ${CMAKE_SOURCE_DIR}/assets/erroneous_files)
 

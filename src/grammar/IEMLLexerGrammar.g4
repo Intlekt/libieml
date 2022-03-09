@@ -2,6 +2,8 @@ lexer grammar IEMLLexerGrammar;
 
 
 LANGUAGE_STRING_MARK : [a-z][a-z]':';
+CLASS_MARK : 'class:';
+ROLE_MARK : 'role:';
 DIMENSION_MARK       : [1-3]'d:';
    
 STRING               : '"'(~'"'|'\\"')*'"';

@@ -18,6 +18,10 @@ ScriptParser::ScriptParser(const std::string& file_id, IEMLParserErrorListener* 
     parser_ = new script_generated::ScriptParserGrammar(tokens);
     parser_->removeErrorListeners();
     parser_->addErrorListener(antlr_listener);
+    
+    // use SSL prediction for parser
+    // I wrote the grammar so it not need context information, speeding the parser by x10
+    parser_->getInterpreter<atn::ParserATNSimulator>()->setPredictionMode(atn::PredictionMode::SLL);
 }
 
 ScriptParser::~ScriptParser() {

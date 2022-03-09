@@ -6,8 +6,8 @@
 
 @junction fr:et "m.".
 
-@inflection fr:verb VERB "a." .
-@inflection fr:nom  VERB "b." .
+@inflection fr:verb class:VERB "a." .
+@inflection fr:nom  class:VERB "b." .
 
 @component fr:manger (0 ~verb #"wa.") .
 @component fr:composent2 (0 ~nom #"we.") .

@@ -6,52 +6,52 @@
 @language en.
 
 // VERBS ~INFLECTIONS
-@inflection en:if 					fr:si 		VERB		   "E:S:A:."			.	
-@inflection en:then 				fr:alors	VERB    		"E:T:U:."			.	
-@inflection en:not 					fr:non		VERB		"E:U:A:."			.	
+@inflection en:if 					fr:si 	 class:VERB "E:S:A:."			.	
+@inflection en:then 				fr:alors class:VERB "E:T:U:."			.	
+@inflection en:not 					fr:non	 class:VERB "E:U:A:."			.	
 
-@inflection en:passive 				fr:passif 		VERB	"E:.-wo.-t.o.-'"	. 
-@inflection en:active 				fr:actif		VERB	"E:.-wa.-t.o.-'"		.
-@inflection en:reciprocal 				fr:réciproque	VERB		"E:.-we.-t.o.-'"		. 
-@inflection en:reflexive 				fr:réflexif	VERB		"E:.-wu.-t.o.-'"		.
+@inflection en:passive 				fr:passif 	 class:VERB "E:.-wo.-t.o.-'"	. 
+@inflection en:active 				fr:actif	 class:VERB "E:.-wa.-t.o.-'"		.
+@inflection en:reciprocal 				fr:réciproque class:VERB "E:.-we.-t.o.-'"		. 
+@inflection en:reflexive 				fr:réflexif class:VERB "E:.-wu.-t.o.-'"		.
 
-@inflection en:participle en:quasi adjective 	fr:participe fr:quasi adjectif VERB	"E:.-'we.-T:.-'t.o.-'," 	.
+@inflection en:participle en:quasi adjective 	fr:participe fr:quasi adjectif class:VERB "E:.-'we.-T:.-'t.o.-'," 	.
 
 // NOUNS ~INFLECTIONS
-@inflection en:singular 				fr:singulier	NOUN		"E:.wo.-"			.
-@inflection en:two 					fr:deux		NOUN	"E:.wa.-"			.
-@inflection en:three 				fr:trois		NOUN	"E:.wu.-"			.
-@inflection en:plural 				fr:pluriel		NOUN	"E:.we.-"			.
+@inflection en:singular 				fr:singulier class:NOUN "E:.wo.-"			.
+@inflection en:two 					fr:deux	 class:NOUN "E:.wa.-"			.
+@inflection en:three 				fr:trois	 class:NOUN "E:.wu.-"			.
+@inflection en:plural 				fr:pluriel	 class:NOUN "E:.we.-"			.
 
-@inflection en:all					fr:tous		NOUN	"E:A:.-t.u.-'"		.
+@inflection en:all					fr:tous	 class:NOUN "E:A:.-t.u.-'"		.
 
-@inflection en:non contiguous 			fr:non contigu	NOUN		"E:.-',b.-S:.U:.-'y.-'A:.-',_".
+@inflection en:non contiguous 			fr:non contigu class:NOUN "E:.-',b.-S:.U:.-'y.-'A:.-',_".
 
-@inflection en:noun VERB "S:".
-@inflection en:verb VERB "B:".
+@inflection en:noun class:VERB "S:".
+@inflection en:verb class:VERB "B:".
 
 // *AUXILIARIES
 
 // *AUXILIARIES ROLE4 causes, objective structures
-@auxiliary en:by 					fr:par			4	"E:T:.p.-"			.
-@auxiliary en:part of 				fr:partie de		4	"E:S:.x.-"			.
-@auxiliary en:formal cause 			fr:cause formelle	4	"E:T:.j.-"			.
+@auxiliary en:by 					fr:par		 role:4 "E:T:.p.-".	
+@auxiliary en:part of 				fr:partie de	 role:4 "E:S:.x.-".	
+@auxiliary en:formal cause 			fr:cause formelle role:4 "E:T:.j.-".	
 
 // *AUXILIARIES ROLE6 places
-@auxiliary en:at starting point 			fr:au point de départ	6	"E:.-S:.b.-l.-'"		.
-@auxiliary en:at arrival point 			fr:au point d arrivée	6	"E:.-S:.f.-l.-'"		.
-@auxiliary en:at medium point 			fr:au point d arrivée	6	"E:.-S:.m.-l.-'"		.
-@auxiliary en:inside 				fr:dans	6		"E:.-T:.f.-l.-'"		.
-@auxiliary en:at					fr:à		6		"E:.-B:.n.-l.-'"		.
+@auxiliary en:at starting point 			fr:au point de départ role:6 "E:.-S:.b.-l.-'".	
+@auxiliary en:at arrival point 			fr:au point d arrivée role:6 "E:.-S:.f.-l.-'".	
+@auxiliary en:at medium point 			fr:au point d arrivée role:6 "E:.-S:.m.-l.-'".	
+@auxiliary en:inside 				fr:dans role:6 "E:.-T:.f.-l.-'".	
+@auxiliary en:at					fr:à	 role:6 "E:.-B:.n.-l.-'".	
 
 // *AUXILIARIES ROLE7 intentions
-@auxiliary en:in context 				fr:en contexte		7 "E:.-'h.o.d.-U:.-'x.-',"	.
-@auxiliary en:variable variable 			fr:variable variable 7	"E:.-b.o.-'E:.-b.o.-',"	.
+@auxiliary en:in context 				fr:en contexte	 role:7 "E:.-'h.o.d.-U:.-'x.-',".
+@auxiliary en:variable variable 			fr:variable variable role:7 "E:.-b.o.-'E:.-b.o.-',".
 
 // *AUXILIARY ROLE8 manner
-@auxiliary 	en:same 				fr:même			8 "E:.A:.g.-"	.
-@auxiliary	en:name of 				fr:nom de 		8	"E:.A:.e.-"	.
-@auxiliary 	en:moral feature possessed by 		fr:trait moral possédé par	 8 "E:.A:.o.-"	. 	
+@auxiliary 	en:same 				fr:même		 role:8 "E:.A:.g.-".
+@auxiliary en:name of 				fr:nom de 	 role:8 "E:.A:.e.-".
+@auxiliary 	en:moral feature possessed by 		fr:trait moral possédé par	 role:8 "E:.A:.o.-".
 
 // &JUNCTIONS [ ]
 
@@ -195,7 +195,7 @@
 @component en:medium point (0 ~noun #"o.y.-").
 
 
-@auxiliary en:with 8 "t." .
+@auxiliary en:with role:8 "t.".
 
 // ¶¶ PHRASES
 

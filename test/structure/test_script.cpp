@@ -14,6 +14,8 @@
 #include "ScriptParser.h"
 #include "test_utils.h"
 
+#include "TestConfig.h"
+
 
 using namespace ieml::structure;
 
@@ -65,3 +67,22 @@ TEST(ieml_structure_test_case, test_script_parser) {
     ASSERT_EQ(res->get_multiplicity(), 81);
     ASSERT_EQ(res->singular_sequences().size(), 81);
 }
+
+TEST(ieml_structure_test_case, test_all_scripts) {
+    auto listener = ieml::parser::IEMLParserErrorListener();
+    auto parser = ieml::parser::ScriptParser("", &listener);
+    auto reg = ScriptRegister();
+
+    std::ifstream exampleFile(TEST_IEML_ALL_SCRIPTS_FILE);
+    std::string exampleString, line;
+    while (std::getline(exampleFile, line)) {
+        auto res = parser.parse(&reg, line, "", 0, 0);
+        EXPECT_NE(res, nullptr) << "Cannot parse " << line;
+        EXPECT_EQ(res->to_string(), line);
+    }
+    exampleFile.close();
+}
+
+
+
+

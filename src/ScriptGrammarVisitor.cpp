@@ -91,7 +91,9 @@ antlrcpp::Any ScriptGrammarVisitor::visitMult_layer0__remarkable_addition(Script
 }
 
 antlrcpp::Any ScriptGrammarVisitor::visitMult_layer1__remarkable_mult(ScriptParserGrammar::Mult_layer1__remarkable_multContext *ctx) {
-    RETURN_VISITOR_RESULT_MOVE(register_->get_remarkable_multiplication(ctx->remarkable_multiplication->getText()));
+    std::string tag(ctx->remarkable_multiplication->getText());
+    std::reverse(tag.begin(), tag.end()); 
+    RETURN_VISITOR_RESULT_MOVE(register_->get_remarkable_multiplication(tag));
 }
 
 #define ADDITIVE_LAYER(layer) \

@@ -188,7 +188,7 @@ TEST(ieml_structure_test_case, path_tree_register) {
     EXPECT_EQ(b, c->getChildrenAsVector()[0]);
 
     {
-        PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:noun VERB "e.". @component en:included (0 ~noun #"wa."). @component en:container (0 #(0 ~noun #"wa.")).)");
+        PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:noun class:VERB "e.". @component en:included (0 ~noun #"wa."). @component en:container (0 #(0 ~noun #"wa.")).)");
         auto context = parser.getContext();
 
         auto included = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::EN, "included"));
