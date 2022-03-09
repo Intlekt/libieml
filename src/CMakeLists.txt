@@ -103,7 +103,9 @@ set(IEMLParser_src ${ANTLR_IEMLLexerGrammar_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/structure/script/PrimitiveScript.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/script/AdditiveScript.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/script/MultiplicativeScript.cpp
-
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/script/NullScript.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/script/ScriptRegister.cpp
+                   
 
                    ${CMAKE_CURRENT_LIST_DIR}/relation/RelationGraph.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/relation/Composition.cpp

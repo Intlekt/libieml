@@ -11,6 +11,7 @@
 #include "structure/CategoryRegister.h"
 #include "structure/ParadigmRegister.h"
 #include "structure/ReferenceSchemaRegister.h"
+#include "structure/script/ScriptRegister.h"
 #include "SyntaxError.h"
 #include "SourceMapping.h"
 
@@ -25,13 +26,16 @@ public:
         error_manager_(error_manager) {}
 
     ieml::parser::IEMLParserErrorListener& getErrorManager() const {return *error_manager_;};
+
     structure::PathTree::Register& getPathTreeRegister() {return path_tree_register_;};
     structure::CategoryRegister& getCategoryRegister() {return category_register_;};
     structure::WordRegister& getWordRegister() {return word_register_;};
     structure::ParadigmRegister& getParadigmRegister() {return paradigm_register_;};
+
     structure::ReferenceSchemaRegister& getReferenceSchemaRegister() {return reference_schema_register_;};
     parser::SourceMapping& getSourceMapping() {return source_mapping_;};
 
+    structure::ScriptRegister& getScriptRegister() {return script_register_;};
 
     structure::LanguageType getLanguage() const {
         if (default_language_ == nullptr)
@@ -63,6 +67,8 @@ private:
     parser::IEMLParserErrorListener* error_manager_;
 
     structure::PathTree::Register path_tree_register_;
+
+    structure::ScriptRegister script_register_;
 
     parser::SourceMapping source_mapping_;
 };

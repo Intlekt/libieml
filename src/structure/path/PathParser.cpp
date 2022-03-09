@@ -30,7 +30,7 @@ std::shared_ptr<ieml::structure::PathTree> ieml::parser::parsePath(parser::Parse
     if (ast_t.isNull())
         return nullptr;
 
-    const auto& ast = ast_t.as<IEMLGrammarVisitor::VisitorResult<ieml::AST::Path>>().release();
+    const auto& ast = ast_t.as<IEMLGrammarVisitor::VisitorResult<std::shared_ptr<ieml::AST::Path>>>().release();
     if (ast == nullptr) return nullptr;
     return ast->check_path(ctx);
 }

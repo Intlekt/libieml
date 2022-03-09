@@ -13,6 +13,7 @@ add_executable(libieml_test grammar/test_parser.cpp
                             structure/test_path_node.cpp
                             structure/test_namespace.cpp
                             structure/test_word.cpp
+                            structure/test_script.cpp
                             relation/test_composition.cpp
                             relation/test_inclusion.cpp
                             relation/test_graph.cpp)

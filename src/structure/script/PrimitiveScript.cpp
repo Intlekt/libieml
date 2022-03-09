@@ -4,11 +4,11 @@
 using namespace ieml::structure;
 
 
-const std::unordered_map<char, std::shared_ptr<PrimitiveScript>> PrimitiveScript::PRIMITIVES = {
-    {'E', std::make_shared<PrimitiveScript>('E')},
-    {'A', std::make_shared<PrimitiveScript>('A')},
-    {'U', std::make_shared<PrimitiveScript>('U')},
-    {'S', std::make_shared<PrimitiveScript>('S')},
-    {'B', std::make_shared<PrimitiveScript>('B')},
-    {'T', std::make_shared<PrimitiveScript>('T')}
+const std::unordered_map<char, uint16_t> PrimitiveScript::CHAR_TO_CANONICAL = {
+    {'E', 0b00000001},
+    {'U', 0b00000010},
+    {'A', 0b00000100},
+    {'S', 0b00001000},
+    {'B', 0b00010000},
+    {'T', 0b00100000}
 };

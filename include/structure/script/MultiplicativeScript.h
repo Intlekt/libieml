@@ -1,50 +1,60 @@
 #pragma once
 
-#include <memory>
 #include <unordered_map>
 #include <string>
 #include <sstream>
 
 #include "structure/script/Script.h"
+#include "structure/script/NullScript.h"
 
-
-#define REMARKABLE_MULTIPLICATION(c) ieml::structure::MultiplicativeScript::REMARKABLE_MULTIPLICATIONS.find(c)->second
+#include "utils.h"
 
 
 namespace ieml::structure {
 
+class ScriptRegister;
+
 class MultiplicativeScript : public Script {
 public:
-    MultiplicativeScript(
-        std::shared_ptr<Script> substance,
-        std::shared_ptr<Script> attribute,
-        std::shared_ptr<Script> mode     
-    ) : 
-        Script(substance->get_layer() + 1, string_repr(substance, attribute, mode)), 
-        substance_(std::move(substance)), 
-        attribute_(std::move(attribute)),
-        mode_(std::move(mode)) {}
+    friend class ScriptRegister;
 
-    virtual size_t get_multiplicity() const override {return 1;};
+    typedef std::tuple<const Script*, const Script*, const Script*> Children; 
 
-    static const std::unordered_map<std::string, std::shared_ptr<MultiplicativeScript>> REMARKABLE_MULTIPLICATIONS;
+    struct HashChildrenFunctor {
+        size_t operator()(const Children& children) const {
+            size_t res = 0;
+            hash_combine(res, std::get<0>(children));
+            hash_combine(res, std::get<1>(children));
+            hash_combine(res, std::get<2>(children));
+            return res;
+        }
+    };
+
+    static const std::unordered_map<std::string, std::string> REMARKABLE_MULTIPLICATIONS_STRINGS;
 
 private:
-    const std::shared_ptr<Script> substance_;
-    const std::shared_ptr<Script> attribute_;
-    const std::shared_ptr<Script> mode_;
+    MultiplicativeScript(ScriptRegister& reg, const Children& children) : 
+        Script(
+            std::get<0>(children)->get_layer() + 1, 
+            string_repr(children), 
+            _canonical(children),
+            _multiplicity(children)
+        ),
+        substance_(std::get<0>(children)), 
+        attribute_(std::get<1>(children)),
+        mode_(std::get<2>(children)) {
+            singular_sequences_ = _build_singular_sequences(reg);
+        }
 
+    const Script* substance_;
+    const Script* attribute_;
+    const Script* mode_;
 
-    static std::string string_repr(std::shared_ptr<Script> substance, std::shared_ptr<Script> attribute, std::shared_ptr<Script> mode) {
-        std::stringstream os;
+    static std::string string_repr(const Children& children);
+    static std::u16string _canonical(const Children& children);
+    static size_t _multiplicity(const Children& children);
 
-        os << substance->to_string();
-        if (attribute) os << attribute->to_string();
-        if (mode) os << mode->to_string();
-
-        os << LAYER_MARKS[substance->get_layer() + 1];
-        return os.str();
-    };
+    Script::Set _build_singular_sequences(ScriptRegister&) const;
 
 };
 

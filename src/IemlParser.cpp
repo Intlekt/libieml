@@ -34,13 +34,10 @@ void IEMLParser::FileParser::parse() {
     if (parseTree_ != nullptr) 
         return;
 
-    parseTree_ = parser_->program();
-    
-    auto ast_t = visitor_->visit(parseTree_);
-    if (ast_t.isNull())
-        return;
-    
-    ast_ = std::move(ast_t.as<IEMLGrammarVisitor::VisitorResult<Program>>().release());
+    parseTree_ = parser_->program();    
+    ast_ = std::move(visitor_->visit(parseTree_)
+                             .as<IEMLGrammarVisitor::VisitorResult<std::shared_ptr<Program>>>()
+                             .release());
 }
 
 

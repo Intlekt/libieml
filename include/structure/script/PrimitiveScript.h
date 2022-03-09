@@ -7,19 +7,28 @@
 #include <memory>
 
 
-#define PRIMITIVE(c) ieml::structure::PrimitiveScript::PRIMITIVES.find(c)->second
-
 namespace ieml::structure {
+
+class ScriptRegister;
 
 class PrimitiveScript: public Script {
 public:
-    virtual size_t get_multiplicity() const override {return 1;};
+    friend class ScriptRegister;
 
-    // all the primitives
-    static const std::unordered_map<char, std::shared_ptr<PrimitiveScript>> PRIMITIVES;
+
+    static const std::unordered_map<char, uint16_t> CHAR_TO_CANONICAL;
 
 private:
-    PrimitiveScript(char c) : Script(0, std::string(1, char_) + LAYER0_MARK), char_(c) {}
+    PrimitiveScript(char c) : 
+        Script(
+            0, // layer
+            std::string(1, c) + LAYER0_MARK, // string
+            std::u16string(1, CHAR_TO_CANONICAL.find(c)->second), // canonical string
+            1
+        ), 
+        char_(c) {
+            singular_sequences_ = {this};
+        }
 
     const char char_;
 };

@@ -1,39 +1,90 @@
 #include "structure/script/MultiplicativeScript.h"
 #include "structure/script/PrimitiveScript.h"
 #include "structure/script/NullScript.h"
+#include "structure/script/ScriptRegister.h"
 
+#include <sstream>
 
 using namespace ieml::structure;
 
+std::string MultiplicativeScript::string_repr(const Children& children) {
+    std::stringstream os;
+    os << std::get<0>(children)->to_string();
+    os << std::get<1>(children)->to_string();
+    os << std::get<2>(children)->to_string();
+    os << LAYER_MARKS[std::get<0>(children)->get_layer() + 1];
 
-const std::unordered_map<std::string, std::shared_ptr<MultiplicativeScript>> MultiplicativeScript::REMARKABLE_MULTIPLICATIONS = {
-    {"wo", std::make_shared<MultiplicativeScript>(PRIMITIVE('U'), PRIMITIVE('U'), NullScript(0))},
-    {"wa", std::make_shared<MultiplicativeScript>(PRIMITIVE('U'), PRIMITIVE('A'), NullScript(0))},
-    {"y", std::make_shared<MultiplicativeScript>(PRIMITIVE('U'), PRIMITIVE('S'), NullScript(0))},
-    {"o", std::make_shared<MultiplicativeScript>(PRIMITIVE('U'), PRIMITIVE('B'), NullScript(0))},
-    {"e", std::make_shared<MultiplicativeScript>(PRIMITIVE('U'), PRIMITIVE('T'), NullScript(0))},
+    const auto key = os.str();
 
-    {"wu", std::make_shared<MultiplicativeScript>(PRIMITIVE('A'), PRIMITIVE('U'), NullScript(0))},
-    {"we", std::make_shared<MultiplicativeScript>(PRIMITIVE('A'), PRIMITIVE('A'), NullScript(0))},
-    {"u", std::make_shared<MultiplicativeScript>(PRIMITIVE('A'), PRIMITIVE('S'), NullScript(0))},
-    {"a", std::make_shared<MultiplicativeScript>(PRIMITIVE('A'), PRIMITIVE('B'), NullScript(0))},
-    {"i", std::make_shared<MultiplicativeScript>(PRIMITIVE('A'), PRIMITIVE('T'), NullScript(0))},
+    auto it = MultiplicativeScript::REMARKABLE_MULTIPLICATIONS_STRINGS.find(key);
+    if (it != MultiplicativeScript::REMARKABLE_MULTIPLICATIONS_STRINGS.end()) return it->second;
+    else return key;
+};
 
-    {"j", std::make_shared<MultiplicativeScript>(PRIMITIVE('S'), PRIMITIVE('U'), NullScript(0))},
-    {"g", std::make_shared<MultiplicativeScript>(PRIMITIVE('S'), PRIMITIVE('A'), NullScript(0))},
-    {"s", std::make_shared<MultiplicativeScript>(PRIMITIVE('S'), PRIMITIVE('S'), NullScript(0))},
-    {"b", std::make_shared<MultiplicativeScript>(PRIMITIVE('S'), PRIMITIVE('B'), NullScript(0))},
-    {"t", std::make_shared<MultiplicativeScript>(PRIMITIVE('S'), PRIMITIVE('T'), NullScript(0))},
+std::u16string MultiplicativeScript::_canonical(const Children& children) {
+    size_t size = std::get<0>(children)->get_canonical().size() * 3;
 
-    {"h", std::make_shared<MultiplicativeScript>(PRIMITIVE('B'), PRIMITIVE('U'), NullScript(0))},
-    {"c", std::make_shared<MultiplicativeScript>(PRIMITIVE('B'), PRIMITIVE('A'), NullScript(0))},
-    {"k", std::make_shared<MultiplicativeScript>(PRIMITIVE('B'), PRIMITIVE('S'), NullScript(0))},
-    {"m", std::make_shared<MultiplicativeScript>(PRIMITIVE('B'), PRIMITIVE('B'), NullScript(0))},
-    {"n", std::make_shared<MultiplicativeScript>(PRIMITIVE('B'), PRIMITIVE('T'), NullScript(0))},
+    std::u16string res;
+    res.reserve(size * 2); // u16 string
 
-    {"p", std::make_shared<MultiplicativeScript>(PRIMITIVE('T'), PRIMITIVE('U'), NullScript(0))},
-    {"x", std::make_shared<MultiplicativeScript>(PRIMITIVE('T'), PRIMITIVE('A'), NullScript(0))},
-    {"d", std::make_shared<MultiplicativeScript>(PRIMITIVE('T'), PRIMITIVE('S'), NullScript(0))},
-    {"f", std::make_shared<MultiplicativeScript>(PRIMITIVE('T'), PRIMITIVE('B'), NullScript(0))},
-    {"l", std::make_shared<MultiplicativeScript>(PRIMITIVE('T'), PRIMITIVE('T'), NullScript(0))}
+    res = res.append(std::get<0>(children)->get_canonical());
+    res = res.append(std::get<1>(children)->get_canonical());
+    res = res.append(std::get<2>(children)->get_canonical());
+    
+    return res;
+};
+
+size_t MultiplicativeScript::_multiplicity(const Children& children) {
+    const auto substance = std::get<0>(children);
+    const auto attribute = std::get<1>(children);
+    const auto mode      = std::get<2>(children);
+
+    return substance->get_multiplicity() * attribute->get_multiplicity() * mode->get_multiplicity();
+};
+
+Script::Set MultiplicativeScript::_build_singular_sequences(ScriptRegister& reg) const {
+    if (get_multiplicity() == 1)
+        return {this};
+
+    Script::Set res;
+    for (const auto& ss_s: substance_->singular_sequences()) {
+        for (const auto& ss_a: attribute_->singular_sequences()) {
+            for (const auto& ss_m: mode_->singular_sequences()) {
+                res.insert(reg.get_or_create_multiplication({ss_s, ss_a, ss_m}));
+            }
+        }
+    }
+    return res;
+};
+
+const std::unordered_map<std::string, std::string> MultiplicativeScript::REMARKABLE_MULTIPLICATIONS_STRINGS = {
+    {"U:U:.", "wo."},
+    {"U:A:.", "wa."},
+    {"U:S:.", "y."},
+    {"U:B:.", "o."},
+    {"U:T:.", "e."},
+
+    {"A:U:.", "wu."},
+    {"A:A:.", "we."},
+    {"A:S:.", "u."},
+    {"A:B:.", "a."},
+    {"A:T:.", "i."},
+
+    {"S:U:.", "j."},
+    {"S:A:.", "g."},
+    {"S:S:.", "s."},
+    {"S:B:.", "b."},
+    {"S:T:.", "t."},
+
+    {"B:U:.", "h."},
+    {"B:A:.", "c."},
+    {"B:S:.", "k."},
+    {"B:B:.", "m."},
+    {"B:T:.", "n."},
+
+    {"T:U:.", "p."},
+    {"T:A:.", "x."},
+    {"T:S:.", "d."},
+    {"T:B:.", "f."},
+    {"T:T:.", "l."}
 };

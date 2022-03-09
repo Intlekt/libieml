@@ -15,22 +15,22 @@ public:
   class VisitorResult {
   public:
     VisitorResult(): is_error_(true) {}
-    VisitorResult(std::shared_ptr<T>&& value): is_error_(false), value_(std::move(value)) {}
+    VisitorResult(T&& value): is_error_(false), value_(std::move(value)) {}
 
     VisitorResult(const VisitorResult& vr) = delete;
     VisitorResult(VisitorResult&& vr) noexcept : is_error_(vr.is_error_), value_(std::move(vr.value_)) {};
     VisitorResult& operator= (const VisitorResult&) = delete;
     VisitorResult& operator= (VisitorResult&&) = default;
 
-    bool isError() {return is_error_;};
+    bool isError() const {return is_error_;};
 
-    std::shared_ptr<T>&& release() { return std::move(value_); }
+    T&& release() { return std::move(value_); }
 
-    const T& value() {return *value_;}
+    const T& value() const {return value_;}
 
   private:
     bool is_error_;
-    std::shared_ptr<T> value_;
+    T value_;
   };
 
   AbstractVisitor(const std::string& file_id, IEMLParserErrorListener* error_listener) 

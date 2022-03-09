@@ -32,16 +32,16 @@
 
 
 #define RETURN_VISITOR_RESULT_NO_ARGS(ReturnType, DerivedType) \
-  return antlrcpp::Any(VisitorResult<ReturnType>(std::make_unique<DerivedType>(charRangeFromContext(ctx))));
+  return antlrcpp::Any(VisitorResult<std::shared_ptr<ReturnType>>(std::make_unique<DerivedType>(charRangeFromContext(ctx))));
 
 #define RETURN_VISITOR_RESULT(ReturnType, DerivedType, ...) \
-  return antlrcpp::Any(VisitorResult<ReturnType>(std::make_unique<DerivedType>(charRangeFromContext(ctx), __VA_ARGS__)));
+  return antlrcpp::Any(VisitorResult<std::shared_ptr<ReturnType>>(std::make_unique<DerivedType>(charRangeFromContext(ctx), __VA_ARGS__)));
 
 #define RETURN_VISITOR_RESULT_MOVE(ReturnType, UNIQUE_PTR) \
-  return antlrcpp::Any(VisitorResult<ReturnType>(std::move(UNIQUE_PTR)));
+  return antlrcpp::Any(VisitorResult<std::shared_ptr<ReturnType>>(std::move(UNIQUE_PTR)));
 
 #define RETURN_VISITOR_RESULT_ERROR(ReturnType) \
-  return antlrcpp::Any(VisitorResult<ReturnType>());
+  return antlrcpp::Any(VisitorResult<std::shared_ptr<ReturnType>>());
 
 
 #define CHECK_SYNTAX_ERROR(ErrorListener, Context, Attribute, Message, Required) \
@@ -67,7 +67,7 @@ for (auto child: Context->Attribute) { \
     ErrorListener->parseError(*charRangeFromContext(Context), Message); \
     valid_##Attribute = false; \
   } else { \
-    auto _tmp = std::move(t_tmp.as<VisitorResult<Type>>()); \
+    auto _tmp = std::move(t_tmp.as<VisitorResult<std::shared_ptr<Type>>>()); \
     if (_tmp.isError())\
       valid_##Attribute = false; \
     else \
@@ -81,7 +81,7 @@ if (!valid_##Attribute) \
   RETURN_VISITOR_RESULT_ERROR(ReturnType);\
 std::shared_ptr<Type> Attribute;\
 if(Context->Attribute) {\
-  auto _tmp = std::move(t_##Attribute.as<VisitorResult<Type>>()); \
+  auto _tmp = std::move(t_##Attribute.as<VisitorResult<std::shared_ptr<Type>>>()); \
   if (_tmp.isError())\
     RETURN_VISITOR_RESULT_ERROR(ReturnType);\
   Attribute = std::move(_tmp.release()); \
@@ -99,8 +99,9 @@ using namespace ieml::parser;
 
 antlrcpp::Any IEMLGrammarVisitor::visitProgram(IEMLParserGrammar::ProgramContext *ctx) {
   CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, IDeclaration, declarations, "Invalid declaration.");
-  // CAST_OR_RETURN_IF_NULL_LIST(declarations, Program);
 
+  // declarations contains the syntax valid declarations
+  // we dont return with CAST_OR_RETURN_IF_NULL_LIST to enable contextual error checking on the valid part
   RETURN_VISITOR_RESULT(Program, Program, std::move(declarations));
 }
 

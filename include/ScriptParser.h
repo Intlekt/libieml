@@ -14,17 +14,22 @@
 #include "ScriptGrammarVisitor.h"
 
 #include "structure/script/Script.h"
+#include "structure/script/ScriptRegister.h"
 
 
 namespace ieml::parser {
-
 
 class ScriptParser {
 public:
     ScriptParser(const std::string& file_id, IEMLParserErrorListener* error_manager);
     ~ScriptParser();
 
-    std::shared_ptr<ieml::structure::Script> parse(const std::string& input_str, const std::string& file_id, const size_t line_offset, const size_t char_offset);
+    const ieml::structure::Script* parse(
+        ieml::structure::ScriptRegister* reg,
+        const std::string& input_str, 
+        const std::string& file_id, 
+        const size_t line_offset, 
+        const size_t char_offset);
 
     ScriptParser(const ScriptParser&) = delete;
 

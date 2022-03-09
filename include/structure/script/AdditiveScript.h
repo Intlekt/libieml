@@ -1,41 +1,41 @@
 #pragma once
 
 #include <memory>
-#include <vector>
+#include <set>
 #include <sstream>
 
 #include "structure/script/Script.h"
 #include "structure/script/PrimitiveScript.h"
 
 
-#define REMARKABLE_ADDITION(c) ieml::structure::AdditiveScript::REMARKABLE_ADDITIONS.find(c)->second
-
-
 namespace ieml::structure {
+
+class ScriptRegister;
+
 
 class AdditiveScript : public Script {
 public:
-    AdditiveScript(std::vector<std::shared_ptr<Script>>&& children) : 
-        Script(children[0]->get_layer(), string_repr(children)), 
-        children_(std::move(children)) {}
+    friend class ScriptRegister;
 
-    static const std::unordered_map<char, std::shared_ptr<AdditiveScript>> REMARKABLE_ADDITIONS;
+    static const std::unordered_map<std::string, std::string> REMARKABLE_ADDITIONS_STRINGS;
+
 private:
-    const std::vector<std::shared_ptr<Script>> children_;
-
-
-    static std::string string_repr(std::vector<std::shared_ptr<Script>> children) {
-        std::stringstream os;
-
-        bool first = true;
-        for (auto& c : children) {
-            if (first) first = false;
-            else       os << "+";
-            os << c->to_string();
+    AdditiveScript(const Script::Set& children) : 
+        Script((*children.begin())->get_layer(), 
+               string_repr(children), 
+               _canonical(children), 
+               _multiplicity(children)),
+        children_(children) {
+            singular_sequences_ = _build_singular_sequences();
         }
-        return os.str();
-    };
 
+    const Script::Set children_;
+
+    Script::Set _build_singular_sequences() const;
+
+    static std::string string_repr(const Script::Set& children);
+    static std::u16string _canonical(const Script::Set& children);
+    static size_t _multiplicity(const Script::Set& children);
 };
 
 }
