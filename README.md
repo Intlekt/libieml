@@ -58,5 +58,27 @@ parser.parse()
 print([e.to_json() for e in parser.errors()])
 ```
 
+### Building WASM
+
+To build wasm, you have to download and install the [emscripten toolchain](https://emscripten.org/docs/getting_started/downloads.html).
+
+At the moment, a package-config file is missing from the emscripten toolchain for uuid. For antlr4 to build, you have to add the following file
+to the ${EMSDK_ROOT}/upstream/emscripten/cache/sysroot/lib/pkgconfig/ folder.
+
+filename: `uuid.pc`
+```
+Name: uuid
+Description: Universally unique id library
+Version: 2.37.3
+```
+
+Then run the following build commands:
+```
+mkdir build
+cd build
+emcmake cmake -DBUILD_WASM:bool=True ..
+emmake make
+```
+
 ### Build the doc
 #### Requirements
