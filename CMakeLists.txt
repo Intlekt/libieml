@@ -15,8 +15,12 @@ LIST( APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 
 
 # set(CMAKE_CXX_FLAGS_DEBUG "-g -O3")
-if (DEFINED BUILD_TEST OR DEFINED BUILD_PYBIND11)
+if (DEFINED BUILD_TEST OR DEFINED BUILD_PYBIND11 OR DEFINED BUILD_WASM)
     configure_file(IEMLConfig.h.in IEMLConfig.h)
+
+    if (DEFINED BUILD_WASM)
+        set(CMAKE_SYSTEM_NAME Emscripten)
+    endif()
 
     add_subdirectory(${CMAKE_SOURCE_DIR}/src)
 
@@ -32,6 +36,12 @@ if (DEFINED BUILD_TEST OR DEFINED BUILD_PYBIND11)
 
         add_subdirectory(thirdparty/pybind11)
         add_subdirectory(binding/python)
+    endif()
+
+    if (DEFINED BUILD_WASM)
+        message("Building WASM with emscripten")
+        
+        add_subdirectory(binding/wasm)
     endif()
 endif()
 

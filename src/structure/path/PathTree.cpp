@@ -1,6 +1,7 @@
 #include "structure/path/PathTree.h"
 
 #include <sstream>
+#include <vector>
 
 using namespace ieml::structure;
 

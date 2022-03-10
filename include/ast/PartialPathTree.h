@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <vector>
 
 #include "structure/path/PathTree.h"
 #include "ast/Variable.h"

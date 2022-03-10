@@ -21,7 +21,7 @@ public:
         return "\"" + word_str_ + "\"";
     }
 
-    virtual PartialPathTree::Optional check_category(parser::ParserContextManager& ctx) const {
+    virtual PartialPathTree::Optional check_category(parser::ParserContextManager& ctx) const override {
         const auto& word = check_category_word(ctx);
         if (!word) return {};
 

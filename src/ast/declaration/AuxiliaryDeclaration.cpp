@@ -14,7 +14,7 @@ void AuxiliaryDeclaration::check_declaration(ieml::parser::ParserContextManager&
     auto role_type = accepted_role_type_->check_role_type(ctx);
     auto word = word_->check_word(ctx);
 
-    if (!name | !word | !role_type) {
+    if (!name || !word || !role_type) {
         return;
     }
     

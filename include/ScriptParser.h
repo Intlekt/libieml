@@ -37,7 +37,6 @@ private:
     antlr4::ANTLRInputStream* input_ = nullptr;
     script_generated::ScriptLexerGrammar* lexer_ = nullptr;
     script_generated::ScriptParserGrammar* parser_ = nullptr;
-    antlr4::CommonTokenStream* tokens_ = nullptr;
 
     std::shared_ptr<ScriptGrammarVisitor> visitor_;
 };

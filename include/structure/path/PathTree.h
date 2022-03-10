@@ -4,6 +4,8 @@
 #include "structure/path/PathNode.h"
 // #include "structure/path/Path.h"
 
+#include <unordered_map>
+
 
 namespace ieml::structure {
 
@@ -11,7 +13,7 @@ class PathTree : public Element {
 public:
     virtual ElementType getElementType() const override {return ElementType::PATH_TREE;};
 
-    std::string to_string() const;
+    virtual std::string to_string() const override;
 
     bool is_path() const {return nb_paths_ == 1;};
 
