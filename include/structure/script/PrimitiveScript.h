@@ -32,13 +32,9 @@ private:
             std::string(1, c) + LAYER0_MARK, // string
             std::u16string(1, CHAR_TO_CANONICAL.find(c)->second), // canonical string
             1
-        ), 
-        char_(c) {
+        ) {
             singular_sequences_ = {this};
         }
-
-
-    const char char_;
 };
 
 
