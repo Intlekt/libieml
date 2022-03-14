@@ -13,7 +13,7 @@
 #include "structure/path/PathTree.h"
 #include "structure/LanguageString.h"
 
-#include "test_utils.h"
+#include "utils_testing.h"
 
 using namespace ieml::relation;
 

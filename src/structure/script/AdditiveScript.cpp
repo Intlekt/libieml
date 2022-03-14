@@ -1,5 +1,6 @@
 #include "structure/script/AdditiveScript.h"
 #include "structure/script/PrimitiveScript.h"
+#include "structure/script/ScriptRegister.h"
 
 
 
@@ -56,6 +57,36 @@ Script::Set AdditiveScript::_build_singular_sequences() const {
     }
 
     return res;
+}
+
+AdditiveScript::TablePtr AdditiveScript::build_table_paradigm(ScriptRegister& reg) const {
+    // if a variable in the addition is not a paradigm return a Table1d with all the variables
+    bool all_variable = true;
+    for (const auto& child: children_) {
+        all_variable = all_variable && (child->get_multiplicity() != 1);
+    }
+
+    if (!all_variable) {
+        const auto sseq = std::vector<const Script*>(singular_sequences_.begin(), singular_sequences_.end());
+        return new TableNd_<const Script*, 1>(
+            sseq, 
+            std::array<size_t, 1>{get_multiplicity()},
+            std::array<std::vector<const Script*>, 1>{sseq},
+            this
+        );
+    }
+
+    // if all children are paradigm, build a TableSet from them.
+    TableSet<const Script*>::Children children_tables;
+    for (const auto& child: children_) {
+        for (const auto& sub_tables: reg.get_or_create_table(child)->get_sub_tables())
+            children_tables.push_back(sub_tables);
+    }
+
+    return new TableSet<const Script*>(
+        children_tables,
+        this
+    );
 }
 
 const std::unordered_map<std::string, std::string> AdditiveScript::REMARKABLE_ADDITIONS_STRINGS = {

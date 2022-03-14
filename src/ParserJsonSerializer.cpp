@@ -2,7 +2,7 @@
 
 #include "ast/interfaces/AST.h"
 #include "relation/Composition.h"
-#include "structure/Table.h"
+#include "structure/TableDefinition.h"
 #include <functional>
 #include <locale>
 
@@ -175,7 +175,7 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
 }
 
 nlohmann::json ieml::parser::serializeTable(ieml::parser::ParserContextManager& ctx,
-                                            const ieml::structure::Table::Ptr& table) {
+                                            const ieml::structure::TableDefinition::Ptr& table) {
 
     auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(table));
     const ieml::AST::CharRange& range = ast->getCharRange();
@@ -302,4 +302,35 @@ nlohmann::json ieml::parser::binaryGraphToJson(ieml::relation::RelationGraph& re
         {"nodes", nodes},
         {"relations", relations}
     };
+}
+
+
+
+nlohmann::json ieml::parser::scriptToJson(const ieml::structure::Script* script, 
+                                          const ieml::structure::ScriptRegister& reg) {
+    nlohmann::json singular_sequences = nlohmann::json::array();
+    for (const auto& ss : script->singular_sequences())
+        singular_sequences.push_back(ss->to_string());
+    
+    const auto type = script->get_type();
+
+    nlohmann::json res = {
+        {"ieml", script->to_string()},
+        {"layer", script->get_layer()},
+        {"multiplicity", script->get_multiplicity()},
+        {"singular_sequences", singular_sequences},
+        {"type", type._to_string()},
+    };
+
+    // if (type == +ieml::structure::ScriptType::MULTIPLICATION) {
+    //     auto script_m = dynamic_cast<const ieml::structure::MultiplicativeScript*>(script);
+    //     res["substance"] = script_m->children_;
+    // }
+
+    return res;
+}
+
+nlohmann::json ieml::parser::scriptTableToJson(const ieml::structure::Script::TablePtr, const ieml::structure::ScriptRegister&) {
+    
+
 }

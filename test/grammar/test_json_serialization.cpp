@@ -122,7 +122,6 @@ TEST(ieml_grammar_test_case, unique_id_pathtree) {
         h1 = p1->uid();
     }
 
-    EXPECT_EQ(*p0, *p1);
     EXPECT_EQ(h0, h1);
 }
 
@@ -150,6 +149,5 @@ TEST(ieml_grammar_test_case, unique_id_word) {
         h1 = p1->uid();
     }
 
-    EXPECT_EQ(*p0, *p1);
     EXPECT_EQ(h0, h1);
 }

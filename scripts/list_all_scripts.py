@@ -12,5 +12,5 @@ if __name__ == '__main__':
     dic = db.get_dictionary()
 
     with open('assets/dictionary_scripts.txt', 'w') as fp:
-        for s in dic.scripts:
+        for s in sorted(dic.scripts):
             fp.write(str(s) + '\n')

@@ -6,7 +6,7 @@
 #include "ast/interfaces/AST.h"
 #include "structure/path/PathTree.h"
 #include "structure/Word.h"
-#include "structure/Table.h"
+#include "structure/TableDefinition.h"
 
 
 namespace ieml {
@@ -83,7 +83,7 @@ public:
      * @param table 
      * @param declaration 
      */
-    void register_mapping(const ieml::structure::Table::Ptr& table, const ieml::AST::AST* declaration) {
+    void register_mapping(const ieml::structure::TableDefinition::Ptr& table, const ieml::AST::AST* declaration) {
         map_tables_.insert({
             table,
             declaration
@@ -96,7 +96,7 @@ public:
      * @param table 
      * @return const ieml::AST::AST* 
      */
-    const ieml::AST::AST* resolve_mapping(const ieml::structure::Table::Ptr& table) const {
+    const ieml::AST::AST* resolve_mapping(const ieml::structure::TableDefinition::Ptr& table) const {
         auto it = map_tables_.find(table);
         if (it == map_tables_.end()) 
             return nullptr;
@@ -106,7 +106,7 @@ public:
 private:
     struct WordHasher {
         size_t operator()(const ieml::structure::Word::Ptr& k) const {
-            return std::hash<std::string>{}(k->getScript());
+            return std::hash<std::string>{}(k->getScript()->to_string());
         }
     };
     struct WordEqual {
@@ -117,6 +117,6 @@ private:
     
     std::unordered_map<ieml::structure::Word::Ptr, const ieml::AST::AST*, WordHasher, WordEqual> map_words_;
     std::unordered_map<ieml::structure::PathTree::Ptr, const ieml::AST::AST*> map_categories_;
-    std::unordered_map<ieml::structure::Table::Ptr, const ieml::AST::AST*> map_tables_;
+    std::unordered_map<ieml::structure::TableDefinition::Ptr, const ieml::AST::AST*> map_tables_;
 };
 }}

@@ -59,8 +59,10 @@ public:
     }
 
     virtual structure::PathNode::Vector check_auxiliary(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
-        auto word = ctx.getWordRegister().get_word(word_->getScript());
+        const auto script = word_->parse_script(ctx);
+        if (!script) return {nullptr};
 
+        auto word = ctx.getWordRegister().get_word_from_script(script);
         if (!word) {
             ctx.getErrorManager().visitorError(
                 getCharRange(),

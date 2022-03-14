@@ -10,18 +10,23 @@
 #include "structure/path/PathTree.h"
 #include "structure/Constants.h"
 
+#include "utils_testing.h"
+
 
 using namespace ieml::structure;
 
 
 TEST(ieml_structure_test_case, path_node_inflection_ordering) {
-    auto a = InflectionPathNode({std::make_shared<InflectionWord>("we.", InflectionType::NOUN), std::make_shared<InflectionWord>("wa.", InflectionType::NOUN)});
-    auto b = InflectionPathNode({std::make_shared<InflectionWord>("wa.", InflectionType::NOUN), std::make_shared<InflectionWord>("we.", InflectionType::NOUN)});
+    auto sreg = ScriptRegister();
+
+    auto a = InflectionPathNode({std::make_shared<InflectionWord>(ieml::testing::parse_script(&sreg, "we."), InflectionType::NOUN), std::make_shared<InflectionWord>(ieml::testing::parse_script(&sreg, "wa."), InflectionType::NOUN)});
+    auto b = InflectionPathNode({std::make_shared<InflectionWord>(ieml::testing::parse_script(&sreg, "wa."), InflectionType::NOUN), std::make_shared<InflectionWord>(ieml::testing::parse_script(&sreg, "we."), InflectionType::NOUN)});
     
     EXPECT_EQ(a, b);
 }
 
 TEST(ieml_structure_test_case, path_node_cmp_hash) {
+    auto sreg = ScriptRegister();
     {
         auto a = RootPathNode();
         auto b = RootPathNode();
@@ -52,9 +57,9 @@ TEST(ieml_structure_test_case, path_node_cmp_hash) {
         EXPECT_GE(c, a);
     }
         {
-        auto a = PhraseJunctionPathNode(std::make_shared<JunctionWord>("E:E:A:."));
-        auto b = PhraseJunctionPathNode(std::make_shared<JunctionWord>("E:E:A:."));
-        auto c = PhraseJunctionPathNode(std::make_shared<JunctionWord>("E:E:B:."));
+        auto a = PhraseJunctionPathNode(std::make_shared<JunctionWord>(ieml::testing::parse_script(&sreg, "E:E:A:.")));
+        auto b = PhraseJunctionPathNode(std::make_shared<JunctionWord>(ieml::testing::parse_script(&sreg, "E:E:A:.")));
+        auto c = PhraseJunctionPathNode(std::make_shared<JunctionWord>(ieml::testing::parse_script(&sreg, "E:E:B:.")));
 
         EXPECT_EQ(a.to_string(), b.to_string());
         EXPECT_EQ(std::hash<PathNode>{}(a), std::hash<PathNode>{}(b));
@@ -94,9 +99,9 @@ TEST(ieml_structure_test_case, path_node_cmp_hash) {
         EXPECT_GE(c, a);
     }
     {
-        auto a = AuxiliaryJunctionPathNode(std::make_shared<JunctionWord>("E:E:A:."));
-        auto b = AuxiliaryJunctionPathNode(std::make_shared<JunctionWord>("E:E:A:."));
-        auto c = AuxiliaryJunctionPathNode(std::make_shared<JunctionWord>("E:E:B:."));
+        auto a = AuxiliaryJunctionPathNode(std::make_shared<JunctionWord>(ieml::testing::parse_script(&sreg, "E:E:A:.")));
+        auto b = AuxiliaryJunctionPathNode(std::make_shared<JunctionWord>(ieml::testing::parse_script(&sreg, "E:E:A:.")));
+        auto c = AuxiliaryJunctionPathNode(std::make_shared<JunctionWord>(ieml::testing::parse_script(&sreg, "E:E:B:.")));
 
         EXPECT_EQ(a.to_string(), b.to_string());
         EXPECT_EQ(std::hash<PathNode>{}(a), std::hash<PathNode>{}(b));
@@ -136,9 +141,9 @@ TEST(ieml_structure_test_case, path_node_cmp_hash) {
         EXPECT_GE(c, a);
     }
     {
-        auto a = InflectionJunctionPathNode(std::make_shared<JunctionWord>("E:E:A:."));
-        auto b = InflectionJunctionPathNode(std::make_shared<JunctionWord>("E:E:A:."));
-        auto c = InflectionJunctionPathNode(std::make_shared<JunctionWord>("E:E:B:."));
+        auto a = InflectionJunctionPathNode(std::make_shared<JunctionWord>(ieml::testing::parse_script(&sreg, "E:E:A:.")));
+        auto b = InflectionJunctionPathNode(std::make_shared<JunctionWord>(ieml::testing::parse_script(&sreg, "E:E:A:.")));
+        auto c = InflectionJunctionPathNode(std::make_shared<JunctionWord>(ieml::testing::parse_script(&sreg, "E:E:B:.")));
 
         EXPECT_EQ(a.to_string(), b.to_string());
         EXPECT_EQ(std::hash<PathNode>{}(a), std::hash<PathNode>{}(b));
@@ -178,9 +183,9 @@ TEST(ieml_structure_test_case, path_node_cmp_hash) {
         EXPECT_GE(c, a);
     }
     {
-        auto a = CategoryJunctionPathNode(std::make_shared<JunctionWord>("E:E:A:."));
-        auto b = CategoryJunctionPathNode(std::make_shared<JunctionWord>("E:E:A:."));
-        auto c = CategoryJunctionPathNode(std::make_shared<JunctionWord>("E:E:B:."));
+        auto a = CategoryJunctionPathNode(std::make_shared<JunctionWord>(ieml::testing::parse_script(&sreg, "E:E:A:.")));
+        auto b = CategoryJunctionPathNode(std::make_shared<JunctionWord>(ieml::testing::parse_script(&sreg, "E:E:A:.")));
+        auto c = CategoryJunctionPathNode(std::make_shared<JunctionWord>(ieml::testing::parse_script(&sreg, "E:E:B:.")));
 
         EXPECT_EQ(a.to_string(), b.to_string());
         EXPECT_EQ(std::hash<PathNode>{}(a), std::hash<PathNode>{}(b));
@@ -220,9 +225,9 @@ TEST(ieml_structure_test_case, path_node_cmp_hash) {
         EXPECT_GE(c, a);
     }
     {
-        auto a = AuxiliaryPathNode(std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT));
-        auto b = AuxiliaryPathNode(std::make_shared<AuxiliaryWord>("wa.", RoleType::ROOT));
-        auto c = AuxiliaryPathNode(std::make_shared<AuxiliaryWord>("we.", RoleType::ROOT));
+        auto a = AuxiliaryPathNode(std::make_shared<AuxiliaryWord>(ieml::testing::parse_script(&sreg, "wa."), RoleType::ROOT));
+        auto b = AuxiliaryPathNode(std::make_shared<AuxiliaryWord>(ieml::testing::parse_script(&sreg, "wa."), RoleType::ROOT));
+        auto c = AuxiliaryPathNode(std::make_shared<AuxiliaryWord>(ieml::testing::parse_script(&sreg, "we."), RoleType::ROOT));
 
         EXPECT_EQ(a.to_string(), b.to_string());
         EXPECT_EQ(std::hash<PathNode>{}(a), std::hash<PathNode>{}(b));
@@ -241,9 +246,9 @@ TEST(ieml_structure_test_case, path_node_cmp_hash) {
         EXPECT_GE(c, a);
     }
     {
-        auto a = InflectionPathNode({std::make_shared<InflectionWord>("we.", InflectionType::NOUN)});
-        auto b = InflectionPathNode({std::make_shared<InflectionWord>("we.", InflectionType::NOUN)});
-        auto c = InflectionPathNode({std::make_shared<InflectionWord>("we.", InflectionType::NOUN), std::make_shared<InflectionWord>("wa.", InflectionType::NOUN)});
+        auto a = InflectionPathNode({std::make_shared<InflectionWord>(ieml::testing::parse_script(&sreg, "we."), InflectionType::NOUN)});
+        auto b = InflectionPathNode({std::make_shared<InflectionWord>(ieml::testing::parse_script(&sreg, "we."), InflectionType::NOUN)});
+        auto c = InflectionPathNode({std::make_shared<InflectionWord>(ieml::testing::parse_script(&sreg, "we."), InflectionType::NOUN), std::make_shared<InflectionWord>(ieml::testing::parse_script(&sreg, "wa."), InflectionType::NOUN)});
 
         EXPECT_EQ(a.to_string(), b.to_string());
         EXPECT_EQ(std::hash<PathNode>{}(a), std::hash<PathNode>{}(b));
@@ -262,9 +267,9 @@ TEST(ieml_structure_test_case, path_node_cmp_hash) {
         EXPECT_GE(c, a);
     }
     {
-        auto a = WordPathNode(std::make_shared<CategoryWord>("wa."));
-        auto b = WordPathNode(std::make_shared<CategoryWord>("wa."));
-        auto c = WordPathNode(std::make_shared<CategoryWord>("wo."));
+        auto a = WordPathNode(std::make_shared<CategoryWord>(ieml::testing::parse_script(&sreg, "wa.")));
+        auto b = WordPathNode(std::make_shared<CategoryWord>(ieml::testing::parse_script(&sreg, "wa.")));
+        auto c = WordPathNode(std::make_shared<CategoryWord>(ieml::testing::parse_script(&sreg, "wo.")));
 
         EXPECT_EQ(a.to_string(), b.to_string());
         EXPECT_EQ(std::hash<PathNode>{}(a), std::hash<PathNode>{}(b));
@@ -277,9 +282,9 @@ TEST(ieml_structure_test_case, path_node_cmp_hash) {
         EXPECT_NE(a.to_string(), c.to_string());
         EXPECT_NE(std::hash<PathNode>{}(a), std::hash<PathNode>{}(c));
         EXPECT_NE(a, c);
-        EXPECT_LT(a, c);
-        EXPECT_GT(c, a);
-        EXPECT_LE(a, c);
-        EXPECT_GE(c, a);
+        EXPECT_LT(c, a);
+        EXPECT_GT(a, c);
+        EXPECT_LE(c, a);
+        EXPECT_GE(a, c);
     }
 }
