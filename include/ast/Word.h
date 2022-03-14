@@ -21,7 +21,7 @@ public:
         return "\"" + word_str_ + "\"";
     }
 
-    virtual PartialPathTree::Optional check_category(parser::ParserContextManager& ctx) const {
+    virtual PartialPathTree::Optional check_category(parser::ParserContextManager& ctx) const override {
         const auto& word = check_category_word(ctx);
         if (!word) return {};
 
@@ -29,7 +29,10 @@ public:
     };
 
     virtual std::shared_ptr<structure::PathNode> check_category_word(parser::ParserContextManager& ctx) const {
-        auto word = ctx.getWordRegister().resolve_category_word(word_str_);
+        const auto script = parse_script(ctx);
+        if (!script) return nullptr;
+
+        auto word = ctx.getWordRegister().resolve_category_word(script);
 
         if (!word) {
             ctx.getErrorManager().visitorError(
@@ -39,17 +42,44 @@ public:
             return nullptr;
         }
 
+        if (word->getWordType() != +ieml::structure::WordType::CATEGORY) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(),
+                "Invalid word " + std::string(word->getWordType()._to_string()) + " '" + 
+                word->getScript()->to_string() + "', not a category word."
+            );
+            return {nullptr};
+        }
+
         return std::make_shared<structure::WordPathNode>(word);
     };
 
     virtual std::shared_ptr<structure::CategoryWord> check_word(__attribute__((unused)) parser::ParserContextManager& ctx) const {
-        return std::make_shared<structure::CategoryWord>(word_str_);
+        const auto script = parse_script(ctx);
+        if (!script) return nullptr;
+        return std::make_shared<structure::CategoryWord>(script);
     };
 
     static std::shared_ptr<Word> createFromQuotedString(std::shared_ptr<CharRange>&& char_range, const std::string& s) {
         return std::make_unique<Word>(std::move(char_range), s.substr(1, s.size() - 2));
     }
+
+    structure::Script::Ptr parse_script(parser::ParserContextManager& ctx) const {
+        const auto script = ctx.get_or_parse_script(word_str_);
+
+        if (script == nullptr) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(),
+                "Invalid script literal \"" + word_str_ + "\""
+            );
+            return nullptr;
+        }
+        return script;
+    }
 private:
     const std::string word_str_;
+
+
+
 };
 }

@@ -1,6 +1,6 @@
 @language fr.
 
-@inflection fr:nom VERB "a." .
+@inflection fr:nom class:VERB "a." .
 @word "wa." .
 
 @component fr:test (0 ~nom #"wa.") .

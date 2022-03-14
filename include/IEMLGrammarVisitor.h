@@ -1,13 +1,8 @@
 #pragma once
 
-#include <string>
-#include <map>
-#include <memory>
-#include <regex>
 
 #include "IEMLParserGrammarVisitor.h"
-#include "SyntaxError.h"
-#include "ast/CharRange.h"
+#include "AbstractVisitor.h"
 
 
 namespace ieml::parser {
@@ -16,39 +11,11 @@ using namespace ieml_generated;
 using namespace ieml::AST;
 
 
-class IEMLGrammarVisitor: public IEMLParserGrammarVisitor {
-private:
-  const std::string file_id_;
-  IEMLParserErrorListener* error_listener_;
-
-  std::shared_ptr<CharRange> charRangeFromToken(antlr4::Token* token) const ;
-  std::shared_ptr<CharRange> charRangeFromContext(antlr4::ParserRuleContext* ctx) const ;
-
+class IEMLGrammarVisitor: public IEMLParserGrammarVisitor, public AbstractVisitor {  
 public:
-  template<class T>
-  class VisitorResult {
-  public:
-    VisitorResult(): is_error_(true) {}
-    VisitorResult(std::shared_ptr<T>&& value): is_error_(false), value_(std::move(value)) {}
-
-    VisitorResult(const VisitorResult& vr) = delete;
-    VisitorResult(VisitorResult&& vr) noexcept : is_error_(vr.is_error_), value_(std::move(vr.value_)) {};
-    VisitorResult& operator= (const VisitorResult&) = delete;
-    VisitorResult& operator= (VisitorResult&&) = default;
-
-    bool isError() {return is_error_;};
-
-    std::shared_ptr<T>&& release() { return std::move(value_); }
-
-    const T& value() {return *value_;}
-
-  private:
-    bool is_error_;
-    std::shared_ptr<T> value_;
-  };
-
-  IEMLGrammarVisitor(const std::string& file_id, IEMLParserErrorListener* error_listener) 
-      : IEMLParserGrammarVisitor(), file_id_(file_id), error_listener_(error_listener) {}
+  IEMLGrammarVisitor(const std::string& file_id, IEMLParserErrorListener* error_listener) : 
+      IEMLParserGrammarVisitor(), 
+      AbstractVisitor(file_id, error_listener) {}
 
   /**
    * PROGRAM

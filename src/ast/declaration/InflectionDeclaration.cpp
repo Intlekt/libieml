@@ -23,7 +23,7 @@ void InflectionDeclaration::check_declaration(ieml::parser::ParserContextManager
 
     auto word = word_->check_word(ctx);
 
-    if (!name | !word | !inflection_type) {
+    if (!name || !word || !inflection_type) {
         return;
     }
     

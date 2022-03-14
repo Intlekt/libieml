@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <exception>
+#include <string>
 
 
 
@@ -14,6 +15,8 @@ class PathTree;
 
 class Element {
 public:
+    virtual ~Element() = default;
+
     virtual ElementType getElementType() const = 0;
 
     virtual std::string to_string() const = 0;

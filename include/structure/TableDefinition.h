@@ -1,17 +1,21 @@
 #pragma once
 
 
+// Table definition represents a specific mapping between a subset of a paradigm singular sequences and other paradigms.
+// A table definition is used to represent a hierarchical relation between table cells and table.
+
 #include "structure/path/PathTree.h"
 
 
+
 namespace ieml::structure {
-class Table {
+class TableDefinition {
 public:
     typedef std::unordered_map<PathTree::Ptr, PathTree::Ptr> InvariantMapping;
 
-    typedef std::shared_ptr<Table> Ptr;
+    typedef std::shared_ptr<TableDefinition> Ptr;
 
-    Table(PathTree::Ptr root,
+    TableDefinition(PathTree::Ptr root,
           InvariantMapping invariant_mapping) : 
         root_(root),
         invariant_mapping_(invariant_mapping) {}

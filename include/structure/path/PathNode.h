@@ -63,7 +63,7 @@ public:
     virtual std::string to_string() const override;
 
 private:
-    virtual int comp(__attribute__((unused)) const PathNode& a) const {return 0;};
+    virtual int comp(__attribute__((unused)) const PathNode& a) const override {return 0;};
 };
 
 class ParadigmPathNode : public PathNode {
@@ -73,7 +73,7 @@ public:
     virtual std::string to_string() const override;
 
 private:
-    virtual int comp(__attribute__((unused)) const PathNode& a) const {return 0;};
+    virtual int comp(__attribute__((unused)) const PathNode& a) const override {return 0;};
 };
 
 class ParadigmIndexPathNode : public PathNode {
@@ -86,7 +86,7 @@ public:
     virtual size_t getIndex() const override {return index_;};
 
 private:
-    virtual int comp(const PathNode& a) const {
+    virtual int comp(const PathNode& a) const override {
         if (getIndex() == a.getIndex()) return  0;
         if (getIndex() <  a.getIndex()) return -1;
         else                            return  1;
@@ -106,7 +106,7 @@ public:
 
     virtual RoleType getRoleType() const override {return role_type_;};
 private:
-    virtual int comp(const PathNode& a) const {
+    virtual int comp(const PathNode& a) const override {
         if (getRoleType() == a.getRoleType()) return  0;
         if (getRoleType() <  a.getRoleType()) return -1;
         else                            return  1;
@@ -125,7 +125,7 @@ public:
     virtual const std::set<std::shared_ptr<Word>> getWords() const override {return {junction_type_};};
 
 private:
-    virtual int comp(const PathNode& a) const {
+    virtual int comp(const PathNode& a) const override {
         if (*getJunctionType() == *a.getJunctionType()) return  0;
         if (*getJunctionType() <  *a.getJunctionType()) return -1;
         else                                            return  1;
@@ -216,7 +216,7 @@ public:
 
     virtual std::shared_ptr<AuxiliaryWord> getAuxialiryType() const override {return auxiliary_type_;};
 private:
-    virtual int comp(const PathNode& a) const {
+    virtual int comp(const PathNode& a) const override {
         if (*getAuxialiryType() == *a.getAuxialiryType()) return  0;
         if (*getAuxialiryType() <  *a.getAuxialiryType()) return -1;
         else                                        return  1;
@@ -239,7 +239,7 @@ public:
     virtual const std::set<std::shared_ptr<InflectionWord>>& getInflections() const override {return inflections_;}; 
 
 private:
-    virtual int comp(const PathNode& a) const {
+    virtual int comp(const PathNode& a) const override {
         if (getInflections().size() != a.getInflections().size()) return (getInflections().size() < a.getInflections().size() ? -1 : 1);
 
         auto it_a = a.getInflections().begin();
@@ -272,7 +272,7 @@ public:
 
     virtual const std::shared_ptr<CategoryWord> getCategoryWord() const override {return word_;};
 private:
-    virtual int comp(const PathNode& a) const {
+    virtual int comp(const PathNode& a) const override {
         if (*getCategoryWord() == *a.getCategoryWord()) return  0;
         if (*getCategoryWord() <  *a.getCategoryWord()) return -1;
         else                                            return  1;

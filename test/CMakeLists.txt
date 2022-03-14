@@ -1,10 +1,12 @@
 set(TEST_IEML_GRAMMAR_FILES_FOLDER ${CMAKE_SOURCE_DIR}/assets/ieml_files)
+set(TEST_IEML_ALL_SCRIPTS_FILE ${CMAKE_SOURCE_DIR}/assets/dictionary_scripts.txt)
 set(TEST_IEML_GRAMMAR_EXAMPLES_FOLDER ${CMAKE_SOURCE_DIR}/assets/examples)
 set(TEST_IEML_ERRONEOUS_FILES_FOLDER ${CMAKE_SOURCE_DIR}/assets/erroneous_files)
 
 configure_file(TestConfig.h.in TestConfig.h)
 
-add_executable(libieml_test grammar/test_parser.cpp
+add_executable(libieml_test utils_testing.cpp
+                            grammar/test_parser.cpp
                             grammar/test_declaration.cpp
                             grammar/test_json_serialization.cpp
                             grammar/test_syntax_error.cpp
@@ -13,6 +15,8 @@ add_executable(libieml_test grammar/test_parser.cpp
                             structure/test_path_node.cpp
                             structure/test_namespace.cpp
                             structure/test_word.cpp
+                            structure/test_script.cpp
+                            structure/test_table.cpp
                             relation/test_composition.cpp
                             relation/test_inclusion.cpp
                             relation/test_graph.cpp)

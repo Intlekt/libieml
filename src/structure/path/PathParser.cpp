@@ -24,13 +24,14 @@ std::shared_ptr<ieml::structure::PathTree> ieml::parser::parsePath(parser::Parse
 
     auto parse_tree = parser.path();
 
-    IEMLGrammarVisitor visitor("a", &error_listener);
+    IEMLGrammarVisitor visitor("path", &error_listener);
 
     auto ast_t = visitor.visit(parse_tree);
     if (ast_t.isNull())
         return nullptr;
 
-    const auto& ast = ast_t.as<IEMLGrammarVisitor::VisitorResult<ieml::AST::Path>>().release();
-    if (ast == nullptr) return nullptr;
+    const auto& ast = ast_t.as<IEMLGrammarVisitor::VisitorResult<std::shared_ptr<ieml::AST::Path>>>().release();
+    if (ast == nullptr)
+        return nullptr;
     return ast->check_path(ctx);
 }

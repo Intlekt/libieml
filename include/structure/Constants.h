@@ -1,6 +1,7 @@
 #pragma once
 
 #include <enum.h>
+#include <functional>
 
 
 namespace ieml::structure {

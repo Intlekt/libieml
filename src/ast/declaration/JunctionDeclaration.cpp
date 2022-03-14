@@ -12,7 +12,7 @@ void JunctionDeclaration::check_declaration(ieml::parser::ParserContextManager& 
     auto name = check_translatable(ctx);
     auto word = word_->check_word(ctx);
 
-    if (!name | !word) {
+    if (!name || !word) {
         return;
     }
     

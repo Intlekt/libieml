@@ -1,9 +1,9 @@
 @language fr.
 
 @word "wa." .
-@inflection fr:nom VERB "a." .
-@inflection fr:futur VERB "c." .
-@auxiliary fr:sur 5 "b." .
+@inflection fr:nom class:VERB "a." .
+@inflection fr:futur class:VERB "c." .
+@auxiliary fr:sur role:5 "b.".
 
 @component 
     fr:le chien mange du paté sur le tapis 

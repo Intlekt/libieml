@@ -9,24 +9,27 @@
 
 #include "structure/Element.h"
 
+#include "structure/script/Script.h"
+
+
 namespace ieml::structure {
 class Word : public Element {
 public:
-    Word(const std::string& s): script_(s) {}
+    Word(const Script* s): script_(s) {}
 
     typedef std::shared_ptr<Word> Ptr;
 
     virtual ElementType getElementType() const {return ElementType::WORD;};
 
-    virtual std::string to_string() const { return "\"" + script_ + "\""; };
+    virtual std::string to_string() const { return "\"" + script_->to_string() + "\""; };
 
-    std::string getScript() const {return script_;};
+    const Script* getScript() const {return script_;};
 
     virtual WordType getWordType() const = 0;
 
     virtual size_t hash() const {
         auto hasher = std::hash<std::string>();
-        return hasher(script_);
+        return hasher(script_->to_string());
     };
 
 
@@ -36,7 +39,7 @@ protected:
 
         if (getWordType() == o.getWordType()) {
             if (script_ == o.script_)               return 0;
-            else if (script_ < o.script_)           return -1;
+            else if (*script_ < *o.script_)         return -1;
             else                                    return 1; 
         } else if (getWordType() < o.getWordType()) return -1;
         else                                        return 1;
@@ -44,20 +47,20 @@ protected:
 
 
 private:
-    const std::string script_;
+    const Script* script_;
 
     
 };
 
 class CategoryWord: public Word {
 public:
-    CategoryWord(const std::string& s): Word(s) {}
+    CategoryWord(const Script* s): Word(s) {}
     virtual WordType getWordType() const {return WordType::CATEGORY;};
 };
 
 class AuxiliaryWord: public Word {
 public:
-    AuxiliaryWord(const std::string& s, RoleType accepted_role) : 
+    AuxiliaryWord(const Script* s, RoleType accepted_role) : 
         Word(s), accepted_role_(accepted_role) {}
 
     bool accept_role(RoleType role_type) const {
@@ -73,7 +76,7 @@ private:
 
 class InflectionWord: public Word {
 public:
-    InflectionWord(const std::string& s, InflectionType type) : 
+    InflectionWord(const Script* s, InflectionType type) : 
         Word(s), type_(type) {}
 
     /**
@@ -90,7 +93,7 @@ private:
 
 class JunctionWord: public Word {
 public:
-    JunctionWord(const std::string& s) : 
+    JunctionWord(const Script* s) : 
         Word(s) {}
 
     virtual WordType getWordType() const {return WordType::JUNCTION;};
@@ -102,28 +105,28 @@ namespace std {
 template<>
 struct hash<ieml::structure::CategoryWord> {
     size_t operator()(const ieml::structure::CategoryWord& s) const noexcept {
-        return hash<std::string>{}(s.getScript());
+        return hash<std::string>{}(s.getScript()->to_string());
     }
 };
 
 template<>
 struct hash<ieml::structure::AuxiliaryWord> {
     size_t operator()(const ieml::structure::AuxiliaryWord& s) const noexcept {
-        return hash<std::string>{}(s.getScript());
+        return hash<std::string>{}(s.getScript()->to_string());
     }
 };
 
 template<>
 struct hash<ieml::structure::InflectionWord> {
     size_t operator()(const ieml::structure::InflectionWord& s) const noexcept {
-        return hash<std::string>{}(s.getScript());
+        return hash<std::string>{}(s.getScript()->to_string());
     }
 };
 
 template<>
 struct hash<ieml::structure::JunctionWord> {
     size_t operator()(const ieml::structure::JunctionWord& s) const noexcept {
-        return hash<std::string>{}(s.getScript());
+        return hash<std::string>{}(s.getScript()->to_string());
     }
 };
 }

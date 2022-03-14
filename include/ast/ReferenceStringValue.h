@@ -1,6 +1,8 @@
 #pragma once
 
 #include <memory>
+#include <regex>
+
 
 #include "ast/interfaces/AST.h"
 #include "ast/interfaces/IReferenceValue.h"

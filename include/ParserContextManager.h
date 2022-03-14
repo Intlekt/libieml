@@ -11,8 +11,10 @@
 #include "structure/CategoryRegister.h"
 #include "structure/ParadigmRegister.h"
 #include "structure/ReferenceSchemaRegister.h"
+#include "structure/script/ScriptRegister.h"
 #include "SyntaxError.h"
 #include "SourceMapping.h"
+#include "ScriptParser.h"
 
 #include "utils.h"
 
@@ -22,16 +24,20 @@ namespace ieml::parser {
 class ParserContextManager {
 public:
     ParserContextManager(ieml::parser::IEMLParserErrorListener* error_manager) : 
-        error_manager_(error_manager) {}
+        error_manager_(error_manager), 
+        script_parser_("", error_manager) {}
 
     ieml::parser::IEMLParserErrorListener& getErrorManager() const {return *error_manager_;};
+
     structure::PathTree::Register& getPathTreeRegister() {return path_tree_register_;};
     structure::CategoryRegister& getCategoryRegister() {return category_register_;};
     structure::WordRegister& getWordRegister() {return word_register_;};
     structure::ParadigmRegister& getParadigmRegister() {return paradigm_register_;};
+
     structure::ReferenceSchemaRegister& getReferenceSchemaRegister() {return reference_schema_register_;};
     parser::SourceMapping& getSourceMapping() {return source_mapping_;};
 
+    structure::ScriptRegister& getScriptRegister() {return script_register_;};
 
     structure::LanguageType getLanguage() const {
         if (default_language_ == nullptr)
@@ -52,6 +58,10 @@ public:
         return true;
     };
 
+    structure::Script::Ptr get_or_parse_script(const std::string& s) {
+        return script_parser_.parse(&script_register_, s, "", 0, 0); 
+    };
+
 private:
     std::shared_ptr<structure::LanguageType> default_language_;
 
@@ -62,8 +72,13 @@ private:
 
     parser::IEMLParserErrorListener* error_manager_;
 
+
     structure::PathTree::Register path_tree_register_;
 
+    structure::ScriptRegister script_register_;
+
     parser::SourceMapping source_mapping_;
+
+    ScriptParser script_parser_;
 };
 }

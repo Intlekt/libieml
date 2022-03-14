@@ -22,14 +22,13 @@ namespace parser {
 
 class IEMLParser {
 public:
-
     class FileParser {
     public:
         FileParser(const std::string& file_id, const std::string& input_str, IEMLParserErrorListener* error_manager);
         ~FileParser();
 
         void parse();
-        std::shared_ptr<Program> getProgram() {return ast_;};
+        std::shared_ptr<ieml::AST::Program> getProgram() {return ast_;};
 
         FileParser(const FileParser&) = delete;
     private:
@@ -40,7 +39,7 @@ public:
 
         std::shared_ptr<IEMLGrammarVisitor> visitor_;
         antlr4::tree::ParseTree* parseTree_ = nullptr;
-        std::shared_ptr<Program> ast_;
+        std::shared_ptr<ieml::AST::Program> ast_;
     };
 
 

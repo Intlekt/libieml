@@ -13,6 +13,7 @@
 #include "SourceMapping.h"
 
 #include "relation/RelationGraph.h"
+#include "structure/script/ScriptRegister.h"
 
 namespace ieml::parser {
 
@@ -33,8 +34,9 @@ nlohmann::json categoryToJson(std::shared_ptr<ieml::structure::PathTree>,
 nlohmann::json parserToJson(const IEMLParser& parser);
 
 nlohmann::json serializeTable(ieml::parser::ParserContextManager& ctx,
-                              const ieml::structure::Table::Ptr& table);
+                              const ieml::structure::TableDefinition::Ptr& table);
 
+// Graph
 nlohmann::json serializeNode(const structure::CategoryRegister&, 
                              const structure::WordRegister&,
                              const SourceMapping&,
@@ -44,5 +46,14 @@ nlohmann::json binaryGraphToJson(ieml::relation::RelationGraph&,
                                  const structure::CategoryRegister&,
                                  const structure::WordRegister&,
                                  const SourceMapping&);
+
+// Scripts
+nlohmann::json scriptToJson(const ieml::structure::Script*, 
+                            const ieml::structure::ScriptRegister&);
+
+nlohmann::json scriptTableToJson(const ieml::structure::Script::TablePtr, 
+                                 const ieml::structure::ScriptRegister&);
+
+
 
 }

@@ -102,7 +102,7 @@ TEST(ieml_grammar_test_case, unique_id_pathtree) {
     std::string h0, h1;
     std::shared_ptr<ieml::structure::PathTree> p0, p1;
     {
-        ieml::parser::IEMLParser parser(R"(@word "a.". @inflection en:noun VERB "E:A:.". @node en:valid node (0 ~noun #"a.").)");                                         
+        ieml::parser::IEMLParser parser(R"(@word "a.". @inflection en:noun class:VERB "E:A:.". @node en:valid node (0 ~noun #"a.").)");                                         
         try {                                                           
         parser.parse();                                              
         } catch (std::exception& e) {                                  
@@ -112,7 +112,7 @@ TEST(ieml_grammar_test_case, unique_id_pathtree) {
         h0 = p0->uid();
     }
     {
-        ieml::parser::IEMLParser parser(R"(@word "a.". @inflection en:noun VERB "E:A:.". @node en:valid node (0 ~noun #"a.").)");                                         
+        ieml::parser::IEMLParser parser(R"(@word "a.". @inflection en:noun class:VERB "E:A:.". @node en:valid node (0 ~noun #"a.").)");                                         
         try {                                                           
         parser.parse();                                              
         } catch (std::exception& e) {                                  
@@ -122,7 +122,6 @@ TEST(ieml_grammar_test_case, unique_id_pathtree) {
         h1 = p1->uid();
     }
 
-    EXPECT_EQ(*p0, *p1);
     EXPECT_EQ(h0, h1);
 }
 
@@ -130,7 +129,7 @@ TEST(ieml_grammar_test_case, unique_id_word) {
     std::string h0, h1;
     std::shared_ptr<ieml::structure::Word> p0, p1;
     {
-        ieml::parser::IEMLParser parser(R"(@inflection en:noun VERB "E:A:.".)");                                         
+        ieml::parser::IEMLParser parser(R"(@inflection en:noun class:VERB "E:A:.".)");                                         
         try {                                                           
         parser.parse();                                              
         } catch (std::exception& e) {                                  
@@ -140,7 +139,7 @@ TEST(ieml_grammar_test_case, unique_id_word) {
         h0 = p0->uid();
     }
     {
-        ieml::parser::IEMLParser parser(R"(@inflection en:noun VERB "E:A:.".)");                                         
+        ieml::parser::IEMLParser parser(R"(@inflection en:noun class:VERB "E:A:.".)");                                         
         try {                                                           
         parser.parse();                                              
         } catch (std::exception& e) {                                  
@@ -150,6 +149,5 @@ TEST(ieml_grammar_test_case, unique_id_word) {
         h1 = p1->uid();
     }
 
-    EXPECT_EQ(*p0, *p1);
     EXPECT_EQ(h0, h1);
 }

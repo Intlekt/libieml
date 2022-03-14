@@ -1,71 +1,54 @@
 // E:O:O:.
-@inflection 
-	fr:construction interrogative
+@inflection fr:construction interrogative
 	en:interrogative construction
-	VERB
-	"E:U:U:.".
+     class:VERB "E:U:U:." .
 
-@inflection 
-	fr:construction négative
+@inflection fr:construction négative
 	fr:non
 	en:negative construction
 	en:no
-	VERB
-	"E:U:A:.".
+     class:VERB "E:U:A:." .
 
-@inflection 
-	fr:construction entre guillemets
+@inflection fr:construction entre guillemets
 	fr:citation
 	en:construction between quotation marks
 	en:quotation
-	VERB
-	"E:A:U:.".
+     class:VERB "E:A:U:." .
 
-@inflection 
-	fr:construction affirmative
+@inflection fr:construction affirmative
 	fr:oui
 	en:affirmative construction
 	en:yes
-	VERB
-	"E:A:A:.".
+     class:VERB "E:A:A:." .
 
 
 
 // E:M:O:.
-@inflection 
-	fr:possibilité
+@inflection fr:possibilité
 	fr:possiblement
 	en:possibility
 	en:possibly
-	VERB
-	"E:S:U:.".
+     class:VERB "E:S:U:." .
 
-@inflection 
-	fr:condition
+@inflection fr:condition
 	fr:si
 	fr:conditionnellement
 	en:condition
 	en:if
 	en:conditionally
-	VERB
-	"E:S:A:.".
+     class:VERB "E:S:A:." .
 
-@inflection 
-	fr:par probabilité
+@inflection fr:par probabilité
 	fr:probablement
 	en:by probability
 	en:probably
-	VERB
-	"E:B:U:.".
+     class:VERB "E:B:U:." .
 
-@inflection 
-	fr:par autorité
+@inflection fr:par autorité
 	en:by authority
-	VERB
-	"E:B:A:.".
+     class:VERB "E:B:A:." .
 
-@inflection 
-	fr:par nécessité logique
+@inflection fr:par nécessité logique
 	fr:par déduction
 	fr:alors
 	fr:donc
@@ -75,11 +58,9 @@
 	en:then
 	en:therefore
 	en:necessarily
-	VERB
-	"E:T:U:.".
+     class:VERB "E:T:U:." .
 
-@inflection 
-	fr:par expérience
+@inflection fr:par expérience
 	fr:à partir des faits
 	fr:par induction
 	fr:donc
@@ -87,32 +68,26 @@
 	en:from the facts
 	en:from induction
 	en:therefore
-	VERB
-	"E:T:A:.".
+     class:VERB "E:T:A:." .
 
 
 
 // E:.O:O:.-
-@inflection 
-	fr:singulier
+@inflection fr:singulier
 	fr:un seul
 	en:singular
 	en:one single
-	NOUN
-	"E:.wo.-".
+     class:NOUN "E:.wo.-" .
 
-@inflection 
-	fr:deux
+@inflection fr:deux
 	fr:paire
 	fr:couple
 	en:two
 	en:both
 	en:couple
-	NOUN
-	"E:.wa.-".
+     class:NOUN "E:.wa.-" .
 
-@inflection 
-	fr:trois
+@inflection fr:trois
 	fr:trio
 	fr:triplet
 	fr:quelques
@@ -120,143 +95,112 @@
 	en:trio
 	en:triple
 	en:some
-	NOUN
-	"E:.wu.-".
+     class:NOUN "E:.wu.-" .
 
-@inflection 
-	fr:pluriel
+@inflection fr:pluriel
 	fr:plusieurs
 	en:plural
 	en:many
-	NOUN
-	"E:.we.-".
+     class:NOUN "E:.we.-" .
 
 
 
 // E:.b.O:O:.-
-@inflection 
-	fr:être
+@inflection fr:être
 	fr:devenir
 	en:be
 	en:become
-	VERB
-	"E:.b.wo.-".
+     class:VERB "E:.b.wo.-" .
 
 // SKIPPED TRANSLATIONS 'fr' ['causatif (valence + 1)']
 // SKIPPED TRANSLATIONS 'en' ['causative (valence + 1)']
-@inflection 
-	fr:rendre
+@inflection fr:rendre
 	fr:faire être
 	fr:faire devenir
 	en:make become
-	VERB
-	"E:.b.wa.-".
+     class:VERB "E:.b.wa.-" .
 
 // SKIPPED TRANSLATIONS 'fr' ['(se) sentir']
 // NO 'fr' TRANSLATIONS !
-@inflection 
-	en:feel
-	VERB
-	"E:.b.wu.-".
+@inflection en:feel
+     class:VERB "E:.b.wu.-" .
 
-@inflection 
-	fr:paraître
+@inflection fr:paraître
 	fr:apparaître
 	fr:émerger comme
 	en:appear
 	en:emerge as
-	VERB
-	"E:.b.we.-".
+     class:VERB "E:.b.we.-" .
 
 
 
 // E:O:.O:.-
-@inflection 
-	fr:adverbe
+@inflection fr:adverbe
 	en:adverb
-	VERB
-	"E:U:.U:.-".
+     class:VERB "E:U:.U:.-" .
 
-@inflection 
-	fr:verbe
+@inflection fr:verbe
 	en:verb
-	VERB
-	"E:U:.A:.-".
+     class:VERB "E:U:.A:.-" .
 
-@inflection 
-	fr:adjectif
+@inflection fr:adjectif
 	en:adjective
-	VERB
-	"E:A:.U:.-".
+     class:VERB "E:A:.U:.-" .
 
-@inflection 
-	fr:nom
+@inflection fr:nom
 	en:noun
-	VERB
-	"E:A:.A:.-".
+     class:VERB "E:A:.A:.-" .
 
 
 
 // E:.A:.O:M:.-
-@auxiliary 
-	fr:de
+@auxiliary fr:de
 	fr:possessif -pour idées
 	fr:connaissances
 	fr:compétences-
 	en:of
 	en:possessive -for ideas
 	en:knowledge or skills-
-	8
-	"E:.A:.y.-".
+     role:8 "E:.A:.y.-" .
 
-@auxiliary 
-	fr:de
+@auxiliary fr:de
 	fr:possessif -pour un caractère abstrait ou une propriété morale-
 	en:of
 	en:possessive -for an abstract feature or a moral property-
-	8
-	"E:.A:.o.-".
+     role:8 "E:.A:.o.-" .
 
-@auxiliary 
-	fr:de
+@auxiliary fr:de
 	fr:possessif -pour les propriétés concrètes ou la partie d'un corps ou d'une chose
 	fr:pour le nom-
 	en:of
 	en:possessive -for the concrete property or part of a thing or body
 	en:for the name-
-	8
-	"E:.A:.e.-".
+ role:8 "E:.A:.e.-" .
 
 // SKIPPED TRANSLATIONS 'fr' ['décision...)']
 // SKIPPED TRANSLATIONS 'en' ['decision...)']
-@auxiliary 
-	fr:de
+@auxiliary fr:de
 	fr:possessif -pour l'attribution d'un message
 	fr:discours
 	en:of
 	en:possessive -for the attribution of a message
 	en:discourse
-	8
-	"E:.A:.u.-".
+     role:8 "E:.A:.u.-" .
 
 // SKIPPED TRANSLATIONS 'fr' ['clients...)']
 // SKIPPED TRANSLATIONS 'en' ['customers...)']
-@auxiliary 
-	fr:de
+@auxiliary fr:de
 	fr:possessif pour les relations humaines -amis
 	fr:famille
 	en:of possessive for human relations -friends
 	en:family
-	8
-	"E:.A:.a.-".
+     role:8 "E:.A:.a.-" .
 
-@auxiliary 
-	fr:de
+@auxiliary fr:de
 	fr:possessif -pour propriété de biens ou avantages matériels-
 	en:of
 	en:possessive -for the property of economic goods or material advantage-
-	8
-	"E:.A:.i.-".
+     role:8 "E:.A:.i.-" .
 
 
 
@@ -266,61 +210,49 @@
 // SKIPPED TRANSLATIONS 'en' ['know (+verb)']
 // NO 'en' TRANSLATIONS !
 @inflection 
-	VERB
-	"E:.b.y.-".
+     class:VERB "E:.b.y.-" .
 
 // SKIPPED TRANSLATIONS 'fr' ['vouloir (+verbe)']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['want (+verb)']
 // NO 'en' TRANSLATIONS !
 @inflection 
-	VERB
-	"E:.b.o.-".
+     class:VERB "E:.b.o.-" .
 
 // SKIPPED TRANSLATIONS 'fr' ['pouvoir (+verbe)']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['may (+verb)']
-@inflection 
-	en:can
-	VERB
-	"E:.b.e.-".
+@inflection en:can
+     class:VERB "E:.b.e.-" .
 
 // SKIPPED TRANSLATIONS 'fr' ['annoncer (+verbe)']
 // SKIPPED TRANSLATIONS 'en' ['inform (+verb)']
-@inflection 
-	fr:faire savoir
+@inflection fr:faire savoir
 	en:announce
-	VERB
-	"E:.b.u.-".
+     class:VERB "E:.b.u.-" .
 
 // SKIPPED TRANSLATIONS 'fr' ["s'engager à (+verbe)"]
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['commit oneself to (+verb)']
 // NO 'en' TRANSLATIONS !
 @inflection 
-	VERB
-	"E:.b.a.-".
+     class:VERB "E:.b.a.-" .
 
 // SKIPPED TRANSLATIONS 'fr' ['laisser (+verbe)']
 // SKIPPED TRANSLATIONS 'en' ['make (+verb)']
-@inflection 
-	fr:faire
+@inflection fr:faire
 	fr:causatif
 	en:causative
-	VERB
-	"E:.b.i.-".
+     class:VERB "E:.b.i.-" .
 
 
 
 // E:.O:.M:O:.-
-@auxiliary 
-	fr:contraire
+@auxiliary fr:contraire
 	en:contrary
-	8
-	"E:.U:.j.-".
+     role:8 "E:.U:.j.-" .
 
-@auxiliary 
-	fr:autre
+@auxiliary fr:autre
 	fr:autrement
 	fr:différemment
 	fr:par rapport à
@@ -330,11 +262,9 @@
 	en:in a different way
 	en:in relation to
 	en:in comparison with
-	8
-	"E:.U:.g.-".
+     role:8 "E:.U:.g.-" .
 
-@auxiliary 
-	fr:tropisme négatif
+@auxiliary fr:tropisme négatif
 	fr:en évitant
 	fr:en tournant le dos à
 	fr:au détriment de
@@ -342,58 +272,46 @@
 	en:avoiding
 	en:turning one's back on
 	en:at the expense of
-	8
-	"E:.U:.h.-".
+     role:8 "E:.U:.h.-" .
 
-@auxiliary 
-	fr:anti
+@auxiliary fr:anti
 	fr:contre
 	fr:opposition
 	en:anti
 	en:against
 	en:opposition
-	8
-	"E:.U:.c.-".
+     role:8 "E:.U:.c.-" .
 
-@auxiliary 
-	fr:restriction
+@auxiliary fr:restriction
 	fr:bien que
 	fr:malgré
 	fr:pourtant
 	en:restriction
 	en:although
 	en:despite
-	8
-	"E:.U:.p.-".
+     role:8 "E:.U:.p.-" .
 
-@auxiliary 
-	fr:sans
+@auxiliary fr:sans
 	en:without
-	8
-	"E:.U:.x.-".
+     role:8 "E:.U:.x.-" .
 
-@auxiliary 
-	fr:par analogie
+@auxiliary fr:par analogie
 	fr:d'une manière semblable
 	fr:comme
 	en:by analogy
 	en:in a similar way
 	en:as
-	8
-	"E:.A:.j.-".
+     role:8 "E:.A:.j.-" .
 
-@auxiliary 
-	fr:même
+@auxiliary fr:même
 	fr:de la même manière
 	fr:identiquement
 	en:same
 	en:in the same way
 	en:identically
-	8
-	"E:.A:.g.-".
+     role:8 "E:.A:.g.-" .
 
-@auxiliary 
-	fr:tropisme positif
+@auxiliary fr:tropisme positif
 	fr:en cherchant
 	fr:vers
 	fr:motivé par
@@ -403,180 +321,131 @@
 	en:heading towards
 	en:driven or motivated by
 	en:for the benefit of
-	8
-	"E:.A:.h.-".
+     role:8 "E:.A:.h.-" .
 
-@auxiliary 
-	fr:pro
+@auxiliary fr:pro
 	fr:pour
 	fr:adhésion
 	en:pro
 	en:for
 	en:support
-	8
-	"E:.A:.c.-".
+     role:8 "E:.A:.c.-" .
 
-@auxiliary 
-	fr:redoublement
+@auxiliary fr:redoublement
 	fr:encore
 	en:doubling down
 	en:again
-	8
-	"E:.A:.p.-".
+     role:8 "E:.A:.p.-" .
 
-@auxiliary 
-	fr:avec
+@auxiliary fr:avec
 	en:with
-	8
-	"E:.A:.x.-".
+     role:8 "E:.A:.x.-" .
 
 
 
 // E:M:.d.+M:O:.-
-@auxiliary 
-	fr:ensemble
+@auxiliary fr:ensemble
 	en:set
-	4
-	"E:S:.j.-".
+     role:4 "E:S:.j.-" .
 
-@auxiliary 
-	fr:élément
+@auxiliary fr:élément
 	en:element
-	4
-	"E:S:.g.-".
+     role:4 "E:S:.g.-" .
 
-@auxiliary 
-	fr:variable
+@auxiliary fr:variable
 	en:variable
-	4
-	"E:S:.h.-".
+     role:4 "E:S:.h.-" .
 
-@auxiliary 
-	fr:opérateur
+@auxiliary fr:opérateur
 	en:operator
-	4
-	"E:S:.c.-".
+     role:4 "E:S:.c.-" .
 
-@auxiliary 
-	fr:tout
+@auxiliary fr:tout
 	en:whole
-	4
-	"E:S:.p.-".
+     role:4 "E:S:.p.-" .
 
-@auxiliary 
-	fr:partie
+@auxiliary fr:partie
 	en:part
-	4
-	"E:S:.x.-".
+     role:4 "E:S:.x.-" .
 
-@auxiliary 
-	fr:espèce
+@auxiliary fr:espèce
 	en:species
-	4
-	"E:S:.d.-".
+     role:4 "E:S:.d.-" .
 
-@auxiliary 
-	fr:mutation
+@auxiliary fr:mutation
 	en:mutation
-	4
-	"E:B:.j.-".
+     role:4 "E:B:.j.-" .
 
-@auxiliary 
-	fr:sélection
+@auxiliary fr:sélection
 	en:selection
-	4
-	"E:B:.g.-".
+     role:4 "E:B:.g.-" .
 
-@auxiliary 
-	fr:opérande
+@auxiliary fr:opérande
 	en:operand
-	4
-	"E:B:.h.-".
+     role:4 "E:B:.h.-" .
 
-@auxiliary 
-	fr:opération
+@auxiliary fr:opération
 	en:operation
-	4
-	"E:B:.c.-".
+     role:4 "E:B:.c.-" .
 
-@auxiliary 
-	fr:patient
+@auxiliary fr:patient
 	fr:actant passif
 	en:patient
 	en:passive actant
-	4
-	"E:B:.p.-".
+     role:4 "E:B:.p.-" .
 
-@auxiliary 
-	fr:agent
+@auxiliary fr:agent
 	fr:cause efficiente
 	en:agent
 	en:efficient cause
-	4
-	"E:B:.x.-".
+     role:4 "E:B:.x.-" .
 
-@auxiliary 
-	fr:différence spécifique
+@auxiliary fr:différence spécifique
 	en:specific difference
-	4
-	"E:B:.d.-".
+     role:4 "E:B:.d.-" .
 
-@auxiliary 
-	fr:structure
+@auxiliary fr:structure
 	fr:cause formelle
 	en:structure
 	en:formal cause
-	4
-	"E:T:.j.-".
+     role:4 "E:T:.j.-" .
 
-@auxiliary 
-	fr:matière
+@auxiliary fr:matière
 	fr:cause matérielle
 	en:matter
 	en:material cause
-	4
-	"E:T:.g.-".
+     role:4 "E:T:.g.-" .
 
-@auxiliary 
-	fr:cause
+@auxiliary fr:cause
 	fr:condition
 	en:cause
 	en:condition
-	4
-	"E:T:.h.-".
+     role:4 "E:T:.h.-" .
 
-@auxiliary 
-	fr:effet
+@auxiliary fr:effet
 	fr:conséquence
 	fr:résultat
 	en:effect
 	en:consequence
 	en:result
-	4
-	"E:T:.c.-".
+     role:4 "E:T:.c.-" .
 
-@auxiliary 
-	fr:moyen
+@auxiliary fr:moyen
 	fr:par
 	en:mean
 	en:by
 	en:through
-	4
-	"E:T:.p.-".
+     role:4 "E:T:.p.-" .
 
-@auxiliary 
-	fr:instrument
+@auxiliary fr:instrument
 	en:instrument
-	4
-	"E:T:.x.-".
+     role:4 "E:T:.x.-" .
 
-@auxiliary 
-	fr:genre
+@auxiliary fr:genre
 	fr:type
 	en:genus
 	en:type
-	4
-	"E:T:.d.-".
+     role:4 "E:T:.d.-" .
 
 
 
@@ -603,54 +472,43 @@
 // E:M:.-d.u.-'
 // SKIPPED TRANSLATIONS 'fr' ['des\xa0: indéfini']
 // SKIPPED TRANSLATIONS 'en' ['an: undefined']
-@inflection 
-	fr:un
+@inflection fr:un
 	fr:une
 	en:a
-	NOUN
-	"E:S:.-d.u.-'".
+     class:NOUN "E:S:.-d.u.-'" .
 
 // SKIPPED TRANSLATIONS 'fr' ['les: défini']
 // SKIPPED TRANSLATIONS 'en' ['the: defined']
 // NO 'en' TRANSLATIONS !
-@inflection 
-	fr:le
+@inflection fr:le
 	fr:la
-	NOUN
-	"E:B:.-d.u.-'".
+     class:NOUN "E:B:.-d.u.-'" .
 
 // SKIPPED TRANSLATIONS 'fr' ['cela: démonstratif']
 // SKIPPED TRANSLATIONS 'en' ['that: demonstrative']
-@inflection 
-	fr:ce
+@inflection fr:ce
 	fr:cette
 	fr:ces
 	fr:ceci
 	en:this
-	NOUN
-	"E:T:.-d.u.-'".
+     class:NOUN "E:T:.-d.u.-'" .
 
 
 
 // E:.-O:O:.-t.o.-'
-@inflection 
-	fr:voix passive
+@inflection fr:voix passive
 	fr:passivement
 	en:passive voice
 	en:passively
-	VERB
-	"E:.-wo.-t.o.-'".
+     class:VERB "E:.-wo.-t.o.-'" .
 
-@inflection 
-	fr:voix active
+@inflection fr:voix active
 	fr:activement
 	en:active voice
 	en:actively
-	VERB
-	"E:.-wa.-t.o.-'".
+     class:VERB "E:.-wa.-t.o.-'" .
 
-@inflection 
-	fr:voix réflexive
+@inflection fr:voix réflexive
 	fr:réflexivement
 	fr:auto-
 	fr:soi-même
@@ -658,18 +516,15 @@
 	en:reflexively
 	en:self-
 	en:oneself
-	VERB
-	"E:.-wu.-t.o.-'".
+     class:VERB "E:.-wu.-t.o.-'" .
 
-@inflection 
-	fr:voix réciproque
+@inflection fr:voix réciproque
 	fr:réciproquement
 	fr:mutuellement
 	en:reciprocal voice
 	en:reciprocally
 	en:mutually
-	VERB
-	"E:.-we.-t.o.-'".
+     class:VERB "E:.-we.-t.o.-'" .
 
 
 
@@ -700,34 +555,27 @@
 
 
 // E:F:.-t.o.-'
-@inflection 
-	fr:événement ou processus considéré comme achevé
+@inflection fr:événement ou processus considéré comme achevé
 	en:event or process considered completed
-	VERB
-	"E:U:.-t.o.-'".
+     class:VERB "E:U:.-t.o.-'" .
 
-@inflection 
-	fr:processus habituel
+@inflection fr:processus habituel
 	fr:habituellement
 	fr:continuellement
 	en:usual process
 	en:usually
 	en:continuously
-	VERB
-	"E:A:.-t.o.-'".
+     class:VERB "E:A:.-t.o.-'" .
 
-@inflection 
-	fr:processus commençant
+@inflection fr:processus commençant
 	fr:début
 	fr:origine dans le temps
 	en:process beginning
 	en:start
 	en:inception
-	VERB
-	"E:S:.-t.o.-'".
+     class:VERB "E:S:.-t.o.-'" .
 
-@inflection 
-	fr:processus en cours
+@inflection fr:processus en cours
 	fr:en train de se faire
 	fr:continuant
 	fr:au milieu -dans le temps-
@@ -735,16 +583,13 @@
 	en:being carried out
 	en:continuing
 	en:midway -through time-
-	VERB
-	"E:B:.-t.o.-'".
+     class:VERB "E:B:.-t.o.-'" .
 
-@inflection 
-	fr:processus finissant
+@inflection fr:processus finissant
 	fr:fin dans le temps
 	en:end of process
 	en:end in time
-	VERB
-	"E:T:.-t.o.-'".
+     class:VERB "E:T:.-t.o.-'" .
 
 
 
@@ -782,63 +627,50 @@
 
 
 // E:.-n.E:U:.+F:.-'
-@inflection 
-	fr:genre immatériel
+@inflection fr:genre immatériel
 	en:immaterial gender
-	NOUN
-	"E:.-n.E:U:.-'".
+     class:NOUN "E:.-n.E:U:.-'" .
 
 // SKIPPED TRANSLATIONS 'fr' ['genre masculin / mâle']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['masculine / male gender']
 // NO 'en' TRANSLATIONS !
 @inflection 
-	NOUN
-	"E:.-n.U:.-'".
+     class:NOUN "E:.-n.U:.-'" .
 
 // SKIPPED TRANSLATIONS 'fr' ['genre féminin / femelle']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['feminine / female gender']
 // NO 'en' TRANSLATIONS !
 @inflection 
-	NOUN
-	"E:.-n.A:.-'".
+     class:NOUN "E:.-n.A:.-'" .
 
-@inflection 
-	fr:genre humain
+@inflection fr:genre humain
 	en:human gender
-	NOUN
-	"E:.-n.S:.-'".
+     class:NOUN "E:.-n.S:.-'" .
 
-@inflection 
-	fr:genre animé
+@inflection fr:genre animé
 	fr:vivant
 	en:animated
 	en:living gender
-	NOUN
-	"E:.-n.B:.-'".
+     class:NOUN "E:.-n.B:.-'" .
 
-@inflection 
-	fr:genre inanimé
+@inflection fr:genre inanimé
 	en:inanimate gender
-	NOUN
-	"E:.-n.T:.-'".
+     class:NOUN "E:.-n.T:.-'" .
 
 
 
 // E:M:.-O:.-t.o.-'
-@auxiliary 
-	fr:après la date de référence
+@auxiliary fr:après la date de référence
 	fr:plus tard
 	fr:futur absolu
 	en:after the referenced date
 	en:later
 	en:absolute future
-	5
-	"E:S:.-U:.-t.o.-'".
+     role:5 "E:S:.-U:.-t.o.-'" .
 
-@auxiliary 
-	fr:dans l'avenir
+@auxiliary fr:dans l'avenir
 	fr:plus tard
 	fr:demain
 	fr:futur relatif
@@ -846,11 +678,9 @@
 	en:later
 	en:tomorrow
 	en:relative future
-	5
-	"E:S:.-A:.-t.o.-'".
+     role:5 "E:S:.-A:.-t.o.-'" .
 
-@auxiliary 
-	fr:à la même date
+@auxiliary fr:à la même date
 	fr:en même temps que
 	fr:pendant la date ou période de référence
 	fr:simultanément
@@ -858,11 +688,9 @@
 	en:during
 	en:meanwhile
 	en:simultaneously
-	5
-	"E:B:.-U:.-t.o.-'".
+     role:5 "E:B:.-U:.-t.o.-'" .
 
-@auxiliary 
-	fr:maintenant
+@auxiliary fr:maintenant
 	fr:aujourd'hui
 	fr:de nos jours
 	fr:au présent
@@ -870,11 +698,9 @@
 	en:today
 	en:nowadays
 	en:at the present time
-	5
-	"E:B:.-A:.-t.o.-'".
+     role:5 "E:B:.-A:.-t.o.-'" .
 
-@auxiliary 
-	fr:avant la date de référence
+@auxiliary fr:avant la date de référence
 	fr:plus tôt
 	fr:tôt
 	fr:dans un passé absolu
@@ -882,11 +708,9 @@
 	en:earlier
 	en:early
 	en:in an absolute past
-	5
-	"E:T:.-U:.-t.o.-'".
+     role:5 "E:T:.-U:.-t.o.-'" .
 
-@auxiliary 
-	fr:à une date passée
+@auxiliary fr:à une date passée
 	fr:plus tôt
 	fr:hier
 	fr:avant
@@ -896,120 +720,91 @@
 	en:yesterday
 	en:before
 	en:relative past
-	5
-	"E:T:.-A:.-t.o.-'".
+     role:5 "E:T:.-A:.-t.o.-'" .
 
 
 
 // E:I:.-t.u.-'
-@inflection 
-	fr:combien
+@inflection fr:combien
 	en:how many
 	en:how much
-	NOUN
-	"E:.-t.u.-'".
+     class:NOUN "E:.-t.u.-'" .
 
-@inflection 
-	fr:aucun
+@inflection fr:aucun
 	fr:rien
 	en:none
 	en:nothing
-	NOUN
-	"E:U:.-t.u.-'".
+     class:NOUN "E:U:.-t.u.-'" .
 
-@inflection 
-	fr:tous
+@inflection fr:tous
 	fr:quelque soit
 	en:all of them
 	en:whatever
-	NOUN
-	"E:A:.-t.u.-'".
+     class:NOUN "E:A:.-t.u.-'" .
 
-@inflection 
-	fr:pas assez
+@inflection fr:pas assez
 	fr:en manque
 	en:not enough
 	en:lacking
-	NOUN
-	"E:S:.-t.u.-'".
+     class:NOUN "E:S:.-t.u.-'" .
 
-@inflection 
-	fr:assez
+@inflection fr:assez
 	fr:suffisamment
 	fr:au moins un
 	en:enough
 	en:at least one
-	NOUN
-	"E:B:.-t.u.-'".
+     class:NOUN "E:B:.-t.u.-'" .
 
-@inflection 
-	fr:trop
+@inflection fr:trop
 	fr:en excès
 	en:too much
 	en:in excess
-	NOUN
-	"E:T:.-t.u.-'".
+     class:NOUN "E:T:.-t.u.-'" .
 
 
 
 // E:.O:O:.O:.-t.o.-'
-@auxiliary 
-	fr:avant -dans le temps-
+@auxiliary fr:avant -dans le temps-
 	en:before -in time-
-	5
-	"E:.wo.U:.-t.o.-'".
+     role:5 "E:.wo.U:.-t.o.-'" .
 
-@auxiliary 
-	fr:après -dans le temps-
+@auxiliary fr:après -dans le temps-
 	en:after -in time-
-	5
-	"E:.wo.A:.-t.o.-'".
+     role:5 "E:.wo.A:.-t.o.-'" .
 
-@auxiliary 
-	fr:depuis -dans le temps-
+@auxiliary fr:depuis -dans le temps-
 	en:since -in time-
-	5
-	"E:.wa.U:.-t.o.-'".
+     role:5 "E:.wa.U:.-t.o.-'" .
 
-@auxiliary 
-	fr:jusqu'à -dans le temps-
+@auxiliary fr:jusqu'à -dans le temps-
 	en:until -in time-
-	5
-	"E:.wa.A:.-t.o.-'".
+     role:5 "E:.wa.A:.-t.o.-'" .
 
-@auxiliary 
-	fr:à l'instant
+@auxiliary fr:à l'instant
 	fr:au moment
 	fr:à la date
 	en:at the moment
 	en:at the time
 	en:at the date
-	5
-	"E:.wu.U:.-t.o.-'".
+     role:5 "E:.wu.U:.-t.o.-'" .
 
-@auxiliary 
-	fr:pendant
+@auxiliary fr:pendant
 	fr:dans l'intervalle
 	en:during
 	en:in the meantime
-	5
-	"E:.wu.A:.-t.o.-'".
+     role:5 "E:.wu.A:.-t.o.-'" .
 
-@auxiliary 
-	fr:bientôt
+@auxiliary fr:bientôt
 	fr:brièvement
 	fr:pour un temps court
 	en:soon
 	en:briefly
 	en:for a short time
-	5
-	"E:.we.U:.-t.o.-'".
+     role:5 "E:.we.U:.-t.o.-'" .
 
-@auxiliary 
-	fr:longtemps
+@auxiliary fr:longtemps
 	en:for a long time
-	5
-	"E:.we.A:.-t.o.-'".
+     role:5 "E:.we.A:.-t.o.-'" .
 
 
 
@@ -1120,175 +915,128 @@
 
 
 // E:.-F:.M:M:.-l.-'
-@auxiliary 
-	fr:vers le haut
+@auxiliary fr:vers le haut
 	fr:hauteur
 	en:to the top
 	en:height
-	6
-	"E:.-U:.s.-l.-'".
+     role:6 "E:.-U:.s.-l.-'" .
 
-@auxiliary 
-	fr:sur
+@auxiliary fr:sur
 	fr:au dessus
 	en:on
 	en:above
 	en:on top
-	6
-	"E:.-U:.b.-l.-'".
+     role:6 "E:.-U:.b.-l.-'" .
 
-@auxiliary 
-	fr:sommet
+@auxiliary fr:sommet
 	en:summit
-	6
-	"E:.-U:.t.-l.-'".
+     role:6 "E:.-U:.t.-l.-'" .
 
-@auxiliary 
-	fr:horizontalement
+@auxiliary fr:horizontalement
 	en:horizontally
-	6
-	"E:.-U:.k.-l.-'".
+     role:6 "E:.-U:.k.-l.-'" .
 
-@auxiliary 
-	fr:au même niveau
+@auxiliary fr:au même niveau
 	en:at the same level
-	6
-	"E:.-U:.m.-l.-'".
+     role:6 "E:.-U:.m.-l.-'" .
 
-@auxiliary 
-	fr:mi-hauteur
+@auxiliary fr:mi-hauteur
 	en:half-height
-	6
-	"E:.-U:.n.-l.-'".
+     role:6 "E:.-U:.n.-l.-'" .
 
-@auxiliary 
-	fr:vers le bas
+@auxiliary fr:vers le bas
 	fr:profondeur
 	en:downward
 	en:depth
-	6
-	"E:.-U:.d.-l.-'".
+     role:6 "E:.-U:.d.-l.-'" .
 
-@auxiliary 
-	fr:sous
+@auxiliary fr:sous
 	en:under
-	6
-	"E:.-U:.f.-l.-'".
+     role:6 "E:.-U:.f.-l.-'" .
 
-@auxiliary 
-	fr:fond
+@auxiliary fr:fond
 	fr:base
 	fr:cul
 	en:bottom
 	en:basis
-	6
-	"E:.-U:.l.-l.-'".
+     role:6 "E:.-U:.l.-l.-'" .
 
-@auxiliary 
-	fr:vers l'avant
+@auxiliary fr:vers l'avant
 	en:ahead
 	en:to the front
-	6
-	"E:.-A:.s.-l.-'".
+     role:6 "E:.-A:.s.-l.-'" .
 
-@auxiliary 
-	fr:devant
+@auxiliary fr:devant
 	en:in front of
-	6
-	"E:.-A:.b.-l.-'".
+     role:6 "E:.-A:.b.-l.-'" .
 
-@auxiliary 
-	fr:face
+@auxiliary fr:face
 	fr:antérieur
 	en:face
 	en:anterior
-	6
-	"E:.-A:.t.-l.-'".
+     role:6 "E:.-A:.t.-l.-'" .
 
-@auxiliary 
-	fr:verticalement
+@auxiliary fr:verticalement
 	en:vertically
-	6
-	"E:.-A:.k.-l.-'".
+     role:6 "E:.-A:.k.-l.-'" .
 
-@auxiliary 
-	fr:du même côté
+@auxiliary fr:du même côté
 	fr:cis
 	en:on the same side
 	en:cis
-	6
-	"E:.-A:.m.-l.-'".
+     role:6 "E:.-A:.m.-l.-'" .
 
-@auxiliary 
-	fr:mi-chemin
+@auxiliary fr:mi-chemin
 	fr:milieu
 	en:half way
 	en:middle
-	6
-	"E:.-A:.n.-l.-'".
+     role:6 "E:.-A:.n.-l.-'" .
 
-@auxiliary 
-	fr:vers l'arrière
+@auxiliary fr:vers l'arrière
 	en:to the back
-	6
-	"E:.-A:.d.-l.-'".
+     role:6 "E:.-A:.d.-l.-'" .
 
-@auxiliary 
-	fr:derrière
+@auxiliary fr:derrière
 	en:behind
-	6
-	"E:.-A:.f.-l.-'".
+     role:6 "E:.-A:.f.-l.-'" .
 
-@auxiliary 
-	fr:dos
+@auxiliary fr:dos
 	fr:postérieur
 	en:back
 	en:posterior
-	6
-	"E:.-A:.l.-l.-'".
+     role:6 "E:.-A:.l.-l.-'" .
 
-@auxiliary 
-	fr:commencement
+@auxiliary fr:commencement
 	fr:origine
 	fr:source
 	en:beginning
 	en:origin
 	en:source
-	6
-	"E:.-S:.s.-l.-'".
+     role:6 "E:.-S:.s.-l.-'" .
 
-@auxiliary 
-	fr:point de départ
+@auxiliary fr:point de départ
 	en:starting point
-	6
-	"E:.-S:.b.-l.-'".
+     role:6 "E:.-S:.b.-l.-'" .
 
-@auxiliary 
-	fr:point d'entrée
+@auxiliary fr:point d'entrée
 	en:entry point
-	6
-	"E:.-S:.t.-l.-'".
+     role:6 "E:.-S:.t.-l.-'" .
 
-@auxiliary 
-	fr:mobile
+@auxiliary fr:mobile
 	fr:continuant
 	fr:ininterrompu
 	en:mobile
 	en:ongoing
 	en:uninterrupted
-	6
-	"E:.-S:.k.-l.-'".
+     role:6 "E:.-S:.k.-l.-'" .
 
-@auxiliary 
-	fr:trajet
+@auxiliary fr:trajet
 	fr:en chemin
 	en:en route
 	en:on the way
-	6
-	"E:.-S:.m.-l.-'".
+     role:6 "E:.-S:.m.-l.-'" .
 
-@auxiliary 
-	fr:voie
+@auxiliary fr:voie
 	fr:route
 	fr:canal
 	fr:tunnel -rôle-
@@ -1296,168 +1044,125 @@
 	en:road
 	en:channel
 	en:tunnel -role-
-	6
-	"E:.-S:.n.-l.-'".
+     role:6 "E:.-S:.n.-l.-'" .
 
-@auxiliary 
-	fr:puits
+@auxiliary fr:puits
 	fr:terminaison
 	fr:fin
 	en:well
 	en:termination
 	en:end
-	6
-	"E:.-S:.d.-l.-'".
+     role:6 "E:.-S:.d.-l.-'" .
 
-@auxiliary 
-	fr:point d'arrivée
+@auxiliary fr:point d'arrivée
 	fr:destination
 	en:arrival point
 	en:destination
-	6
-	"E:.-S:.f.-l.-'".
+     role:6 "E:.-S:.f.-l.-'" .
 
-@auxiliary 
-	fr:point de sortie
+@auxiliary fr:point de sortie
 	en:point of exit
-	6
-	"E:.-S:.l.-l.-'".
+     role:6 "E:.-S:.l.-l.-'" .
 
-@auxiliary 
-	fr:ouvert
+@auxiliary fr:ouvert
 	fr:ouverture
 	en:open
 	en:openness
-	6
-	"E:.-B:.s.-l.-'".
+     role:6 "E:.-B:.s.-l.-'" .
 
-@auxiliary 
-	fr:à gauche
+@auxiliary fr:à gauche
 	en:to the left
-	6
-	"E:.-B:.b.-l.-'".
+     role:6 "E:.-B:.b.-l.-'" .
 
-@auxiliary 
-	fr:centre
+@auxiliary fr:centre
 	fr:au centre
 	en:center
 	en:at the center
-	6
-	"E:.-B:.t.-l.-'".
+     role:6 "E:.-B:.t.-l.-'" .
 
-@auxiliary 
-	fr:au bord
+@auxiliary fr:au bord
 	fr:à la limite
 	fr:sur le point de
 	en:at the edge of
 	en:to the limit
 	en:on the verge of
 	en:about to
-	6
-	"E:.-B:.k.-l.-'".
+     role:6 "E:.-B:.k.-l.-'" .
 
-@auxiliary 
-	fr:entre
+@auxiliary fr:entre
 	en:between
-	6
-	"E:.-B:.m.-l.-'".
+     role:6 "E:.-B:.m.-l.-'" .
 
-@auxiliary 
-	fr:près
+@auxiliary fr:près
 	fr:ici
 	fr:à
 	en:near
 	en:close by
 	en:here
 	en:at
-	6
-	"E:.-B:.n.-l.-'".
+     role:6 "E:.-B:.n.-l.-'" .
 
-@auxiliary 
-	fr:fermeture
+@auxiliary fr:fermeture
 	fr:fermé
 	en:closing
 	en:closed
-	6
-	"E:.-B:.d.-l.-'".
+     role:6 "E:.-B:.d.-l.-'" .
 
-@auxiliary 
-	fr:à droite
+@auxiliary fr:à droite
 	en:to the right
-	6
-	"E:.-B:.f.-l.-'".
+     role:6 "E:.-B:.f.-l.-'" .
 
-@auxiliary 
-	fr:là-bas
+@auxiliary fr:là-bas
 	fr:loin
 	en:over there
 	en:far away
-	6
-	"E:.-B:.l.-l.-'".
+     role:6 "E:.-B:.l.-l.-'" .
 
-@auxiliary 
-	fr:à partir de
+@auxiliary fr:à partir de
 	en:from
-	6
-	"E:.-T:.s.-l.-'".
+     role:6 "E:.-T:.s.-l.-'" .
 
-@auxiliary 
-	fr:hors de
+@auxiliary fr:hors de
 	en:out of
-	6
-	"E:.-T:.b.-l.-'".
+     role:6 "E:.-T:.b.-l.-'" .
 
-@auxiliary 
-	fr:centrifuge
+@auxiliary fr:centrifuge
 	fr:périphérique
 	en:centrifugal
 	en:peripheral
-	6
-	"E:.-T:.t.-l.-'".
+     role:6 "E:.-T:.t.-l.-'" .
 
-@auxiliary 
-	fr:par
+@auxiliary fr:par
 	fr:via
 	en:by
 	en:via
-	6
-	"E:.-T:.k.-l.-'".
+     role:6 "E:.-T:.k.-l.-'" .
 
-@auxiliary 
-	fr:à travers
+@auxiliary fr:à travers
 	fr:trans
 	en:through
 	en:trans
-	6
-	"E:.-T:.m.-l.-'".
+     role:6 "E:.-T:.m.-l.-'" .
 
-@auxiliary 
-	fr:autour
+@auxiliary fr:autour
 	en:around
-	6
-	"E:.-T:.n.-l.-'".
+     role:6 "E:.-T:.n.-l.-'" .
 
-@auxiliary 
-	fr:en direction de
+@auxiliary fr:en direction de
 	fr:vers
 	en:towards
-	6
-	"E:.-T:.d.-l.-'".
+     role:6 "E:.-T:.d.-l.-'" .
 
-@auxiliary 
-	fr:dans
+@auxiliary fr:dans
 	fr:dedans
 	en:in
 	en:into
 	en:inside
-	6
-	"E:.-T:.f.-l.-'".
+     role:6 "E:.-T:.f.-l.-'" .
 
-@auxiliary 
-	fr:centripète
+@auxiliary fr:centripète
 	en:centripetal
-	6
-	"E:.-T:.l.-l.-'".
+     role:6 "E:.-T:.l.-l.-'" .
 
 
 
@@ -1492,8 +1197,7 @@
 
 
 // E:.-'h.o.d.-U:.-'M:O:.-',
-@auxiliary 
-	fr:vise
+@auxiliary fr:vise
 	fr:a pour objectif
 	fr:but
 	fr:finalité
@@ -1501,70 +1205,54 @@
 	en:a pour objectif
 	en:but
 	en:finalité
-	7
-	"E:.-'h.o.d.-U:.-'j.-',".
+     role:7 "E:.-'h.o.d.-U:.-'j.-'," .
 
-@auxiliary 
-	fr:prédestiné par
+@auxiliary fr:prédestiné par
 	fr:destiné à
 	fr:relation téléologique
 	en:predestined by
 	en:designed for
 	en:teleological relationship
-	7
-	"E:.-'h.o.d.-U:.-'g.-',".
+     role:7 "E:.-'h.o.d.-U:.-'g.-'," .
 
-@auxiliary 
-	fr:inspiré
+@auxiliary fr:inspiré
 	fr:motivé ou justifié par
 	en:inspired
 	en:motivated or justified by
-	7
-	"E:.-'h.o.d.-U:.-'h.-',".
+     role:7 "E:.-'h.o.d.-U:.-'h.-'," .
 
-@auxiliary 
-	fr:coloré par le sentiment
+@auxiliary fr:coloré par le sentiment
 	fr:l'émotion
 	en:coloured by feeling
 	en:emotion
-	7
-	"E:.-'h.o.d.-U:.-'c.-',".
+     role:7 "E:.-'h.o.d.-U:.-'c.-'," .
 
-@auxiliary 
-	fr:se référant à
+@auxiliary fr:se référant à
 	en:referring to
-	7
-	"E:.-'h.o.d.-U:.-'p.-',".
+     role:7 "E:.-'h.o.d.-U:.-'p.-'," .
 
-@auxiliary 
-	fr:dans le contexte de
+@auxiliary fr:dans le contexte de
 	en:in the context of
-	7
-	"E:.-'h.o.d.-U:.-'x.-',".
+     role:7 "E:.-'h.o.d.-U:.-'x.-'," .
 
 
 
 // E:.-'O:O:.-M:.-'t.o.-',
-@inflection 
-	fr:faire l'hypothèse
+@inflection fr:faire l'hypothèse
 	fr:envisager comme une possibilité
 	fr:mode hypothétique
 	en:hypothesize
 	en:consider as a possibility
 	en:hypothetical mood
-	VERB
-	"E:.-'wo.-S:.-'t.o.-',".
+     class:VERB "E:.-'wo.-S:.-'t.o.-'," .
 
-@inflection 
-	fr:croire
+@inflection fr:croire
 	fr:ne pas douter
 	en:believe
 	en:do not doubt
-	VERB
-	"E:.-'wo.-B:.-'t.o.-',".
+     class:VERB "E:.-'wo.-B:.-'t.o.-'," .
 
-@inflection 
-	fr:mode conditionnel
+@inflection fr:mode conditionnel
 	fr:poser une règle
 	fr:une implication
 	fr:une relation conditionnelle
@@ -1572,53 +1260,41 @@
 	en:lay down a rule
 	en:an implication
 	en:a conditional relation
-	VERB
-	"E:.-'wo.-T:.-'t.o.-',".
+     class:VERB "E:.-'wo.-T:.-'t.o.-'," .
 
-@inflection 
-	fr:énoncer comme irréel
+@inflection fr:énoncer comme irréel
 	fr:mode subjonctif
 	en:express as unreal
 	en:subjunctive mood
-	VERB
-	"E:.-'wa.-S:.-'t.o.-',".
+     class:VERB "E:.-'wa.-S:.-'t.o.-'," .
 
-@inflection 
-	fr:rapporter d'un autre locuteur
+@inflection fr:rapporter d'un autre locuteur
 	fr:mode oblique
 	fr:ou re-narratif
 	en:report from another speaker
 	en:oblique or re-narrative mood
-	VERB
-	"E:.-'wa.-B:.-'t.o.-',".
+     class:VERB "E:.-'wa.-B:.-'t.o.-'," .
 
-@inflection 
-	fr:énoncer comme une réalité
+@inflection fr:énoncer comme une réalité
 	fr:mode indicatif
 	en:state as a reality
 	en:indicative mood
-	VERB
-	"E:.-'wa.-T:.-'t.o.-',".
+     class:VERB "E:.-'wa.-T:.-'t.o.-'," .
 
-@inflection 
-	fr:désirer
+@inflection fr:désirer
 	fr:mode optatif
 	en:desire
 	en:optative mood
-	VERB
-	"E:.-'wu.-S:.-'t.o.-',".
+     class:VERB "E:.-'wu.-S:.-'t.o.-'," .
 
-@inflection 
-	fr:devoir
+@inflection fr:devoir
 	fr:mode déontique
 	en:must
 	en:should
 	en:deontic mood
-	VERB
-	"E:.-'wu.-B:.-'t.o.-',".
+     class:VERB "E:.-'wu.-B:.-'t.o.-'," .
 
-@inflection 
-	fr:faire faire
+@inflection fr:faire faire
 	fr:instruction
 	fr:mode impératif
 	fr:jussif
@@ -1626,412 +1302,335 @@
 	en:instruction
 	en:imperative
 	en:jussive mood
-	VERB
-	"E:.-'wu.-T:.-'t.o.-',".
+     class:VERB "E:.-'wu.-T:.-'t.o.-'," .
 
-@inflection 
-	fr:quasi-nom
+@inflection fr:quasi-nom
 	fr:mode infinitif
 	en:quasi-noun
 	en:infinitive mood
-	VERB
-	"E:.-'we.-S:.-'t.o.-',".
+     class:VERB "E:.-'we.-S:.-'t.o.-'," .
 
-@inflection 
-	fr:quasi-adverbe
+@inflection fr:quasi-adverbe
 	fr:mode gérondif
 	en:quasi-adverb
 	en:gerund mood
-	VERB
-	"E:.-'we.-B:.-'t.o.-',".
+     class:VERB "E:.-'we.-B:.-'t.o.-'," .
 
 // SKIPPED TRANSLATIONS 'en' ['participe mood / form']
-@inflection 
-	fr:quasi-adjectif
+@inflection fr:quasi-adjectif
 	fr:mode participe
 	en:quasi-adjective
-	VERB
-	"E:.-'we.-T:.-'t.o.-',".
+     class:VERB "E:.-'we.-T:.-'t.o.-'," .
 
 
 
 // E:S:.j.-'M:O:.-O:.-',
-@inflection 
-	fr:chaque
+@inflection fr:chaque
 	fr:un par un
 	fr:individuellement
 	en:each
 	en:one by one
 	en:individually
-	NOUN
-	"E:S:.j.-'j.-U:.-',".
+     class:NOUN "E:S:.j.-'j.-U:.-'," .
 
-@inflection 
-	fr:deux par deux
+@inflection fr:deux par deux
 	fr:par paires
 	en:in pairs
 	en:two by two
-	NOUN
-	"E:S:.j.-'j.-A:.-',".
+     class:NOUN "E:S:.j.-'j.-A:.-'," .
 
-@inflection 
-	fr:trois par trois
+@inflection fr:trois par trois
 	fr:en triplets
 	en:three by three
 	en:in triplets
-	NOUN
-	"E:S:.j.-'g.-U:.-',".
+     class:NOUN "E:S:.j.-'g.-U:.-'," .
 
-@inflection 
-	fr:quatre par quatre
+@inflection fr:quatre par quatre
 	fr:par groupes de quatre
 	en:four by four
 	en:in groups of four
-	NOUN
-	"E:S:.j.-'g.-A:.-',".
+     class:NOUN "E:S:.j.-'g.-A:.-'," .
 
-@inflection 
-	fr:cinq par cinq
+@inflection fr:cinq par cinq
 	fr:par groupes de cinq
 	en:five by five
 	en:in groups of five
-	NOUN
-	"E:S:.j.-'h.-U:.-',".
+     class:NOUN "E:S:.j.-'h.-U:.-'," .
 
-@inflection 
-	fr:six par six
+@inflection fr:six par six
 	fr:par demi-douzaines
 	en:six by six
 	en:in groups of six
 	en:by half a dozen
-	NOUN
-	"E:S:.j.-'h.-A:.-',".
+     class:NOUN "E:S:.j.-'h.-A:.-'," .
 
-@inflection 
-	fr:sept par sept
+@inflection fr:sept par sept
 	fr:par groupes de sept
 	en:seven by seven
 	en:in groups of seven
-	NOUN
-	"E:S:.j.-'c.-U:.-',".
+     class:NOUN "E:S:.j.-'c.-U:.-'," .
 
-@inflection 
-	fr:huit par huit
+@inflection fr:huit par huit
 	fr:par groupes de huit
 	en:eight by eight
 	en:in groups of eight
-	NOUN
-	"E:S:.j.-'c.-A:.-',".
+     class:NOUN "E:S:.j.-'c.-A:.-'," .
 
-@inflection 
-	fr:neuf par neuf
+@inflection fr:neuf par neuf
 	fr:par groupes de neuf
 	en:nine by nine
 	en:in groups of nine
-	NOUN
-	"E:S:.j.-'p.-U:.-',".
+     class:NOUN "E:S:.j.-'p.-U:.-'," .
 
-@inflection 
-	fr:par dizaines
+@inflection fr:par dizaines
 	en:by tens
-	NOUN
-	"E:S:.j.-'p.-A:.-',".
+     class:NOUN "E:S:.j.-'p.-A:.-'," .
 
-@inflection 
-	fr:par groupes de onze
+@inflection fr:par groupes de onze
 	en:in groups of eleven
-	NOUN
-	"E:S:.j.-'x.-U:.-',".
+     class:NOUN "E:S:.j.-'x.-U:.-'," .
 
-@inflection 
-	fr:par douze
+@inflection fr:par douze
 	fr:par douzaines
 	en:by twelve
 	en:by dozens
-	NOUN
-	"E:S:.j.-'x.-A:.-',".
+     class:NOUN "E:S:.j.-'x.-A:.-'," .
 
 
 
 // E:.-b.O:M:.-'E:.-b.O:M:.-',
-@auxiliary 
-	fr:relation jeu-jeu -contexte-contexte-
+@auxiliary fr:relation jeu-jeu -contexte-contexte-
 	en:game-game relation -context-context-
-	7
-	"E:.-b.y.-'E:.-b.y.-',".
+     role:7 "E:.-b.y.-'E:.-b.y.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation jeu -> rôle']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['game -> role relation']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.y.-'E:.-b.o.-',".
+     role:7 "E:.-b.y.-'E:.-b.o.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation jeu -> partie']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['game -> match relation']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.y.-'E:.-b.e.-',".
+     role:7 "E:.-b.y.-'E:.-b.e.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation jeu -> règle']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['game -> rule relation']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.y.-'E:.-b.u.-',".
+     role:7 "E:.-b.y.-'E:.-b.u.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation jeu -> joueur']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['game -> player relation']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.y.-'E:.-b.a.-',".
+     role:7 "E:.-b.y.-'E:.-b.a.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation jeu -> coup']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['game -> move relation']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.y.-'E:.-b.i.-',".
+     role:7 "E:.-b.y.-'E:.-b.i.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation rôle -> jeu']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['role -> game relation']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.o.-'E:.-b.y.-',".
+     role:7 "E:.-b.o.-'E:.-b.y.-'," .
 
-@auxiliary 
-	fr:relation rôle-rôle
+@auxiliary fr:relation rôle-rôle
 	en:role-role relation
-	7
-	"E:.-b.o.-'E:.-b.o.-',".
+     role:7 "E:.-b.o.-'E:.-b.o.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation rôle->partie']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['role -> match relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.o.-'E:.-b.e.-',".
+     role:7 "E:.-b.o.-'E:.-b.e.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation rôle->règle']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['role->rule relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.o.-'E:.-b.u.-',".
+     role:7 "E:.-b.o.-'E:.-b.u.-'," .
 
 // SKIPPED TRANSLATIONS 'en' ['role -> player relationship']
 // NO 'en' TRANSLATIONS !
-@auxiliary 
-	fr:relation rôle-joueur
-	7
-	"E:.-b.o.-'E:.-b.a.-',".
+@auxiliary fr:relation rôle-joueur
+     role:7 "E:.-b.o.-'E:.-b.a.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation rôle->coup']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['role->move relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.o.-'E:.-b.i.-',".
+     role:7 "E:.-b.o.-'E:.-b.i.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation partie->jeu']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['match-> game relation']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.e.-'E:.-b.y.-',".
+     role:7 "E:.-b.e.-'E:.-b.y.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation partie->rôle']
 // NO 'fr' TRANSLATIONS !
-@auxiliary 
-	en:match-role relation
-	7
-	"E:.-b.e.-'E:.-b.o.-',".
+@auxiliary en:match-role relation
+     role:7 "E:.-b.e.-'E:.-b.o.-'," .
 
-@auxiliary 
-	fr:relation partie-partie
+@auxiliary fr:relation partie-partie
 	en:match-match relation
-	7
-	"E:.-b.e.-'E:.-b.e.-',".
+     role:7 "E:.-b.e.-'E:.-b.e.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation partie->règle']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['match->rule relation']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.e.-'E:.-b.u.-',".
+     role:7 "E:.-b.e.-'E:.-b.u.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation partie -> joueur']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['match -> player relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.e.-'E:.-b.a.-',".
+     role:7 "E:.-b.e.-'E:.-b.a.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation partie -> coup']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['match -> move relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.e.-'E:.-b.i.-',".
+     role:7 "E:.-b.e.-'E:.-b.i.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation règle->jeu']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['rule->game relation']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.u.-'E:.-b.y.-',".
+     role:7 "E:.-b.u.-'E:.-b.y.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation règle -> rôle']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['rule -> role relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.u.-'E:.-b.o.-',".
+     role:7 "E:.-b.u.-'E:.-b.o.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation règle -> partie']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['rule -> match relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.u.-'E:.-b.e.-',".
+     role:7 "E:.-b.u.-'E:.-b.e.-'," .
 
-@auxiliary 
-	fr:relation règle-règle
+@auxiliary fr:relation règle-règle
 	en:rule-rule relation
-	7
-	"E:.-b.u.-'E:.-b.u.-',".
+     role:7 "E:.-b.u.-'E:.-b.u.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation règle->joueur']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['rule -> player relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.u.-'E:.-b.a.-',".
+     role:7 "E:.-b.u.-'E:.-b.a.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation règle -> coup']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['rule -> move relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.u.-'E:.-b.i.-',".
+     role:7 "E:.-b.u.-'E:.-b.i.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation joueur->jeu']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['player->game relation']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.a.-'E:.-b.y.-',".
+     role:7 "E:.-b.a.-'E:.-b.y.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation joueur->rôle']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['player -> role relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.a.-'E:.-b.o.-',".
+     role:7 "E:.-b.a.-'E:.-b.o.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation joueur->partie']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['player -> match relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.a.-'E:.-b.e.-',".
+     role:7 "E:.-b.a.-'E:.-b.e.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation joueur->règle']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['player -> rule relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.a.-'E:.-b.u.-',".
+     role:7 "E:.-b.a.-'E:.-b.u.-'," .
 
-@auxiliary 
-	fr:relation joueur-joueur
+@auxiliary fr:relation joueur-joueur
 	en:player-player relation
-	7
-	"E:.-b.a.-'E:.-b.a.-',".
+     role:7 "E:.-b.a.-'E:.-b.a.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation joueur->coup']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['player->move relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.a.-'E:.-b.i.-',".
+     role:7 "E:.-b.a.-'E:.-b.i.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation coup->jeu']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['move->game relation']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.i.-'E:.-b.y.-',".
+     role:7 "E:.-b.i.-'E:.-b.y.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation coup->rôle']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['move -> role relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.i.-'E:.-b.o.-',".
+     role:7 "E:.-b.i.-'E:.-b.o.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation coup->partie']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['move -> match relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.i.-'E:.-b.e.-',".
+     role:7 "E:.-b.i.-'E:.-b.e.-'," .
 
 // SKIPPED TRANSLATIONS 'fr' ['relation coup->règle']
 // NO 'fr' TRANSLATIONS !
 // SKIPPED TRANSLATIONS 'en' ['move->rule relationship']
 // NO 'en' TRANSLATIONS !
 @auxiliary 
-	7
-	"E:.-b.i.-'E:.-b.u.-',".
+     role:7 "E:.-b.i.-'E:.-b.u.-'," .
 
 // SKIPPED TRANSLATIONS 'en' ['move -> player relationship']
 // NO 'en' TRANSLATIONS !
-@auxiliary 
-	fr:relation coup-joueur
-	7
-	"E:.-b.i.-'E:.-b.a.-',".
+@auxiliary fr:relation coup-joueur
+     role:7 "E:.-b.i.-'E:.-b.a.-'," .
 
-@auxiliary 
-	fr:relation coup-coup
+@auxiliary fr:relation coup-coup
 	en:move-move relation
-	7
-	"E:.-b.i.-'E:.-b.i.-',".
+     role:7 "E:.-b.i.-'E:.-b.i.-'," .
 
 
 
 // E:.-',b.-S:.U:.-'y.-'O:.-',_
-@inflection 
-	fr:sur le mode de la continuité
+@inflection fr:sur le mode de la continuité
 	fr:de la matière
 	fr:de la masse ou de la fluidité
 	fr:contigu
@@ -2039,11 +1638,9 @@
 	en:matter
 	en:mass or fluidity
 	en:contiguous
-	NOUN
-	"E:.-',b.-S:.U:.-'y.-'U:.-',_".
+     class:NOUN "E:.-',b.-S:.U:.-'y.-'U:.-',_" .
 
-@inflection 
-	fr:sur le mode discontinu
+@inflection fr:sur le mode discontinu
 	fr:discret
 	fr:granulaire ou solide
 	fr:non-contigu
@@ -2051,8 +1648,7 @@
 	en:discrete
 	en:granular or solid mode
 	en:non-contiguous
-	NOUN
-	"E:.-',b.-S:.U:.-'y.-'A:.-',_".
+     class:NOUN "E:.-',b.-S:.U:.-'y.-'A:.-',_" .
 
 
 

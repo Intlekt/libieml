@@ -1,9 +1,9 @@
 #include "structure/path/PathTree.h"
 
 #include <sstream>
+#include <vector>
 
 using namespace ieml::structure;
-
 
 std::vector<PathTree::Set> PathTree::cartesian_product(const std::vector<PathTree::Vector>& children_list) {
     size_t size = 1;

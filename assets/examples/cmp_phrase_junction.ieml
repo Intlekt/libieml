@@ -1,7 +1,7 @@
 @language fr.
 
 @junction fr:et "wo.".
-@inflection fr:nom en:noun VERB "a.".
+@inflection fr:nom en:noun class:VERB "a.".
 
 @word "wa.".
 @word "we.".

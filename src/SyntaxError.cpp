@@ -1,6 +1,7 @@
 #include "SyntaxError.h"
 #include "Token.h"
 
+#include "Parser.h"
 
 #include <iostream>
 
@@ -30,30 +31,35 @@ void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::syntaxError(
         ), msg));
 }
 
-void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::reportAmbiguity(__attribute__ ((unused)) Parser *recognizer, 
-                                                                             __attribute__ ((unused)) const dfa::DFA &dfa, 
-                                                                             __attribute__ ((unused)) size_t startIndex, 
-                                                                             __attribute__ ((unused)) size_t stopIndex, 
+void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::reportAmbiguity(Parser *recognizer, 
+                                                                            __attribute__ ((unused)) const dfa::DFA &dfa, 
+                                                                            size_t startIndex, 
+                                                                            size_t stopIndex, 
                                                                              __attribute__ ((unused)) bool exact,
                                                                              __attribute__ ((unused)) const antlrcpp::BitSet &ambigAlts, 
                                                                              __attribute__ ((unused)) atn::ATNConfigSet *configs) {
-
+    const auto text = recognizer->getTokenStream()->getText(antlr4::misc::Interval(startIndex, stopIndex));
+    std::cout << "Parser ambiguity detected :" << text<< std::endl;
 
 }
-void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::reportAttemptingFullContext(__attribute__ ((unused)) Parser *recognizer, 
+void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::reportAttemptingFullContext( Parser *recognizer, 
                                                                                          __attribute__ ((unused)) const dfa::DFA &dfa, 
-                                                                                         __attribute__ ((unused)) size_t startIndex, 
-                                                                                         __attribute__ ((unused)) size_t stopIndex, 
+                                                                                         size_t startIndex, 
+                                                                                         size_t stopIndex, 
                                                                                          __attribute__ ((unused)) const antlrcpp::BitSet &conflictingAlts, 
                                                                                          __attribute__ ((unused)) atn::ATNConfigSet *configs) {
+    const auto text = recognizer->getTokenStream()->getText(antlr4::misc::Interval(startIndex, stopIndex));
+    std::cout << "Parser reportAttemptingFullContext detected : " << text << std::endl;
 
 }
-void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::reportContextSensitivity(__attribute__ ((unused)) Parser *recognizer, 
-                                                                                      __attribute__ ((unused)) const dfa::DFA &dfa, 
-                                                                                      __attribute__ ((unused)) size_t startIndex, 
-                                                                                      __attribute__ ((unused)) size_t stopIndex,
+void IEMLParserErrorListener::ANTLR4IEMLParserErrorListener::reportContextSensitivity(Parser *recognizer, 
+                                                                                         __attribute__ ((unused)) const dfa::DFA &dfa, 
+                                                                                         size_t startIndex, 
+                                                                                         size_t stopIndex, 
                                                                                       __attribute__ ((unused)) size_t prediction, 
                                                                                       __attribute__ ((unused)) atn::ATNConfigSet *configs) {
+    const auto text = recognizer->getTokenStream()->getText(antlr4::misc::Interval(startIndex, stopIndex));
+    std::cout << "Parser reportContextSensitivity detected : " << text << std::endl;
 
 }
 
