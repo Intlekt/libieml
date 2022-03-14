@@ -11,4 +11,4 @@ RUN mkdir build && \
     cmake -DBUILD_TEST:BOOL=TRUE ..&& \
     cmake --build . -j $NB_CORES
 
-CMD ["/libieml/build/test/libieml_test"] git
+CMD ["/libieml/build/test/libieml_test"]
