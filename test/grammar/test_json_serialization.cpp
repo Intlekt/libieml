@@ -44,9 +44,12 @@ TEST(ieml_grammar_test_case, json_serialization) {
 
             std::string file_id = v["range"]["file_id"];
             EXPECT_EQ(file_id, std::string("default"));
+            
+            EXPECT_TRUE(v.contains("translations")) << "Missing translations of " + it.key() + " in file " + std::string(file_path.path());
+            EXPECT_TRUE(v["translations"].contains("EN")) << "Missing EN translations of " + it.key() + " in file " + std::string(file_path.path());
+            EXPECT_TRUE(v["translations"].contains("FR")) << "Missing FR translations of " + it.key() + " in file " + std::string(file_path.path());
 
             if (v["type"] == "CATEGORY") {
-                EXPECT_TRUE(v.contains("translations")) << "Missing translations of " + it.key() + " in file " + std::string(file_path.path());
 
                 for (auto ref: v["back_references"])
                     EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing back_references " + std::string(ref) + " of " + it.key() + " in file " + std::string(file_path.path());

@@ -34,7 +34,6 @@ nlohmann::json ieml::parser::nameToJson(const ieml::structure::Name& name) {
         translations[l._to_string()] = nlohmann::json::array();
 
     for (auto it = name.begin(); it != name.end();) {
-        
         auto key = it->first;
         nlohmann::json language_translations = nlohmann::json::array();
 
@@ -158,9 +157,11 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
 
     auto name = ctx.getWordRegister().getName(word);
 
-    nlohmann::json name_json = nullptr;
+    nlohmann::json name_json;
     if (name)
         name_json = nameToJson(*name);
+    else
+        name_json = nameToJson(ieml::structure::Name({}));
     
     auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(word));
     const ieml::AST::CharRange& range = ast->getCharRange();
