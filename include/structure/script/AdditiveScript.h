@@ -18,7 +18,11 @@ public:
     friend class ScriptRegister;
 
     static const std::unordered_map<std::string, std::string> REMARKABLE_ADDITIONS_STRINGS;
+    virtual ScriptType get_type() const override {return ScriptType::ADDITION;};
 
+protected:
+    virtual TablePtr build_table_paradigm(ScriptRegister&) const override;
+    
 private:
     AdditiveScript(const Script::Set& children) : 
         Script((*children.begin())->get_layer(), 

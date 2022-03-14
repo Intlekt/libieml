@@ -85,7 +85,6 @@ antlrcpp::Any ScriptGrammarVisitor::visitMult_layer0__primitive(ScriptParserGram
     RETURN_VISITOR_RESULT_MOVE(register_->get_primitive(ctx->primitive->getText()[0]));
 }
 
-
 antlrcpp::Any ScriptGrammarVisitor::visitMult_layer0__remarkable_addition(ScriptParserGrammar::Mult_layer0__remarkable_additionContext *ctx) {
     RETURN_VISITOR_RESULT_MOVE(register_->get_remarkable_addition(ctx->remarkable_addition->getText()[0]));
 }

@@ -1,5 +1,5 @@
 #include "ast/declaration/TableDeclaration.h"
-#include "structure/Table.h"
+#include "structure/TableDefinition.h"
 
 
 using namespace ieml::AST;
@@ -11,10 +11,14 @@ std::string TableDeclaration::to_string() const {
 
 
 void TableDeclaration::check_declaration(ieml::parser::ParserContextManager& ctx) const {
-    
+    // the paradigm at the top of the paradigm hierarchy
     std::shared_ptr<ieml::structure::PathTree> root;
+
+    // the mapping between singular sequences of root or one of its descendent paradigms to other paradigmatic path trees.
+    ieml::structure::TableDefinition::InvariantMapping invariant_to_paradigm;
+    
+    // the currently opened singular sequences leafs of the paradigm hierarchy
     std::unordered_set<std::shared_ptr<ieml::structure::PathTree>> accepted_invariant;
-    ieml::structure::Table::InvariantMapping invariant_to_paradigm;
     
     bool failed = false;
 
@@ -58,13 +62,15 @@ void TableDeclaration::check_declaration(ieml::parser::ParserContextManager& ctx
 
         auto singular_sequences = ieml::structure::PathTree::singular_sequences(paranode);
         accepted_invariant.insert(singular_sequences.begin(), singular_sequences.end());
+
+        invariant_to_paradigm.insert({invariant, paranode});
     }
     if (failed)
         return;
 
-    // TODO : ensure we cannot instiate multiple times the same table ? 
+    // TODO : ensure we cannot instensiate multiple times the same table ? 
     //          do we want unicity like the PathTrees ?
-    const auto table = std::make_shared<ieml::structure::Table>(root, invariant_to_paradigm);
+    const auto table = std::make_shared<ieml::structure::TableDefinition>(root, invariant_to_paradigm);
 
     ctx.getParadigmRegister().register_table(table);
     ctx.getSourceMapping().register_mapping(table, this);

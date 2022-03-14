@@ -50,8 +50,10 @@ public:
     }
 
     virtual std::shared_ptr<structure::JunctionWord> check_junction(parser::ParserContextManager& ctx) const override {
-        auto word = ctx.getWordRegister().get_word(word_->getScript());
+        const auto script = word_->parse_script(ctx);
+        if (!script) return nullptr;
 
+        auto word = ctx.getWordRegister().get_word_from_script(script);
         if (!word) {
             ctx.getErrorManager().visitorError(
                 getCharRange(),

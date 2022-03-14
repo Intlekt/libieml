@@ -5,8 +5,10 @@
 #include <string>
 #include <memory>
 
+#include "structure/table/Table.h"
 #include "utils.h"
 
+#include "enum.h"
 
 #define LAYER0_MARK ':'
 #define LAYER1_MARK '.'
@@ -20,16 +22,22 @@
 
 #define LAYER_NUMBER(x) ieml::structure::Script::LAYER_MARK_TO_LAYER.find(x)->second
 
-
 namespace ieml::structure {
+
+BETTER_ENUM(ScriptType, char, PRIMITIVE, NULLSCRIPT, ADDITION, MULTIPLICATION);
 
 class ScriptRegister;
 
 class Script {
 public:
+    friend class ScriptRegister;
+
+    typedef const Script* Ptr;
+    typedef const Table<const Script*>* TablePtr;
+
     struct CompareScriptFunctor {
         int8_t operator()(const Script* l, const Script* r) const {
-            return Script::comp(l, r) < 0;
+            return Script::comp(*l, *r) < 0;
         } 
     };
 
@@ -47,19 +55,24 @@ public:
         }
     };
 
+    bool operator==(const Script& o) const {return comp(*this, o) == 0;}
+    bool operator!=(const Script& o) const {return comp(*this, o) != 0;}
+    bool operator< (const Script& o) const {return comp(*this, o) < 0;}
+    bool operator> (const Script& o) const {return comp(*this, o) > 0;}
+    bool operator<=(const Script& o) const {return comp(*this, o) <= 0;}
+    bool operator>=(const Script& o) const {return comp(*this, o) >= 0;}
+
 
     virtual ~Script() = default;
 
     const std::string& to_string() const {return str_;};
     size_t get_layer() const {return layer_;};
-    const std::u16string& get_canonical() const {return canonical_;};
-    // const Set& get_singular_sequences() const {return singular_sequences_;}
     size_t get_multiplicity() const {return multiplicity_;};
-    
-    const Set& singular_sequences() const {
-        return singular_sequences_;
-    };
 
+    const std::u16string& get_canonical() const {return canonical_;};
+    const Set& singular_sequences() const {return singular_sequences_;};
+
+    virtual ScriptType get_type() const = 0;
 
     // by default not a null script
     virtual bool is_nullscript() const {return false;};
@@ -68,6 +81,8 @@ public:
     static const std::unordered_map<char, size_t> LAYER_MARK_TO_LAYER;
 
 protected:
+    virtual TablePtr build_table_paradigm(ScriptRegister&) const = 0;
+
     Set singular_sequences_;
 
     Script(size_t layer, 
@@ -79,20 +94,20 @@ protected:
         str_(str), 
         canonical_(canonical),
         multiplicity_(multiplicity) {}
+
 private:
-
-
     const size_t layer_;
     const std::string str_;
     const std::u16string canonical_;
-
     const size_t multiplicity_;
 
-    static size_t _count_multiplicity(const Script::Set& singular_sequences) {
-        if (singular_sequences.size() == 0) return 1;
-        return singular_sequences.size();
-    }
+    static int comp(const Script&, const Script&);
 
-    static int comp(const Script*, const Script*);
+    /**
+     * @brief Allocate a table pointer representing this script and return it. The caller own the result.
+     * 
+     * @return TablePtr
+     */
+    TablePtr get_table(ScriptRegister&) const;
 };
 }

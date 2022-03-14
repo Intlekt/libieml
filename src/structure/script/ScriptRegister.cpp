@@ -9,6 +9,7 @@ const MultiplicativeScript* ScriptRegister::get_or_create_multiplication(const M
     if (it == multiplicative_scripts_.end()) {
         const auto script = new MultiplicativeScript(*this, children);
         multiplicative_scripts_.insert({children, script});
+        defined_scripts_by_string_.insert({script->to_string(), script});
         return script;
     } else {
         return it->second;
@@ -27,7 +28,19 @@ const AdditiveScript* ScriptRegister::get_or_create_addition(const Script::Set& 
     if (it == additive_scripts_.end()) {
         const auto script = new AdditiveScript(children);
         additive_scripts_.insert({children, script});
+        defined_scripts_by_string_.insert({script->to_string(), script});
         return script;
+    } else {
+        return it->second;
+    }
+}
+
+const Table<const Script*>* ScriptRegister::get_or_create_table(const Script* script) {
+    auto it = tables_.find(script);
+    if (it == tables_.end()) {
+        const auto table = script->get_table(*this);
+        tables_.insert({script, table});
+        return table;
     } else {
         return it->second;
     }
@@ -35,25 +48,28 @@ const AdditiveScript* ScriptRegister::get_or_create_addition(const Script::Set& 
 
 void ScriptRegister::_build_primitives() {
     primitives_ = std::unordered_map<char, const PrimitiveScript*>{
-            {'E', new PrimitiveScript('E')},
-            {'A', new PrimitiveScript('A')},
-            {'U', new PrimitiveScript('U')},
-            {'S', new PrimitiveScript('S')},
-            {'B', new PrimitiveScript('B')},
-            {'T', new PrimitiveScript('T')}
+        {'E', new PrimitiveScript('E')},
+        {'A', new PrimitiveScript('A')},
+        {'U', new PrimitiveScript('U')},
+        {'S', new PrimitiveScript('S')},
+        {'B', new PrimitiveScript('B')},
+        {'T', new PrimitiveScript('T')}
     };
+    for (auto p: primitives_) {
+        defined_scripts_by_string_.insert({p.second->to_string(), p.second});
+    }
 } 
 
 
 void ScriptRegister::_build_null_scripts() {
     null_scripts_ = {
-            new NullScript(0),
-            new NullScript(1),
-            new NullScript(2),
-            new NullScript(3),
-            new NullScript(4),
-            new NullScript(5), 
-            new NullScript(6)
+        new NullScript(0),
+        new NullScript(1),
+        new NullScript(2),
+        new NullScript(3),
+        new NullScript(4),
+        new NullScript(5), 
+        new NullScript(6)
     };
 } 
 

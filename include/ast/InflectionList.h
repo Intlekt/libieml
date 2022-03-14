@@ -95,9 +95,15 @@ public:
         std::set<std::shared_ptr<structure::InflectionWord>> inflections;
 
         bool valid = true;
-        for (auto&& inflection_word: words_) {
+        for (const auto& inflection_word: words_) {
             // auto inflection = ctx.getWordRegister().resolve_inflection(structure::LanguageString(ctx.getLanguage(), inflection_id->getName()));
-            auto word = ctx.getWordRegister().get_word(inflection_word->getScript());
+            const auto script = inflection_word->parse_script(ctx);
+            if (!script) {
+                valid = false;
+                continue;
+            }
+
+            auto word = ctx.getWordRegister().get_word_from_script(script);
             if (!word) {
                 ctx.getErrorManager().visitorError(
                     getCharRange(),
@@ -111,7 +117,7 @@ public:
                 ctx.getErrorManager().visitorError(
                     getCharRange(),
                     "Invalid word " + std::string(word->getWordType()._to_string()) + " '" + 
-                    word->getScript() + "', not an inflection word."
+                    word->getScript()->to_string() + "', not an inflection word."
                 );
                 valid = false;
                 continue;
@@ -121,7 +127,7 @@ public:
             if (!inflection->accept_role(role_type)) {
                 ctx.getErrorManager().visitorError(
                     getCharRange(),
-                    "Invalid inflection for this role, '" + word->getScript() + "'."
+                    "Invalid inflection for this role, '" + word->getScript()->to_string() + "'."
                 );
                 valid = false;
                 continue;

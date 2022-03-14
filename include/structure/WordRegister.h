@@ -16,12 +16,6 @@ public:
         return defined_words_.count(word->getScript()) > 0;
     }
 
-    std::shared_ptr<structure::Word> get_word(const std::string& s) const {
-        auto r = defined_words_.find(s);
-        if (r == defined_words_.end()) return nullptr;
-        return r->second;
-    }
-
     std::shared_ptr<structure::Name> getName(const std::shared_ptr<structure::AuxiliaryWord>& word) const {
         return namespace_auxiliary_.find(word)->second;
     };
@@ -48,6 +42,12 @@ public:
         }
     };
 
+    std::shared_ptr<structure::Word> get_word_from_script(structure::Script::Ptr s) const {
+        auto res = defined_words_.find(s);
+        if (res == defined_words_.end()) 
+            return nullptr;
+        return res->second;
+    }
 
     /**********************************
      * WordRegister: Auxiliary Words
@@ -102,12 +102,11 @@ public:
         defined_words_.insert({word->getScript(), word});
         caterory_words_.insert({word->getScript(), word});
     }
-    std::shared_ptr<structure::CategoryWord> resolve_category_word(const std::string& s) const {
+    std::shared_ptr<structure::CategoryWord> resolve_category_word(const Script* s) const {
         auto res = caterory_words_.find(s);
         if (res == caterory_words_.end()) {
             return nullptr;
         }
-
         return res->second;
     }
 
@@ -123,7 +122,7 @@ public:
     const_iterator_junction junctions_begin() const {return namespace_junction_.begin();};
     const_iterator_junction junctions_end()   const {return namespace_junction_.end();};
 
-    typedef std::unordered_map<std::string, std::shared_ptr<structure::CategoryWord>>::const_iterator  const_iterator_category_word;
+    typedef std::unordered_map<const Script*, std::shared_ptr<structure::CategoryWord>>::const_iterator  const_iterator_category_word;
     const_iterator_category_word category_word_begin() const {return caterory_words_.begin();};
     const_iterator_category_word category_word_end()   const {return caterory_words_.end();};
 
@@ -133,8 +132,8 @@ private:
     structure::Namespace<structure::InflectionWord> namespace_inflection_;
     structure::Namespace<structure::JunctionWord> namespace_junction_;
 
-    std::unordered_map<std::string, std::shared_ptr<structure::Word>> defined_words_;
-    
-    std::unordered_map<std::string, std::shared_ptr<structure::CategoryWord>> caterory_words_;
+    std::unordered_map<const Script*, std::shared_ptr<structure::Word>> defined_words_;
+
+    std::unordered_map<const Script*, std::shared_ptr<structure::CategoryWord>> caterory_words_;
 };
 }

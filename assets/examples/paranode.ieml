@@ -1,11 +1,11 @@
-@word "a".
-@word "b".
-@word "c".
+@word "a.".
+@word "b.".
+@word "c.".
 
 @node
     en:invariant
     (
-        0 #"a"
+        0 #"a."
     ).
 
 
@@ -14,9 +14,9 @@
 	1d:/#/1
 	2d:/#/2 
 	(
-		0 #"a", 
-		1 {#"a";#"b"}, 
-		2 {#"a";#"b"}
+		0 #"a.", 
+		1 {#"a.";#"b."}, 
+		2 {#"a.";#"b."}
 )
 .
 
@@ -24,19 +24,19 @@
 	en:paranode1
 	1d:/#/1
 	(
-		0 #"a", 
-		1 {#"a";#"b";#"c"}
+		0 #"a.", 
+		1 {#"a.";#"b.";#"c."}
 	) .
 
 // sequences singulieres de en:paranode1
-@node en:node0 (0 #"a", 1 #"a", 2 #"a"). // (0, 0)
-@node en:node1 (0 #"a", 1 #"a", 2 #"b"). // (0, 1)
-@node en:node2 (0 #"a", 1 #"b", 2 #"a"). // (1, 0)
-@node en:node3 (0 #"a", 1 #"b", 2 #"b"). // (1, 1)
+@node en:node0 (0 #"a.", 1 #"a.", 2 #"a."). // (0, 0)
+@node en:node1 (0 #"a.", 1 #"a.", 2 #"b."). // (0, 1)
+@node en:node2 (0 #"a.", 1 #"b.", 2 #"a."). // (1, 0)
+@node en:node3 (0 #"a.", 1 #"b.", 2 #"b."). // (1, 1)
 
-@node en:node10 (0 #"a", 1 #"a").
-@node en:node11 (0 #"a", 1 #"b").
-@node en:node12 (0 #"a", 1 #"c").
+@node en:node10 (0 #"a.", 1 #"a.").
+@node en:node11 (0 #"a.", 1 #"b.").
+@node en:node12 (0 #"a.", 1 #"c.").
 
 // make another paranode for each cells
 
@@ -46,8 +46,8 @@
 	en:paranode00
 	1d:/#/3
 	(
-		0 #"a", 1 #"a", 2 #"a",
-		3 {#"a";#"b";#"c"}
+		0 #"a.", 1 #"a.", 2 #"a.",
+		3 {#"a.";#"b.";#"c."}
 )
 .
 
@@ -55,8 +55,8 @@
 	en:paranode01
 	1d:/#/3
 	(
-		0 #"a", 1 #"a", 2 #"b",
-		3 {#"a";#"b";#"c"}
+		0 #"a.", 1 #"a.", 2 #"b.",
+		3 {#"a.";#"b.";#"c."}
 )
 .
 
@@ -64,24 +64,24 @@
 	en:paranode02
 	1d:/#/3
 	(
-		0 #"a", 1 #"b", 2 #"a",
-		3 {#"a";#"b";#"c"}
+		0 #"a.", 1 #"b.", 2 #"a.",
+		3 {#"a.";#"b.";#"c."}
 )
 .
 // no subparanode for node3
 
 
-@node en:node001 (0 #"a", 1 #"a", 2 #"a", 3 #"a"). 
-@node en:node002 (0 #"a", 1 #"a", 2 #"a", 3 #"b").
-@node en:node003 (0 #"a", 1 #"a", 2 #"a", 3 #"c").
+@node en:node001 (0 #"a.", 1 #"a.", 2 #"a.", 3 #"a."). 
+@node en:node002 (0 #"a.", 1 #"a.", 2 #"a.", 3 #"b.").
+@node en:node003 (0 #"a.", 1 #"a.", 2 #"a.", 3 #"c.").
 
-@node en:node010 (0 #"a", 1 #"a", 2 #"b", 3 #"a").
-@node en:node011 (0 #"a", 1 #"a", 2 #"b", 3 #"b").
-@node en:node012 (0 #"a", 1 #"a", 2 #"b", 3 #"c").
+@node en:node010 (0 #"a.", 1 #"a.", 2 #"b.", 3 #"a.").
+@node en:node011 (0 #"a.", 1 #"a.", 2 #"b.", 3 #"b.").
+@node en:node012 (0 #"a.", 1 #"a.", 2 #"b.", 3 #"c.").
 
-@node en:node020 (0 #"a", 1 #"b", 2 #"a", 3 #"a").
-@node en:node021 (0 #"a", 1 #"b", 2 #"a", 3 #"b").
-@node en:node022 (0 #"a", 1 #"b", 2 #"a", 3 #"c").
+@node en:node020 (0 #"a.", 1 #"b.", 2 #"a.", 3 #"a.").
+@node en:node021 (0 #"a.", 1 #"b.", 2 #"a.", 3 #"b.").
+@node en:node022 (0 #"a.", 1 #"b.", 2 #"a.", 3 #"c.").
 
 
 // three table definition with the same invariant

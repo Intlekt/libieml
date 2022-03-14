@@ -6,6 +6,7 @@
 #include "structure/script/Script.h"
 #include "structure/script/MultiplicativeScript.h"
 #include "structure/script/AdditiveScript.h"
+#include "structure/table/Table.h"
 
 
 namespace ieml::structure {
@@ -36,10 +37,14 @@ public:
         
         for (const auto& mul: multiplicative_scripts_)
             delete mul.second;
+
+        for (const auto& table: tables_)
+            delete table.second;
     }
 
     const MultiplicativeScript* get_or_create_multiplication(const MultiplicativeScript::Children& children);
     const AdditiveScript* get_or_create_addition(const Script::Set& children);
+    const Table<const Script*>* get_or_create_table(const Script* script);
 
 
     const PrimitiveScript* get_primitive(char c) const {return primitives_.find(c)->second;};
@@ -57,7 +62,15 @@ public:
         return remarkable_additions_.find(tag)->second;
     }
 
+    Script::Ptr get_defined_script_by_string(const std::string& s) const {
+        auto it = defined_scripts_by_string_.find(s);
+        if (it == defined_scripts_by_string_.end()) return nullptr;
+        return it->second;
+    }
+
 private:
+    std::unordered_map<std::string, Script::Ptr> defined_scripts_by_string_;
+
     // Primitives
     std::unordered_map<char, const PrimitiveScript*> primitives_;
 
@@ -71,6 +84,10 @@ private:
     // Additions
     std::unordered_map<Script::Set, const AdditiveScript*, Script::HashSetFunctor> additive_scripts_;
     std::unordered_map<char, const AdditiveScript*> remarkable_additions_;
+
+    // Tables
+    // Store for each script its table
+    std::unordered_map<const Script*, const Table<const Script*>*> tables_;
 
     void _build_primitives();
     void _build_null_scripts();

@@ -5,8 +5,7 @@
 
 using namespace ieml::parser;
 
-IEMLParser::FileParser::FileParser(const std::string& file_id, const std::string& input_str, IEMLParserErrorListener* error_listener) : 
-        script_parser_(file_id, error_listener) {
+IEMLParser::FileParser::FileParser(const std::string& file_id, const std::string& input_str, IEMLParserErrorListener* error_listener) {
     input_ = new antlr4::ANTLRInputStream(input_str);
 
     visitor_ = std::make_shared<IEMLGrammarVisitor>(file_id, error_listener);

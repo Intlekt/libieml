@@ -18,6 +18,13 @@ public:
 
     static const std::unordered_map<char, uint16_t> CHAR_TO_CANONICAL;
 
+    virtual ScriptType get_type() const override {return ScriptType::PRIMITIVE;};
+
+protected:
+    virtual TablePtr build_table_paradigm(ScriptRegister&) const override {
+        throw std::invalid_argument("A paradigm primitive is impossible.");
+    }
+
 private:
     PrimitiveScript(char c) : 
         Script(
@@ -29,6 +36,7 @@ private:
         char_(c) {
             singular_sequences_ = {this};
         }
+
 
     const char char_;
 };

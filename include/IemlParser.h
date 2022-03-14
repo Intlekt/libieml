@@ -13,8 +13,6 @@
 
 #include "IEMLGrammarVisitor.h"
 
-#include "ScriptParser.h"
-
 #include "ast/Program.h"
 #include "structure/path/PathTree.h"
 
@@ -42,8 +40,6 @@ public:
         std::shared_ptr<IEMLGrammarVisitor> visitor_;
         antlr4::tree::ParseTree* parseTree_ = nullptr;
         std::shared_ptr<ieml::AST::Program> ast_;
-
-        ScriptParser script_parser_;
     };
 
 

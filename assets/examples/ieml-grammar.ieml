@@ -81,7 +81,7 @@
 @word "S:.E:.n.-" .
 @word "S:.A:.n.-" .
 @word "t.o.-t.o.-'" .
-@word "s.o.-k.o-'" .
+@word "s.o.-k.o.-'" .
 @word "s.x.we.-" .
 @word "s.h.wu.-" .
 @word "s.g.wo.-" .
@@ -108,9 +108,9 @@
 @word "t.i.-s.i.-t.u.-'" .
 @word "g.-U:.-'s.o.-l.o.-'," .
 @word "s.o.-wa.-'S:.-'," .
-@word "u.-y.'s.o.-k.o-'," .
+@word "u.-y.-'s.o.-k.o.-'," .
 @word "B:.S:.n.-'E:.-U:.d.-l.-'," .
-@word "B:.S:.n. 'E:.-U:.s.-l.-'," .
+@word "B:.S:.n.-'E:.-U:.s.-l.-'," .
 
 // ¶ #CATEGORIES
 
@@ -139,7 +139,7 @@
 @component en:atom				fr:atome 			(0 ~noun #"S:.A:.n.-")			.
 			
 @component en:change 			fr:changement			(0 ~noun #"t.o.-t.o.-'")		.
-@component en:collective intelligence 	fr:intelligence collective 	(0 ~noun #"s.o.-k.o-'")		.
+@component en:collective intelligence 	fr:intelligence collective 	(0 ~noun #"s.o.-k.o.-'")		.
 
 @component en:causal determination		fr:détermination causale	(0 ~noun #"s.x.we.-")			.
 @component en:quality			fr:qualité			(0 ~noun #"s.h.wu.-")			.
@@ -176,10 +176,10 @@
 
 @component en:concept			fr:concept 			(0 ~noun #"s.o.-wa.-'S:.-',")	.	
 
-@component en:precise en:specify		fr:préciser fr:spécifier	(0 ~verb #"u.-y.'s.o.-k.o-',")		.
+@component en:precise en:specify		fr:préciser fr:spécifier	(0 ~verb #"u.-y.-'s.o.-k.o.-',")		.
 
 @component en:root				fr:racine			(0 ~noun #"B:.S:.n.-'E:.-U:.d.-l.-',")	.
-@component en:leaf				fr:feuille			(0 ~noun #"B:.S:.n. 'E:.-U:.s.-l.-',")	.
+@component en:leaf				fr:feuille			(0 ~noun #"B:.S:.n.-'E:.-U:.s.-l.-',")	.
 
 // MISSING
 @word "o.o.-".
