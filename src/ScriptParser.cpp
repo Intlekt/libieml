@@ -24,7 +24,7 @@ ScriptParser::ScriptParser(const std::string& file_id, IEMLParserErrorListener* 
     parser_->getInterpreter<atn::ParserATNSimulator>()->setPredictionMode(atn::PredictionMode::SLL);
 }
 
-const ieml::structure::Script* ScriptParser::parse(
+const ieml::structure::Script* ScriptParser::get_or_parse(
         ieml::structure::ScriptRegister* reg,
         const std::string& input_str, 
         const std::string& file_id, 
@@ -48,8 +48,11 @@ const ieml::structure::Script* ScriptParser::parse(
 
     const auto parse_tree = parser_->script();
     
-    auto script_ast = std::move(visitor_->visit_with_offset(reg, parse_tree, file_id, line_offset, char_offset)
-                                        .as<ScriptGrammarVisitor::VisitorResult<const ieml::structure::Script*>>());
+    auto script_ast_any = visitor_->visit_with_offset(reg, parse_tree, file_id, line_offset, char_offset);
+    if (script_ast_any.isNull())
+        return nullptr; // input is not matched ex: empty string
+
+    auto script_ast = std::move(script_ast_any.as<ScriptGrammarVisitor::VisitorResult<const ieml::structure::Script*>>());
     if (script_ast.isError())
         return nullptr;
     

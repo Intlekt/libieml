@@ -35,7 +35,7 @@ using namespace ieml::relation;
 
 
 TEST(ieml_relation_test_case, basic_graph) {
-  PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:noun class:VERB "e.". @component en:included (0 ~noun #"wa."). @component en:container (0 #(0 ~noun #"wa.")).@component en:topcontainer (0 #(0 #(0 ~noun #"wa."))).)");
+  PARSE_NO_ERRORS(R"(@rootparadigm type:CATEGORY "O:O:.". @rootparadigm type:INFLECTION "O:M:.". @inflection en:noun class:VERB "e.". @component en:included (0 ~noun #"wa."). @component en:container (0 #(0 ~noun #"wa.")).@component en:topcontainer (0 #(0 #(0 ~noun #"wa."))).)");
 
   RelationGraph relgraph;
   std::shared_ptr<ieml::parser::ParserContextManager> context;
@@ -54,7 +54,7 @@ TEST(ieml_relation_test_case, basic_graph) {
   auto topcontainer = category_register.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN,"topcontainer"));
 
   EXPECT_EQ(boost::num_edges(graph), 4);
-  EXPECT_EQ(boost::num_vertices(graph), 5);
+  EXPECT_EQ(boost::num_vertices(graph), 8);
   // HAS_RELATION(node_register.get_or_create(container, graph), node_register.get_or_create(included, graph), R"(/#/0)");
   // HAS_RELATION(node_register.get_or_create(topcontainer, graph), node_register.get_or_create(container, graph), R"(/#/0)");
 

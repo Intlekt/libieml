@@ -1,6 +1,15 @@
 @language fr.
 
-@inflection fr:nom class:VERB "a." .
+
+@rootparadigm type:auxiliary "M:O:.".
+@auxiliary fr:sur role:5 "j.".
+
+@rootparadigm type:inflection "O:M:.".
+@inflection fr:verb class:VERB "a." .
+@inflection fr:nom  class:VERB "o." .
+@inflection fr:singulier class:NOUN "y." .
+@inflection fr:pluriel class:NOUN "u." .
+@inflection fr:futur class:VERB "i." .
 @word "wa." .
 
 @component fr:test (0 ~nom #"wa.") .

@@ -10,25 +10,14 @@ std::string AuxiliaryDeclaration::to_string() const {
 
 void AuxiliaryDeclaration::check_declaration(ieml::parser::ParserContextManager& ctx) const {
     auto name = check_translatable(ctx);
-    
     auto role_type = accepted_role_type_->check_role_type(ctx);
-    auto word = word_->check_word(ctx);
+    auto script = word_->check_is_not_defined(ctx, structure::WordType::AUXILIARY);
 
-    if (!name || !word || !role_type) {
+    if (!name || !script || !role_type) {
         return;
     }
     
-    auto auxiliary_word = std::make_shared<structure::AuxiliaryWord>(word->getScript(), *role_type);
-
-    auto& wregister = ctx.getWordRegister();
-    if (wregister.word_is_defined(auxiliary_word)) {
-        ctx.getErrorManager().visitorError(
-            getCharRange(),
-            "Cannot redefine word " + word->to_string() + " as an auxiliary, it has already been defined before."
-        );
-        return;
-    }
-
+    auto auxiliary_word = std::make_shared<structure::AuxiliaryWord>(script, *role_type);
     ctx.getSourceMapping().register_mapping(auxiliary_word, this);
-    wregister.define_auxiliary(name, auxiliary_word);
+    ctx.getWordRegister().define_auxiliary(name, auxiliary_word);
 }

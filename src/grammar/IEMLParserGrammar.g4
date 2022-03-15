@@ -4,17 +4,18 @@ options { tokenVocab=IEMLLexerGrammar; }
 
 
 program : declarations+=declaration* EOF;
-
-declaration : COMPONENT  language_strings+=language_string+                                       phrase_=phrase            DECLARATION_END    # componentDeclaration
-            | NODE       language_strings+=language_string+                                       phrase_=phrase            DECLARATION_END    # nodeDeclaration
-            | PARANODE   language_strings+=language_string+ dimensions+=dimension_definition+     phrase_=phrase            DECLARATION_END    # paranodeDeclaration
-            | LINK       language_strings+=language_string+                                       phrase_=phrase            DECLARATION_END    # linkDeclaration
-            | WORD                                                                                word_=word                DECLARATION_END    # wordDeclaration
-            | INFLECTION language_strings+=language_string+ CLASS_MARK inflection_type=IDENTIFIER word_=word                DECLARATION_END    # inflectionDeclaration
-            | AUXILIARY  language_strings+=language_string+ ROLE_MARK role_type_=role_type        word_=word                DECLARATION_END    # auxiliaryDeclaration
-            | JUNCTION   language_strings+=language_string+                                       word_=word                DECLARATION_END    # junctionDeclaration
-            | LANGUAGE   language=identifier                                                                                DECLARATION_END    # languageDeclaration
-            | TABLE                                                    (category_mappings+=invariant_paranode_mapping)+     DECLARATION_END    # tableDeclaration
+   
+declaration : COMPONENT     language_strings+=language_string+                                       phrase_=phrase            DECLARATION_END    # componentDeclaration
+            | NODE          language_strings+=language_string+                                       phrase_=phrase            DECLARATION_END    # nodeDeclaration
+            | PARANODE      language_strings+=language_string+ dimensions+=dimension_definition+     phrase_=phrase            DECLARATION_END    # paranodeDeclaration
+            | LINK          language_strings+=language_string+                                       phrase_=phrase            DECLARATION_END    # linkDeclaration
+            | ROOT_PARADIGM                                    TYPE_MARK type_root=IDENTIFIER        word_=word                DECLARATION_END    # rootParadigmDeclaration
+            | WORD                                                                                   word_=word                DECLARATION_END    # wordDeclaration
+            | INFLECTION    language_strings+=language_string+ CLASS_MARK inflection_type=IDENTIFIER word_=word                DECLARATION_END    # inflectionDeclaration
+            | AUXILIARY     language_strings+=language_string+ ROLE_MARK role_type_=role_type        word_=word                DECLARATION_END    # auxiliaryDeclaration
+            | JUNCTION      language_strings+=language_string+                                       word_=word                DECLARATION_END    # junctionDeclaration
+            | LANGUAGE      language=identifier                                                                                DECLARATION_END    # languageDeclaration
+            | TABLE                                                    (category_mappings+=invariant_paranode_mapping)+        DECLARATION_END    # tableDeclaration
             ;
 
 phrase : PARENTHESIS_START phrase_lines+=phrase_line (COMMA phrase_lines+=phrase_line)* PARENTHESIS_END                        # phrase__lines

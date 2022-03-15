@@ -4,6 +4,8 @@ lexer grammar IEMLLexerGrammar;
 LANGUAGE_STRING_MARK : [a-z][a-z]':';
 CLASS_MARK : 'class:';
 ROLE_MARK : 'role:';
+TYPE_MARK : 'type:';
+
 DIMENSION_MARK       : [1-3]'d:';
    
 STRING               : '"'(~'"'|'\\"')*'"';
@@ -55,4 +57,5 @@ JUNCTION             : '@junction';
 PARANODE             : '@paranode';
 LINK                 : '@link';
 TABLE                : '@table';
+ROOT_PARADIGM        : '@rootparadigm';
    

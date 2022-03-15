@@ -91,6 +91,7 @@ set(IEMLParser_src ${ANTLR_IEMLLexerGrammar_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/LinkDeclaration.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/WordDeclaration.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/TableDeclaration.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/ast/declaration/RootParadigmDeclaration.cpp
 
 
                    ${CMAKE_CURRENT_LIST_DIR}/structure/reference/ReferenceSchema.cpp

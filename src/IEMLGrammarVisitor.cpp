@@ -12,6 +12,7 @@
 #include "ast/declaration/WordDeclaration.h"
 #include "ast/declaration/LinkDeclaration.h"
 #include "ast/declaration/TableDeclaration.h"
+#include "ast/declaration/RootParadigmDeclaration.h"
 #include "ast/Constants.h"
 #include "ast/Identifier.h"
 #include "ast/Program.h"
@@ -231,6 +232,24 @@ antlrcpp::Any IEMLGrammarVisitor::visitTableDeclaration(IEMLParserGrammar::Table
                         std::move(category_mappings));
 }
 
+antlrcpp::Any IEMLGrammarVisitor::visitRootParadigmDeclaration(IEMLParserGrammar::RootParadigmDeclarationContext *ctx) {
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for a root paradigm declaration.", true);
+  std::shared_ptr<Identifier> root_type;
+  if(!ctx->type_root) 
+    error_listener_->parseError(*charRangeFromContext(ctx), 
+                                "Invalid root type for an root paradigm declaration. "
+                                "Expected 'CATEGORY', 'INFLECTION', 'AUXILIARY' or 'JUNCTION'.");
+  else 
+    root_type = std::make_unique<Identifier>(charRangeFromToken(ctx->type_root), ctx->type_root->getText());
+
+  CAST_OR_RETURN_IF_NULL(ctx, Word, word_, IDeclaration);
+  if (root_type == nullptr) RETURN_VISITOR_RESULT_ERROR(IDeclaration);
+
+  RETURN_VISITOR_RESULT(IDeclaration, 
+                        RootParadigmDeclaration,
+                        std::move(root_type),
+                        std::move(word_));
+}
 /**
  * PHRASE
  */

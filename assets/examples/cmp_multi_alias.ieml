@@ -4,10 +4,12 @@
 @word "we." .
 @word "wu." .
 
+@rootparadigm type:junction "M:M:.".
 @junction fr:et "m.".
 
+@rootparadigm type:inflection "O:M:.".
 @inflection fr:verb class:VERB "a." .
-@inflection fr:nom  class:VERB "b." .
+@inflection fr:nom  class:VERB "o." .
 
 @component fr:manger (0 ~verb #"wa.") .
 @component fr:composent2 (0 ~nom #"we.") .

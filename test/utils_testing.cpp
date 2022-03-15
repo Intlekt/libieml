@@ -9,7 +9,7 @@ ieml::structure::Script::Ptr ieml::testing::parse_script(ieml::structure::Script
         auto parser = ieml::parser::ScriptParser("Parsing script: " + s, &listener);
         res;
         try {                                                           
-            res = parser.parse(reg, s, "", 0, 0);
+            res = parser.get_or_parse(reg, s, "", 0, 0);
         } catch (std::exception& e) {
             EXPECT_TRUE(false) << e.what();
         }

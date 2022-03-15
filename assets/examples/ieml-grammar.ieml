@@ -6,38 +6,54 @@
 @language en.
 
 // VERBS ~INFLECTIONS
+
+@rootparadigm type:inflection "E:M:O:.".
 @inflection en:if 					fr:si 	 class:VERB "E:S:A:."			.	
-@inflection en:then 				fr:alors class:VERB "E:T:U:."			.	
+@inflection en:then 				fr:alors class:VERB "E:T:U:."			.
+
+@rootparadigm type:inflection "E:O:O:.".
 @inflection en:not 					fr:non	 class:VERB "E:U:A:."			.	
 
+@rootparadigm type:inflection "E:.-O:O:.-t.o.-'".
 @inflection en:passive 				fr:passif 	 class:VERB "E:.-wo.-t.o.-'"	. 
 @inflection en:active 				fr:actif	 class:VERB "E:.-wa.-t.o.-'"		.
 @inflection en:reciprocal 				fr:réciproque class:VERB "E:.-we.-t.o.-'"		. 
 @inflection en:reflexive 				fr:réflexif class:VERB "E:.-wu.-t.o.-'"		.
 
+@rootparadigm type:inflection "E:.-'O:O:.-M:.-'t.o.-',".
 @inflection en:participle en:quasi adjective 	fr:participe fr:quasi adjectif class:VERB "E:.-'we.-T:.-'t.o.-'," 	.
 
 // NOUNS ~INFLECTIONS
+@rootparadigm type:inflection "E:.O:O:.-".
+
 @inflection en:singular 				fr:singulier class:NOUN "E:.wo.-"			.
 @inflection en:two 					fr:deux	 class:NOUN "E:.wa.-"			.
 @inflection en:three 				fr:trois	 class:NOUN "E:.wu.-"			.
 @inflection en:plural 				fr:pluriel	 class:NOUN "E:.we.-"			.
 
+
+@rootparadigm type:inflection "E:I:.-t.u.-'".
+
 @inflection en:all					fr:tous	 class:NOUN "E:A:.-t.u.-'"		.
+
+@rootparadigm type:inflection "E:.-',b.-S:.U:.-'y.-'O:.-',_".
 
 @inflection en:non contiguous 			fr:non contigu class:NOUN "E:.-',b.-S:.U:.-'y.-'A:.-',_".
 
-@inflection en:noun class:VERB "S:".
-@inflection en:verb class:VERB "B:".
+@rootparadigm type:inflection "E:O:.O:.-".
+@inflection en:noun class:VERB "E:A:.A:.-".
+@inflection en:verb class:VERB "E:U:.A:.-".
 
 // *AUXILIARIES
 
 // *AUXILIARIES ROLE4 causes, objective structures
+@rootparadigm type:auxiliary "E:M:.d.+M:O:.-".
 @auxiliary en:by 					fr:par		 role:4 "E:T:.p.-".	
 @auxiliary en:part of 				fr:partie de	 role:4 "E:S:.x.-".	
 @auxiliary en:formal cause 			fr:cause formelle role:4 "E:T:.j.-".	
 
 // *AUXILIARIES ROLE6 places
+@rootparadigm type:auxiliary "E:.-F:.M:M:.-l.-'".
 @auxiliary en:at starting point 			fr:au point de départ role:6 "E:.-S:.b.-l.-'".	
 @auxiliary en:at arrival point 			fr:au point d arrivée role:6 "E:.-S:.f.-l.-'".	
 @auxiliary en:at medium point 			fr:au point d arrivée role:6 "E:.-S:.m.-l.-'".	
@@ -45,20 +61,30 @@
 @auxiliary en:at					fr:à	 role:6 "E:.-B:.n.-l.-'".	
 
 // *AUXILIARIES ROLE7 intentions
+@rootparadigm type:auxiliary "E:.-'h.o.d.-U:.-'M:O:.-',".
 @auxiliary en:in context 				fr:en contexte	 role:7 "E:.-'h.o.d.-U:.-'x.-',".
+
+@rootparadigm type:auxiliary "E:.-b.O:M:.-'E:.-b.O:M:.-',".
 @auxiliary en:variable variable 			fr:variable variable role:7 "E:.-b.o.-'E:.-b.o.-',".
 
 // *AUXILIARY ROLE8 manner
+@rootparadigm type:auxiliary "E:.O:.M:O:.-".
+@rootparadigm type:auxiliary "E:.A:.O:M:.-".
 @auxiliary 	en:same 				fr:même		 role:8 "E:.A:.g.-".
 @auxiliary en:name of 				fr:nom de 	 role:8 "E:.A:.e.-".
 @auxiliary 	en:moral feature possessed by 		fr:trait moral possédé par	 role:8 "E:.A:.o.-".
 
+@auxiliary en:with role:8 "E:.A:.x.-".
+
 // &JUNCTIONS [ ]
 
+@rootparadigm type:junction "E:M:.-k.u.-'".
 @junction en:and 					fr:et					"E:S:.-k.u.-'"	.
 @junction en:inclusive or				fr:ou inclusif				"E:B:.-k.u.-'"	.
 @junction en:exclusive or				fr:ou exclusif				"E:T:.-k.u.-'"	.
 
+@rootparadigm type:junction "E:.-M:M:.a.-k.u.-'".
+@rootparadigm type:junction "E:.-M:M:.u.-k.u.-'".
 @junction en:equivalence			fr:équivalence			"E:.-s.a.-k.u.-'"	.	
 @junction en:reciprocal relations 		fr:relations réciproques		"E:.-m.u.-k.u.-'"	. 	
 
@@ -195,7 +221,6 @@
 @component en:medium point (0 ~noun #"o.y.-").
 
 
-@auxiliary en:with role:8 "t.".
 
 // ¶¶ PHRASES
 

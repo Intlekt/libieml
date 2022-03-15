@@ -60,7 +60,7 @@ TEST(ieml_structure_test_case, test_script_parser) {
     auto parser = ieml::parser::ScriptParser("", &listener);
     auto reg = ScriptRegister();
 
-    auto res = parser.parse(&reg, "M:M:.M:M:.-", "", 0, 0);
+    auto res = parser.get_or_parse(&reg, "M:M:.M:M:.-", "", 0, 0);
 
     ASSERT_NE(res, nullptr);
     ASSERT_EQ(res->to_string(), "M:M:.M:M:.-");

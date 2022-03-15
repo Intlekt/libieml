@@ -59,7 +59,7 @@ public:
     };
 
     structure::Script::Ptr get_or_parse_script(const std::string& s) {
-        return script_parser_.parse(&script_register_, s, "", 0, 0); 
+        return script_parser_.get_or_parse(&script_register_, s, "", 0, 0); 
     };
 
 private:

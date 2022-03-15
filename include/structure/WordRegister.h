@@ -6,15 +6,21 @@
 #include "structure/Word.h"
 #include "structure/Namespace.h"
 
+
+/**
+ * @brief Store the information about :
+ *  - all the curently defined root paradigms and their singular sequences
+ *  - all the curently defined Word for each categories
+ *      - inflection, auxiliary and junction with there names
+ *      - category words.
+ * 
+ */
 namespace ieml::structure {
 class WordRegister {
 public:
     /**********************************
      * WordRegister: Word
      **********************************/
-    bool word_is_defined(std::shared_ptr<structure::Word> word) {
-        return defined_words_.count(word->getScript()) > 0;
-    }
 
     std::shared_ptr<structure::Name> getName(const std::shared_ptr<structure::AuxiliaryWord>& word) const {
         return namespace_auxiliary_.find(word)->second;
@@ -42,6 +48,29 @@ public:
         }
     };
 
+
+    /**********************************
+     * WordRegister: Declare script
+     **********************************/
+    void declare_script(Script::Ptr script, WordType wtype) {
+        declared_scripts_.insert({script, wtype});
+    }
+
+    bool script_is_declared(Script::Ptr script) const {
+        return declared_scripts_.find(script) != declared_scripts_.end();
+    }
+
+    WordType get_script_type(Script::Ptr script) const {
+        return declared_scripts_.find(script)->second;
+    }
+
+    /**********************************
+     * WordRegister: Define word
+     **********************************/
+    bool word_is_defined(Script::Ptr script) const {
+        return defined_words_.count(script) > 0;
+    }
+
     std::shared_ptr<structure::Word> get_word_from_script(structure::Script::Ptr s) const {
         auto res = defined_words_.find(s);
         if (res == defined_words_.end()) 
@@ -59,6 +88,7 @@ public:
         defined_words_.insert({word->getScript(), word});
         namespace_auxiliary_.define(name, word);
     }
+
     std::shared_ptr<structure::AuxiliaryWord> resolve_auxiliary(const structure::LanguageString& s) const {
         return namespace_auxiliary_.resolve(s);
     }
@@ -132,8 +162,10 @@ private:
     structure::Namespace<structure::InflectionWord> namespace_inflection_;
     structure::Namespace<structure::JunctionWord> namespace_junction_;
 
-    std::unordered_map<const Script*, std::shared_ptr<structure::Word>> defined_words_;
+    std::unordered_map<Script::Ptr, std::shared_ptr<structure::Word>> defined_words_;
 
-    std::unordered_map<const Script*, std::shared_ptr<structure::CategoryWord>> caterory_words_;
+    std::unordered_map<Script::Ptr, std::shared_ptr<structure::CategoryWord>> caterory_words_;
+
+    std::unordered_map<Script::Ptr, WordType> declared_scripts_; 
 };
 }

@@ -1,7 +1,14 @@
 @language fr.
 
-@junction fr:et "wo.".
-@inflection fr:nom en:noun class:VERB "a.".
+
+@rootparadigm type:junction "M:M:.".
+@junction fr:et "m." .
+
+@rootparadigm type:inflection "O:M:.".
+@inflection fr:verb class:VERB "a." .
+@inflection fr:nom  class:VERB "o." .
+@inflection fr:singulier class:NOUN "y." .
+@inflection fr:pluriel class:NOUN "u." .
 
 @word "wa.".
 @word "we.".
