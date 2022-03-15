@@ -21,23 +21,13 @@ void InflectionDeclaration::check_declaration(ieml::parser::ParserContextManager
         return;
     } 
 
-    auto word = word_->check_word(ctx);
-
-    if (!name || !word || !inflection_type) {
+    auto script = word_->check_is_not_defined(ctx, structure::WordType::INFLECTION);
+    if (!name || !script || !inflection_type) {
         return;
     }
     
-    auto inflection_word = std::make_shared<structure::InflectionWord>(word->getScript(), *inflection_type);
-    
-    auto& wregister = ctx.getWordRegister();
-    if (wregister.word_is_defined(inflection_word)) {
-        ctx.getErrorManager().visitorError(
-            getCharRange(),
-            "Cannot redefine word " + word->to_string() + " as an inflection, it has already been defined before."
-        );
-        return;
-    }
+    auto inflection_word = std::make_shared<structure::InflectionWord>(script, *inflection_type);
 
     ctx.getSourceMapping().register_mapping(inflection_word, this);
-    wregister.define_inflection(name, inflection_word);
+    ctx.getWordRegister().define_inflection(name, inflection_word);
 }

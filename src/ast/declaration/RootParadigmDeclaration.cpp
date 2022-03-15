@@ -9,9 +9,9 @@ std::string RootParadigmDeclaration::to_string() const {
 }
 
 void RootParadigmDeclaration::check_declaration(ieml::parser::ParserContextManager& ctx) const {
-    auto word = word_->check_word(ctx);
+    auto script = word_->check_script(ctx);
 
-    auto root_type = structure::WordType::_from_string_nothrow(root_type_->getName().c_str());
+    auto root_type = structure::WordType::_from_string_nocase_nothrow(root_type_->getName().c_str());
     if (!root_type) {
         ctx.getErrorManager().visitorError(
             getCharRange(),
@@ -21,16 +21,14 @@ void RootParadigmDeclaration::check_declaration(ieml::parser::ParserContextManag
         return;
     } 
 
-    if (!word) {
+    if (!script) {
         return;
     }
-
-    const auto script = word->getScript();
 
     if (script->get_multiplicity() == 1) {
         ctx.getErrorManager().visitorError(
             getCharRange(),
-            "Invalid script for root paradigm definition, not a paradigm "+word->to_string()+"."
+            "Invalid script for root paradigm definition, not a paradigm \""+script->to_string()+"\"."
         );
         return;
     }
@@ -39,7 +37,7 @@ void RootParadigmDeclaration::check_declaration(ieml::parser::ParserContextManag
 
 
     for (auto& ss : script->singular_sequences()) {
-        if (wregister.is_declared(ss)) {
+        if (wregister.script_is_declared(ss)) {
             ctx.getErrorManager().visitorError(
                 getCharRange(), 
                 "Cannot declare script '" + ss->to_string() + "' as a member of root paradigm '" +script->to_string()+"', it "
@@ -58,8 +56,5 @@ void RootParadigmDeclaration::check_declaration(ieml::parser::ParserContextManag
             wregister.define_word(std::make_shared<structure::CategoryWord>(ss));
     }
 
-    // register the paradigm word into the mapping
-    // TODO: change that to be able to use directly the script, because a Word with a 
-    // paradigmatic script is not valid.
-    ctx.getSourceMapping().register_mapping(word, this);
+    // TODO:register the paradigm declaration into the mapping
 }

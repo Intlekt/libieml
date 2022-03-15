@@ -50,29 +50,9 @@ public:
     }
 
     virtual std::shared_ptr<structure::JunctionWord> check_junction(parser::ParserContextManager& ctx) const override {
-        const auto script = word_->parse_script(ctx);
-        if (!script) return nullptr;
-
-        auto word = ctx.getWordRegister().get_word_from_script(script);
-        if (!word) {
-            ctx.getErrorManager().visitorError(
-                getCharRange(),
-                "Undefined junction word '" + word_->getScript() + "'."
-            );
-            return {nullptr};
-        }
-
-        if (word->getWordType() != +ieml::structure::WordType::JUNCTION) {
-            ctx.getErrorManager().visitorError(
-                getCharRange(),
-                "Invalid word " + std::string(word->getWordType()._to_string()) + " '" + 
-                word_->getScript() + "', not a junction word."
-            );
-            return {nullptr};
-        }
-
+        const auto word = word_->check_is_defined(ctx, structure::WordType::JUNCTION);
+        if (!word) return nullptr;
         const auto& junction_type = std::dynamic_pointer_cast<structure::JunctionWord>(word);
-
         return junction_type;
     }
 

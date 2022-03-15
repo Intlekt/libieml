@@ -131,12 +131,12 @@ antlrcpp::Any ScriptGrammarVisitor::visitMult_layer##layer##__mult(ScriptParserG
     if (children.size() > 1) {                                  \
         attribute = children[1];  \
     } else  \
-        attribute = register_->get_nullscript(layer); \
+        attribute = register_->get_nullscript(layer - 1); \
     \
     if (children.size() > 2) { \
         mode = children[2]; \
     } else \
-        mode = register_->get_nullscript(layer); \
+        mode = register_->get_nullscript(layer - 1); \
  \
     RETURN_VISITOR_RESULT_MOVE(                       \
       register_->get_or_create_multiplication({       \

@@ -77,12 +77,16 @@ TEST(ieml_structure_test_case, path_from_string) {
     ieml::parser::ParserContextManager ctx(&error_listener);
     auto& wregister = ctx.getWordRegister();
     auto sreg = &ctx.getScriptRegister();
-    wregister.define_word(std::make_shared<CategoryWord>(ieml::testing::parse_script(sreg, "wa.")));
+    auto script = ieml::testing::parse_script(&ctx.getScriptRegister(), "wa.");
+    wregister.declare_script(script, WordType::CATEGORY);
+    wregister.define_word(std::make_shared<CategoryWord>(script));
 
     PARSE_PATH_VALID(R"(/"wa.")", ctx);
 
     std::unordered_multiset<LanguageString> s{LanguageString(LanguageType::FR, "aux_a")};
-    wregister.define_auxiliary(std::make_shared<Name>(s), std::make_shared<AuxiliaryWord>(ieml::testing::parse_script(sreg, "a."), RoleType::ROOT));
+    script = ieml::testing::parse_script(&ctx.getScriptRegister(), "a.");
+    wregister.declare_script(script, WordType::AUXILIARY);
+    wregister.define_auxiliary(std::make_shared<Name>(s), std::make_shared<AuxiliaryWord>(script, RoleType::ROOT));
     PARSE_PATH_VALID(R"(/*"a.")", ctx);
     PARSE_PATH_VALID("/0", ctx);
     PARSE_PATH_VALID(R"(/0/*"a."/"wa.")", ctx);
@@ -193,7 +197,7 @@ TEST(ieml_structure_test_case, path_tree_register) {
     EXPECT_EQ(b, c->getChildrenAsVector()[0]);
 
     {
-        PARSE_NO_ERRORS(R"(@word "wa.". @inflection en:noun class:VERB "e.". @component en:included (0 ~noun #"wa."). @component en:container (0 #(0 ~noun #"wa.")).)");
+        PARSE_NO_ERRORS(R"(@rootparadigm type:CATEGORY "O:O:.".@rootparadigm type:INFLECTION "O:M:.". @inflection en:noun class:VERB "e.". @component en:included (0 ~noun #"wa."). @component en:container (0 #(0 ~noun #"wa.")).)");
         auto context = parser.getContext();
 
         auto included = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::EN, "included"));
@@ -262,10 +266,15 @@ TEST(ieml_structure_test_case, path_prefix) {
     ieml::parser::IEMLParserErrorListener error_listener;
     ieml::parser::ParserContextManager ctx(&error_listener);
     auto& wregister = ctx.getWordRegister();
-    wregister.define_word(std::make_shared<CategoryWord>(ieml::testing::parse_script(&ctx.getScriptRegister(), "wa.")));
+    auto script = ieml::testing::parse_script(&ctx.getScriptRegister(), "wa.");
+    wregister.declare_script(script, WordType::CATEGORY);
+    wregister.define_word(std::make_shared<CategoryWord>(script));
 
     auto p0 = ieml::parser::parsePath(ctx, R"(/#/0/"wa.")", true);   
     auto p1 = ieml::parser::parsePath(ctx, R"(/#/1/"wa.")", true);
+
+    ASSERT_NE(p0, nullptr);
+    ASSERT_NE(p1, nullptr);
 
     EXPECT_FALSE(p0->is_prefix(p1));
 
@@ -279,10 +288,14 @@ TEST(ieml_structure_test_case, path_is_contained) {
     ieml::parser::IEMLParserErrorListener error_listener;
     ieml::parser::ParserContextManager ctx(&error_listener);
     auto& wregister = ctx.getWordRegister();
-    wregister.define_word(std::make_shared<CategoryWord>(ieml::testing::parse_script(&ctx.getScriptRegister(), "wa.")));
+    auto script = ieml::testing::parse_script(&ctx.getScriptRegister(), "wa.");
+    wregister.declare_script(script, WordType::CATEGORY);
+    wregister.define_word(std::make_shared<CategoryWord>(script));
 
     auto p0 = ieml::parser::parsePath(ctx, R"(/#/0/"wa.")", true);   
     auto p1 = ieml::parser::parsePath(ctx, R"(/#/1/"wa.")", true);
+    ASSERT_NE(p0, nullptr);
+    ASSERT_NE(p1, nullptr);
 
     EXPECT_FALSE(p0->is_contained(p1));
 

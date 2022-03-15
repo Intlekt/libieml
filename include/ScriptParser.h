@@ -23,7 +23,7 @@ class ScriptParser {
 public:
     ScriptParser(const std::string& file_id, IEMLParserErrorListener* error_manager);
 
-    const ieml::structure::Script* parse(
+    const ieml::structure::Script* get_or_parse(
         ieml::structure::ScriptRegister* reg,
         const std::string& input_str, 
         const std::string& file_id, 

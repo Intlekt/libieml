@@ -24,7 +24,7 @@ ScriptParser::ScriptParser(const std::string& file_id, IEMLParserErrorListener* 
     parser_->getInterpreter<atn::ParserATNSimulator>()->setPredictionMode(atn::PredictionMode::SLL);
 }
 
-const ieml::structure::Script* ScriptParser::parse(
+const ieml::structure::Script* ScriptParser::get_or_parse(
         ieml::structure::ScriptRegister* reg,
         const std::string& input_str, 
         const std::string& file_id, 

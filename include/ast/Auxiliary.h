@@ -59,27 +59,8 @@ public:
     }
 
     virtual structure::PathNode::Vector check_auxiliary(parser::ParserContextManager& ctx, structure::RoleType role_type) const override {
-        const auto script = word_->parse_script(ctx);
-        if (!script) return {nullptr};
-
-        auto word = ctx.getWordRegister().get_word_from_script(script);
-        if (!word) {
-            ctx.getErrorManager().visitorError(
-                getCharRange(),
-                "Undefined auxiliary word '" + word_->getScript() + "'."
-            );
-            return {nullptr};
-        }
-
-        if (word->getWordType() != +ieml::structure::WordType::AUXILIARY) {
-            ctx.getErrorManager().visitorError(
-                getCharRange(),
-                "Invalid word " + std::string(word->getWordType()._to_string()) + " '" + 
-                word_->getScript() + "', not an auxiliary word."
-            );
-            return {nullptr};
-        }
-
+        const auto word = word_->check_is_defined(ctx, structure::WordType::AUXILIARY);
+        if (!word) return {nullptr};
         const auto& auxiliary = std::dynamic_pointer_cast<structure::AuxiliaryWord>(word);
 
         if (!auxiliary->accept_role(role_type)) {

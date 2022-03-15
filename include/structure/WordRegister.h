@@ -21,9 +21,6 @@ public:
     /**********************************
      * WordRegister: Word
      **********************************/
-    bool word_is_defined(std::shared_ptr<structure::Word> word) {
-        return defined_words_.count(word->getScript()) > 0;
-    }
 
     std::shared_ptr<structure::Name> getName(const std::shared_ptr<structure::AuxiliaryWord>& word) const {
         return namespace_auxiliary_.find(word)->second;
@@ -50,6 +47,29 @@ public:
             return nullptr;
         }
     };
+
+
+    /**********************************
+     * WordRegister: Declare script
+     **********************************/
+    void declare_script(Script::Ptr script, WordType wtype) {
+        declared_scripts_.insert({script, wtype});
+    }
+
+    bool script_is_declared(Script::Ptr script) const {
+        return declared_scripts_.find(script) != declared_scripts_.end();
+    }
+
+    WordType get_script_type(Script::Ptr script) const {
+        return declared_scripts_.find(script)->second;
+    }
+
+    /**********************************
+     * WordRegister: Define word
+     **********************************/
+    bool word_is_defined(Script::Ptr script) const {
+        return defined_words_.count(script) > 0;
+    }
 
     std::shared_ptr<structure::Word> get_word_from_script(structure::Script::Ptr s) const {
         auto res = defined_words_.find(s);
@@ -118,17 +138,6 @@ public:
             return nullptr;
         }
         return res->second;
-    }
-
-    /**********************************
-     * WordRegister: Define root paradigm
-     **********************************/
-    void declare_script(Script::Ptr script, WordType wtype) {
-        declared_scripts_.insert({script, wtype});
-    }
-
-    bool is_declared(Script::Ptr script) {
-        return declared_scripts_.find(script) != declared_scripts_.end();
     }
 
     typedef std::unordered_map<std::shared_ptr<structure::AuxiliaryWord>, std::shared_ptr<Name>>::const_iterator  const_iterator_auxiliary;

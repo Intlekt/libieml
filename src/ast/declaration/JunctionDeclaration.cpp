@@ -10,23 +10,12 @@ std::string JunctionDeclaration::to_string() const {
 
 void JunctionDeclaration::check_declaration(ieml::parser::ParserContextManager& ctx) const {
     auto name = check_translatable(ctx);
-    auto word = word_->check_word(ctx);
-
-    if (!name || !word) {
+    auto script = word_->check_is_not_defined(ctx, structure::WordType::JUNCTION);
+    if (!name || !script) {
         return;
     }
-    
-    auto junction_word = std::make_shared<structure::JunctionWord>(word->getScript());
-
-    auto& wregister = ctx.getWordRegister();
-    if (wregister.word_is_defined(junction_word)) {
-        ctx.getErrorManager().visitorError(
-            getCharRange(),
-            "Cannot redefine word " + word->to_string() + " as a junction, it has already been defined before."
-        );
-        return;
-    }
+    auto junction_word = std::make_shared<structure::JunctionWord>(script);
 
     ctx.getSourceMapping().register_mapping(junction_word, this);
-    wregister.define_junction(name, junction_word);
+    ctx.getWordRegister().define_junction(name, junction_word);
 }
