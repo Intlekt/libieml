@@ -6,6 +6,15 @@
 #include "structure/Word.h"
 #include "structure/Namespace.h"
 
+
+/**
+ * @brief Store the information about :
+ *  - all the curently defined root paradigms and their singular sequences
+ *  - all the curently defined Word for each categories
+ *      - inflection, auxiliary and junction with there names
+ *      - category words.
+ * 
+ */
 namespace ieml::structure {
 class WordRegister {
 public:
@@ -59,6 +68,7 @@ public:
         defined_words_.insert({word->getScript(), word});
         namespace_auxiliary_.define(name, word);
     }
+
     std::shared_ptr<structure::AuxiliaryWord> resolve_auxiliary(const structure::LanguageString& s) const {
         return namespace_auxiliary_.resolve(s);
     }
@@ -110,6 +120,17 @@ public:
         return res->second;
     }
 
+    /**********************************
+     * WordRegister: Define root paradigm
+     **********************************/
+    void declare_script(Script::Ptr script, WordType wtype) {
+        declared_scripts_.insert({script, wtype});
+    }
+
+    bool is_declared(Script::Ptr script) {
+        return declared_scripts_.find(script) != declared_scripts_.end();
+    }
+
     typedef std::unordered_map<std::shared_ptr<structure::AuxiliaryWord>, std::shared_ptr<Name>>::const_iterator  const_iterator_auxiliary;
     const_iterator_auxiliary auxiliaries_begin() const {return namespace_auxiliary_.begin();};
     const_iterator_auxiliary auxiliaries_end()   const {return namespace_auxiliary_.end();};
@@ -132,8 +153,10 @@ private:
     structure::Namespace<structure::InflectionWord> namespace_inflection_;
     structure::Namespace<structure::JunctionWord> namespace_junction_;
 
-    std::unordered_map<const Script*, std::shared_ptr<structure::Word>> defined_words_;
+    std::unordered_map<Script::Ptr, std::shared_ptr<structure::Word>> defined_words_;
 
-    std::unordered_map<const Script*, std::shared_ptr<structure::CategoryWord>> caterory_words_;
+    std::unordered_map<Script::Ptr, std::shared_ptr<structure::CategoryWord>> caterory_words_;
+
+    std::unordered_map<Script::Ptr, WordType> declared_scripts_; 
 };
 }

@@ -35,6 +35,7 @@ public:
   virtual antlrcpp::Any visitJunctionDeclaration(IEMLParserGrammar::JunctionDeclarationContext *context) override;
   virtual antlrcpp::Any visitLanguageDeclaration(IEMLParserGrammar::LanguageDeclarationContext *context) override;
   virtual antlrcpp::Any visitTableDeclaration(IEMLParserGrammar::TableDeclarationContext *context) override;
+  virtual antlrcpp::Any visitRootParadigmDeclaration(IEMLParserGrammar::RootParadigmDeclarationContext *context) override;
   
   /**
    * PHRASE

@@ -76,6 +76,7 @@
 using namespace ieml::parser;
 
 
+TEST(ieml_grammar_test_case, empty_string)                                           TEST_PARSE_NO_ERRORS(R"()");
 
 TEST(ieml_grammar_test_case, categry_word_decl)                                      TEST_PARSE_NO_ERRORS(R"(@word "wa.".)");
 TEST(ieml_grammar_test_case, language_string_with_special_characters)                TEST_PARSE_NO_ERRORS(R"(@inflection en:a'-0123456789azAZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ class:NOUN "wa.".)");
@@ -108,7 +109,14 @@ TEST(ieml_grammar_test_case, multiple_paranode_same_invariant)                  
 TEST(ieml_grammar_test_case, table_declaration)                                      TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:test (0 #"wa."). @node en:inv01 (0 #"wa.", 1 #"wa."). @node en:ss32 (0 #"wa.", 2 #"we."). @node en:inv012 (0 #"wa.", 2 #"wa."). @node en:ss3 (0 #"wa.", 1 #"we."). @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @paranode en:test3 1d:/#/2 (0 #"wa.", 2 {#"wa.";#"we."}). @table #test -> test2.)");
 TEST(ieml_grammar_test_case, table_declaration_twice)                                TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:test (0 #"wa."). @node en:inv01 (0 #"wa.", 1 #"wa."). @node en:ss32 (0 #"wa.", 2 #"we."). @node en:inv012 (0 #"wa.", 2 #"wa."). @node en:ss3 (0 #"wa.", 1 #"we.").  @paranode en:test2 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @paranode en:test3 1d:/#/2 (0 #"wa.", 2 {#"wa.";#"we."}). @table #test -> test2.@table #test -> test3.)");
 TEST(ieml_grammar_test_case, table_declaration_2_level)                              TEST_PARSE_NO_ERRORS(R"(@word "wa.". @word "we.". @node en:inv0 (0 #"wa."). @node en:inv01 (0 #"wa.", 1 #"wa."). @node en:ss3 (0 #"wa.", 1 #"we."). @node en:ss0 (0 #"wa.", 1 #"wa.", 2 #"wa."). @node en:ss1 (0 #"wa.", 1 #"wa.", 2 #"we.").@paranode en:para01 1d:/#/2 (0 #"wa.", 1 #"wa.", 2 {#"wa.";#"we."}).  @paranode en:para0 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}).  @table #inv0 -> para0 #inv01 -> para01.)");
-                
+
+TEST(ieml_grammar_test_case, root_paradigm)                                          TEST_PARSE_NO_ERRORS(R"(@rootparadigm type:CATEGORY "O:".@rootparadigm type:INFLECTION "M:M:.".@rootparadigm type:AUXILIARY "O:O:.".@rootparadigm type:JUNCTION "M:M:.e.-".)");
+TEST(ieml_grammar_test_case, root_paradigm_category_define)                          TEST_PARSE_NO_ERRORS(R"(@rootparadigm type:CATEGORY "O:". @node fr:test (0 #"A:").)");
+TEST(ieml_grammar_test_case, root_paradigm_inflection_define)                        TEST_PARSE_NO_ERRORS(R"(@rootparadigm type:INFLECTION "O:". @inflection fr:test class:NOUN "A:".)");
+TEST(ieml_grammar_test_case, root_paradigm_auxiliary_define)                         TEST_PARSE_NO_ERRORS(R"(@rootparadigm type:AUXILIARY "O:". @auxiliary fr:test role:LOCATION "A:".)");
+TEST(ieml_grammar_test_case, root_paradigm_junction_define)                          TEST_PARSE_NO_ERRORS(R"(@rootparadigm type:JUNCTION "O:". @junction fr:test "A:".)");
+
+
 // ERRORS
 TEST(ieml_grammar_test_case, no_root)                                                TEST_PARSE_ERRORS(R"(@word "wa.". @inflection en:noun class:NOUN "a.". @component en:test (1 ~noun #"wa.") .)");
 TEST(ieml_grammar_test_case, extra_comma_in_phrase_line)                             TEST_PARSE_ERRORS(R"(@word "wa.". @inflection en:noun class:VERB "a.". @component en:test (0 #(0 ~noun #"wa."),) .)");
@@ -139,6 +147,17 @@ TEST(ieml_grammar_test_case, table_declaration_2_level_invalid_order)           
 TEST(ieml_grammar_test_case, table_declaration_invalid_invariant)                    TEST_PARSE_ERRORS(R"(@word "wa.". @word "we.". @node en:inv0 (0 #"wa."). @paranode en:para0 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @node en:test (0 #"wa.", 1 #"wa."). @table #test -> para0 .)");
 TEST(ieml_grammar_test_case, table_declaration_no_paranode)                          TEST_PARSE_ERRORS(R"(@word "wa.". @word "we.". @node en:inv0 (0 #"wa."). @paranode en:para0 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @node en:test (0 #"wa.", 1 #"wa."). @table #test -> inv0 .)");
 TEST(ieml_grammar_test_case, table_declaration_no_invariant)                         TEST_PARSE_ERRORS(R"(@word "wa.". @word "we.". @node en:inv0 (0 #"wa."). @paranode en:para0 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}). @node en:test (0 #"wa.", 1 #"wa."). @paranode en:para01 1d:/#/2 (0 #"wa.", 1 #"wa.", 2 {#"wa.";#"we."}). @table #para0 -> para01 .)");
+
+TEST(ieml_grammar_test_case, root_paradigm_invalid_type)                             TEST_PARSE_ERRORS(R"(@rootparadigm type:TEST "O:".)");
+TEST(ieml_grammar_test_case, root_paradigm_not_a_paradigm)                           TEST_PARSE_ERRORS(R"(@rootparadigm type:CATEGORY "a.".)");
+TEST(ieml_grammar_test_case, root_paradigm_overlap)                                  TEST_PARSE_ERRORS(R"(@rootparadigm type:INFLECTION "S:+B:M:.".@rootparadigm type:CATEGORY "M:M:.".)");
+TEST(ieml_grammar_test_case, root_paradigm_multiple_same_word)                       TEST_PARSE_ERRORS(R"(@rootparadigm type:INFLECTION "O:".@rootparadigm type:CATEGORY "O:".)");
+TEST(ieml_grammar_test_case, root_paradigm_invalid_script)                           TEST_PARSE_ERRORS(R"(@rootparadigm type:INFLECTION "test".)");
+TEST(ieml_grammar_test_case, root_paradigm_empty_script)                             TEST_PARSE_ERRORS(R"(@rootparadigm type:INFLECTION "".)");
+TEST(ieml_grammar_test_case, root_paradigm_category_not_defined)                     TEST_PARSE_ERRORS(R"(@rootparadigm type:INFLECTION "O:". @node fr:test (0 #"A:").)");
+TEST(ieml_grammar_test_case, root_paradigm_inflection_not_defined)                   TEST_PARSE_ERRORS(R"(@rootparadigm type:CATEGORY "O:". @inflection fr:test class:NOUN "A:".)");
+TEST(ieml_grammar_test_case, root_paradigm_auxiliary_not_defined)                    TEST_PARSE_ERRORS(R"(@rootparadigm type:CATEGORY "O:". @auxiliary fr:test role:LOCATION "A:".)");
+TEST(ieml_grammar_test_case, root_paradigm_junction_not_defined)                     TEST_PARSE_ERRORS(R"(@rootparadigm type:CATEGORY "O:". @junction fr:test "A:".)");
 
 
 // WARNINGS
