@@ -37,4 +37,10 @@ void WordDeclaration::check_declaration(ieml::parser::ParserContextManager& ctx)
     ctx.getSourceMapping().register_mapping(word, this);
     wregister.declare_script(script, structure::WordType::CATEGORY);
     wregister.define_word(word);
+
+    ctx.getErrorManager().visitorWarning(
+        getCharRange(), 
+        "@word declaration is deprecated. Consider using the '@rootparadigm type:category ...' declaration instead. "
+    );
+
 }
