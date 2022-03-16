@@ -323,11 +323,8 @@ nlohmann::json ieml::parser::scriptToJson(const ieml::structure::Script* script,
         {"type", type._to_string()},
     };
 
-    // if (type == +ieml::structure::ScriptType::MULTIPLICATION) {
-    //     auto script_m = dynamic_cast<const ieml::structure::MultiplicativeScript*>(script);
-    //     res["substance"] = script_m->children_;
-    // }
-
+    // TODO : add the relation of this script to other scripts
+    
     return res;
 }
 

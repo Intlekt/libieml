@@ -22,6 +22,8 @@ public:
     virtual ElementType getElementType() const {return ElementType::WORD;};
 
     virtual std::string to_string() const { return "\"" + script_->to_string() + "\""; };
+    
+    virtual std::string prefix() const override {return "word";};
 
     const Script* getScript() const {return script_;};
 

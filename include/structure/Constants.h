@@ -8,7 +8,7 @@ namespace ieml::structure {
 
 BETTER_ENUM(DefinitionType, char, NODE, COMPONENT, PARADIGM, LINK)
 
-BETTER_ENUM(ElementType, char, WORD, PATH_TREE)
+BETTER_ENUM(ElementType, char, SCRIPT, WORD, PATH_TREE)
 
 BETTER_ENUM(PathType, char,
     PARADIGM,

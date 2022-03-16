@@ -14,6 +14,7 @@ public:
     virtual ElementType getElementType() const override {return ElementType::PATH_TREE;};
 
     virtual std::string to_string() const override;
+    virtual std::string prefix() const override {return "category";};
 
     bool is_path() const {return nb_paths_ == 1;};
 
