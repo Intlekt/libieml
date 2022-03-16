@@ -1,0 +1,18 @@
+ARG NB_CORES=1
+
+# Build a python wheel from the libieml folder
+# the wheel will be at /libieml/dist/*cp38*.whl
+FROM python:3.8-slim AS build_libieml
+
+COPY . /libieml/
+
+RUN apt-get update && \
+    apt-get install -y git g++ cmake default-jre pkg-config uuid-dev && \
+    cd /libieml && \
+    CMAKE_BUILD_PARALLEL_LEVEL=$NB_CORES python setup.py bdist_wheel -v && \
+    apt-get purge -y git g++ cmake default-jre pkg-config uuid-dev && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-get clean && \
+    rm -rf build
+
+CMD ["pip", "install", "/libieml/dist/*cp38*.whl"]

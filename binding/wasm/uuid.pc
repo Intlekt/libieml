@@ -1,0 +1,3 @@
+Name: uuid
+Description: Universally unique id library
+Version: 2.37.3

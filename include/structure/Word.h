@@ -19,9 +19,9 @@ public:
 
     typedef std::shared_ptr<Word> Ptr;
 
-    virtual ElementType getElementType() const {return ElementType::WORD;};
+    virtual ElementType getElementType() const override {return ElementType::WORD;};
 
-    virtual std::string to_string() const { return "\"" + script_->to_string() + "\""; };
+    virtual std::string to_string() const override { return "\"" + script_->to_string() + "\""; };
     
     virtual std::string prefix() const override {return "word";};
 
@@ -29,14 +29,14 @@ public:
 
     virtual WordType getWordType() const = 0;
 
-    virtual size_t hash() const {
+    virtual size_t hash() const override {
         auto hasher = std::hash<std::string>();
         return hasher(script_->to_string());
     };
 
 
 protected:
-    virtual int comp_element_(const Element& o_word) const {
+    virtual int comp_element_(const Element& o_word) const override {
         const auto& o = dynamic_cast<const Word&>(o_word);
 
         if (getWordType() == o.getWordType()) {
