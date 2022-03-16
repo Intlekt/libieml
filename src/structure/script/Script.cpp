@@ -13,7 +13,7 @@ const Table<const Script*>* Script::get_table(ScriptRegister& reg) const {
         return new Cell<const Script*>(this);
 
     return build_table_paradigm(reg);
-};
+}
 
 
 const char Script::LAYER_MARKS[] = {LAYER0_MARK, LAYER1_MARK, LAYER2_MARK, LAYER3_MARK, LAYER4_MARK, LAYER5_MARK, LAYER6_MARK};

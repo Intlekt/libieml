@@ -21,7 +21,7 @@ std::string AdditiveScript::string_repr(const Script::Set& children) {
     auto it = AdditiveScript::REMARKABLE_ADDITIONS_STRINGS.find(key);
     if (it != AdditiveScript::REMARKABLE_ADDITIONS_STRINGS.end()) return it->second;
     else return key;
-};
+}
 
 std::u16string AdditiveScript::_canonical(const Script::Set& children) {
     if ((*children.begin())->get_layer() == 0) {
@@ -41,7 +41,7 @@ std::u16string AdditiveScript::_canonical(const Script::Set& children) {
         res = res.append(c->get_canonical());
     
     return res;
-};
+}
 
 size_t AdditiveScript::_multiplicity(const Script::Set& children) {
     size_t res = 0;

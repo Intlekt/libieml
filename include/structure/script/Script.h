@@ -27,7 +27,7 @@
 
 namespace ieml::structure {
 
-BETTER_ENUM(ScriptType, char, PRIMITIVE, NULLSCRIPT, ADDITION, MULTIPLICATION);
+BETTER_ENUM(ScriptType, char, PRIMITIVE, NULLSCRIPT, ADDITION, MULTIPLICATION)
 
 class ScriptRegister;
 
