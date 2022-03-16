@@ -18,6 +18,12 @@
 namespace ieml::structure {
 class WordRegister {
 public:
+
+    WordRegister() = default;
+
+    WordRegister(const WordRegister&) = delete;
+    WordRegister& operator=(WordRegister&) = delete;
+
     /**********************************
      * WordRegister: Word
      **********************************/

@@ -26,25 +26,28 @@ public:
             _build_remarkable_multiplications();
         }
     ~ScriptRegister() {
-        for (const auto& p: primitives_)
-            delete p.second;
-
-        for (const auto& p: null_scripts_)
-            delete p;
-
         for (const auto& add: additive_scripts_)
             delete add.second;
         
         for (const auto& mul: multiplicative_scripts_)
             delete mul.second;
 
+        for (const auto& p: primitives_)
+            delete p.second;
+
+        for (const auto& p: null_scripts_)
+            delete p;
+
         for (const auto& table: tables_)
             delete table.second;
     }
 
+    ScriptRegister(const ScriptRegister&) = delete;
+    ScriptRegister& operator=(ScriptRegister&) = delete;
+
     const MultiplicativeScript* get_or_create_multiplication(const MultiplicativeScript::Children& children);
     const AdditiveScript* get_or_create_addition(const Script::Set& children);
-    const Table<const Script*>* get_or_create_table(const Script* script);
+    Script::TablePtr get_or_create_table(const Script* script);
 
 
     const PrimitiveScript* get_primitive(char c) const {return primitives_.find(c)->second;};
@@ -68,6 +71,8 @@ public:
         return it->second;
     }
 
+    const std::unordered_map<std::string, Script::Ptr>& defined_script() const {return defined_scripts_by_string_;};
+
 private:
     std::unordered_map<std::string, Script::Ptr> defined_scripts_by_string_;
 
@@ -75,7 +80,7 @@ private:
     std::unordered_map<char, const PrimitiveScript*> primitives_;
 
     // Null scripts
-    std::array<NullScript*, MAX_LAYER_NUMBER> null_scripts_;
+    std::array<const NullScript*, MAX_LAYER_NUMBER> null_scripts_;
 
     // Multiplications
     std::unordered_map<MultiplicativeScript::Children, const MultiplicativeScript*, MultiplicativeScript::HashChildrenFunctor> multiplicative_scripts_;
@@ -87,7 +92,7 @@ private:
 
     // Tables
     // Store for each script its table
-    std::unordered_map<const Script*, const Table<const Script*>*> tables_;
+    std::unordered_map<Script::Ptr, Script::TablePtr> tables_;
 
     void _build_primitives();
     void _build_null_scripts();

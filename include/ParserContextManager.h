@@ -26,6 +26,9 @@ public:
     ParserContextManager(ieml::parser::IEMLParserErrorListener* error_manager) : 
         error_manager_(error_manager), 
         script_parser_("", error_manager) {}
+    
+    ParserContextManager(const ParserContextManager&) = delete;
+    ParserContextManager& operator=(ParserContextManager&) = delete;
 
     ieml::parser::IEMLParserErrorListener& getErrorManager() const {return *error_manager_;};
 

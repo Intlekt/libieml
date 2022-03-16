@@ -40,7 +40,7 @@ TEST(ieml_relation_test_case, basic_graph) {
   RelationGraph relgraph;
   std::shared_ptr<ieml::parser::ParserContextManager> context;
   context = parser.getContext();
-  auto category_register = context->getCategoryRegister();
+  auto& category_register = context->getCategoryRegister();
   auto& node_register = relgraph.getRegister();
   auto& graph = relgraph.getGraph();
 

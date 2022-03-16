@@ -5,6 +5,9 @@
 
 using namespace ieml::parser;
 
+
+const std::string IEMLParser::default_file_id = "__default__";
+
 IEMLParser::FileParser::FileParser(const std::string& file_id, const std::string& input_str, IEMLParserErrorListener* error_listener) {
     input_ = new antlr4::ANTLRInputStream(input_str);
 
@@ -23,6 +26,7 @@ IEMLParser::FileParser::FileParser(const std::string& file_id, const std::string
 
     // use SSL prediction for parser
     // I wrote the grammar so it not need context information, speeding the parser by x10
+    // But if there is an issue, you should try other atn::PredictionMode for more context awareness
     parser_->getInterpreter<atn::ParserATNSimulator>()->setPredictionMode(atn::PredictionMode::SLL);
 }
 
@@ -37,7 +41,7 @@ void IEMLParser::FileParser::parse() {
     if (parseTree_ != nullptr) 
         return;
 
-    parseTree_ = parser_->program();    
+    parseTree_ = parser_->program();
     ast_ = std::move(visitor_->visit(parseTree_)
                              .as<IEMLGrammarVisitor::VisitorResult<std::shared_ptr<Program>>>()
                              .release());

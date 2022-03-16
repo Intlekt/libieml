@@ -17,7 +17,10 @@ namespace ieml::structure {
 
 class Name : public std::unordered_multimap<LanguageType, LanguageString> {
 public:
-    Name(std::unordered_multiset<LanguageString> traductions) : 
+
+    typedef std::unordered_multiset<LanguageString> Traductions;
+
+    Name(Traductions traductions) : 
          std::unordered_multimap<LanguageType, LanguageString>(build_traductions(traductions)) {}
     
     bool operator==(const Name& rhs) const {

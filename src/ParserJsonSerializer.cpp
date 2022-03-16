@@ -171,8 +171,50 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
         {"range", charRangeToJson(range)},
         {"translations", name_json},
         {"type", "WORD"},
-        {"word_type", word->getWordType()._to_string()}
+        {"word_type", word->getWordType()._to_string()},
+        {"declaration", word->getScript()->uid()}
     };
+}
+
+nlohmann::json _scriptToJson(ieml::structure::Script::Ptr script, 
+                             ieml::parser::ParserContextManager& ctx, 
+                             const ieml::AST::CharRange& default_range) {
+
+    nlohmann::json singular_sequences = nlohmann::json::array();
+    for (const auto& ss : script->singular_sequences())
+        singular_sequences.push_back(ss->to_string());
+    
+    const auto type = script->get_type();
+    auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(script));
+    nlohmann::json range_json;
+    if (ast) range_json = charRangeToJson(ast->getCharRange());
+    else     range_json = charRangeToJson(default_range);
+
+    const auto name = ieml::structure::Name({});
+
+    const auto word = ctx.getWordRegister().get_word_from_script(script);
+    nlohmann::json word_json;
+    if (word) word_json = word->uid();
+
+    nlohmann::json res = {
+        {"id", script->uid()},
+        {"range", range_json},
+        {"translations", nameToJson(name)},
+        {"type", "SCRIPT"},
+
+        {"ieml", script->to_string()},
+        {"layer", script->get_layer()},
+        {"multiplicity", script->get_multiplicity()},
+        {"singular_sequences", singular_sequences},
+        {"script_type", type._to_string()},
+
+        // if defined, point to the word
+        {"definition", word_json}
+    };
+
+    // TODO : add the relation of this script to other scripts
+
+    return res;
 }
 
 nlohmann::json ieml::parser::serializeTable(ieml::parser::ParserContextManager& ctx,
@@ -197,8 +239,11 @@ nlohmann::json ieml::parser::serializeTable(ieml::parser::ParserContextManager& 
 nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
     auto errors_and_warnings = ieml::parser::errorManagerToJson(parser.getErrorListener());
     auto context = parser.getContext();
-    auto cregister = context->getCategoryRegister();
-    auto wregister = context->getWordRegister();
+    auto& cregister = context->getCategoryRegister();
+    auto& wregister = context->getWordRegister();
+    auto& sregister = context->getScriptRegister();
+
+    const CharRange default_range(parser.getDefaultFileId(), 0, 0, 0, 0);
 
     ieml::relation::RelationGraph graph;
     ieml::relation::buildCompositionRelationGraph(graph, context->getPathTreeRegister(), cregister, wregister);
@@ -221,7 +266,11 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
 
     for (auto it = wregister.junctions_begin(); it != wregister.junctions_end(); ++it)
         elements[it->first->uid()] = _wordToJson<ieml::structure::JunctionWord>(it->first, *context);
-  
+    
+    for (auto it: sregister.defined_script())
+        elements[it.second->uid()] = _scriptToJson(it.second, *context, default_range);
+
+
     nlohmann::json tables = nlohmann::json::array();
     for (const auto& table: context->getParadigmRegister().getTables()) {
         tables.push_back(serializeTable(*context, table));
@@ -303,29 +352,6 @@ nlohmann::json ieml::parser::binaryGraphToJson(ieml::relation::RelationGraph& re
         {"nodes", nodes},
         {"relations", relations}
     };
-}
-
-
-
-nlohmann::json ieml::parser::scriptToJson(const ieml::structure::Script* script, 
-                                          const ieml::structure::ScriptRegister& reg) {
-    nlohmann::json singular_sequences = nlohmann::json::array();
-    for (const auto& ss : script->singular_sequences())
-        singular_sequences.push_back(ss->to_string());
-    
-    const auto type = script->get_type();
-
-    nlohmann::json res = {
-        {"ieml", script->to_string()},
-        {"layer", script->get_layer()},
-        {"multiplicity", script->get_multiplicity()},
-        {"singular_sequences", singular_sequences},
-        {"type", type._to_string()},
-    };
-
-    // TODO : add the relation of this script to other scripts
-    
-    return res;
 }
 
 nlohmann::json ieml::parser::scriptTableToJson(const ieml::structure::Script::TablePtr, const ieml::structure::ScriptRegister&) {
