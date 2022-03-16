@@ -182,7 +182,7 @@ nlohmann::json _scriptToJson(ieml::structure::Script::Ptr script,
 
     nlohmann::json singular_sequences = nlohmann::json::array();
     for (const auto& ss : script->singular_sequences())
-        singular_sequences.push_back(ss->to_string());
+        singular_sequences.push_back(ss->uid());
     
     const auto type = script->get_type();
     auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(script));
@@ -202,14 +202,15 @@ nlohmann::json _scriptToJson(ieml::structure::Script::Ptr script,
         {"translations", nameToJson(name)},
         {"type", "SCRIPT"},
 
-        {"ieml", script->to_string()},
+        {"str", script->to_string()},
         {"layer", script->get_layer()},
         {"multiplicity", script->get_multiplicity()},
         {"singular_sequences", singular_sequences},
         {"script_type", type._to_string()},
 
         // if defined, point to the word
-        {"definition", word_json}
+        {"definition", word_json},
+        {"declaration_type", ctx.getWordRegister().get_script_type(script)._to_string()}
     };
 
     // TODO : add the relation of this script to other scripts
@@ -241,7 +242,6 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
     auto context = parser.getContext();
     auto& cregister = context->getCategoryRegister();
     auto& wregister = context->getWordRegister();
-    auto& sregister = context->getScriptRegister();
 
     const CharRange default_range(parser.getDefaultFileId(), 0, 0, 0, 0);
 
@@ -267,9 +267,8 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
     for (auto it = wregister.junctions_begin(); it != wregister.junctions_end(); ++it)
         elements[it->first->uid()] = _wordToJson<ieml::structure::JunctionWord>(it->first, *context);
     
-    for (auto it: sregister.defined_script())
-        elements[it.second->uid()] = _scriptToJson(it.second, *context, default_range);
-
+    for (auto it: wregister.getDeclaredScripts())
+        elements[it.first->uid()] = _scriptToJson(it.first, *context, default_range);
 
     nlohmann::json tables = nlohmann::json::array();
     for (const auto& table: context->getParadigmRegister().getTables()) {

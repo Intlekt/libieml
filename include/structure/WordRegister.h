@@ -163,6 +163,8 @@ public:
     const_iterator_category_word category_word_end()   const {return caterory_words_.end();};
 
 
+    const std::unordered_map<Script::Ptr, WordType>& getDeclaredScripts() const {return declared_scripts_;};
+
 private:
     structure::Namespace<structure::AuxiliaryWord> namespace_auxiliary_;
     structure::Namespace<structure::InflectionWord> namespace_inflection_;
