@@ -29,7 +29,6 @@ sudo apt install python3-dev
 #### CMake options
  
  - `BUILD_TEST` build the test suite
- - `BUILD_CHECK_ERRORS` build the IEML_CHECK_ERROR executable
  - `BUILD_PYBIND11` build the python wrapper
 
 #### Build command
@@ -39,8 +38,7 @@ cd build
 cmake [opts] ..
 make
 ```
-For instance, to build IEML_CHECK_ERROR, `opts = "-DBUILD_CHECK_ERRORS"`.
-To build IEML_CHECK_ERROR and the tests, `opts = "-DBUILD_CHECK_ERRORS -DBUILD_TEST"`.
+For instance`opts = "-DBUILD_TEST"`.
 
 ### Python wrapper installation
 

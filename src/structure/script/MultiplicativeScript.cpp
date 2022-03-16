@@ -21,7 +21,7 @@ std::string MultiplicativeScript::string_repr(const Children& children) {
     auto it = MultiplicativeScript::REMARKABLE_MULTIPLICATIONS_STRINGS.find(key);
     if (it != MultiplicativeScript::REMARKABLE_MULTIPLICATIONS_STRINGS.end()) return it->second;
     else return key;
-};
+}
 
 std::u16string MultiplicativeScript::_canonical(const Children& children) {
     size_t size = children[0]->get_canonical().size() * 3;
@@ -34,7 +34,7 @@ std::u16string MultiplicativeScript::_canonical(const Children& children) {
     res = res.append(children[2]->get_canonical());
     
     return res;
-};
+}
 
 size_t MultiplicativeScript::_multiplicity(const Children& children) {
     const auto substance = children[0];
@@ -42,7 +42,7 @@ size_t MultiplicativeScript::_multiplicity(const Children& children) {
     const auto mode      = children[2];
 
     return substance->get_multiplicity() * attribute->get_multiplicity() * mode->get_multiplicity();
-};
+}
 
 Script::Set MultiplicativeScript::_build_singular_sequences(ScriptRegister& reg) const {
     if (get_multiplicity() == 1)
@@ -57,7 +57,7 @@ Script::Set MultiplicativeScript::_build_singular_sequences(ScriptRegister& reg)
         }
     }
     return res;
-};
+}
 
 const Table<const Script*>* MultiplicativeScript::build_table_paradigm(ScriptRegister& reg) const {
     std::map<unsigned char, unsigned char> dim_map;
@@ -197,7 +197,7 @@ const Table<const Script*>* MultiplicativeScript::build_table_paradigm(ScriptReg
         values.push_back(reg.get_or_create_multiplication(v_child));
 
     return TableNd<const Script*>::create(values, shape, headers, this);
-};
+}
 
 
 const std::unordered_map<std::string, std::string> MultiplicativeScript::REMARKABLE_MULTIPLICATIONS_STRINGS = {

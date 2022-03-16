@@ -10,6 +10,10 @@ namespace ieml::structure {
 
 class ParadigmRegister {
 public:
+    ParadigmRegister() = default;
+
+    ParadigmRegister(const ParadigmRegister&) = delete;
+    ParadigmRegister& operator=(ParadigmRegister&) = delete;
 
     void define_paradigm(PathTree::Register& reg, const std::shared_ptr<PathTree>& paradigm, const std::vector<ieml::structure::PathTree::Set> dimension_paths) {
         auto invariant = reg.buildFromPaths(reg.invariant_paths(paradigm));

@@ -49,12 +49,16 @@ void RootParadigmDeclaration::check_declaration(ieml::parser::ParserContextManag
 
     for (auto& ss : script->singular_sequences()) {
         wregister.declare_script(ss, *root_type);
+        ctx.getSourceMapping().register_mapping(ss, this);
 
         // for categories, also define the word, because there is no special declaration for 
-        // category word.
-        if (*root_type == +ieml::structure::WordType::CATEGORY)
-            wregister.define_word(std::make_shared<structure::CategoryWord>(ss));
+        // category word at the moment.
+        if (*root_type == +ieml::structure::WordType::CATEGORY) {
+            const auto word = std::make_shared<structure::CategoryWord>(ss);
+            wregister.define_word(word);
+            ctx.getSourceMapping().register_mapping(word, this);
+        }
     }
 
-    // TODO:register the paradigm declaration into the mapping
+    
 }

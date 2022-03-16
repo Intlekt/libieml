@@ -58,6 +58,11 @@ public:
     
     std::shared_ptr<ParserContextManager> getContext() const {return context_;};
 
+    const std::string& getDefaultFileId() const {
+        return (file_ids_.size() != 0 ? file_ids_[0] : default_file_id);
+    };
+    static const std::string default_file_id;
+
 private:
     std::unordered_map<std::string, std::unique_ptr<FileParser>> file_to_parser_;
     std::vector<std::string> file_ids_;

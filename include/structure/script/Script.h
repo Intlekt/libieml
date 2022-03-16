@@ -4,9 +4,12 @@
 #include <set>
 #include <string>
 #include <memory>
+#include <functional>
 
 #include "structure/table/Table.h"
 #include "utils.h"
+
+#include "structure/Element.h"
 
 #include "enum.h"
 
@@ -24,11 +27,11 @@
 
 namespace ieml::structure {
 
-BETTER_ENUM(ScriptType, char, PRIMITIVE, NULLSCRIPT, ADDITION, MULTIPLICATION);
+BETTER_ENUM(ScriptType, char, PRIMITIVE, NULLSCRIPT, ADDITION, MULTIPLICATION)
 
 class ScriptRegister;
 
-class Script {
+class Script : public Element {
 public:
     friend class ScriptRegister;
 
@@ -37,7 +40,7 @@ public:
 
     struct CompareScriptFunctor {
         int8_t operator()(const Script* l, const Script* r) const {
-            return Script::comp(*l, *r) < 0;
+            return l->comp_element_(*r) < 0;
         } 
     };
 
@@ -55,17 +58,11 @@ public:
         }
     };
 
-    bool operator==(const Script& o) const {return comp(*this, o) == 0;}
-    bool operator!=(const Script& o) const {return comp(*this, o) != 0;}
-    bool operator< (const Script& o) const {return comp(*this, o) < 0;}
-    bool operator> (const Script& o) const {return comp(*this, o) > 0;}
-    bool operator<=(const Script& o) const {return comp(*this, o) <= 0;}
-    bool operator>=(const Script& o) const {return comp(*this, o) >= 0;}
+    virtual std::string to_string() const override {return str_;};
+    virtual ElementType getElementType() const override {return ElementType::SCRIPT;};
+    virtual std::string prefix() const override {return "script";};
+    virtual size_t hash() const override {return std::hash<std::string>{}(str_);};
 
-
-    virtual ~Script() = default;
-
-    const std::string& to_string() const {return str_;};
     size_t get_layer() const {return layer_;};
     size_t get_multiplicity() const {return multiplicity_;};
 
@@ -101,7 +98,7 @@ private:
     const std::u16string canonical_;
     const size_t multiplicity_;
 
-    static int comp(const Script&, const Script&);
+    virtual int comp_element_(const Element&) const override;
 
     /**
      * @brief Allocate a table pointer representing this script and return it. The caller own the result.

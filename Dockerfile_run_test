@@ -4,7 +4,15 @@ FROM alpine:3.15
 WORKDIR /libieml
 RUN apk update && apk add --no-cache pkgconfig libuuid openjdk11 cmake git g++ make util-linux-dev
 
-COPY . /libieml/
+
+COPY CMakeLists.txt /libieml/CMakeLists.txt
+COPY IEMLConfig.h.in /libieml/IEMLConfig.h.in
+COPY cmake /libieml/cmake 
+COPY thirdparty /libieml/thirdparty 
+COPY include /libieml/include
+COPY src /libieml/src
+COPY test /libieml/test
+COPY assets /libieml/assets
 
 RUN mkdir build && \
     cd build && \

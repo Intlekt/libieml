@@ -23,7 +23,9 @@ namespace parser {
  */
 class SourceMapping {
 public:
-    SourceMapping() {};
+    SourceMapping() = default;
+    SourceMapping(const SourceMapping&) = delete;
+    SourceMapping& operator=(SourceMapping&) = delete;
 
     /**
      * @brief Register the mapping between a PathTree pointer and its AST definition
@@ -60,6 +62,19 @@ public:
     void register_mapping(const ieml::structure::Word::Ptr& word, const ieml::AST::AST* declaration) {
         map_words_.insert({
             word,
+            declaration
+        });
+    }
+
+    /**
+     * @brief Register a mapping between a Script pointer and its AST definition.
+     * 
+     * @param script 
+     * @param declaration 
+     */
+    void register_mapping(const ieml::structure::Script::Ptr& script, const ieml::AST::AST* declaration) {
+        map_scripts_.insert({
+            script,
             declaration
         });
     }
@@ -103,6 +118,19 @@ public:
         return it->second;
     }
 
+    /**
+     * @brief Get the AST object associated with this Script pointer. Return nullptr is the Script pointer is not registered.
+     * 
+     * @param script 
+     * @return const ieml::AST::AST* 
+     */
+    const ieml::AST::AST* resolve_mapping(ieml::structure::Script::Ptr script) const {
+        auto it = map_scripts_.find(script);
+        if (it == map_scripts_.end()) 
+            return nullptr;
+        return it->second;
+    }
+
 private:
     struct WordHasher {
         size_t operator()(const ieml::structure::Word::Ptr& k) const {
@@ -118,5 +146,6 @@ private:
     std::unordered_map<ieml::structure::Word::Ptr, const ieml::AST::AST*, WordHasher, WordEqual> map_words_;
     std::unordered_map<ieml::structure::PathTree::Ptr, const ieml::AST::AST*> map_categories_;
     std::unordered_map<ieml::structure::TableDefinition::Ptr, const ieml::AST::AST*> map_tables_;
+    std::unordered_map<ieml::structure::Script::Ptr, const ieml::AST::AST*> map_scripts_;
 };
 }}

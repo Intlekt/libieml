@@ -33,10 +33,12 @@ void WordDeclaration::check_declaration(ieml::parser::ParserContextManager& ctx)
         return;
     }
 
-    auto word = std::make_shared<structure::CategoryWord>(script);
-    ctx.getSourceMapping().register_mapping(word, this);
     wregister.declare_script(script, structure::WordType::CATEGORY);
+    ctx.getSourceMapping().register_mapping(script, this);
+
+    auto word = std::make_shared<structure::CategoryWord>(script);
     wregister.define_word(word);
+    ctx.getSourceMapping().register_mapping(word, this);
 
     ctx.getErrorManager().visitorWarning(
         getCharRange(), 

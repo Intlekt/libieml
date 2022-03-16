@@ -65,6 +65,32 @@ TEST(ieml_grammar_test_case, json_serialization) {
 
                 EXPECT_LE(v["nDimension"], 3);
             }
+
+            if (v["type"] == "SCRIPT") {
+                ASSERT_TRUE(v.contains("str")) << "Missing str field for script";
+                ASSERT_TRUE(v.contains("layer")) << "Missing layer field for script";
+                ASSERT_TRUE(v.contains("multiplicity")) << "Missing multiplicity field for script";
+                ASSERT_TRUE(v.contains("singular_sequences")) << "Missing singular_sequences field for script";
+                ASSERT_TRUE(v.contains("script_type")) << "Missing script_type field for script";
+                ASSERT_TRUE(v.contains("definition")) << "Missing definition field for script";
+                ASSERT_TRUE(v.contains("declaration_type")) << "Missing declaration_type field for word";
+
+                ASSERT_EQ(v["multiplicity"], v["singular_sequences"].size());
+
+                for (auto ss : v["singular_sequences"])
+                    EXPECT_TRUE(res["elements"].contains(ss)) << "Not containing singular sequence " + std::string(ss) + " of " + std::string(v["id"]) ;
+
+                if (!v["definition"].is_null())
+                    EXPECT_TRUE(res["elements"].contains(v["definition"])) << "Not containing word " + std::string(v["word"]) + " of " + std::string(v["id"]) ;
+
+            }
+
+            if (v["type"] == "WORD") {
+                ASSERT_TRUE(v.contains("word_type")) << "Missing word_type field for word";
+                ASSERT_TRUE(v.contains("declaration")) << "Missing declaration field for word";
+
+                EXPECT_TRUE(res["elements"].contains(v["declaration"])) << "Not containing declaration " + std::string(v["declaration"]) + " of " + std::string(v["id"]) ;
+            }
         }
 
         // check that the tables have valid ids
@@ -94,9 +120,9 @@ TEST(ieml_grammar_test_case, composition_graph_json_serialization) {
     parser.parse();
     
     ieml::relation::RelationGraph graph;
-    auto wregister = parser.getContext()->getWordRegister();
-    auto cregister = parser.getContext()->getCategoryRegister();
-    auto mapping = parser.getContext()->getSourceMapping();
+    auto& wregister = parser.getContext()->getWordRegister();
+    auto& cregister = parser.getContext()->getCategoryRegister();
+    auto& mapping = parser.getContext()->getSourceMapping();
     ieml::relation::buildCompositionRelationGraph(graph, parser.getContext()->getPathTreeRegister(), cregister, wregister);
     auto json = ieml::parser::binaryGraphToJson(graph, cregister, wregister, mapping).dump();
 }

@@ -9,7 +9,11 @@ namespace ieml::structure {
 
 class ReferenceSchemaRegister {
 public:
-    ReferenceSchemaRegister() {}
+    ReferenceSchemaRegister() = default;
+
+    ReferenceSchemaRegister(const ReferenceSchemaRegister&) = delete;
+    ReferenceSchemaRegister& operator=(ReferenceSchemaRegister&) = delete;
+
 
     void register_schema(const std::shared_ptr<PathTree>& path_tree, ReferenceSchema&& schema) {
         schemas_.insert({path_tree, std::move(schema)});

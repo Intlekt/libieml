@@ -90,6 +90,7 @@ using namespace ieml::parser;
 
 
 TEST(ieml_grammar_test_case, empty_string)                                           TEST_PARSE_NO_ERRORS(R"()");
+TEST(ieml_grammar_test_case, single_char)                                            TEST_PARSE_ERRORS(R"(/)");
 
 TEST(ieml_grammar_test_case, categry_word_decl)                                      TEST_PARSE_NO_ERRORS(R"(@rootparadigm type:category "O:O:.".)");
 TEST(ieml_grammar_test_case, language_string_with_special_characters)                TEST_PARSE_NO_ERRORS(R"(@rootparadigm type:inflection "O:M:.".@inflection en:a'-0123456789azAZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸàâäçéèêëîïôöùûüÿÆŒæœ class:NOUN "a.".)");

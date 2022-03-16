@@ -10,6 +10,11 @@
 namespace ieml::structure {
 class CategoryRegister {
 public:
+    CategoryRegister() = default;
+
+    CategoryRegister(const CategoryRegister&) = delete;
+    CategoryRegister& operator=(CategoryRegister&) = delete;
+
     void define_link(std::shared_ptr<structure::Name> name, std::shared_ptr<structure::PathTree> phrase) {
         define_category(name, phrase, DefinitionType::LINK);
     }

@@ -12,8 +12,9 @@ namespace ieml::structure {
 class PathTree : public Element {
 public:
     virtual ElementType getElementType() const override {return ElementType::PATH_TREE;};
-
     virtual std::string to_string() const override;
+    virtual std::string prefix() const override {return "category";};
+    virtual size_t hash() const override {return hash_;};
 
     bool is_path() const {return nb_paths_ == 1;};
 
@@ -171,8 +172,6 @@ public:
     std::shared_ptr<PathNode> getNode() const {return node_;}
     std::vector<std::shared_ptr<PathTree>> getChildrenAsVector() const;
     const Set getChildren() const {return children_;};
-
-    virtual size_t hash() const override {return hash_;};
 
     static std::vector<PathTree::Set> cartesian_product(const std::vector<PathTree::Vector>& children_list);
 

@@ -37,8 +37,8 @@ TEST(ieml_relation_test_case, inclusion) {
                        @node en:node1 (0 #"a.", 1 #"b."). 
                        @paranode en:paranode 1d:/#/1 (0 #"a.", 1 {#"a.";#"b."}).)");
 
-    auto wreg = parser.getContext()->getWordRegister();
-    auto creg = parser.getContext()->getCategoryRegister();
+    auto& wreg = parser.getContext()->getWordRegister();
+    auto& creg = parser.getContext()->getCategoryRegister();
 
     const auto& paradigm = creg.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "paranode"));
     const auto& node0 = creg.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "node0"));

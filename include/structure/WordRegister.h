@@ -18,6 +18,12 @@
 namespace ieml::structure {
 class WordRegister {
 public:
+
+    WordRegister() = default;
+
+    WordRegister(const WordRegister&) = delete;
+    WordRegister& operator=(WordRegister&) = delete;
+
     /**********************************
      * WordRegister: Word
      **********************************/
@@ -156,6 +162,8 @@ public:
     const_iterator_category_word category_word_begin() const {return caterory_words_.begin();};
     const_iterator_category_word category_word_end()   const {return caterory_words_.end();};
 
+
+    const std::unordered_map<Script::Ptr, WordType>& getDeclaredScripts() const {return declared_scripts_;};
 
 private:
     structure::Namespace<structure::AuxiliaryWord> namespace_auxiliary_;
