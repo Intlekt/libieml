@@ -46,9 +46,9 @@ void RootParadigmDeclaration::check_declaration(ieml::parser::ParserContextManag
             return;
         }
     }
+    wregister.declare_root_paradigm(script, *root_type);
 
     for (auto& ss : script->singular_sequences()) {
-        wregister.declare_script(ss, *root_type);
         ctx.getSourceMapping().register_mapping(ss, this);
 
         // for categories, also define the word, because there is no special declaration for 

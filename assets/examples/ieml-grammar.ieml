@@ -5,6 +5,7 @@
 
 @language en.
 
+
 // VERBS ~INFLECTIONS
 
 @rootparadigm type:inflection "E:M:O:.".

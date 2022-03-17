@@ -16,27 +16,11 @@ class TestBinding(unittest.TestCase):
         parser = pyieml.Parser(s)
         parser.parse()
 
-        j = parser.to_json()
-
-        # print(json.dumps(json.loads(j), indent=4))
-
-
-
-    def test_graph_to_json(self):
         
-        with open(os.path.join(SRC_ROOT, "assets/examples/ieml-grammar.ieml")) as fp:
-            s = fp.read()
-
-        parser = pyieml.Parser(s)
-        parser.parse()
-
-        j = parser.composition_graph_json()
-        # print(j)
+        j = json.loads(parser.to_json())
+        with open(os.path.join(SRC_ROOT, "build/output.json"), 'w') as fp:
+            json.dump(j, fp, indent=4)
         # print(json.dumps(json.loads(j), indent=4))
-
-    def test_multiple_files(self):
-        parser = pyieml.Parser(["file_0", "file_1"], ["""@word "wa.". @word .""", """@word "e."."""])
-        parser.parse()
 
 
 if __name__ == '__main__':

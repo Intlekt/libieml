@@ -73,6 +73,7 @@ public:
 
     const std::unordered_map<std::string, Script::Ptr>& defined_script() const {return defined_scripts_by_string_;};
 
+    const std::unordered_map<Script::Ptr, Script::TablePtr>& get_tables() const {return tables_;};
 private:
     std::unordered_map<std::string, Script::Ptr> defined_scripts_by_string_;
 
@@ -93,6 +94,9 @@ private:
     // Tables
     // Store for each script its table
     std::unordered_map<Script::Ptr, Script::TablePtr> tables_;
+
+
+    void define_script(Script::Ptr);
 
     void _build_primitives();
     void _build_null_scripts();

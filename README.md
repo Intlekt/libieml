@@ -38,7 +38,7 @@ cd build
 cmake [opts] ..
 make
 ```
-For instance`opts = "-DBUILD_TEST"`.
+For instance `opts = "-DBUILD_TEST"`.
 
 ### Python wrapper installation
 

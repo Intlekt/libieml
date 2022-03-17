@@ -33,8 +33,8 @@ nlohmann::json categoryToJson(std::shared_ptr<ieml::structure::PathTree>,
 
 nlohmann::json parserToJson(const IEMLParser& parser);
 
-nlohmann::json serializeTable(ieml::parser::ParserContextManager& ctx,
-                              const ieml::structure::TableDefinition::Ptr& table);
+nlohmann::json serializeCategoryHierarchy(ieml::parser::ParserContextManager& ctx,
+                                          const ieml::structure::TableDefinition::Ptr& table);
 
 // Graph
 nlohmann::json serializeNode(const structure::CategoryRegister&, 
@@ -47,8 +47,7 @@ nlohmann::json binaryGraphToJson(ieml::relation::RelationGraph&,
                                  const structure::WordRegister&,
                                  const SourceMapping&);
 
-nlohmann::json scriptTableToJson(const ieml::structure::Script::TablePtr, 
-                                 const ieml::structure::ScriptRegister&);
+nlohmann::json scriptTableToJson(const ieml::structure::Script::TablePtr);
 
 
 
