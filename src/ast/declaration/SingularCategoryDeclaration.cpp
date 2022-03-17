@@ -14,6 +14,8 @@ void SingularCategoryDeclaration::define_category(ieml::parser::ParserContextMan
             structure::DefinitionType::NODE : 
             structure::DefinitionType::COMPONENT)
     );
+
+    
 }
 
 PartialPathTree::Optional SingularCategoryDeclaration::_check_phrase(ieml::parser::ParserContextManager& ctx) const {

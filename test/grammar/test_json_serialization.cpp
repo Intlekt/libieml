@@ -96,6 +96,7 @@ TEST(ieml_grammar_test_case, json_serialization) {
             if (v["type"] == "WORD") {
                 ASSERT_TRUE(v.contains("word_type")) << "Missing word_type field for word";
                 ASSERT_TRUE(v.contains("declaration")) << "Missing declaration field for word";
+                ASSERT_TRUE(v.contains("phrase_words")) << "Missing phrase_words field for word";
 
                 EXPECT_TRUE(res["elements"].contains(v["declaration"])) << "Not containing declaration " + std::string(v["declaration"]) + " of " + std::string(v["id"]) ;
             }

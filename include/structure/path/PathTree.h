@@ -29,6 +29,9 @@ public:
                                      node_->getPathType() == +PathType::JUNCTION_INFLECTION;};
     bool is_paradigm() const {return node_->getPathType() == +PathType::PARADIGM;}
 
+    bool is_phrase_word() const;
+    Word::Ptr get_phrase_word() const;
+
     struct CompareFunctor {
         bool operator()(const std::shared_ptr<PathTree>& l, const std::shared_ptr<PathTree>& r) const {
             return comp(l->node_, l->children_, r->node_, r->children_) < 0;

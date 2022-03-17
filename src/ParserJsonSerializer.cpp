@@ -149,13 +149,19 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
     auto ast = dynamic_cast<const ieml::AST::AST*>(ctx.getSourceMapping().resolve_mapping(word));
     const ieml::AST::CharRange& range = ast->getCharRange();
 
+    nlohmann::json phrase_words = nlohmann::json::array();
+    const auto it_pair = ctx.getCategoryRegister().get_phrase_words(word);
+    for (auto it = it_pair.first; it != it_pair.second; it++)
+        phrase_words.push_back(it->second->uid());
+
     return {
         {"id", word->uid()},
         {"range", charRangeToJson(range)},
         {"translations", name_json},
         {"type", "WORD"},
         {"word_type", word->getWordType()._to_string()},
-        {"declaration", word->getScript()->uid()}
+        {"declaration", word->getScript()->uid()},
+        {"phrase_words", phrase_words}
     };
 }
 
