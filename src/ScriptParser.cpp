@@ -4,20 +4,17 @@
 
 using namespace ieml::parser;
 
-ScriptParser::ScriptParser(const std::string& file_id, IEMLParserErrorListener* error_listener) {
+ScriptParser::ScriptParser(IEMLParserErrorListener* error_listener) {
     visitor_ = std::make_shared<ScriptGrammarVisitor>(error_listener);
     input_ = std::make_unique<antlr4::ANTLRInputStream>(std::string(""));
 
-    auto antlr_listener = error_listener->getANTLR4ErrorListener(file_id);
     lexer_ = std::make_unique<script_generated::ScriptLexerGrammar>(input_.get());
     lexer_->removeErrorListeners();
-    lexer_->addErrorListener(antlr_listener);
 
     tokens_ = std::make_unique<antlr4::CommonTokenStream>(lexer_.get());
 
     parser_ = std::make_unique<script_generated::ScriptParserGrammar>(tokens_.get());
     parser_->removeErrorListeners();
-    parser_->addErrorListener(antlr_listener);
     
     // use SSL prediction for parser
     // I wrote the grammar so it not need context information, speeding the parser by x10

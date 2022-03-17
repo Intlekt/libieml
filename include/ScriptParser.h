@@ -21,7 +21,9 @@ namespace ieml::parser {
 
 class ScriptParser {
 public:
-    ScriptParser(const std::string& file_id, IEMLParserErrorListener* error_manager);
+    /*
+    */
+    ScriptParser(IEMLParserErrorListener* error_manager);
 
     const ieml::structure::Script* get_or_parse(
         ieml::structure::ScriptRegister* reg,
@@ -31,6 +33,7 @@ public:
         const size_t char_offset);
 
     ScriptParser(const ScriptParser&) = delete;
+    ScriptParser& operator=(ScriptParser&) = delete;
 
 private:
     std::unique_ptr<antlr4::ANTLRInputStream> input_ = nullptr;

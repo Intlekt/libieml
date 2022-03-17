@@ -57,7 +57,7 @@ TEST(ieml_structure_test_case, script_register_unique) {
 
 TEST(ieml_structure_test_case, test_script_parser) {
     auto listener = ieml::parser::IEMLParserErrorListener();
-    auto parser = ieml::parser::ScriptParser("", &listener);
+    auto parser = ieml::parser::ScriptParser(&listener);
     auto reg = ScriptRegister();
 
     auto res = parser.get_or_parse(&reg, "M:M:.M:M:.-", "", 0, 0);

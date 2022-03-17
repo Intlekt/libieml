@@ -6,7 +6,7 @@ ieml::structure::Script::Ptr ieml::testing::parse_script(ieml::structure::Script
 
     if (!res) {
         auto listener = ieml::parser::IEMLParserErrorListener();
-        auto parser = ieml::parser::ScriptParser("Parsing script: " + s, &listener);
+        auto parser = ieml::parser::ScriptParser(&listener);
         res;
         try {                                                           
             res = parser.get_or_parse(reg, s, "", 0, 0);

@@ -25,7 +25,8 @@ class ParserContextManager {
 public:
     ParserContextManager(ieml::parser::IEMLParserErrorListener* error_manager) : 
         error_manager_(error_manager), 
-        script_parser_("", error_manager) {}
+        script_parser_(nullptr) // do not bubble up the scripts parsing errors (there have their own error from the IEML error perspective)
+        {}
     
     ParserContextManager(const ParserContextManager&) = delete;
     ParserContextManager& operator=(ParserContextManager&) = delete;

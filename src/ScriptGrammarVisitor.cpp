@@ -18,17 +18,23 @@ using namespace ieml::parser;
   return antlrcpp::Any(VisitorResult<RETURN_TYPE>());
 
 
+#define REPORT_ERROR(ErrorListener, Context, Message)                 \
+if (ErrorListener) {                                                  \
+  ErrorListener->parseError(*charRangeFromContext(Context), Message); \
+}                                                                     \
+
+
 #define CHECK_SYNTAX_ERROR(ErrorListener, Context, Attribute, Message, Required) \
 antlrcpp::Any t_##Attribute; \
 bool valid_##Attribute = true; \
 if (Context->Attribute) {\
   t_##Attribute = visit(Context->Attribute); \
   if (t_##Attribute.isNull()) { \
-    ErrorListener->parseError(*charRangeFromContext(Context), Message); \
+    REPORT_ERROR(ErrorListener, Context, Message); \
     valid_##Attribute = false; \
   }\
 } else if (Required) { \
-  ErrorListener->parseError(*charRangeFromContext(Context), "Missing required " #Attribute " : " Message); \
+  REPORT_ERROR(ErrorListener, Context, "Missing required " #Attribute " : " Message);\
   valid_##Attribute = false; \
 }
 
@@ -38,7 +44,7 @@ __attribute__ ((unused)) bool valid_##Attribute = true; \
 for (auto child: Context->Attribute) { \
   auto t_tmp = visit(child); \
   if (t_tmp.isNull()) { \
-    ErrorListener->parseError(*charRangeFromContext(Context), Message); \
+    REPORT_ERROR(ErrorListener, Context, Message); \
     valid_##Attribute = false; \
   } else { \
     auto _tmp = std::move(t_tmp.as<VisitorResult<RETURN_TYPE>>()); \
