@@ -64,23 +64,6 @@ std::pair<nlohmann::json, nlohmann::json> ieml::parser::errorManagerToJson(const
     return {error_list, warning_list};
 }
 
-
-nlohmann::json _paradigmLayoutToJson(const ieml::structure::ParadigmLayout& layout,
-                                     const std::vector<size_t>& coords_prefix) {
-    
-    if (coords_prefix.size() == layout.getShape().size()) return layout.at(coords_prefix)->uid();
-
-    size_t curr_dim = coords_prefix.size();
-
-    nlohmann::json arr = nlohmann::json::array();
-    for (size_t i = 0; i < layout.getShape()[curr_dim]; ++i) {
-        std::vector<size_t> prefix(coords_prefix.begin(), coords_prefix.end());
-        prefix.push_back(i);
-        arr.push_back(_paradigmLayoutToJson(layout, prefix));
-    }
-    return arr;
-}
-
 nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::PathTree> category, 
                                             ieml::parser::ParserContextManager& ctx,
                                             ieml::relation::RelationGraph::Register& register_,
@@ -116,15 +99,13 @@ nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::Pat
 
     const auto& preg = ctx.getParadigmRegister();
 
-    nlohmann::json nDimension = 0;
     nlohmann::json invariant = category->uid();
-    nlohmann::json layout = nullptr;
+    nlohmann::json table;
     if (category->is_paradigm()) {
         auto& reg = ctx.getPathTreeRegister();
         invariant = reg.buildFromPaths(reg.invariant_paths(category))->uid();
-        const auto& playout = preg.get_layout(category);
-        nDimension = playout.getShape().size();
-        layout = _paradigmLayoutToJson(playout, {});
+        const auto& tablend = preg.get_table(category);
+        table = tablend->uid();
     }
 
     nlohmann::json paradigms = nlohmann::json::array();
@@ -146,8 +127,8 @@ nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::Pat
         {"singular_sequences", singular_sequences},
         {"invariant", invariant},
         {"paradigms", paradigms},
-        {"nDimension", nDimension},
-        {"layout", layout}
+
+        {"table", table}
     };
 }
 
@@ -251,6 +232,7 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
     auto& cregister = context->getCategoryRegister();
     auto& wregister = context->getWordRegister();
     auto& sregister = context->getScriptRegister();
+    auto& pregister = context->getParadigmRegister();
 
     const CharRange default_range(parser.getDefaultFileId(), 0, 0, 0, 0);
 
@@ -276,9 +258,8 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
     for (auto it = wregister.junctions_begin(); it != wregister.junctions_end(); ++it)
         elements[it->first->uid()] = _wordToJson<ieml::structure::JunctionWord>(it->first, *context);
 
-
     nlohmann::json category_hierarchies = nlohmann::json::array();
-    for (const auto& table: context->getParadigmRegister().getTables()) {
+    for (const auto& table: context->getParadigmRegister().getTableHierarchies()) {
         category_hierarchies.push_back(serializeCategoryHierarchy(*context, table));
     }
     
@@ -288,8 +269,13 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
     // serialize table after scripts so all the tables are created in script register
     nlohmann::json tables;
     for (const auto& it: sregister.get_tables()) {
-        tables[it.second->uid()] = scriptTableToJson(it.second);
+        tables[it.second->uid()] = tableToJson(it.second);
     }
+    // category paradigm register
+    for (const auto& it: pregister.get_tables()) {
+        tables[it.second->uid()] = tableToJson(it.second);
+    }
+
 
     return {
         {"errors", errors_and_warnings.first},
@@ -381,7 +367,8 @@ nlohmann::json _wrap(ieml::structure::Script::Ptr ptr, size_t times) {
     }
 };
 
-nlohmann::json ieml::parser::scriptTableToJson(const ieml::structure::Script::TablePtr table) {
+template<class T>
+nlohmann::json ieml::parser::tableToJson(const T& table) {
     nlohmann::json res;
 
     if (table->get_type() == +ieml::structure::TableType::CELL) {
@@ -425,7 +412,7 @@ nlohmann::json ieml::parser::scriptTableToJson(const ieml::structure::Script::Ta
 
     res["id"] = table->uid();
     res["type"] = table->get_type()._to_string();
-    res["element_type"] = "SCRIPT";
+    res["element_type"] = table->table_name()->getElementType()._to_string();
     res["title"] = table->table_name()->uid();
     res["str"] = table->table_name()->to_string();
 

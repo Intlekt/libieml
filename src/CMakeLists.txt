@@ -99,7 +99,7 @@ set(IEMLParser_src ${ANTLR_IEMLLexerGrammar_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathTree.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/path/PathParser.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/Namespace.cpp
-                   ${CMAKE_CURRENT_LIST_DIR}/structure/ParadigmLayout.cpp
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/ParadigmRegister.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/script/Script.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/script/PrimitiveScript.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/script/AdditiveScript.cpp

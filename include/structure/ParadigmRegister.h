@@ -3,7 +3,7 @@
 
 #include "structure/path/PathTree.h"
 #include "structure/TableDefinition.h"
-#include "structure/ParadigmLayout.h"
+#include "structure/table/Table.h"
 
 
 namespace ieml::structure {
@@ -18,7 +18,7 @@ public:
     void define_paradigm(PathTree::Register& reg, const std::shared_ptr<PathTree>& paradigm, const std::vector<ieml::structure::PathTree::Set> dimension_paths) {
         auto invariant = reg.buildFromPaths(reg.invariant_paths(paradigm));
         
-        paradigms_.insert({paradigm, ParadigmLayout::buildFromPathTree(reg, paradigm, dimension_paths)});
+        paradigms_.insert({paradigm, buildFromPathTree(reg, paradigm, dimension_paths)});
         invariant_to_paradigm_.insert({invariant, paradigm});
     }
 
@@ -44,28 +44,37 @@ public:
         return res;
     }
 
-    const ParadigmLayout& get_layout(const std::shared_ptr<PathTree>& paradigm) const {
+    const PathTree::TablePtr& get_table(const std::shared_ptr<PathTree>& paradigm) const {
         return paradigms_.find(paradigm)->second;
     }
+
+    const std::unordered_map<PathTree::Ptr, PathTree::TablePtr>& get_tables() const {
+        return paradigms_;
+    }
+
 
     void register_table(const TableDefinition::Ptr& table) {
         tables_.push_back(table);
     }
 
-    const std::vector<TableDefinition::Ptr>& getTables() const {
+    const std::vector<TableDefinition::Ptr>& getTableHierarchies() const {
         return tables_;
     }
 
 private:
-
     /**
      * @brief A hash map that links singular path tree to theirs corresponding paradigm.
      */
-    std::unordered_multimap<std::shared_ptr<PathTree>, std::shared_ptr<PathTree>> invariant_to_paradigm_;
+    std::unordered_multimap<PathTree::Ptr, PathTree::Ptr> invariant_to_paradigm_;
 
-    std::unordered_map<std::shared_ptr<PathTree>, ParadigmLayout> paradigms_;
+    std::unordered_map<PathTree::Ptr, PathTree::TablePtr> paradigms_;
 
     std::vector<TableDefinition::Ptr> tables_;
+
+    static PathTree::TablePtr buildFromPathTree(PathTree::Register& reg,
+                                                PathTree::Ptr paradigm, 
+                                                std::vector<PathTree::Set> dimension_paths);
+
 };
 
 }

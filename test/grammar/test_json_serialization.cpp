@@ -64,6 +64,12 @@ TEST(ieml_grammar_test_case, json_serialization) {
                     EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing paradigms " + std::string(ref) + " of " + it.key() + " in file " + std::string(file_path.path());
 
                 EXPECT_LE(v["nDimension"], 3);
+
+                ASSERT_TRUE(v.contains("table")) << "Missing table field for category";
+
+                if (!v["table"].is_null()) {
+                    ASSERT_TRUE(res["tables"].contains(v["table"])) << "Missing table " + std::string(v["table"]) + " of " + it.key() + " in file " + std::string(file_path.path());
+                }
             }
 
             if (v["type"] == "SCRIPT") {
@@ -117,8 +123,12 @@ TEST(ieml_grammar_test_case, json_serialization) {
                 ASSERT_EQ(v["shape"].size(), v["n_dim"]) << "Invalid dimension for shape in tablend " + std::string(it.key());
 
                 ASSERT_TRUE(v.contains("headers")) << "Missing key headers in tablend " + std::string(it.key());
-                ASSERT_TRUE(v.contains("cells")) << "Missing key cells in tablend " + std::string(it.key());
+                ASSERT_EQ(v["headers"].size(), v["n_dim"]);
+                for (size_t dim = 0; dim < v["n_dim"]; dim++) {
+                    ASSERT_EQ(v["headers"][dim].size(), v["shape"][dim]);
+                }
 
+                ASSERT_TRUE(v.contains("cells")) << "Missing key cells in tablend " + std::string(it.key());
 
             } else if (v["type"] == "TABLESET") {
                 ASSERT_TRUE(v.contains("children")) << "Missing key children in table " + std::string(it.key());

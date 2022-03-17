@@ -66,16 +66,6 @@ PartialPathTree::Optional ParanodeDeclaration::_check_phrase(ieml::parser::Parse
         return {};
     }
 
-    structure::PathTree::Set children;
-
-    for (size_t i = 0; i < phrase_list->getPathTrees().size(); ++i) {
-        children.insert({
-            ctx.getPathTreeRegister().get_or_create(
-                std::make_shared<structure::ParadigmIndexPathNode>(i), 
-                {phrase_list->getPathTrees()[i]}
-            )});
-    }
-
     if (phrase_list->getReferences().size() != 0) {
         ctx.getErrorManager().visitorError(
             getCharRange(), 
@@ -84,9 +74,7 @@ PartialPathTree::Optional ParanodeDeclaration::_check_phrase(ieml::parser::Parse
         return {};
     }
 
-    return PartialPathTree({ctx.getPathTreeRegister().get_or_create(
-                                std::make_shared<structure::ParadigmPathNode>(), 
-                                children)}, {});
+    return PartialPathTree({ctx.getPathTreeRegister().build_paradigm(phrase_list->getPathTrees())}, {});
 }
 
 std::optional<std::vector<ieml::structure::PathTree::Set>> ParanodeDeclaration::_check_dimension_definitions(ieml::parser::ParserContextManager& ctx, 

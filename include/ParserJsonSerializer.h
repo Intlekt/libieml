@@ -47,7 +47,8 @@ nlohmann::json binaryGraphToJson(ieml::relation::RelationGraph&,
                                  const structure::WordRegister&,
                                  const SourceMapping&);
 
-nlohmann::json scriptTableToJson(const ieml::structure::Script::TablePtr);
+template<class T>
+nlohmann::json tableToJson(const T&);
 
 
 

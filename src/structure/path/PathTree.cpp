@@ -221,6 +221,21 @@ PathTree::Set PathTree::Register::invariant_paths(const std::shared_ptr<PathTree
     return invariant_paths;
 }
 
+PathTree::Ptr PathTree::Register::build_paradigm(const PathTree::Vector& paradigm) {
+    structure::PathTree::Set children;
+
+    for (size_t i = 0; i < paradigm.size(); ++i) {
+        children.insert({
+            get_or_create(
+                std::make_shared<structure::ParadigmIndexPathNode>(i), 
+                {paradigm[i]}
+            )
+        });
+    }
+
+    return get_or_create(std::make_shared<structure::ParadigmPathNode>(), children);
+}
+
 bool PathTree::is_contained_singular(const std::shared_ptr<PathTree>& path_tree) const {
     if (*node_ != *path_tree->node_) return false;
     if (children_.size() == 0) return true;

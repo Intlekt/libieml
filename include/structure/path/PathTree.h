@@ -2,7 +2,7 @@
 
 #include "structure/Element.h"
 #include "structure/path/PathNode.h"
-// #include "structure/path/Path.h"
+#include "structure/table/Table.h"
 
 #include <unordered_map>
 
@@ -40,9 +40,10 @@ public:
         }
     };
 
-    typedef std::set<std::shared_ptr<PathTree>, CompareFunctor> Set;
-    typedef std::vector<std::shared_ptr<PathTree>> Vector;
     typedef std::shared_ptr<PathTree> Ptr;
+    typedef std::set<Ptr, CompareFunctor> Set;
+    typedef std::vector<Ptr> Vector;
+    typedef std::shared_ptr<const TableNd<Ptr>> TablePtr;
 
     class Register {
     public:
@@ -116,9 +117,14 @@ public:
          * 
          * @return Set 
          */
-        Set invariant_paths(const std::shared_ptr<PathTree>&);
+        Set invariant_paths(const PathTree::Ptr&);
 
-        
+        /**
+         * @brief Build a paradigm from the list of singular sequences.
+         * 
+         * @return PathTree::Ptr 
+         */
+        PathTree::Ptr build_paradigm(const PathTree::Vector&);
 
     private:
         struct eqKey {
@@ -165,7 +171,7 @@ public:
      * @brief Return the path tree that correspond to this path set, if possible
      * 
      * @param paths 
-     * @return Path::Set 
+     * @return PathTree::Set 
      */
     static PathTree fromPaths(const Set& paths);
 
