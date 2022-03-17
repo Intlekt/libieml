@@ -6,10 +6,17 @@
 #include "structure/script/PrimitiveScript.h"
 
 #include <algorithm>
+#include <iostream>
 
 using namespace ieml::parser;
 
 #define RETURN_TYPE const ieml::structure::Script*
+
+#ifdef DEBUG
+#define DEBUG_LOG(x) std::cout << x << std::endl;
+#else
+#define DEBUG_LOG(x)
+#endif
 
 #define RETURN_VISITOR_RESULT_MOVE(UNIQUE_PTR) \
   return antlrcpp::Any(VisitorResult<RETURN_TYPE>(std::move(UNIQUE_PTR)));
@@ -73,6 +80,7 @@ if (!valid_##Attribute) \
 
 #define VISIT_SCRIPT_LAYER(layer) \
 antlrcpp::Any ScriptGrammarVisitor::visitScript__layer##layer(ScriptParserGrammar::Script__layer##layer##Context *ctx) {\
+    DEBUG_LOG("visiting visitScript__layer" + std::to_string(layer));\
     CHECK_SYNTAX_ERROR(error_listener_, ctx, script_, "Empty script", true);\
     CAST_OR_RETURN_IF_NULL(ctx, script_);\
     RETURN_VISITOR_RESULT_MOVE(script_);\
@@ -88,21 +96,25 @@ VISIT_SCRIPT_LAYER(6);
 
 
 antlrcpp::Any ScriptGrammarVisitor::visitMult_layer0__primitive(ScriptParserGrammar::Mult_layer0__primitiveContext *ctx) {
+    DEBUG_LOG("visiting visitMult_layer0__primitive = " + ctx->primitive->getText()[0]);
     RETURN_VISITOR_RESULT_MOVE(register_->get_primitive(ctx->primitive->getText()[0]));
 }
 
 antlrcpp::Any ScriptGrammarVisitor::visitMult_layer0__remarkable_addition(ScriptParserGrammar::Mult_layer0__remarkable_additionContext *ctx) {
+    DEBUG_LOG("visiting visitMult_layer0__remarkable_addition = " + ctx->remarkable_addition->getText()[0]);
     RETURN_VISITOR_RESULT_MOVE(register_->get_remarkable_addition(ctx->remarkable_addition->getText()[0]));
 }
 
 antlrcpp::Any ScriptGrammarVisitor::visitMult_layer1__remarkable_mult(ScriptParserGrammar::Mult_layer1__remarkable_multContext *ctx) {
     std::string tag(ctx->remarkable_multiplication->getText());
+    DEBUG_LOG("visiting visitMult_layer1__remarkable_mult = " + tag);
     std::reverse(tag.begin(), tag.end()); 
     RETURN_VISITOR_RESULT_MOVE(register_->get_remarkable_multiplication(tag));
 }
 
 #define ADDITIVE_LAYER(layer) \
 antlrcpp::Any ScriptGrammarVisitor::visitLayer##layer##__addition(ScriptParserGrammar::Layer##layer##__additionContext *ctx) { \
+    DEBUG_LOG("visiting visitLayer" + std::to_string(layer) + "__addition");\
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, children, "Expected a sum of multiplicatives scripts.");  \
     CAST_OR_RETURN_IF_NULL_LIST(children);                                  \
                                                                             \
@@ -119,6 +131,7 @@ antlrcpp::Any ScriptGrammarVisitor::visitLayer##layer##__addition(ScriptParserGr
 
 #define ADDITIVE_MULT_LAYER(layer) \
 antlrcpp::Any ScriptGrammarVisitor::visitLayer##layer##__script(ScriptParserGrammar::Layer##layer##__scriptContext *ctx) { \
+    DEBUG_LOG("visiting visitLayer" + std::to_string(layer) + "__script");\
     CHECK_SYNTAX_ERROR(error_listener_, ctx, script_, "Empty script addition", true);                       \
     CAST_OR_RETURN_IF_NULL(ctx, script_);                     \
     RETURN_VISITOR_RESULT_MOVE(script_);                        \
@@ -126,6 +139,7 @@ antlrcpp::Any ScriptGrammarVisitor::visitLayer##layer##__script(ScriptParserGram
 
 #define MULTIPLICATIVE_LAYER(layer) \
 antlrcpp::Any ScriptGrammarVisitor::visitMult_layer##layer##__mult(ScriptParserGrammar::Mult_layer##layer##__multContext *ctx) {  \
+    DEBUG_LOG("visiting visitMult_layer" + std::to_string(layer) + "__mult");\
     CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, children, "Expected a substance, attribute and mode multiplicatives scripts."); \
     CAST_OR_RETURN_IF_NULL_LIST(children);  \
                                                                 \

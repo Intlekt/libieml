@@ -167,6 +167,7 @@ TEST(ieml_grammar_test_case, root_paradigm_not_a_paradigm)                      
 TEST(ieml_grammar_test_case, root_paradigm_overlap)                                  TEST_PARSE_ERRORS(R"(@rootparadigm type:INFLECTION "S:+B:M:.".@rootparadigm type:CATEGORY "M:M:.".)");
 TEST(ieml_grammar_test_case, root_paradigm_multiple_same_word)                       TEST_PARSE_ERRORS(R"(@rootparadigm type:INFLECTION "O:".@rootparadigm type:CATEGORY "O:".)");
 TEST(ieml_grammar_test_case, root_paradigm_invalid_script)                           TEST_PARSE_ERRORS(R"(@rootparadigm type:INFLECTION "test".)");
+TEST(ieml_grammar_test_case, root_paradigm_partial_script)                           TEST_PARSE_ERRORS(R"(@rootparadigm type:category "E:.O:O:.".)");
 TEST(ieml_grammar_test_case, root_paradigm_empty_script)                             TEST_PARSE_ERRORS(R"(@rootparadigm type:INFLECTION "".)");
 TEST(ieml_grammar_test_case, root_paradigm_category_not_defined)                     TEST_PARSE_ERRORS(R"(@rootparadigm type:INFLECTION "O:". @node fr:test (0 #"A:").)");
 TEST(ieml_grammar_test_case, root_paradigm_inflection_not_defined)                   TEST_PARSE_ERRORS(R"(@rootparadigm type:AUXILIARY "O:". @inflection fr:test class:NOUN "A:".)");
