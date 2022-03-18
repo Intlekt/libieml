@@ -83,3 +83,20 @@ TEST(ieml_grammar_test_case, language_per_file) {
 
   EXPECT_EQ(parser.getSyntaxErrors().size(), 0);
 }
+
+TEST(ieml_grammar_test_case, ensure_script_parser_not_raise_error) {
+    ieml::parser::IEMLParser parser(R"(@rootparadigm type:inflection "asdsad".)");                           
+    try {                                                           
+      parser.parse();                                               
+    } catch (std::exception& e) {                                  
+      EXPECT_TRUE(false) << e.what();                              
+    }                                                               
+                                                                    
+    std::ostringstream os;                                          
+    for (auto& error : parser.getSyntaxErrors()) {                  
+      os << error->to_string() << std::endl;                        
+    }                                          
+                       
+    ASSERT_EQ(parser.getSyntaxErrors().size(), 1) << "Too much errors raised by the parser. "
+                                                     "The script parser errors have to be ignored." << os.str();
+}

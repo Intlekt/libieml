@@ -4,21 +4,23 @@
 
 using namespace ieml::parser;
 
-ScriptParser::ScriptParser(const std::string& file_id, IEMLParserErrorListener* error_listener) {
-    visitor_ = std::make_shared<ScriptGrammarVisitor>(error_listener);
+
+
+ScriptParser::ScriptParser() {
+    visitor_ = std::make_shared<ScriptGrammarVisitor>(nullptr); // no error listener yet for contextual error
     input_ = std::make_unique<antlr4::ANTLRInputStream>(std::string(""));
 
-    auto antlr_listener = error_listener->getANTLR4ErrorListener(file_id);
+
     lexer_ = std::make_unique<script_generated::ScriptLexerGrammar>(input_.get());
     lexer_->removeErrorListeners();
-    lexer_->addErrorListener(antlr_listener);
+    lexer_->addErrorListener(&antlr_error_listener_);
 
     tokens_ = std::make_unique<antlr4::CommonTokenStream>(lexer_.get());
 
     parser_ = std::make_unique<script_generated::ScriptParserGrammar>(tokens_.get());
     parser_->removeErrorListeners();
-    parser_->addErrorListener(antlr_listener);
-    
+    parser_->addErrorListener(&antlr_error_listener_);
+
     // use SSL prediction for parser
     // I wrote the grammar so it not need context information, speeding the parser by x10
     parser_->getInterpreter<atn::ParserATNSimulator>()->setPredictionMode(atn::PredictionMode::SLL);
@@ -40,13 +42,16 @@ const ieml::structure::Script* ScriptParser::get_or_parse(
     std::reverse(reversed.begin(), reversed.end());
 
     input_->load(reversed);
-    // error_listener->clear();
+    antlr_error_listener_.clear();
     lexer_->reset();
     lexer_->setInputStream(input_.get());
     tokens_->setTokenSource(lexer_.get());
     parser_->reset();
 
+    // TODO perform error fowarding to the root error_listener (with file position mapping)
     const auto parse_tree = parser_->script();
+    if (antlr_error_listener_.has_error())
+        return nullptr;
     
     auto script_ast_any = visitor_->visit_with_offset(reg, parse_tree, file_id, line_offset, char_offset);
     if (script_ast_any.isNull())

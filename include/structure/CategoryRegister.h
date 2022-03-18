@@ -25,7 +25,16 @@ public:
         
         definition_types_.insert({phrase, type});
         namespace_category_.define(name, phrase);
+
+        if (phrase->is_phrase_word())
+            phrase_words_.insert({phrase->get_phrase_word(), phrase});
     }
+    typedef std::unordered_multimap<Word::Ptr, PathTree::Ptr> PhraseWordMap;
+
+    std::pair<PhraseWordMap::const_iterator, PhraseWordMap::const_iterator> get_phrase_words(const Word::Ptr& word) const {
+        return phrase_words_.equal_range(word);
+    }
+
     std::shared_ptr<structure::PathTree> resolve_category(const structure::LanguageString& s) const {
         return namespace_category_.resolve(s);
     }
@@ -53,5 +62,7 @@ public:
 private:
     structure::Namespace<structure::PathTree> namespace_category_;
     std::unordered_map<std::shared_ptr<structure::PathTree>, DefinitionType> definition_types_;
+
+    PhraseWordMap phrase_words_;
 };
 }

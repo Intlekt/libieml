@@ -64,6 +64,12 @@ TEST(ieml_grammar_test_case, json_serialization) {
                     EXPECT_TRUE(res["elements"].contains(ref)) << "Not containing paradigms " + std::string(ref) + " of " + it.key() + " in file " + std::string(file_path.path());
 
                 EXPECT_LE(v["nDimension"], 3);
+
+                ASSERT_TRUE(v.contains("table")) << "Missing table field for category";
+
+                if (!v["table"].is_null()) {
+                    ASSERT_TRUE(res["tables"].contains(v["table"])) << "Missing table " + std::string(v["table"]) + " of " + it.key() + " in file " + std::string(file_path.path());
+                }
             }
 
             if (v["type"] == "SCRIPT") {
@@ -83,22 +89,55 @@ TEST(ieml_grammar_test_case, json_serialization) {
                 if (!v["definition"].is_null())
                     EXPECT_TRUE(res["elements"].contains(v["definition"])) << "Not containing word " + std::string(v["word"]) + " of " + std::string(v["id"]) ;
 
+                ASSERT_TRUE(v.contains("table")) << "Missing table field for script";
+                ASSERT_TRUE(res["tables"].contains(v["table"])) << "Missing table id in tables";
             }
 
             if (v["type"] == "WORD") {
                 ASSERT_TRUE(v.contains("word_type")) << "Missing word_type field for word";
                 ASSERT_TRUE(v.contains("declaration")) << "Missing declaration field for word";
+                ASSERT_TRUE(v.contains("phrase_words")) << "Missing phrase_words field for word";
 
                 EXPECT_TRUE(res["elements"].contains(v["declaration"])) << "Not containing declaration " + std::string(v["declaration"]) + " of " + std::string(v["id"]) ;
             }
         }
 
+        ASSERT_TRUE(res.contains("tables"));
         // check that the tables have valid ids
         for (nlohmann::json::iterator it = res["tables"].begin(); it != res["tables"].end(); ++it) {
             auto v = it.value();
-            EXPECT_TRUE(res["elements"].contains(v["root"])) << "Not table root id " + std::string(v["root"]) + " of " + it.key() + " in file " + std::string(file_path.path());
 
-               
+            ASSERT_TRUE(v.contains("id")) << "Missing key id in table " + std::string(it.key());
+            ASSERT_TRUE(res["tables"].contains(v["id"])) << "Table does not contains id " + std::string(it.key());
+            
+            ASSERT_TRUE(v.contains("title")) << "Missing key title in table " + std::string(it.key());
+            ASSERT_TRUE(res["elements"].contains(v["title"])) << "No script id " + std::string(v["str"]) + " for table " + std::string(it.key()) + " in file " + std::string(file_path.path());
+
+            ASSERT_TRUE(v.contains("element_type")) << "Missing key element_type in table " + std::string(it.key());
+            ASSERT_TRUE(v.contains("type")) << "Missing key type in table " + std::string(it.key());
+        
+            if (v["type"] == "CELL") {}
+            else if (v["type"] == "TABLEND") {
+                ASSERT_TRUE(v.contains("n_dim")) << "Missing key n_dim in tablend " + std::string(it.key());
+                ASSERT_TRUE(v.contains("shape")) << "Missing key shape in tablend " + std::string(it.key());
+
+                ASSERT_EQ(v["shape"].size(), v["n_dim"]) << "Invalid dimension for shape in tablend " + std::string(it.key());
+
+                ASSERT_TRUE(v.contains("headers")) << "Missing key headers in tablend " + std::string(it.key());
+                ASSERT_EQ(v["headers"].size(), v["n_dim"]);
+                for (size_t dim = 0; dim < v["n_dim"]; dim++) {
+                    ASSERT_EQ(v["headers"][dim].size(), v["shape"][dim]);
+                }
+
+                ASSERT_TRUE(v.contains("cells")) << "Missing key cells in tablend " + std::string(it.key());
+
+            } else if (v["type"] == "TABLESET") {
+                ASSERT_TRUE(v.contains("children")) << "Missing key children in table " + std::string(it.key());
+                for (auto c : v["children"]) {
+                    ASSERT_TRUE(res["tables"].contains(c)) << "Table does not contains id " + std::string(c);
+                }
+            }
+        
         }
     }
 }

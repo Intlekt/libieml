@@ -11,6 +11,7 @@ add_executable(libieml_test utils_testing.cpp
                             grammar/test_json_serialization.cpp
                             grammar/test_syntax_error.cpp
                             grammar/test_paradigm.cpp
+                            grammar/test_phrase_word.cpp
                             structure/test_path.cpp
                             structure/test_path_node.cpp
                             structure/test_namespace.cpp

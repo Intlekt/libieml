@@ -7,9 +7,14 @@
 #include <vector>
 #include <stdexcept>
 #include <memory>
+#include <functional>
+#include <string>
+#include <enum.h>
 
 
 namespace ieml::structure {
+
+BETTER_ENUM(TableType, char, CELL, TABLEND, TABLESET)
 
 template<class V>
 class TableNd;
@@ -18,8 +23,12 @@ template<class V>
 class Table {
 public:
     virtual ~Table() = default;
+    
+    std::string uid() const {return "table_" + std::to_string(std::hash<std::string>{}(table_name()->uid()));};
 
     typedef std::tuple<size_t, std::vector<std::array<size_t, 3>>> Shape;
+
+    virtual TableType get_type() const = 0;
 
     virtual std::vector<const TableNd<V>*> get_sub_tables() const = 0;
 
@@ -72,6 +81,7 @@ public:
         }
     }
 
+    virtual TableType get_type() const override {return TableType::TABLEND;}
     virtual std::array<size_t, 3> getShapeTableNd() const = 0;
 
     virtual typename Table<V>::Shape getShape() const override {
@@ -119,7 +129,7 @@ public:
     virtual unsigned char ndim(size_t) const override {return N;};
 
     virtual std::array<size_t, 3> getShapeTableNd() const override {
-        std::array<size_t, 3> res;
+        std::array<size_t, 3> res = {1, 1, 1};
         for (size_t i = 0; i < N; i++)
             res[i] = shape_[i];
         return res;
@@ -174,6 +184,8 @@ public:
             std::array<std::vector<V>, 1>{std::vector<V>{value}},
             value
         ) {}
+    
+    virtual TableType get_type() const override {return TableType::CELL;}
 };
 
 template<class V>
@@ -185,6 +197,8 @@ public:
              const V& table_name) : 
         children_(children),
         table_name_(table_name) {}
+
+    virtual TableType get_type() const override {return TableType::TABLESET;}
 
     virtual std::vector<const TableNd<V>*> get_sub_tables() const override {
         return children_;

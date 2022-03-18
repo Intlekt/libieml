@@ -62,6 +62,14 @@ public:
         declared_scripts_.insert({script, wtype});
     }
 
+    void declare_root_paradigm(Script::Ptr script, WordType wtype) {
+        root_paradigms_.insert({script, wtype});
+        for (auto& ss : script->singular_sequences()) {
+            declared_scripts_.insert({ss, wtype});
+        }
+    }
+
+
     bool script_is_declared(Script::Ptr script) const {
         return declared_scripts_.find(script) != declared_scripts_.end();
     }
@@ -165,6 +173,8 @@ public:
 
     const std::unordered_map<Script::Ptr, WordType>& getDeclaredScripts() const {return declared_scripts_;};
 
+    const std::unordered_map<Script::Ptr, WordType>& getRootParadigms() const {return root_paradigms_;};
+
 private:
     structure::Namespace<structure::AuxiliaryWord> namespace_auxiliary_;
     structure::Namespace<structure::InflectionWord> namespace_inflection_;
@@ -175,5 +185,7 @@ private:
     std::unordered_map<Script::Ptr, std::shared_ptr<structure::CategoryWord>> caterory_words_;
 
     std::unordered_map<Script::Ptr, WordType> declared_scripts_; 
+    std::unordered_map<Script::Ptr, WordType> root_paradigms_; 
+
 };
 }

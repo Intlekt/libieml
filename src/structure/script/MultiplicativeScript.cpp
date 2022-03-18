@@ -115,11 +115,11 @@ const Table<const Script*>* MultiplicativeScript::build_table_paradigm(ScriptReg
                 values.push_back(ss_map.find(c)->second);
             }
 
-            return TableNd<const Script*>::create(values, shape, headers, this);
+            return TableNd<Script::Ptr>::create(values, shape, headers, this);
         }
 
         // resulting nd_tables
-        std::vector<const TableNd<const Script*>*> nd_tables;
+        std::vector<const TableNd<Script::Ptr>*> nd_tables;
 
         Children children(children_);
         // multiple set dim, so it is a TableSet
@@ -129,7 +129,7 @@ const Table<const Script*>* MultiplicativeScript::build_table_paradigm(ScriptReg
             nd_tables.push_back(dynamic_cast<const TableNd<const Script*>*>(reg.get_or_create_table(child_table_name)));
         }
 
-        return new TableSet<const Script*>(nd_tables, this);
+        return new TableSet<Script::Ptr>(nd_tables, this);
     }
 
     // produce a table with ndim dimensions

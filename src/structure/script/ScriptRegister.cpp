@@ -9,7 +9,7 @@ const MultiplicativeScript* ScriptRegister::get_or_create_multiplication(const M
     if (it == multiplicative_scripts_.end()) {
         const auto script = new MultiplicativeScript(*this, children);
         multiplicative_scripts_.insert({children, script});
-        defined_scripts_by_string_.insert({script->to_string(), script});
+        define_script(script);
         return script;
     } else {
         return it->second;
@@ -28,7 +28,7 @@ const AdditiveScript* ScriptRegister::get_or_create_addition(const Script::Set& 
     if (it == additive_scripts_.end()) {
         const auto script = new AdditiveScript(children);
         additive_scripts_.insert({children, script});
-        defined_scripts_by_string_.insert({script->to_string(), script});
+        define_script(script);
         return script;
     } else {
         return it->second;
@@ -56,7 +56,7 @@ void ScriptRegister::_build_primitives() {
         {'T', new PrimitiveScript('T')}
     };
     for (auto p: primitives_) {
-        defined_scripts_by_string_.insert({p.second->to_string(), p.second});
+        define_script(p.second);
     }
 } 
 
@@ -115,4 +115,9 @@ void ScriptRegister::_build_remarkable_additions() {
         {'F', get_or_create_addition({get_primitive('U'), get_primitive('A'), get_primitive('S'), get_primitive('B'), get_primitive('T')})},
         {'I', get_or_create_addition({get_primitive('E'), get_primitive('U'), get_primitive('A'), get_primitive('S'), get_primitive('B'), get_primitive('T')})}
     };
+}
+
+void ScriptRegister::define_script(Script::Ptr s) {
+    defined_scripts_by_string_.insert({s->to_string(), s});
+    get_or_create_table(s);
 }

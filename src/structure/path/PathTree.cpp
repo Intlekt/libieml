@@ -130,6 +130,41 @@ std::string PathTree::to_string() const {
     return os.str();
 }
 
+
+
+bool PathTree::is_phrase_word() const {
+    return get_phrase_word() != nullptr;
+}
+
+Word::Ptr PathTree::get_phrase_word() const {
+    // match only the path tree that is composed by 
+    // 1) # root
+    // 2) role 0
+    // 3) inflection list (optional)
+    // 4) word
+    // => return word
+
+    if (node_->getPathType() != +PathType::ROOT || children_.size() != 1)
+        return nullptr;
+
+    auto role = *children_.begin();
+    if (role->node_->getPathType() != +PathType::ROOT || role->children_.size() != 1)
+        return nullptr;
+
+    auto infl_or_word = *role->children_.begin();
+    if (infl_or_word->node_->getPathType() == +PathType::WORD)
+        return *infl_or_word->node_->getWords().begin();
+
+    if (infl_or_word->node_->getPathType() != +PathType::INFLECTION || infl_or_word->children_.size() != 1)
+        return nullptr;
+
+    auto word = *infl_or_word->children_.begin();
+    if (word->node_->getPathType() == +PathType::WORD)
+        return *word->node_->getWords().begin();
+
+    return nullptr;
+}
+
 std::vector<std::shared_ptr<PathTree>> PathTree::getChildrenAsVector() const {
     std::vector<std::shared_ptr<PathTree>> v;
 
@@ -219,6 +254,21 @@ PathTree::Set PathTree::Register::invariant_paths(const std::shared_ptr<PathTree
     }
 
     return invariant_paths;
+}
+
+PathTree::Ptr PathTree::Register::build_paradigm(const PathTree::Vector& paradigm) {
+    structure::PathTree::Set children;
+
+    for (size_t i = 0; i < paradigm.size(); ++i) {
+        children.insert({
+            get_or_create(
+                std::make_shared<structure::ParadigmIndexPathNode>(i), 
+                {paradigm[i]}
+            )
+        });
+    }
+
+    return get_or_create(std::make_shared<structure::ParadigmPathNode>(), children);
 }
 
 bool PathTree::is_contained_singular(const std::shared_ptr<PathTree>& path_tree) const {
