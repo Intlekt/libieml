@@ -20,14 +20,12 @@ jobs:
       - name: Copy files to local host
         run: >
           id=$(docker create build_image) &&
-          docker cp $id:/dist/parser_wasm.js - > parser_wasm.js &&
-          docker cp $id:/dist/parser_wasm.wasm - > parser_wasm.wasm &&
-          docker cp $id:/dist/pyieml-0.0.1-cp38-cp38-linux_x86_64.whl - > pyieml-0.0.1-cp38-cp38-linux_x86_64.whl &&
+          docker cp $id:/dist dist &&
           docker rm -v $id
 
       - name: Create release
         uses: ncipollo/release-action@v1
         with: 
-          artifacts: "parser_wasm.js,parser_wasm.wasm,pyieml-0.0.1-cp38-cp38-linux_x86_64.whl"
+          artifacts: "dist/*"
           body: "WASM and Python3.8 cp38-cp38-linux_x86_64 bindings"
           token: ${{ secrets.GITHUB_TOKEN }}
