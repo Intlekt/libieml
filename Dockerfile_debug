@@ -2,6 +2,6 @@ ARG NB_CORES=1
 FROM alpine:3.15
 
 RUN mkdir /dist/
-RUN touch /dist/parser_wasm.js
-RUN touch /dist/parser_wasm.wasm
-RUN touch /dist/pyieml-0.0.1-cp38-cp38-linux_x86_64.whl
+RUN echo "parser_wasm.js" > /dist/parser_wasm.js
+RUN echo "parser_wasm.wasm" > /dist/parser_wasm.wasm
+RUN echo "pyieml-0.0.1-cp38-cp38-linux_x86_64.whl" > /dist/pyieml-0.0.1-cp38-cp38-linux_x86_64.whl
