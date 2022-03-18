@@ -2,10 +2,16 @@ name: Validate PR
 
 on:
   push:
-    branches: [ master ]
-
+    branches:
+      - master
+  
   pull_request:
-    branches: [ master ]
+    branches:
+      - "**"
+      
+  workflow_dispatch:
+    branches:
+      - "**"
 
 jobs:
   build:
@@ -17,7 +23,7 @@ jobs:
           submodules: 'recursive'
 
       - name: Build the Test Docker Image
-        run: docker build . --file Dockerfile_run_test --tag test_image
+        run: docker build . --file Dockerfile_build_all_run_test --tag test_image
 
       - name: Run the Test Docker Image
         run: docker run test_image
