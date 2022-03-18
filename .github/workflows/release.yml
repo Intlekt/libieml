@@ -15,7 +15,7 @@ jobs:
           submodules: 'recursive'
 
       - name: Build the Docker Image
-        run: docker build . --file Dockerfile_debug --tag build_image
+        run: docker build . --file Dockerfile_build_all_run_test --tag build_image
 
       - name: Copy files to local host
         run: >
