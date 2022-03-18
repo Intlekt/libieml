@@ -19,13 +19,9 @@ COPY src /libieml/src
 COPY binding/wasm/uuid.pc $EMSDK/upstream/emscripten/cache/sysroot/lib/pkgconfig/
 
 WORKDIR /libieml
-RUN mkdir dist
-
-RUN CMAKE_BUILD_PARALLEL_LEVEL=$NB_CORES python setup.py bdist_wheel
 
 # build wasm
-RUN rm -rf build && \
-    mkdir build && \
+RUN mkdir build && \
     cd build && \
     emcmake cmake -DBUILD_WASM:bool=True .. &&\
     emmake make -j $NB_CORES
