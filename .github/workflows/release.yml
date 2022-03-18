@@ -19,7 +19,7 @@ jobs:
 
       - name: Copy files to local host
         run: >
-          id=$(docker create image-name) &&
+          id=$(docker create build_image) &&
           docker cp $id:/dist/parser_wasm.js - > parser_wasm.js &&
           docker cp $id:/dist/parser_wasm.wasm - > parser_wasm.wasm &&
           docker cp $id:/dist/pyieml-0.0.1-cp38-cp38-linux_x86_64.whl - > pyieml-0.0.1-cp38-cp38-linux_x86_64.whl &&
