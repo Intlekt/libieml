@@ -36,8 +36,14 @@ TEST(ieml_grammar_test_case, json_serialization) {
 
         auto res = ieml::parser::parserToJson(parser);
 
-        // check that all the id that are defined in the json are present
+        ASSERT_TRUE(res.contains("elements"));
+        ASSERT_TRUE(res.contains("tables"));
+        ASSERT_TRUE(res.contains("errors"));
+        ASSERT_TRUE(res.contains("warnings"));
+        ASSERT_TRUE(res.contains("language"));
+        ASSERT_TRUE(res.contains("category_hierarchies"));
 
+        // check that all the id that are defined in the json are present
         for (nlohmann::json::iterator it = res["elements"].begin(); it != res["elements"].end(); ++it) {
             auto v = it.value();
             EXPECT_EQ(it.key(), v["id"]) << "Key not equal with the element id for key" + std::string(it.key()) + " in file " + std::string(file_path.path());
@@ -102,7 +108,6 @@ TEST(ieml_grammar_test_case, json_serialization) {
             }
         }
 
-        ASSERT_TRUE(res.contains("tables"));
         // check that the tables have valid ids
         for (nlohmann::json::iterator it = res["tables"].begin(); it != res["tables"].end(); ++it) {
             auto v = it.value();
