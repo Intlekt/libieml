@@ -43,16 +43,20 @@ message(STATUS "Generated Script parser at ${ANTLR_ScriptParserGrammar_OUTPUT_DI
 #########################
 include( ExternalProject )
 
-set( boost_URL "https://sourceforge.net/projects/boost/files/boost/1.78.0/boost_1_78_0.tar.bz2" )
-set( boost_SHA1 "7ccc47e82926be693810a687015ddc490b49296d" )
+set( boost_URL "https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.tar.bz2" )
+set( boost_SHA256 "8681f175d4bdb26c52222665793eef08490d7758529330f98d3b29dd0735bccc" )
 set( boost_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/thirdparty/boost )
 set( BOOST_INCLUDE_DIR ${boost_INSTALL}/include )
 set( BOOST_LIB_DIR ${boost_INSTALL}/lib )
 
+set( boost_SOURCE_DIR ${boost_INSTALL}/src/external_boost )
+
 ExternalProject_Add(external_boost
-                    URL               ${boost_URL}
-                    URL_HASH          SHA1=${boost_SHA1}
                     PREFIX            ${boost_INSTALL}
+                    # SOURCE_DIR        ${boost_SOURCE_DIR}
+
+                    URL               ${boost_URL}
+                    URL_HASH          SHA256=${boost_SHA256}
                     CONFIGURE_COMMAND ""
                     BUILD_COMMAND     ""
                     INSTALL_COMMAND   mkdir ${BOOST_INCLUDE_DIR} && cp -R ${boost_INSTALL}/src/external_boost/boost ${BOOST_INCLUDE_DIR}/boost

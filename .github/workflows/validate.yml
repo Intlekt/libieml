@@ -1,0 +1,29 @@
+name: Validate PR
+
+on:
+  push:
+    branches:
+      - master
+  
+  pull_request:
+    branches:
+      - "**"
+      
+  workflow_dispatch:
+    branches:
+      - "**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+
+      - name: Build the Test Docker Image
+        run: docker build . --file Dockerfile_build_all_run_test --tag test_image
+
+      - name: Run the Test Docker Image
+        run: docker run test_image

@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+
+      - name: Build the Docker Image
+        run: docker build . --file Dockerfile_build_all_run_test --tag build_image
+
+      - name: Copy files to local host
+        run: >
+          id=$(docker create image-name) &&
+          docker cp $id:/dist/parser_wasm.js - > parser_wasm.js &&
+          docker cp $id:/dist/parser_wasm.wasm - > parser_wasm.wasm &&
+          docker cp $id:/dist/pyieml-0.0.1-cp38-cp38-linux_x86_64.whl - > pyieml-0.0.1-cp38-cp38-linux_x86_64.whl &&
+          docker rm -v $id
+
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with: 
+          artifacts: "parser_wasm.js,parser_wasm.wasm,pyieml-0.0.1-cp38-cp38-linux_x86_64.whl"
+          body: "WASM and Python3.8 cp38-cp38-linux_x86_64 bindings"
+          token: ${{ secrets.GITHUB_TOKEN }}
