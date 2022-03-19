@@ -6,7 +6,6 @@ ieml::structure::Script::Ptr ieml::testing::parse_script(ieml::structure::Script
 
     if (!res) {
         auto parser = ieml::parser::ScriptParser();
-        res;
         try {                                                           
             res = parser.get_or_parse(reg, s, "", 0, 0);
         } catch (std::exception& e) {

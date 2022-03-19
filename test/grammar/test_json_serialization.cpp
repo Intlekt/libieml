@@ -16,6 +16,12 @@
 
 namespace fs = std::filesystem;
 
+TEST(ieml_grammar_test_case, no_parse_serialization) {
+    auto parser = ieml::parser::IEMLParser(std::vector<std::string>{""}, std::vector<std::string>{"@rootparadig "});
+    parser.parse();
+    ieml::parser::parserToJson(parser).dump();
+}
+
 
 TEST(ieml_grammar_test_case, json_serialization) {
     for (const auto& file_path : fs::directory_iterator(TEST_IEML_GRAMMAR_EXAMPLES_FOLDER)) {

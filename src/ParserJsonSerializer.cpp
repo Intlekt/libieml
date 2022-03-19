@@ -235,53 +235,56 @@ nlohmann::json ieml::parser::serializeCategoryHierarchy(ieml::parser::ParserCont
 nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
     auto errors_and_warnings = ieml::parser::errorManagerToJson(parser.getErrorListener());
     auto context = parser.getContext();
-    auto& cregister = context->getCategoryRegister();
-    auto& wregister = context->getWordRegister();
-    auto& sregister = context->getScriptRegister();
-    auto& pregister = context->getParadigmRegister();
 
-    const CharRange default_range(parser.getDefaultFileId(), 0, 0, 0, 0);
-
-    ieml::relation::RelationGraph graph;
-    ieml::relation::buildCompositionRelationGraph(graph, context->getPathTreeRegister(), cregister, wregister);
-
-    auto language = context->getLanguage();
-    
+    auto language = +ieml::structure::LanguageType::EN;
     nlohmann::json elements = nlohmann::json::object();
-
-    for (auto it = cregister.categories_begin(); it != cregister.categories_end(); ++it)
-        elements[it->first->uid()] = categoryToJson(it->first, *context, graph.getRegister(), graph.getGraph());
-    
-    for (auto it = wregister.category_word_begin(); it != wregister.category_word_end(); ++it)
-        elements[it->second->uid()] = _wordToJson<ieml::structure::CategoryWord>(it->second, *context);
-
-    for (auto it = wregister.auxiliaries_begin(); it != wregister.auxiliaries_end(); ++it)
-        elements[it->first->uid()] = _wordToJson<ieml::structure::AuxiliaryWord>(it->first, *context);
-
-    for (auto it = wregister.inflections_begin(); it != wregister.inflections_end(); ++it)
-        elements[it->first->uid()] = _wordToJson<ieml::structure::InflectionWord>(it->first, *context);
-
-    for (auto it = wregister.junctions_begin(); it != wregister.junctions_end(); ++it)
-        elements[it->first->uid()] = _wordToJson<ieml::structure::JunctionWord>(it->first, *context);
-
+    nlohmann::json tables = nlohmann::json::object();
     nlohmann::json category_hierarchies = nlohmann::json::array();
-    for (const auto& table: context->getParadigmRegister().getTableHierarchies()) {
-        category_hierarchies.push_back(serializeCategoryHierarchy(*context, table));
-    }
-    
-    for (auto it: sregister.defined_script())
-        elements[it.second->uid()] = _scriptToJson(it.second, *context, default_range);
 
-    // serialize table after scripts so all the tables are created in script register
-    nlohmann::json tables;
-    for (const auto& it: sregister.get_tables()) {
-        tables[it.second->uid()] = tableToJson(it.second);
-    }
-    // category paradigm register
-    for (const auto& it: pregister.get_tables()) {
-        tables[it.second->uid()] = tableToJson(it.second);
-    }
+    if (context) {
+        auto& cregister = context->getCategoryRegister();
+        auto& wregister = context->getWordRegister();
+        auto& sregister = context->getScriptRegister();
+        auto& pregister = context->getParadigmRegister();
 
+        const CharRange default_range(parser.getDefaultFileId(), 0, 0, 0, 0);
+
+        ieml::relation::RelationGraph graph;
+        ieml::relation::buildCompositionRelationGraph(graph, context->getPathTreeRegister(), cregister, wregister);
+
+        language = context->getLanguage();
+
+        for (auto it = cregister.categories_begin(); it != cregister.categories_end(); ++it)
+            elements[it->first->uid()] = categoryToJson(it->first, *context, graph.getRegister(), graph.getGraph());
+        
+        for (auto it = wregister.category_word_begin(); it != wregister.category_word_end(); ++it)
+            elements[it->second->uid()] = _wordToJson<ieml::structure::CategoryWord>(it->second, *context);
+
+        for (auto it = wregister.auxiliaries_begin(); it != wregister.auxiliaries_end(); ++it)
+            elements[it->first->uid()] = _wordToJson<ieml::structure::AuxiliaryWord>(it->first, *context);
+
+        for (auto it = wregister.inflections_begin(); it != wregister.inflections_end(); ++it)
+            elements[it->first->uid()] = _wordToJson<ieml::structure::InflectionWord>(it->first, *context);
+
+        for (auto it = wregister.junctions_begin(); it != wregister.junctions_end(); ++it)
+            elements[it->first->uid()] = _wordToJson<ieml::structure::JunctionWord>(it->first, *context);
+
+        for (const auto& table: context->getParadigmRegister().getTableHierarchies()) {
+            category_hierarchies.push_back(serializeCategoryHierarchy(*context, table));
+        }
+        
+        for (auto it: sregister.defined_script())
+            elements[it.second->uid()] = _scriptToJson(it.second, *context, default_range);
+
+        // serialize table after scripts so all the tables are created in script register
+        for (const auto& it: sregister.get_tables()) {
+            tables[it.second->uid()] = tableToJson(it.second);
+        }
+        // category paradigm register
+        for (const auto& it: pregister.get_tables()) {
+            tables[it.second->uid()] = tableToJson(it.second);
+        }
+    }
 
     return {
         {"errors", errors_and_warnings.first},

@@ -173,6 +173,8 @@ TEST(ieml_grammar_test_case, root_paradigm_category_not_defined)                
 TEST(ieml_grammar_test_case, root_paradigm_inflection_not_defined)                   TEST_PARSE_ERRORS(R"(@rootparadigm type:AUXILIARY "O:". @inflection fr:test class:NOUN "A:".)");
 TEST(ieml_grammar_test_case, root_paradigm_auxiliary_not_defined)                    TEST_PARSE_ERRORS(R"(@rootparadigm type:INFLECTION "O:". @auxiliary fr:test role:LOCATION "A:".)");
 TEST(ieml_grammar_test_case, root_paradigm_junction_not_defined)                     TEST_PARSE_ERRORS(R"(@rootparadigm type:AUXILIARY "O:". @junction fr:test "A:".)");
+TEST(ieml_grammar_test_case, root_paradigm_invalid_0)                                TEST_PARSE_ERRORS(R"(@rootparadig type:inflection "E:M:O:.".)");
+TEST(ieml_grammar_test_case, root_paradigm_invalid_1)                                TEST_PARSE_ERRORS(R"(@rootparadigm typ:inflection "E:M:O:.".)");
 
 
 // WARNINGS
