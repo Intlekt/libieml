@@ -1,4 +1,4 @@
-message(${CMAKE_TOOLCHAIN_FILE})
+# message(${CMAKE_TOOLCHAIN_FILE})
 add_executable(parser_wasm main.cpp)
 target_link_libraries(parser_wasm PUBLIC IEMLParser_static)
 
@@ -10,11 +10,19 @@ target_link_libraries(parser_wasm PUBLIC IEMLParser_static)
 # -s EXPORT_ES6=1 : ES6 module, enable js import syntax
 # --no-entry      : no main() function in main.cpp
 
+# -s NO_DISABLE_EXCEPTION_CATCHING \
+
 set_target_properties(parser_wasm PROPERTIES LINK_FLAGS 
                         "-lembind \
-                        -s NO_DISABLE_EXCEPTION_CATCHING \
                         -s STRICT=1 \
                         -s MODULARIZE=1 \
                         -s EXPORT_ES6=1 \
-                        --no-entry \
+                        --no-entry\
                         -O3")
+                        # -sASSERTIONS=2\
+                        # -sSAFE_HEAP=1\
+                        # -sSTACK_OVERFLOW_CHECK=1\
+                        # -g\
+                        # -fexceptions")
+
+                        

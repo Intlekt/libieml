@@ -7,7 +7,7 @@
 
     <!-- <script src='/build/binding/wasm/parser_wasm.js'></script> -->
     <script type="module">
-        import wasmModule from "./parser_wasm.js";
+        import wasmModule from "/build_wasm/binding/wasm/parser_wasm.js";
         
         const instance = wasmModule({
           onRuntimeInitialized: async () => {
