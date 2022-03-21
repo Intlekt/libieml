@@ -144,6 +144,7 @@ TEST(ieml_grammar_test_case, inflection_decl_invalid_no_type)                   
 TEST(ieml_grammar_test_case, inflection_decl_invalid_type)                           TEST_PARSE_ERRORS(R"(@rootparadigm type:inflection "O:O:.".@inflection en:test invalidtype "wa.".)");
 TEST(ieml_grammar_test_case, inflection_decl_invalid_no_trad)                        TEST_PARSE_ERRORS(R"(@rootparadigm type:inflection "O:O:.".@inflection class:NOUN "wa.".)");
 TEST(ieml_grammar_test_case, inflection_decl_invalid_no_word)                        TEST_PARSE_ERRORS(R"(@rootparadigm type:inflection "O:O:.". @inflection en:test NOUN .)");
+TEST(ieml_grammar_test_case, inflection_decl_invalid_script)                         TEST_PARSE_ERRORS(R"(@rootparadigm type:inflection "E:O:O:.". @inflection 	fr:construction interrogative	en:interrogative construction    class:VERB	"E:U:U.".)");
 TEST(ieml_grammar_test_case, paradigm_category_invalid)                              TEST_PARSE_ERRORS(R"(@word "a.". @word "b.". @paranode fr:test2 1d:/#/0 (0 #{"a."; #"b."}).)");
                 
 TEST(ieml_grammar_test_case, invalid_paradigm)                                       TEST_PARSE_ERRORS(R"(@rootparadigm type:category "O:O:.".  @node en:test2 (0 {#"wa."; #"we."}).)");
