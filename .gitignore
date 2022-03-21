@@ -8,3 +8,4 @@ dist
 pyieml.egg-info
 venv
 assets/erroneous_files
+build_cache
