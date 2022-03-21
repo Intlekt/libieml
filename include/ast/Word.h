@@ -50,6 +50,8 @@ public:
 
     structure::Script::Ptr check_is_declared(parser::ParserContextManager& ctx, structure::WordType word_type) const {
         const auto script = check_script(ctx);
+        if (!script)
+            return nullptr;
 
         const auto& wregister = ctx.getWordRegister();
         if (!wregister.script_is_declared(script)) {

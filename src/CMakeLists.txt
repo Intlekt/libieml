@@ -8,7 +8,7 @@ set (ANTLR4_TAG fb661e891d2db191af4369695651906865c4959f)
 # add external build for antlrcpp
 include( ExternalAntlr4Cpp )
 
-message(STATUS "Found antlr4cpp includes: ${ANTLR4_INCLUDE_DIRS} ")
+message(STATUS "Found antlr4cpp includes: ${ANTLR4_INCLUDE_DIRS} with flags ${COMPILER_FLAGS}")
 set(ANTLR_EXECUTABLE ${CMAKE_SOURCE_DIR}/thirdparty/antlr/antlr-4.9.2-complete.jar)
 
 find_package(ANTLR REQUIRED)
@@ -20,7 +20,7 @@ antlr_target(IEMLLexerGrammar  ${CMAKE_CURRENT_LIST_DIR}/grammar/IEMLLexerGramma
 antlr_target(IEMLParserGrammar ${CMAKE_CURRENT_LIST_DIR}/grammar/IEMLParserGrammar.g4 PARSER
              PACKAGE ieml_generated
              DEPENDS_ANTLR IEMLLexerGrammar
-             COMPILE_FLAGS -lib ${ANTLR_IEMLLexerGrammar_OUTPUT_DIR}
+             COMPILE_FLAGS -lib ${ANTLR_IEMLLexerGrammar_OUTPUT_DIR} 
              VISITOR)
 
 message(STATUS "Generated IEML parser at ${ANTLR_IEMLParserGrammar_OUTPUT_DIR} ")
@@ -50,11 +50,13 @@ set( BOOST_INCLUDE_DIR ${boost_INSTALL}/include )
 set( BOOST_LIB_DIR ${boost_INSTALL}/lib )
 
 set( boost_SOURCE_DIR ${boost_INSTALL}/src/external_boost )
+set( boost_DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/build_cache/boost )
 
 ExternalProject_Add(external_boost
                     PREFIX            ${boost_INSTALL}
                     # SOURCE_DIR        ${boost_SOURCE_DIR}
-
+                    DOWNLOAD_DIR ${boost_DOWNLOAD_DIR}
+                    
                     URL               ${boost_URL}
                     URL_HASH          SHA256=${boost_SHA256}
                     CONFIGURE_COMMAND ""
@@ -62,7 +64,6 @@ ExternalProject_Add(external_boost
                     INSTALL_COMMAND   mkdir ${BOOST_INCLUDE_DIR} && cp -R ${boost_INSTALL}/src/external_boost/boost ${BOOST_INCLUDE_DIR}/boost
                     )
 
-                    
 #########################
 # IEMLParser
 #########################
@@ -130,6 +131,7 @@ include_directories(${IEMLParser_include})
 
 # IEMLParser_object
 add_library (IEMLParser_object OBJECT ${IEMLParser_src})
+set_target_properties(IEMLParser_object PROPERTIES LINK_FLAGS ${LINK_FLAGS})
 set_property(TARGET IEMLParser_object PROPERTY POSITION_INDEPENDENT_CODE True)
 target_include_directories(IEMLParser_object PUBLIC ${IEMLParser_include})
 add_dependencies(IEMLParser_object antlr4_static external_boost)
