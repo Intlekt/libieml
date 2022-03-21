@@ -50,11 +50,13 @@ set( BOOST_INCLUDE_DIR ${boost_INSTALL}/include )
 set( BOOST_LIB_DIR ${boost_INSTALL}/lib )
 
 set( boost_SOURCE_DIR ${boost_INSTALL}/src/external_boost )
+set( boost_DOWNLOAD_DIR ${CMAKE_SOURCE_DIR}/build_cache/boost )
 
 ExternalProject_Add(external_boost
                     PREFIX            ${boost_INSTALL}
                     # SOURCE_DIR        ${boost_SOURCE_DIR}
-
+                    DOWNLOAD_DIR ${boost_DOWNLOAD_DIR}
+                    
                     URL               ${boost_URL}
                     URL_HASH          SHA256=${boost_SHA256}
                     CONFIGURE_COMMAND ""
@@ -62,7 +64,6 @@ ExternalProject_Add(external_boost
                     INSTALL_COMMAND   mkdir ${BOOST_INCLUDE_DIR} && cp -R ${boost_INSTALL}/src/external_boost/boost ${BOOST_INCLUDE_DIR}/boost
                     )
 
-                    
 #########################
 # IEMLParser
 #########################
