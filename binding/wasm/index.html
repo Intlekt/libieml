@@ -5,23 +5,19 @@
     <textarea id="area"></textarea>
     <div id="result"></div>
 
-    <!-- <script src='/build/binding/wasm/parser_wasm.js'></script> -->
-    <script type="module">
-        import wasmModule from "/build_wasm/binding/wasm/parser_wasm.js";
-        
-        const instance = wasmModule({
-          onRuntimeInitialized: async () => {
-            const parser = await instance;
+    <script src='/build_wasm/binding/wasm/parser_wasm.js'></script>
+    <script>
+        Module.onRuntimeInitialized = () => {
             document.getElementById('area').addEventListener('change', (e)=>{
                 console.log(e.target.value);
-                const file_ids = new parser.StringList();
+                const file_ids = new Module.StringList();
                 file_ids.push_back("");
 
-                const file_contents = new parser.StringList();
+                const file_contents = new Module.StringList();
                 file_contents.push_back(e.target.value);
                 var res;
                 try {
-                    res = parser.parse_project(file_ids, file_contents);
+                    res = Module.parse_project(file_ids, file_contents);
                 } catch (e) {
                     console.error("Parser error !")
                     return;
@@ -29,7 +25,6 @@
                 document.getElementById('result').textContent = res;
             })
           }
-        });
     </script>
 </body>
 </html>
