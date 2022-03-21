@@ -29,6 +29,8 @@ endif()
 
 add_executable(libieml_test ${TEST_SRC})
 
+set_target_properties(libieml_test PROPERTIES LINK_FLAGS ${LINK_FLAGS})
+
 add_dependencies(libieml_test gtest gtest_main IEMLParser_shared)
 
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})

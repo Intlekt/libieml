@@ -19,6 +19,17 @@ if (DEFINED BUILD_TEST OR DEFINED BUILD_PYBIND11 OR DEFINED BUILD_WASM)
     configure_file(IEMLConfig.h.in IEMLConfig.h)
 
     if (DEFINED BUILD_WASM)
+        # -s STRICT=1 \
+        # -s MODULARIZE=1 \
+        # -s EXPORT_ES6=1 \
+        # --no-entry\
+        # -O3\
+        # -sASSERTIONS=2\
+        # -sSAFE_HEAP=1\
+        # -sSTACK_OVERFLOW_CHECK=1\
+        # -g3\
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fwasm-exceptions -sSTRICT -O3")
+        set(LINK_FLAGS "-sALLOW_MEMORY_GROWTH ")
         set(TEST_LIGHT 1)
     endif()
 
