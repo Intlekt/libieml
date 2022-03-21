@@ -19,7 +19,7 @@ if (DEFINED BUILD_TEST OR DEFINED BUILD_PYBIND11 OR DEFINED BUILD_WASM)
     configure_file(IEMLConfig.h.in IEMLConfig.h)
 
     if (DEFINED BUILD_WASM)
-        set(CMAKE_SYSTEM_NAME Emscripten)
+        set(TEST_LIGHT 1)
     endif()
 
     add_subdirectory(${CMAKE_SOURCE_DIR}/src)
