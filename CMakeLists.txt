@@ -31,6 +31,8 @@ if (DEFINED BUILD_TEST OR DEFINED BUILD_PYBIND11 OR DEFINED BUILD_WASM)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fwasm-exceptions -sSTRICT -O3")
         set(LINK_FLAGS "-sALLOW_MEMORY_GROWTH ")
         set(TEST_LIGHT 1)
+    else()
+        set(LINK_FLAGS " ")
     endif()
 
     add_subdirectory(${CMAKE_SOURCE_DIR}/src)
