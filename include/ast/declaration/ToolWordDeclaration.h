@@ -10,7 +10,7 @@ namespace ieml::AST {
 
 class ToolWordDeclaration: public virtual AST, public IDeclaration, public ITranslatable {
 public:
-    ToolWordDeclaration(std::shared_ptr<CharRange>&& char_range, 
+    ToolWordDeclaration(CharRange::Ptr&& char_range, 
                         std::vector<std::shared_ptr<LanguageString>>&& translations,
                         std::shared_ptr<Word>&& word,
                         DeclarationType declaration_type) : 

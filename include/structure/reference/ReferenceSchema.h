@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <string>
 #include <vector>
 
 
@@ -12,20 +13,30 @@ namespace ieml::structure {
 class ReferenceSchema {
 public:
     /**
-     * @brief An argument can be at several path in a path_tree
-     * 
+     * A Reference Schema is :
+     *  - a path tree
+     *  - a list of Reference type
+     *  - a list of list of path in the Reference Schema path tree
+     *  - a list of string representing argument name (the signature). If the argument name is empty string, 
+     *      indicates that the argument is not free (not in the link )
      */
-    typedef std::pair<const std::vector<std::shared_ptr<PathTree>>, ReferenceType> Argument;
 
-    ReferenceSchema(const std::vector<Argument>& arguments) : 
-        arguments_(std::move(arguments)) {}
-
-
-    static const ReferenceSchema Empty;
-
+    ReferenceSchema(
+        const PathTree::Ptr& path_tree,
+        const std::vector<ReferenceType>& references_type,
+        const std::vector<std::vector<PathTree::Ptr>>& arguments_paths,
+        const std::vector<std::string>& argument_names
+    ) : 
+        path_tree_(path_tree),
+        references_type_(references_type),
+        arguments_paths_(arguments_paths),
+        argument_names_(argument_names) {}
 
 private:
-    const std::vector<Argument> arguments_;
+    const PathTree::Ptr path_tree_;
+    const std::vector<ReferenceType> references_type_;
+    const std::vector<std::vector<PathTree::Ptr>> arguments_paths_;
+    const std::vector<std::string> argument_names_;
 };
 
 

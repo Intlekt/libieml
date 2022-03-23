@@ -11,6 +11,8 @@ namespace ieml::structure {
 
 class PathTree : public Element {
 public:
+    typedef std::shared_ptr<PathTree> Ptr;
+
     virtual ElementType getElementType() const override {return ElementType::PATH_TREE;};
     virtual std::string to_string() const override;
     virtual std::string prefix() const override {return "category";};
@@ -33,17 +35,16 @@ public:
     Word::Ptr get_phrase_word() const;
 
     struct CompareFunctor {
-        bool operator()(const std::shared_ptr<PathTree>& l, const std::shared_ptr<PathTree>& r) const {
+        bool operator()(const PathTree::Ptr& l, const PathTree::Ptr& r) const {
             return comp(l->node_, l->children_, r->node_, r->children_) < 0;
         } 
     };
     struct HashFunctor {
-        size_t operator()(const std::shared_ptr<PathTree>& a) const {
+        size_t operator()(const PathTree::Ptr& a) const {
             return a->hash();
         }
     };
 
-    typedef std::shared_ptr<PathTree> Ptr;
     typedef std::set<Ptr, CompareFunctor> Set;
     typedef std::vector<Ptr> Vector;
     typedef std::shared_ptr<const TableNd<Ptr>> TablePtr;
@@ -60,10 +61,10 @@ public:
          * @brief Get or create PathTree object. If the same object exists in the register, it is returned.
          * 
          * @param node 
-         * @return std::shared_ptr<PathTree> 
+         * @return PathTree::Ptr 
          */
-        std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node, const Set& children);
-        std::shared_ptr<PathTree> get_or_create(const std::shared_ptr<PathNode>& node);
+        PathTree::Ptr get_or_create(const std::shared_ptr<PathNode>& node, const Set& children);
+        PathTree::Ptr get_or_create(const std::shared_ptr<PathNode>& node);
 
         /**
          * @brief Get or create PathTree objects. Return the PathTree formed by the cartesian product on node and the cartesian product on the children_list.
@@ -79,9 +80,9 @@ public:
          * @brief Build a PathTree from a paths Set. If the paths Set does not describe a valid PathTree, the function throws std::invalid_argument.
          * 
          * @param paths 
-         * @return std::shared_ptr<PathTree> 
+         * @return PathTree::Ptr 
          */
-        std::shared_ptr<PathTree> buildFromPaths(const Set& paths);
+        PathTree::Ptr buildFromPaths(const Set& paths);
 
         /**
          * @brief Build a path tree Vector containing path trees formed by the cross product of variant_paths added to the invariant_paths. 
@@ -102,7 +103,7 @@ public:
          * @param path 
          * @return std::vector<Vector> 
          */
-        std::vector<Set> expand_path(const std::shared_ptr<PathTree>& path_tree, const Set& prefixes);
+        std::vector<Set> expand_path(const PathTree::Ptr& path_tree, const Set& prefixes);
 
 
         /**
@@ -111,7 +112,7 @@ public:
          * @param pt 
          * @return Set 
          */
-        Set paths(const std::shared_ptr<PathTree>& pt);
+        Set paths(const PathTree::Ptr& pt);
 
         
         /**
@@ -142,10 +143,10 @@ public:
             }
         };
 
-        std::unordered_map<Key, std::shared_ptr<PathTree>, hashKey, eqKey> store_;
+        std::unordered_map<Key, PathTree::Ptr, hashKey, eqKey> store_;
     };
 
-    typedef std::pair<std::shared_ptr<PathTree>, std::shared_ptr<PathTree>> SubPathTree;
+    typedef std::pair<PathTree::Ptr, PathTree::Ptr> SubPathTree;
 
     /**
      * @brief Return all matching SubPathTree in the PathTree that match a function. The second parameter return True when the search must stop. 
@@ -156,8 +157,8 @@ public:
      * @return std::vector<SubPathTree> 
      */
     std::vector<SubPathTree> find_sub_tree(PathTree::Register& reg,
-                                           std::function<bool(const std::shared_ptr<PathTree>&)> f,
-                                           std::function<bool(const std::shared_ptr<PathTree>&)> should_stop) const;
+                                           std::function<bool(const PathTree::Ptr&)> f,
+                                           std::function<bool(const PathTree::Ptr&)> should_stop) const;
 
     /**
      * @brief Return the Set of singular sequence of a PathTree
@@ -168,7 +169,7 @@ public:
      * @param pt the path tree
      * @return Set the singular sequence set
      */
-    static Vector singular_sequences(const std::shared_ptr<PathTree>& pt);
+    static Vector singular_sequences(const PathTree::Ptr& pt);
 
     /**
      * @brief Return the path tree that correspond to this path set, if possible
@@ -179,7 +180,7 @@ public:
     static PathTree fromPaths(const Set& paths);
 
     std::shared_ptr<PathNode> getNode() const {return node_;}
-    std::vector<std::shared_ptr<PathTree>> getChildrenAsVector() const;
+    std::vector<PathTree::Ptr> getChildrenAsVector() const;
     const Set getChildren() const {return children_;};
 
     static std::vector<PathTree::Set> cartesian_product(const std::vector<PathTree::Vector>& children_list);
@@ -192,7 +193,7 @@ public:
      * @return true 
      * @return false 
      */
-    bool is_prefix(const std::shared_ptr<PathTree>& path_tree) const;
+    bool is_prefix(const PathTree::Ptr& path_tree) const;
 
     /**
      * @brief True if this is a prefix path for path_tree. This method works for path_Tree that are singular sequences, (is_paradigm() == false)
@@ -201,10 +202,10 @@ public:
      * @return true 
      * @return false 
      */
-    bool is_prefix_singular(const std::shared_ptr<PathTree>& path_tree) const;
+    bool is_prefix_singular(const PathTree::Ptr& path_tree) const;
 
-    bool is_contained_singular(const std::shared_ptr<PathTree>& path_tree) const;
-    bool is_contained(const std::shared_ptr<PathTree>& path_tree) const;
+    bool is_contained_singular(const PathTree::Ptr& path_tree) const;
+    bool is_contained(const PathTree::Ptr& path_tree) const;
 
     /**
      * @brief Recursively checks the validity of the sequence of node path.

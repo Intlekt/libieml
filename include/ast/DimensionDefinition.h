@@ -11,7 +11,7 @@
 namespace ieml::AST {
 class DimensionDefinition: public virtual AST {
 public:
-    DimensionDefinition(std::shared_ptr<CharRange>&& char_range,
+    DimensionDefinition(CharRange::Ptr&& char_range,
                         size_t dimension_index,
                         std::vector<std::shared_ptr<Path>>&& paths) :
         AST(std::move(char_range)),

@@ -85,8 +85,11 @@
     EXPECT_NE(parser.getSyntaxWarnings().size(), 0);                \
 }
 
+#define LINK_DECLARATION_PREFIX R"(@rootparadigm type:INFLECTION "O:". @inflection en:noun class:NOUN "A:".@rootparadigm type:category "O:O:.".)"
+
 
 using namespace ieml::parser;
+
 
 
 TEST(ieml_grammar_test_case, empty_string)                                           TEST_PARSE_NO_ERRORS(R"()");
@@ -130,6 +133,10 @@ TEST(ieml_grammar_test_case, root_paradigm_category_define)                     
 TEST(ieml_grammar_test_case, root_paradigm_inflection_define)                        TEST_PARSE_NO_ERRORS(R"(@rootparadigm type:INFLECTION "O:". @inflection fr:test class:NOUN "A:".)");
 TEST(ieml_grammar_test_case, root_paradigm_auxiliary_define)                         TEST_PARSE_NO_ERRORS(R"(@rootparadigm type:AUXILIARY "O:". @auxiliary fr:test role:LOCATION "A:".)");
 TEST(ieml_grammar_test_case, root_paradigm_junction_define)                          TEST_PARSE_NO_ERRORS(R"(@rootparadigm type:JUNCTION "O:". @junction fr:test "A:".)");
+
+TEST(ieml_grammar_test_case, link_declaration)                                       TEST_PARSE_NO_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en: $A test $B phraseWordInflection: ~noun (0 #"wa."<$A>, 1 #"we."<$B>).)");
+TEST(ieml_grammar_test_case, link_declaration_no_inflection)                         TEST_PARSE_NO_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en: $A test $B (0 #"wa."<$A>, 1 #"we."<$B>).)");
+TEST(ieml_grammar_test_case, link_declaration_repeated_variable)                     TEST_PARSE_NO_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en: $A test $B $B (0 #"wa."<$A>, 1 #"we."<$B>, 2 #"we."<$B>).)");
 
 
 // ERRORS
@@ -177,6 +184,14 @@ TEST(ieml_grammar_test_case, root_paradigm_auxiliary_not_defined)               
 TEST(ieml_grammar_test_case, root_paradigm_junction_not_defined)                     TEST_PARSE_ERRORS(R"(@rootparadigm type:AUXILIARY "O:". @junction fr:test "A:".)");
 TEST(ieml_grammar_test_case, root_paradigm_invalid_0)                                TEST_PARSE_ERRORS(R"(@rootparadig type:inflection "E:M:O:.".)");
 TEST(ieml_grammar_test_case, root_paradigm_invalid_1)                                TEST_PARSE_ERRORS(R"(@rootparadigm typ:inflection "E:M:O:.".)");
+
+TEST(ieml_grammar_test_case, invalid_link_declaration_no_args)                       TEST_PARSE_ERRORS(LINK_DECLARATION_PREFIX R"(@link en:test template-en: $A test $B phraseWordInflection: ~noun (0 #"wa."<$A>, 1 #"we."<$B>).)");
+TEST(ieml_grammar_test_case, invalid_link_declaration_empty_args)                    TEST_PARSE_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:() en:test template-en: $A test $B phraseWordInflection: ~noun (0 #"wa."<$A>, 1 #"we."<$B>).)");
+TEST(ieml_grammar_test_case, invalid_link_declaration_no_template)                   TEST_PARSE_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test phraseWordInflection: ~noun (0 #"wa."<$A>, 1 #"we."<$B>).)");
+TEST(ieml_grammar_test_case, invalid_link_declaration_invalid_template_missing)      TEST_PARSE_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en: test $B phraseWordInflection: ~noun (0 #"wa."<$A>, 1 #"we."<$B>).)");
+TEST(ieml_grammar_test_case, invalid_link_declaration_invalid_template_extra)        TEST_PARSE_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en:$C test $B phraseWordInflection: ~noun (0 #"wa."<$A>, 1 #"we."<$B>).)");
+TEST(ieml_grammar_test_case, invalid_link_declaration_invalid_phrase_missing)        TEST_PARSE_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en:$A test $B phraseWordInflection: ~noun (0 #"wa.", 1 #"we."<$B>).)");
+TEST(ieml_grammar_test_case, invalid_link_declaration_invalid_phrase_extra)          TEST_PARSE_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en:$A test $B phraseWordInflection: ~noun (0 #"wa."<$C>, 1 #"we."<$B>).)");
 
 
 // WARNINGS

@@ -13,7 +13,7 @@ namespace AST {
 
 class CategoryParadigm: public virtual AST, public ICategory {
 public:
-    CategoryParadigm(std::shared_ptr<CharRange>&& char_range, 
+    CategoryParadigm(CharRange::Ptr&& char_range, 
                      std::vector<std::shared_ptr<ICategory>> categories) : 
         AST(std::move(char_range)),
         categories_(categories) {}

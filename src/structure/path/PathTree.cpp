@@ -38,21 +38,21 @@ PathTree::Vector PathTree::Register::get_or_create_product(const std::shared_ptr
     return get_or_create_product(PathNode::Vector{node}, children_list);
 }
 
-std::shared_ptr<PathTree> PathTree::Register::get_or_create(const std::shared_ptr<PathNode>& node, const PathTree::Set& children) {
+PathTree::Ptr PathTree::Register::get_or_create(const std::shared_ptr<PathNode>& node, const PathTree::Set& children) {
     auto key = Key(node, children);
     auto it = store_.find(key);
     if (it != store_.end()) return it->second;
 
-    auto item = std::shared_ptr<PathTree>(new PathTree(node, children));
+    auto item = PathTree::Ptr(new PathTree(node, children));
     store_.insert({key, item});
     return item;
 }
 
-std::shared_ptr<PathTree> PathTree::Register::get_or_create(const std::shared_ptr<PathNode>& node) {
+PathTree::Ptr PathTree::Register::get_or_create(const std::shared_ptr<PathNode>& node) {
     return get_or_create(node, Set{});
 }
 
-std::shared_ptr<PathTree> PathTree::Register::buildFromPaths(const PathTree::Set& paths) {
+PathTree::Ptr PathTree::Register::buildFromPaths(const PathTree::Set& paths) {
     if (paths.size() == 0) 
         return nullptr;
     
@@ -101,7 +101,7 @@ PathTree::Vector PathTree::Register::buildFromPaths_product(const PathTree::Set&
     return res;
 }
 
-std::vector<PathTree::Set> PathTree::Register::expand_path(const std::shared_ptr<PathTree>& path_tree, 
+std::vector<PathTree::Set> PathTree::Register::expand_path(const PathTree::Ptr& path_tree, 
                                                            const Set& prefixes) {
     std::vector<PathTree::Set> res;
 
@@ -165,8 +165,8 @@ Word::Ptr PathTree::get_phrase_word() const {
     return nullptr;
 }
 
-std::vector<std::shared_ptr<PathTree>> PathTree::getChildrenAsVector() const {
-    std::vector<std::shared_ptr<PathTree>> v;
+std::vector<PathTree::Ptr> PathTree::getChildrenAsVector() const {
+    std::vector<PathTree::Ptr> v;
 
     if (children_.size() == 0)
         return v;
@@ -180,8 +180,8 @@ std::vector<std::shared_ptr<PathTree>> PathTree::getChildrenAsVector() const {
 }
 
 std::vector<PathTree::SubPathTree> PathTree::find_sub_tree(PathTree::Register& register_,
-                                                           std::function<bool(const std::shared_ptr<PathTree>&)> f,
-                                                           std::function<bool(const std::shared_ptr<PathTree>&)> should_stop) const {
+                                                           std::function<bool(const PathTree::Ptr&)> f,
+                                                           std::function<bool(const PathTree::Ptr&)> should_stop) const {
     std::vector<SubPathTree> res;
     for (auto& child: children_) {
         bool matched = f(child);
@@ -199,7 +199,7 @@ std::vector<PathTree::SubPathTree> PathTree::find_sub_tree(PathTree::Register& r
     return res;
 }
 
-PathTree::Vector PathTree::singular_sequences(const std::shared_ptr<PathTree>& pt) {
+PathTree::Vector PathTree::singular_sequences(const PathTree::Ptr& pt) {
     PathTree::Vector res;
     switch (pt->getNode()->getPathType()) {
         case PathType::ROOT:
@@ -221,7 +221,7 @@ PathTree::Vector PathTree::singular_sequences(const std::shared_ptr<PathTree>& p
     }
 }
 
-PathTree::Set PathTree::Register::paths(const std::shared_ptr<PathTree>& pt) {
+PathTree::Set PathTree::Register::paths(const PathTree::Ptr& pt) {
     if (pt->is_path())
         return {pt};
     
@@ -235,7 +235,7 @@ PathTree::Set PathTree::Register::paths(const std::shared_ptr<PathTree>& pt) {
     return res;
 }
 
-PathTree::Set PathTree::Register::invariant_paths(const std::shared_ptr<PathTree>& paradigm) {
+PathTree::Set PathTree::Register::invariant_paths(const PathTree::Ptr& paradigm) {
     PathTree::Vector singular_sequences = PathTree::singular_sequences(paradigm);
 
     auto it = singular_sequences.begin();
@@ -248,7 +248,7 @@ PathTree::Set PathTree::Register::invariant_paths(const std::shared_ptr<PathTree
         std::copy_if(invariant_paths.begin(), 
                      invariant_paths.end(), 
                      std::inserter(out, out.begin()), 
-                     [&ss_paths](const std::shared_ptr<PathTree>& pt){return ss_paths.count(pt) != 0;});
+                     [&ss_paths](const PathTree::Ptr& pt){return ss_paths.count(pt) != 0;});
         invariant_paths = out;
         ++it;
     }
@@ -271,7 +271,7 @@ PathTree::Ptr PathTree::Register::build_paradigm(const PathTree::Vector& paradig
     return get_or_create(std::make_shared<structure::ParadigmPathNode>(), children);
 }
 
-bool PathTree::is_contained_singular(const std::shared_ptr<PathTree>& path_tree) const {
+bool PathTree::is_contained_singular(const PathTree::Ptr& path_tree) const {
     if (*node_ != *path_tree->node_) return false;
     if (children_.size() == 0) return true;
     if (path_tree->children_.size() == 0) return false;
@@ -285,7 +285,7 @@ bool PathTree::is_contained_singular(const std::shared_ptr<PathTree>& path_tree)
     return false;
 }
 
-bool PathTree::is_contained(const std::shared_ptr<PathTree>& path_tree) const {
+bool PathTree::is_contained(const PathTree::Ptr& path_tree) const {
     if (!is_path()) 
         throw std::invalid_argument("is_prefix must be called on a path.");
     
@@ -296,7 +296,7 @@ bool PathTree::is_contained(const std::shared_ptr<PathTree>& path_tree) const {
     return true;
 }
 
-bool PathTree::is_prefix_singular(const std::shared_ptr<PathTree>& path_tree) const {
+bool PathTree::is_prefix_singular(const PathTree::Ptr& path_tree) const {
     if (*node_ != *path_tree->node_) return false;
     if (children_.size() == 0) return true;
     if (path_tree->children_.size() == 0) return false;
@@ -310,7 +310,7 @@ bool PathTree::is_prefix_singular(const std::shared_ptr<PathTree>& path_tree) co
     return true;
 }
 
-bool PathTree::is_prefix(const std::shared_ptr<PathTree>& path_tree) const {
+bool PathTree::is_prefix(const PathTree::Ptr& path_tree) const {
     if (!is_path()) 
         throw std::invalid_argument("is_prefix must be called on a path.");
     

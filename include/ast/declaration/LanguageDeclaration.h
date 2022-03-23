@@ -9,7 +9,7 @@ namespace ieml::AST {
 
 class LanguageDeclaration: public virtual AST, public IDeclaration {
 public:
-    LanguageDeclaration(std::shared_ptr<CharRange>&& char_range,
+    LanguageDeclaration(CharRange::Ptr&& char_range,
                         std::shared_ptr<Identifier>&& language_type) : 
         AST(std::move(char_range)),
         IDeclaration(DeclarationType::LANGUAGE),

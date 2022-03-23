@@ -112,6 +112,7 @@ set(IEMLParser_src ${ANTLR_IEMLLexerGrammar_CXX_OUTPUTS}
                    ${CMAKE_CURRENT_LIST_DIR}/structure/script/NullScript.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/structure/script/ScriptRegister.cpp
                    
+                   ${CMAKE_CURRENT_LIST_DIR}/structure/link/LinkRegister.cpp
 
                    ${CMAKE_CURRENT_LIST_DIR}/relation/RelationGraph.cpp
                    ${CMAKE_CURRENT_LIST_DIR}/relation/Composition.cpp

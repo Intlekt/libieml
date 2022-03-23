@@ -9,7 +9,7 @@
 namespace ieml::AST {
 class Word: virtual public AST, public ICategory {
 public:
-    Word(std::shared_ptr<CharRange>&& char_range,
+    Word(CharRange::Ptr&& char_range,
          const std::string& word_str) :
       AST(std::move(char_range)),
       ICategory(),
@@ -119,7 +119,7 @@ public:
     }
 
 
-    static std::shared_ptr<Word> createFromQuotedString(std::shared_ptr<CharRange>&& char_range, const std::string& s) {
+    static std::shared_ptr<Word> createFromQuotedString(CharRange::Ptr&& char_range, const std::string& s) {
         return std::make_unique<Word>(std::move(char_range), s.substr(1, s.size() - 2));
     }
 private:

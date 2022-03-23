@@ -9,7 +9,7 @@ namespace ieml::AST {
 class InvariantParanodeMapping : public virtual AST {
 public:
     InvariantParanodeMapping(
-        std::shared_ptr<CharRange>&& char_range,
+        CharRange::Ptr&& char_range,
         std::shared_ptr<Identifier>&& invariant,
         std::shared_ptr<Identifier>&& paranode) :
             AST(std::move(char_range)),

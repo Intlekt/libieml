@@ -75,7 +75,7 @@ private:
 
 class RootPathNode: public virtual PathNode, public virtual AST {
 public:
-    RootPathNode(std::shared_ptr<CharRange>&& char_range) : 
+    RootPathNode(CharRange::Ptr&& char_range) : 
         AST(std::move(char_range)),
         PathNode() {}
 
@@ -96,7 +96,7 @@ private:
 
 class ParadigmPathNode: public virtual AST, public virtual PathNode {
 public:
-    ParadigmPathNode(std::shared_ptr<CharRange>&& char_range,
+    ParadigmPathNode(CharRange::Ptr&& char_range,
                      size_t index) : 
             AST(std::move(char_range)),
             PathNode(),
@@ -123,7 +123,7 @@ private:
 
 class JunctionPathNode: public virtual AST, public PathNode {
 public:
-    JunctionPathNode(std::shared_ptr<CharRange>&& char_range,
+    JunctionPathNode(CharRange::Ptr&& char_range,
                      std::shared_ptr<IJunction>&& junction_type,
                      size_t index) : 
             AST(std::move(char_range)),
@@ -187,7 +187,7 @@ private:
  
 class AuxiliaryPathNode: public virtual AST, public PathNode  {
 public:
-    AuxiliaryPathNode(std::shared_ptr<CharRange>&& char_range,
+    AuxiliaryPathNode(CharRange::Ptr&& char_range,
                       std::shared_ptr<IAuxiliary>&& auxiliary) : 
             AST(std::move(char_range)),
             PathNode(),
@@ -223,7 +223,7 @@ private:
  
 class InflectionListPathNode: public virtual AST, public PathNode {
 public:
-    InflectionListPathNode(std::shared_ptr<CharRange>&& char_range,
+    InflectionListPathNode(CharRange::Ptr&& char_range,
                            std::shared_ptr<IInflectionList>&& inflection_list) : 
             AST(std::move(char_range)),
             PathNode(),
@@ -259,7 +259,7 @@ private:
 
 class WordPathNode: public virtual AST, public PathNode {
 public:
-    WordPathNode(std::shared_ptr<CharRange>&& char_range,
+    WordPathNode(CharRange::Ptr&& char_range,
                  std::shared_ptr<Word>&& word) : 
             AST(std::move(char_range)),
             PathNode(),
@@ -287,7 +287,7 @@ private:
 
 class RoleNumberPathNode: public virtual AST, public PathNode {
 public:
-    RoleNumberPathNode(std::shared_ptr<CharRange>&& char_range,
+    RoleNumberPathNode(CharRange::Ptr&& char_range,
                        size_t role_number) : 
             AST(std::move(char_range)),
             PathNode(),

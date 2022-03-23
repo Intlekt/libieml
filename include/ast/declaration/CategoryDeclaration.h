@@ -10,7 +10,7 @@ namespace ieml::AST {
 
 class CategoryDeclaration: public virtual AST, public IDeclaration, public ITranslatable {
 public:
-    CategoryDeclaration(std::shared_ptr<CharRange>&& char_range, 
+    CategoryDeclaration(CharRange::Ptr&& char_range, 
                         std::vector<std::shared_ptr<LanguageString>>&& translations,
                         std::shared_ptr<Phrase>&& phrase,
                         DeclarationType declaration_type) : 

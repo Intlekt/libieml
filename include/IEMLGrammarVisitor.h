@@ -28,7 +28,6 @@ public:
   virtual antlrcpp::Any visitComponentDeclaration(IEMLParserGrammar::ComponentDeclarationContext *ctx) override;
   virtual antlrcpp::Any visitNodeDeclaration(IEMLParserGrammar::NodeDeclarationContext *context) override;
   virtual antlrcpp::Any visitParanodeDeclaration(IEMLParserGrammar::ParanodeDeclarationContext *context) override;
-  virtual antlrcpp::Any visitLinkDeclaration(IEMLParserGrammar::LinkDeclarationContext *context) override;
   virtual antlrcpp::Any visitWordDeclaration(IEMLParserGrammar::WordDeclarationContext *context) override;
   virtual antlrcpp::Any visitInflectionDeclaration(IEMLParserGrammar::InflectionDeclarationContext *context) override;
   virtual antlrcpp::Any visitAuxiliaryDeclaration(IEMLParserGrammar::AuxiliaryDeclarationContext *context) override;
@@ -36,7 +35,8 @@ public:
   virtual antlrcpp::Any visitLanguageDeclaration(IEMLParserGrammar::LanguageDeclarationContext *context) override;
   virtual antlrcpp::Any visitTableDeclaration(IEMLParserGrammar::TableDeclarationContext *context) override;
   virtual antlrcpp::Any visitRootParadigmDeclaration(IEMLParserGrammar::RootParadigmDeclarationContext *context) override;
-  
+  virtual antlrcpp::Any visitLinkDeclaration(IEMLParserGrammar::LinkDeclarationContext *context) override;
+
   /**
    * PHRASE
    */
@@ -105,6 +105,7 @@ public:
    *  LANGUAGE STRING
    */
   virtual antlrcpp::Any visitLanguage_string(IEMLParserGrammar::Language_stringContext *ctx) override;
+  virtual antlrcpp::Any visitTemplate_language_string(IEMLParserGrammar::Template_language_stringContext *context) override;
 
   /**
    *  IDENTIFIER
@@ -160,6 +161,12 @@ public:
   virtual antlrcpp::Any visitReference_value__identifier(IEMLParserGrammar::Reference_value__identifierContext *ctx) override;
   virtual antlrcpp::Any visitReference_value__STRING(IEMLParserGrammar::Reference_value__STRINGContext *ctx) override;
   virtual antlrcpp::Any visitReference_value__phrase(IEMLParserGrammar::Reference_value__phraseContext *ctx) override;
+
+  /**
+   * LINK ARGUMENTS
+   */
+  virtual antlrcpp::Any visitLink_arguments(IEMLParserGrammar::Link_argumentsContext *context) override;
+
 };
 
 }

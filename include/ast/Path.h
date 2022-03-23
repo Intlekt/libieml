@@ -13,7 +13,7 @@ namespace ieml::AST {
 
 class Path : public virtual AST {
 public:
-    Path(std::shared_ptr<CharRange>&& char_range,
+    Path(CharRange::Ptr&& char_range,
          std::vector<std::shared_ptr<PathNode>>&& path_nodes) : 
         AST(std::move(char_range)),
         path_nodes_(std::move(path_nodes)) {}

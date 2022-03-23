@@ -30,6 +30,21 @@ private:
     static std::unordered_multimap<LanguageType, LanguageString> build_traductions(std::unordered_multiset<LanguageString> traductions);
 };
 
+class TemplateName : public std::unordered_multimap<LanguageType, TemplateLanguageString> {
+public:
+
+    typedef std::unordered_multiset<TemplateLanguageString> TemplateTraductions;
+
+    TemplateName(TemplateTraductions traductions) : 
+         std::unordered_multimap<LanguageType, TemplateLanguageString>(build_traductions(traductions)) {}
+    
+    bool operator==(const TemplateName& rhs) const {
+        return size() == rhs.size() && std::equal(begin(), end(), rhs.begin());
+    }
+private:
+    static std::unordered_multimap<LanguageType, TemplateLanguageString> build_traductions(std::unordered_multiset<TemplateLanguageString> traductions);
+};
+
 template<typename V>
 class Namespace : public std::unordered_map<std::shared_ptr<V>, std::shared_ptr<Name>> {
 public:

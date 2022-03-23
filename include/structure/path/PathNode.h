@@ -12,6 +12,9 @@ namespace ieml::structure {
 
 class PathNode {
 public:
+
+    typedef std::shared_ptr<PathNode> Ptr;
+
     virtual ~PathNode() = default;
 
     virtual bool accept_next(const PathNode& next) const = 0;

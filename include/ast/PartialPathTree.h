@@ -39,6 +39,13 @@ public:
     const ieml::structure::PathTree::Vector& getPathTrees() const {return singular_sequences_;}
     const std::vector<PositionedVariable>& getReferences() const {return references_;}
 
+    const std::unordered_set<std::string> getVariableNames() const {
+        std::unordered_set<std::string> res;
+        for (const auto& r: references_)
+            res.insert(r.second->getName());
+        return res;
+    }
+
 private:
     const ieml::structure::PathTree::Vector singular_sequences_;
     const std::vector<PositionedVariable> references_;

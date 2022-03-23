@@ -1,10 +1,13 @@
 #pragma once
 
+#include "ast/macro_utils.h"
 
 namespace ieml::AST {
 
 class CharRange {
 public:
+    IEML_DECLARE_PTR_TYPE_AST(CharRange)
+
     CharRange(const std::string& file_id, 
               const size_t line_start, 
               const size_t line_end, 

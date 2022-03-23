@@ -138,13 +138,13 @@ TEST(ieml_structure_test_case, path_tree_building) {
     {
         PathTree::Register reg;
 
-        std::shared_ptr<PathTree> a;
+        PathTree::Ptr a;
         {
             auto path = reg.get_or_create(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>(ieml::testing::parse_script(&sreg, "wa."))));
             auto path1 = reg.get_or_create(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>(ieml::testing::parse_script(&sreg, "wa."), RoleType::ROOT)), {path});
             a = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), {path1});
         }
-        std::shared_ptr<PathTree> b;
+        PathTree::Ptr b;
         {
             auto path = reg.get_or_create(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>(ieml::testing::parse_script(&sreg, "wa."))));
             auto path1 = reg.get_or_create(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>(ieml::testing::parse_script(&sreg, "we."), RoleType::ROOT)), {path});

@@ -14,7 +14,9 @@
 namespace ieml::AST {
 class Identifier : virtual public AST, public ICategory, public IReferenceValue {
 public:
-    Identifier(std::shared_ptr<CharRange>&& char_range, 
+    IEML_DECLARE_PTR_TYPE_AST(Identifier)
+
+    Identifier(CharRange::Ptr&& char_range, 
                std::string name) : 
         AST(std::move(char_range)),
         ICategory(),

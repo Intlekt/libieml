@@ -8,7 +8,7 @@ namespace ieml::AST {
 
 class InflectionDeclaration: public virtual AST, public ToolWordDeclaration {
 public:
-    InflectionDeclaration(std::shared_ptr<CharRange>&& char_range, 
+    InflectionDeclaration(CharRange::Ptr&& char_range, 
                           std::vector<std::shared_ptr<LanguageString>>&& translations,
                           std::shared_ptr<Identifier>&& type,
                           std::shared_ptr<Word>&& word) : 

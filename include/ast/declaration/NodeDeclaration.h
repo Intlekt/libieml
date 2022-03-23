@@ -8,7 +8,7 @@ namespace ieml::AST {
 
 class NodeDeclaration: public virtual AST, public SingularCategoryDeclaration {
 public:
-    NodeDeclaration(std::shared_ptr<CharRange>&& char_range, 
+    NodeDeclaration(CharRange::Ptr&& char_range, 
                     std::vector<std::shared_ptr<LanguageString>>&& translations,
                     std::shared_ptr<Phrase>&& phrase) : 
         AST(std::move(char_range)), 

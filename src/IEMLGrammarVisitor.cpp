@@ -30,6 +30,8 @@
 #include "ast/Junction.h"
 #include "ast/DimensionDefinition.h"
 #include "ast/RoleType.h"
+#include "ast/ArgumentList.h"
+#include "ast/TemplateLanguageString.h"
 
 
 #define RETURN_VISITOR_RESULT_NO_ARGS(ReturnType, DerivedType) \
@@ -92,6 +94,14 @@ if(Context->Attribute) {\
 if (!valid_##Attribute) \
   RETURN_VISITOR_RESULT_ERROR(ReturnType);
 
+#define CAST_OR_RETURN_IF_NULL_LIST_SIZED(ErrorListener, Context, Attribute, ReturnType, Size) \
+CAST_OR_RETURN_IF_NULL_LIST(Attribute, ReturnType)\
+if (Attribute.size() != Size) {\
+  ErrorListener->parseError(*charRangeFromContext(Context), "Invalid number of " #Attribute ", expected "  #Size  "."); \
+  RETURN_VISITOR_RESULT_ERROR(ReturnType);\
+}
+
+
 using namespace ieml::parser;
 
 /**
@@ -143,15 +153,6 @@ antlrcpp::Any IEMLGrammarVisitor::visitParanodeDeclaration(IEMLParserGrammar::Pa
   RETURN_VISITOR_RESULT(IDeclaration, ParanodeDeclaration, std::move(language_strings), std::move(dimensions), std::move(phrase_));
 }
 
-antlrcpp::Any IEMLGrammarVisitor::visitLinkDeclaration(IEMLParserGrammar::LinkDeclarationContext *ctx) {
-  CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase definition in node declaration.", true);
-  CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
-
-  CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, IDeclaration);
-  CAST_OR_RETURN_IF_NULL_LIST(language_strings, IDeclaration);
-
-  RETURN_VISITOR_RESULT(IDeclaration, LinkDeclaration, std::move(language_strings), std::move(phrase_));
-}
 
 antlrcpp::Any IEMLGrammarVisitor::visitWordDeclaration(IEMLParserGrammar::WordDeclarationContext *ctx) {    
   CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid word for a word declaration.", true);
@@ -250,6 +251,38 @@ antlrcpp::Any IEMLGrammarVisitor::visitRootParadigmDeclaration(IEMLParserGrammar
                         std::move(root_type),
                         std::move(word_));
 }
+
+antlrcpp::Any IEMLGrammarVisitor::visitLinkDeclaration(IEMLParserGrammar::LinkDeclarationContext *ctx) {
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, phrase_, "Invalid phrase definition in node declaration.", true);
+  CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, LanguageString, language_strings, "Invalid language string.");
+  CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, TemplateLanguageString, template_language_strings, "Invalid template language string.");
+  CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, IInflectionList, inflection_lists, "Invalid inflection list.");
+  CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, ArgumentList, arguments, "Invalid inflection list.");
+
+  CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, IDeclaration);
+  CAST_OR_RETURN_IF_NULL_LIST(language_strings, IDeclaration);
+  CAST_OR_RETURN_IF_NULL_LIST(template_language_strings, IDeclaration);
+  CAST_OR_RETURN_IF_NULL_LIST(inflection_lists, IDeclaration);
+  CAST_OR_RETURN_IF_NULL_LIST_SIZED(error_listener_, ctx, arguments, IDeclaration, 1);
+
+  if (inflection_lists.size() > 1) {
+    error_listener_->parseError(*charRangeFromContext(ctx), 
+                                "Invalid number of phrase word inflection list, expected 0 or 1.");
+    RETURN_VISITOR_RESULT_ERROR(IDeclaration);
+  }
+  ieml::AST::IInflectionList::Ptr inflection = nullptr;
+  if (inflection_lists.size() == 1)
+    inflection = inflection_lists[0];
+
+  RETURN_VISITOR_RESULT(IDeclaration, 
+                        LinkDeclaration, 
+                        std::move(arguments[0]), 
+                        std::move(language_strings), 
+                        std::move(template_language_strings), 
+                        std::move(inflection),
+                        std::move(phrase_));
+}
+
 /**
  * PHRASE
  */
@@ -516,6 +549,34 @@ antlrcpp::Any IEMLGrammarVisitor::visitLanguage_string(IEMLParserGrammar::Langua
   RETURN_VISITOR_RESULT(LanguageString, LanguageString, std::move(language), std::move(value))
 }
 
+antlrcpp::Any IEMLGrammarVisitor::visitTemplate_language_string(IEMLParserGrammar::Template_language_stringContext *ctx) {
+  if (!ctx->language) {
+    error_listener_->parseError(*charRangeFromContext(ctx), "Invalid language identifier for language string.");
+    RETURN_VISITOR_RESULT_ERROR(TemplateLanguageString);
+  }
+  std::shared_ptr<Identifier> language = std::make_shared<Identifier>(charRangeFromToken(ctx->language), 
+                                                                      ctx->language->getText().substr(0, 11));
+
+  std::vector<std::pair<TemplateLanguageString::SType, std::string>> values;
+  for (const auto& token : ctx->value) {
+    if (!token) {
+      error_listener_->parseError(*charRangeFromContext(ctx), "Invalid template language string value.");
+      RETURN_VISITOR_RESULT_ERROR(TemplateLanguageString);
+    }
+    TemplateLanguageString::SType type;
+    const auto text = token->getText();
+    if (text[0] == '$')
+      type = TemplateLanguageString::SType::VARIABLE;
+    else
+      type = TemplateLanguageString::SType::STRING;
+
+    values.push_back({type, text});
+  }
+
+  RETURN_VISITOR_RESULT(TemplateLanguageString, TemplateLanguageString, std::move(language), std::move(values))
+
+}
+
 
 /**
  *  IDENTIFIER
@@ -710,4 +771,14 @@ antlrcpp::Any IEMLGrammarVisitor::visitReference_value__phrase(IEMLParserGrammar
   CAST_OR_RETURN_IF_NULL(ctx, Phrase, phrase_, IReferenceValue);
 
   RETURN_VISITOR_RESULT_MOVE(IReferenceValue, phrase_);
+}
+
+/**
+ * LINK ARGUMENTS
+ */
+antlrcpp::Any IEMLGrammarVisitor::visitLink_arguments(IEMLParserGrammar::Link_argumentsContext *ctx) {
+  CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Variable, arguments_, "Invalid argument list for link declaration.");
+  CAST_OR_RETURN_IF_NULL_LIST(arguments_, ArgumentList);
+
+  RETURN_VISITOR_RESULT(ArgumentList, ArgumentList, std::move(arguments_));
 }

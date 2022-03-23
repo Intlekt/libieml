@@ -21,7 +21,7 @@ namespace ieml::AST {
 
 class InflectedCategory : virtual public AST, public IReferencable {
 public:
-    InflectedCategory(std::shared_ptr<CharRange>&& char_range,
+    InflectedCategory(CharRange::Ptr&& char_range,
                       std::shared_ptr<IInflectionList>&& inflections,
                       std::shared_ptr<ICategory>&& category,
                       std::vector<std::shared_ptr<Reference>>&& references) :

@@ -49,8 +49,8 @@ PathTree::TablePtr ParadigmRegister::buildFromPathTree(ieml::structure::PathTree
     // path_tree_set is the value of a singular sequence at dimension_paths[dimension]
     std::vector<std::unordered_map<PathTree::Set, size_t, hashKey, eqKey>> dim_path_to_coordinate(dimension_paths.size());
 
-    std::unordered_map<std::shared_ptr<PathTree>, Coordinate> coordinates;
-    std::map<Coordinate, std::shared_ptr<PathTree>, OrderCoordinate> path_trees;
+    std::unordered_map<PathTree::Ptr, Coordinate> coordinates;
+    std::map<Coordinate, PathTree::Ptr, OrderCoordinate> path_trees;
 
     for (const auto& sseq: PathTree::singular_sequences(paradigm)) {
         Coordinate coordinate;
