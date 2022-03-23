@@ -5,17 +5,18 @@ options { tokenVocab=IEMLLexerGrammar; }
 
 program : declarations+=declaration* EOF;
    
-declaration : COMPONENT     language_strings+=language_string+                                       phrase_=phrase            DECLARATION_END    # componentDeclaration
-            | NODE          language_strings+=language_string+                                       phrase_=phrase            DECLARATION_END    # nodeDeclaration
-            | PARANODE      language_strings+=language_string+ dimensions+=dimension_definition+     phrase_=phrase            DECLARATION_END    # paranodeDeclaration
-            | LINK          language_strings+=language_string+                                       phrase_=phrase            DECLARATION_END    # linkDeclaration
-            | ROOT_PARADIGM                                    TYPE_MARK type_root=IDENTIFIER        word_=word                DECLARATION_END    # rootParadigmDeclaration
-            | WORD                                                                                   word_=word                DECLARATION_END    # wordDeclaration
-            | INFLECTION    language_strings+=language_string+ CLASS_MARK inflection_type=IDENTIFIER word_=word                DECLARATION_END    # inflectionDeclaration
-            | AUXILIARY     language_strings+=language_string+ ROLE_MARK role_type_=role_type        word_=word                DECLARATION_END    # auxiliaryDeclaration
-            | JUNCTION      language_strings+=language_string+                                       word_=word                DECLARATION_END    # junctionDeclaration
-            | LANGUAGE      language=identifier                                                                                DECLARATION_END    # languageDeclaration
-            | TABLE                                                    (category_mappings+=invariant_paranode_mapping)+        DECLARATION_END    # tableDeclaration
+declaration : COMPONENT     language_strings+=language_string+                                       phrase_=phrase                                                                                                              DOT    # componentDeclaration
+            | NODE          language_strings+=language_string+                                       phrase_=phrase                                                                                                              DOT    # nodeDeclaration
+            | PARANODE      language_strings+=language_string+ dimensions+=dimension_definition+     phrase_=phrase                                                                                                              DOT    # paranodeDeclaration
+            | ROOT_PARADIGM                                    TYPE_MARK type_root=IDENTIFIER        word_=word                                                                                                                  DOT    # rootParadigmDeclaration
+            | WORD                                                                                   word_=word                                                                                                                  DOT    # wordDeclaration
+            | INFLECTION    language_strings+=language_string+ CLASS_MARK inflection_type=IDENTIFIER word_=word                                                                                                                  DOT    # inflectionDeclaration
+            | AUXILIARY     language_strings+=language_string+ ROLE_MARK role_type_=role_type        word_=word                                                                                                                  DOT    # auxiliaryDeclaration
+            | JUNCTION      language_strings+=language_string+                                       word_=word                                                                                                                  DOT    # junctionDeclaration
+            | LANGUAGE      language=identifier                                                                                                                                                                                  DOT    # languageDeclaration
+            | TABLE                                                    (category_mappings+=invariant_paranode_mapping)+                                                                                                          DOT    # tableDeclaration
+            | LINK          (arguments+=link_arguments | language_strings+=language_string| PHRASE_WORD_INFLECTION_MARK inflection_lists+=inflection_list | template_language_strings+=template_language_string)+ phrase_=phrase DOT    # linkDeclaration
+            | FUNCTION      (TYPE_MARK types+=IDENTIFIER | LINK_MARK links+=identifier | DOMAIN_MARK domains+=word_domain_list | CONDITION_MARK conditions+=word_condition_function)+                                            DOT    # functionDeclaration            
             ;
 
 phrase : PARENTHESIS_START phrase_lines+=phrase_line (COMMA phrase_lines+=phrase_line)* PARENTHESIS_END                        # phrase__lines
@@ -68,6 +69,23 @@ inflected_category : inflection_list_=inflection_list?                category_=
 
 variable: VARIABLE;
 
+word_domain_list : PARENTHESIS_START variable_domains+=word_variable_domain (COMMA variable_domains+=word_variable_domain)* PARENTHESIS_END;
+
+word_variable_domain : variable_=variable domain_selector=IDENTIFIER word_=word
+                     ;
+
+word_condition_function : PARENTHESIS_START word_condition_function_=word_condition_function PARENTHESIS_END                  # word_condition_function__parenthesis
+                        | left_=word_condition_function operator_=IDENTIFIER right_=word_condition_function        # word_condition_function__operator
+                        | word_condition_=word_condition                                                             # word_condition_function__word_condition
+                        ;
+
+word_condition : left_accessor=word_accessor EQUAL right_accessor=word_accessor;
+
+word_accessor : word_accessor_=word_accessor DOT accessor=IDENTIFIER        # word_accessor__word_accessor
+              | variable_=variable                                          # word_accessor__variable
+              ;
+
+
 reference : REFERENCE_OPEN variable_=variable REFERENCE_CLOSE;
 
 reference_value: identifier_=identifier  # reference_value__identifier
@@ -76,6 +94,9 @@ reference_value: identifier_=identifier  # reference_value__identifier
                ;
 
 language_string : language=LANGUAGE_STRING_MARK value=identifier;
+
+// we have to use VARIABLE TOKEN because value has to hold an uniform type
+template_language_string : language=LANGUAGE_STRING_TEMPLATE_MARK (value+=IDENTIFIER | value+=VARIABLE)+ ;
 
 word : word_=STRING;
 
@@ -97,3 +118,5 @@ role_type : INTEGER                   # role_type__integer
           ;
    
 identifier : identifiers+=IDENTIFIER+ ;
+
+link_arguments: ARGUMENTS_MARK PARENTHESIS_START arguments_+=variable (COMMA arguments_+=variable)* PARENTHESIS_END;

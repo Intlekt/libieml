@@ -86,7 +86,7 @@
 }
 
 #define LINK_DECLARATION_PREFIX R"(@rootparadigm type:INFLECTION "O:". @inflection en:noun class:NOUN "A:".@rootparadigm type:category "O:O:.".)"
-
+#define WORD_FUNCTION_DECLARATION_PREFIX LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en: $A test $B phraseWordInflection: ~noun (0 #"wa."<$A>, 1 #"we."<$B>).)"
 
 using namespace ieml::parser;
 
@@ -137,6 +137,8 @@ TEST(ieml_grammar_test_case, root_paradigm_junction_define)                     
 TEST(ieml_grammar_test_case, link_declaration)                                       TEST_PARSE_NO_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en: $A test $B phraseWordInflection: ~noun (0 #"wa."<$A>, 1 #"we."<$B>).)");
 TEST(ieml_grammar_test_case, link_declaration_no_inflection)                         TEST_PARSE_NO_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en: $A test $B (0 #"wa."<$A>, 1 #"we."<$B>).)");
 TEST(ieml_grammar_test_case, link_declaration_repeated_variable)                     TEST_PARSE_NO_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en: $A test $B $B (0 #"wa."<$A>, 1 #"we."<$B>, 2 #"we."<$B>).)");
+
+TEST(ieml_grammar_test_case, word_function)                                          TEST_PARSE_NO_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $B.attribute and $A.attribute == $B.substance.)");
 
 
 // ERRORS
@@ -193,6 +195,13 @@ TEST(ieml_grammar_test_case, invalid_link_declaration_invalid_template_extra)   
 TEST(ieml_grammar_test_case, invalid_link_declaration_invalid_phrase_missing)        TEST_PARSE_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en:$A test $B phraseWordInflection: ~noun (0 #"wa.", 1 #"we."<$B>).)");
 TEST(ieml_grammar_test_case, invalid_link_declaration_invalid_phrase_extra)          TEST_PARSE_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en:$A test $B phraseWordInflection: ~noun (0 #"wa."<$C>, 1 #"we."<$B>).)");
 
+// WORD FUNCTION
+TEST(ieml_grammar_test_case, invalid_word_function_no_type)                          TEST_PARSE_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $B.attribute and $A.attribute == $B.substance.)");
+TEST(ieml_grammar_test_case, invalid_word_function_too_many_type)                    TEST_PARSE_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word type:phrase link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $B.attribute and $A.attribute == $B.substance.)");
+TEST(ieml_grammar_test_case, invalid_word_function_invalid_type)                     TEST_PARSE_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:test link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $B.attribute and $A.attribute == $B.substance.)");
+
+
 
 // WARNINGS
 TEST(ieml_grammar_test_case, test_warning_missing_singular_sequence)                 TEST_PARSE_WARNINGS(R"(@rootparadigm type:category "O:O:.".  @node en:inv0 (0 #"wa."). @paranode en:para0 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}).)");
+

@@ -13,6 +13,7 @@
 #include "ast/declaration/LinkDeclaration.h"
 #include "ast/declaration/TableDeclaration.h"
 #include "ast/declaration/RootParadigmDeclaration.h"
+#include "ast/declaration/FunctionDeclaration.h"
 #include "ast/Constants.h"
 #include "ast/Identifier.h"
 #include "ast/Program.h"
@@ -32,6 +33,7 @@
 #include "ast/RoleType.h"
 #include "ast/ArgumentList.h"
 #include "ast/TemplateLanguageString.h"
+#include "ast/function/WordFunctionConditionExpr.h"
 
 
 #define RETURN_VISITOR_RESULT_NO_ARGS(ReturnType, DerivedType) \
@@ -282,6 +284,41 @@ antlrcpp::Any IEMLGrammarVisitor::visitLinkDeclaration(IEMLParserGrammar::LinkDe
                         std::move(inflection),
                         std::move(phrase_));
 }
+antlrcpp::Any IEMLGrammarVisitor::visitFunctionDeclaration(IEMLParserGrammar::FunctionDeclarationContext *ctx) {
+  CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, Identifier, links, "Invalid function link definition.");
+  CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, IFunctionDomainList, domains, "Invalid function domain definition.");
+  CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, WordFunctionConditionExpr, conditions, "Invalid function condition definition.");
+
+  if (ctx->types.size() != 1) {
+    error_listener_->parseError(*charRangeFromContext(ctx), 
+                                "Invalid number of function definition type, expected 1.");
+    RETURN_VISITOR_RESULT_ERROR(IDeclaration);
+  }
+  if (!ctx->types[0]) {
+    error_listener_->parseError(*charRangeFromContext(ctx), 
+                                "Invalid function definition type");
+    RETURN_VISITOR_RESULT_ERROR(IDeclaration);
+  }
+
+  const auto ftype = FunctionType::_from_string_nocase_nothrow(ctx->types[0]->getText().c_str());
+  if (!ftype) {
+    error_listener_->parseError(*charRangeFromContext(ctx), 
+                                "Invalid function definition type");
+    RETURN_VISITOR_RESULT_ERROR(IDeclaration);
+  }
+
+  CAST_OR_RETURN_IF_NULL_LIST_SIZED(error_listener_, ctx, links, IDeclaration, 1);
+  CAST_OR_RETURN_IF_NULL_LIST_SIZED(error_listener_, ctx, domains, IDeclaration, 1);
+  CAST_OR_RETURN_IF_NULL_LIST_SIZED(error_listener_, ctx, conditions, IDeclaration, 1);
+  
+  RETURN_VISITOR_RESULT(IDeclaration, 
+                        FunctionDeclaration, 
+                        *ftype, 
+                        std::move(links[0]), 
+                        std::move(domains[0]), 
+                        std::move(conditions[0]));
+}
+
 
 /**
  * PHRASE
@@ -732,6 +769,129 @@ antlrcpp::Any IEMLGrammarVisitor::visitVariable(IEMLParserGrammar::VariableConte
   const std::string name = ctx->VARIABLE()->getText();
 
   RETURN_VISITOR_RESULT(Variable, Variable, std::move(name));
+}
+
+
+/**
+ * WORD FUNCTION DOMAIN
+ */
+antlrcpp::Any IEMLGrammarVisitor::visitWord_domain_list(IEMLParserGrammar::Word_domain_listContext *ctx) {
+  std::vector<WordFunctionDomain::Ptr> domains; 
+  RETURN_VISITOR_RESULT(IFunctionDomainList,
+                        WordFunctionDomainList,
+                        std::move(domains));
+}
+antlrcpp::Any IEMLGrammarVisitor::visitWord_variable_domain(IEMLParserGrammar::Word_variable_domainContext *ctx) {
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, variable_, "Invalid variable for domain definition.", true);
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, word_, "Invalid script for word variable domain definition.", true);
+
+  if (!ctx->domain_selector) {
+    error_listener_->parseError(*charRangeFromContext(ctx), "Missing domain selector.");
+    RETURN_VISITOR_RESULT_ERROR(WordFunctionDomain);
+  }
+
+  if (ctx->domain_selector->getText() != "in") {
+    error_listener_->parseError(*charRangeFromContext(ctx), "Invalid domain selector.");
+    RETURN_VISITOR_RESULT_ERROR(WordFunctionDomain);
+  }
+
+  CAST_OR_RETURN_IF_NULL(ctx, Variable, variable_, WordFunctionDomain);
+  CAST_OR_RETURN_IF_NULL(ctx, Word, word_, WordFunctionDomain);
+
+  RETURN_VISITOR_RESULT(WordFunctionDomain,
+                        WordFunctionDomain,
+                        std::move(variable_),
+                        std::move(word_));
+}
+
+/**
+ * WORD FUNCTION CONDITION
+ */
+antlrcpp::Any IEMLGrammarVisitor::visitWord_condition_function__word_condition(IEMLParserGrammar::Word_condition_function__word_conditionContext *ctx) {
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, word_condition_, "Invalid variable for domain definition.", true);
+  CAST_OR_RETURN_IF_NULL(ctx, WordFunctionCondition, word_condition_, WordFunctionConditionExpr);
+  
+  RETURN_VISITOR_RESULT(WordFunctionConditionExpr,
+                        PredicateWordFunctionConditionExpr,
+                        std::move(word_condition_));
+}
+
+antlrcpp::Any IEMLGrammarVisitor::visitWord_condition_function__parenthesis(IEMLParserGrammar::Word_condition_function__parenthesisContext *ctx) {
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, word_condition_function_, "Invalid inner word condition function for word condition function parenthesis definition.", true);
+  CAST_OR_RETURN_IF_NULL(ctx, WordFunctionConditionExpr, word_condition_function_, WordFunctionConditionExpr);
+  
+  RETURN_VISITOR_RESULT(WordFunctionConditionExpr,
+                        ParenthesisWordFunctionConditionExpr,
+                        std::move(word_condition_function_));
+
+}
+antlrcpp::Any IEMLGrammarVisitor::visitWord_condition_function__operator(IEMLParserGrammar::Word_condition_function__operatorContext *ctx) {
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, left_, "Invalid left operand in word condition function definition.", true);
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, right_, "Invalid right operand in word condition function definition.", true);
+
+  if (!ctx->operator_) {
+    error_listener_->parseError(*charRangeFromContext(ctx), "No operator in word condition function definition boolean operation.");
+    RETURN_VISITOR_RESULT_ERROR(WordFunctionConditionExpr);
+  }
+  const auto operator_ = BooleanWordFunctionConditionExprOperatorType::_from_string_nocase_nothrow(ctx->operator_->getText().c_str());
+  
+  if (!operator_) {
+    error_listener_->parseError(*charRangeFromContext(ctx), "Invalid operator in word condition function definition boolean operation.");
+    RETURN_VISITOR_RESULT_ERROR(WordFunctionConditionExpr);
+  }
+
+  CAST_OR_RETURN_IF_NULL(ctx, WordFunctionConditionExpr, left_, WordFunctionConditionExpr);
+  CAST_OR_RETURN_IF_NULL(ctx, WordFunctionConditionExpr, right_, WordFunctionConditionExpr);
+  
+  RETURN_VISITOR_RESULT(WordFunctionConditionExpr,
+                        BooleanWordFunctionConditionExpr,
+                        std::move(left_),
+                        std::move(right_),
+                        *operator_);
+}
+
+antlrcpp::Any IEMLGrammarVisitor::visitWord_condition(IEMLParserGrammar::Word_conditionContext *ctx) {
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, left_accessor, "Invalid left operand in word condition function definition.", true);
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, right_accessor, "Invalid right operand in word condition function definition.", true);
+
+  CAST_OR_RETURN_IF_NULL(ctx, WordAccessor, left_accessor, WordFunctionCondition);
+  CAST_OR_RETURN_IF_NULL(ctx, WordAccessor, right_accessor, WordFunctionCondition);
+
+  RETURN_VISITOR_RESULT(WordFunctionCondition, 
+                        WordFunctionCondition,
+                        std::move(left_accessor),
+                        std::move(right_accessor))
+}
+
+antlrcpp::Any IEMLGrammarVisitor::visitWord_accessor__word_accessor(IEMLParserGrammar::Word_accessor__word_accessorContext *ctx) {
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, word_accessor_, "Invalid source operand in word accessor definition.", true);
+
+  if (!ctx->accessor) {
+    error_listener_->parseError(*charRangeFromContext(ctx), "Invalid accessor operand in word accessor definition.");
+    RETURN_VISITOR_RESULT_ERROR(WordAccessor);
+  }
+
+  const auto accessor = WordAccessorType::_from_string_nocase_nothrow(ctx->accessor->getText().c_str());
+  if (!accessor) {
+    error_listener_->parseError(*charRangeFromContext(ctx), "Invalid accessor operand in word accessor definition.");
+    RETURN_VISITOR_RESULT_ERROR(WordAccessor);
+  }
+
+  CAST_OR_RETURN_IF_NULL(ctx, WordAccessor, word_accessor_, WordAccessor);
+
+  RETURN_VISITOR_RESULT(WordAccessor,
+                        MultiplicativeWordAccessor,
+                        std::move(word_accessor_),
+                        *accessor);
+
+}
+antlrcpp::Any IEMLGrammarVisitor::visitWord_accessor__variable(IEMLParserGrammar::Word_accessor__variableContext *ctx) {
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, variable_, "Invalid variable in word accessor definition.", true);
+  CAST_OR_RETURN_IF_NULL(ctx, Variable, variable_, WordAccessor);
+
+  RETURN_VISITOR_RESULT(WordAccessor,
+                        VariableWordAccessor,
+                        std::move(variable_));
 }
 
 /**

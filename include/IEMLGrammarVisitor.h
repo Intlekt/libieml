@@ -36,6 +36,7 @@ public:
   virtual antlrcpp::Any visitTableDeclaration(IEMLParserGrammar::TableDeclarationContext *context) override;
   virtual antlrcpp::Any visitRootParadigmDeclaration(IEMLParserGrammar::RootParadigmDeclarationContext *context) override;
   virtual antlrcpp::Any visitLinkDeclaration(IEMLParserGrammar::LinkDeclarationContext *context) override;
+  virtual antlrcpp::Any visitFunctionDeclaration(IEMLParserGrammar::FunctionDeclarationContext *context) override;
 
   /**
    * PHRASE
@@ -149,6 +150,22 @@ public:
    * VARIABLE
    */
   virtual antlrcpp::Any visitVariable(IEMLParserGrammar::VariableContext *context) override;
+
+  /**
+   * WORD FUNCTION DOMAIN
+   */
+  virtual antlrcpp::Any visitWord_domain_list(IEMLParserGrammar::Word_domain_listContext *context) override;
+  virtual antlrcpp::Any visitWord_variable_domain(IEMLParserGrammar::Word_variable_domainContext *context) override;
+  
+  /**
+   * WORD FUNCTION CONDITION
+   */
+  virtual antlrcpp::Any visitWord_condition_function__word_condition(IEMLParserGrammar::Word_condition_function__word_conditionContext *context) override;
+  virtual antlrcpp::Any visitWord_condition_function__parenthesis(IEMLParserGrammar::Word_condition_function__parenthesisContext *context) override;
+  virtual antlrcpp::Any visitWord_condition_function__operator(IEMLParserGrammar::Word_condition_function__operatorContext *context) override;
+  virtual antlrcpp::Any visitWord_condition(IEMLParserGrammar::Word_conditionContext *context) override;
+  virtual antlrcpp::Any visitWord_accessor__word_accessor(IEMLParserGrammar::Word_accessor__word_accessorContext *context) override;
+  virtual antlrcpp::Any visitWord_accessor__variable(IEMLParserGrammar::Word_accessor__variableContext *context) override;
 
   /**
    *  REFERENCE

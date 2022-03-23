@@ -6,7 +6,7 @@
 
 
 namespace ieml::AST {
-class TableDeclaration : public virtual IDeclaration {
+class TableDeclaration : public virtual AST, public virtual IDeclaration {
 public:
 
     TableDeclaration(
