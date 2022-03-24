@@ -25,6 +25,12 @@ public:
         return variable_->to_string() + " in " + paradigm_->to_string();
     };
 
+    std::optional<std::pair<std::string, ieml::structure::Script::Ptr>> check_word_domain(ieml::parser::ParserContextManager& ctx) const {
+        const auto script = paradigm_->check_script(ctx);
+        if (!script) return {};
+        return std::pair{variable_->getName(), script};
+    }
+
 private:
     const Variable::Ptr variable_;
     const Word::Ptr paradigm_;
@@ -55,7 +61,41 @@ public:
         return os.str();
     };
 
-    virtual void check_domain(ieml::parser::ParserContextManager& ctx) const override {}
+    virtual std::optional<ieml::structure::WordDomain> check_domain(ieml::parser::ParserContextManager& ctx, const ieml::structure::Link::Ptr& link) const override {
+        ieml::structure::WordDomain domain;
+        std::unordered_set<std::string> seen_variables;
+
+        for (const auto& d: domain_list_) {
+            const auto res = d->check_word_domain(ctx);
+            if (!res) return {};
+            if (seen_variables.find(res->first) != seen_variables.end()) {
+                ctx.getErrorManager().visitorError(
+                    getCharRange(),
+                    "Redefinition of variable in domain definition."
+                );
+                return {};
+            }
+            domain.insert(*res);
+            seen_variables.insert(res->first);
+        }
+
+        if (domain.getVariableNameSet() != link->getArguments().getVariableNameSet()) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(),
+                "Missing or undefined variable names in domain definition."
+            );
+            return {};
+        }
+        if (domain.getVariableNameSet() != link->getArguments().getVariableNameSet()) {
+            ctx.getErrorManager().visitorError(
+                getCharRange(),
+                "Missing or undefined variable names in domain definition."
+            );
+            return {};
+        }
+
+        return domain;
+    }
 
 private:
     const std::vector<WordFunctionDomain::Ptr> domain_list_;

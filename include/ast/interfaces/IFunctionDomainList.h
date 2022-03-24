@@ -2,6 +2,10 @@
 
 #include "ast/interfaces/AST.h"
 #include "ast/Constants.h"
+#include "structure/link/Link.h"
+#include "structure/link/function/WordDomain.h"
+
+#include <optional>
 
 
 namespace ieml::AST {
@@ -13,7 +17,7 @@ public:
     IFunctionDomainList(FunctionType function_type) : 
         function_type_(function_type) {};
 
-    virtual void check_domain(ieml::parser::ParserContextManager& ctx) const = 0;
+    virtual std::optional<ieml::structure::WordDomain> check_domain(ieml::parser::ParserContextManager&, const ieml::structure::Link::Ptr&) const = 0;
 
     FunctionType getFunctionType() const {return function_type_;};
 

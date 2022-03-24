@@ -3,6 +3,8 @@
 
 #include "structure/path/PathTree.h"
 #include "structure/link/Link.h"
+#include "structure/link/function/WordCondition.h"
+#include "structure/link/function/WordDomain.h"
 
 namespace ieml::structure {
 
@@ -22,8 +24,15 @@ public:
          const TemplateName& template_language_string,
          const PathNode::Ptr& phrase_tree_inflection);
 
+    void register_function(
+        const Link::Ptr& link, 
+        WordDomain&& domain,
+        WordCondition::Ptr&& condition
+    );
+
 private:
     std::unordered_map<PathTree::Ptr, Link::Ptr> links_; 
+    std::unordered_map<Link::Ptr, std::pair<WordDomain, WordCondition::Ptr>> word_functions_; 
 };
 
 

@@ -12,6 +12,8 @@ namespace AST {
 
 class ICategory : virtual public AST{
 public:
+    IEML_DECLARE_PTR_TYPE_AST(ICategory)
+
     ICategory() {}
 
     virtual PartialPathTree::Optional check_category(parser::ParserContextManager& ctx) const = 0;

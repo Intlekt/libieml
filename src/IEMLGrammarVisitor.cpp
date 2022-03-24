@@ -776,10 +776,12 @@ antlrcpp::Any IEMLGrammarVisitor::visitVariable(IEMLParserGrammar::VariableConte
  * WORD FUNCTION DOMAIN
  */
 antlrcpp::Any IEMLGrammarVisitor::visitWord_domain_list(IEMLParserGrammar::Word_domain_listContext *ctx) {
-  std::vector<WordFunctionDomain::Ptr> domains; 
+  CHECK_SYNTAX_ERROR_LIST(error_listener_, ctx, WordFunctionDomain, variable_domains, "Invalid word domain in word domain list definition.");
+  CAST_OR_RETURN_IF_NULL_LIST(variable_domains, IFunctionDomainList);
+
   RETURN_VISITOR_RESULT(IFunctionDomainList,
                         WordFunctionDomainList,
-                        std::move(domains));
+                        std::move(variable_domains));
 }
 antlrcpp::Any IEMLGrammarVisitor::visitWord_variable_domain(IEMLParserGrammar::Word_variable_domainContext *ctx) {
   CHECK_SYNTAX_ERROR(error_listener_, ctx, variable_, "Invalid variable for domain definition.", true);

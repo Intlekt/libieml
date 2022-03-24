@@ -8,7 +8,7 @@ namespace ieml::AST {
 
 class Variable: public virtual AST {
 public:
-    typedef std::shared_ptr<Variable> Ptr;
+    IEML_DECLARE_PTR_TYPE_AST(Variable)
 
     Variable(CharRange::Ptr&& char_range,
              const std::string& name) : 

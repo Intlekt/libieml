@@ -13,3 +13,7 @@ Link::Ptr LinkRegister::create_link(const PathTree::Ptr& p,
         links_.insert({p, res});
         return res;
 }
+
+void LinkRegister::register_function(const Link::Ptr& link, WordDomain&& domain, WordCondition::Ptr&& condition) {
+        word_functions_.insert({link, std::pair<WordDomain, WordCondition::Ptr>{std::move(domain), std::move(condition)}});
+}

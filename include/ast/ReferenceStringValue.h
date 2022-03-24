@@ -11,6 +11,8 @@
 namespace ieml::AST {
 class ReferenceStringValue: virtual public AST, public IReferenceValue {
 public:
+    IEML_DECLARE_PTR_TYPE_AST(ReferenceStringValue)
+
     ReferenceStringValue(CharRange::Ptr&& char_range,
                          const std::string& value) :
         AST(std::move(char_range)),

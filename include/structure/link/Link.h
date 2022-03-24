@@ -21,6 +21,10 @@ public:
 
     friend class LinkRegister;
 
+    const LinkArgumentDefinition& getArguments() const {return arguments_;};
+
+    bool canDescribeWord() const {return phrase_tree_inflection_ != nullptr;}
+
 private:
     Link(const LinkArgumentDefinition& arguments,
          const TemplateName& template_language_string,

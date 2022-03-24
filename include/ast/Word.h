@@ -9,6 +9,9 @@
 namespace ieml::AST {
 class Word: virtual public AST, public ICategory {
 public:
+
+    IEML_DECLARE_PTR_TYPE_AST(Word)
+
     Word(CharRange::Ptr&& char_range,
          const std::string& word_str) :
       AST(std::move(char_range)),

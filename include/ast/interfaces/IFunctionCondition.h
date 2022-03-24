@@ -3,6 +3,7 @@
 #include "ast/interfaces/AST.h"
 #include "ast/Constants.h"
 
+#include <optional>
 
 namespace ieml::AST {
 
@@ -13,7 +14,6 @@ public:
     IFunctionCondition(FunctionType function_type) : 
         function_type_(function_type) {};
 
-    virtual void check_condition(ieml::parser::ParserContextManager& ctx) const = 0;
 
     FunctionType getFunctionType() const {return function_type_;};
 

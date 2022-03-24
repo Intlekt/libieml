@@ -18,6 +18,8 @@ class MultiplicativeScript : public Script {
 public:
     friend class ScriptRegister;
 
+    typedef const MultiplicativeScript* Ptr;
+
     typedef std::array<const Script*, 3> Children; 
 
     struct HashChildrenFunctor {
@@ -32,6 +34,10 @@ public:
 
     static const std::unordered_map<std::string, std::string> REMARKABLE_MULTIPLICATIONS_STRINGS;
     virtual ScriptType get_type() const override {return ScriptType::MULTIPLICATION;};
+
+    Script::Ptr getSubstance() const {return children_[0];};
+    Script::Ptr getAttribute() const {return children_[1];};
+    Script::Ptr getMode() const {return children_[2];};
 
 protected:
     virtual TablePtr build_table_paradigm(ScriptRegister&) const override;
