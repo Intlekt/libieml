@@ -175,6 +175,7 @@ nlohmann::json _wordToJson(std::shared_ptr<WordType> word,
 }
 
 nlohmann::json _scriptToJson(ieml::structure::Script::Ptr script, 
+                             size_t index,
                              ieml::parser::ParserContextManager& ctx, 
                              const ieml::AST::CharRange& default_range) {
 
@@ -209,6 +210,7 @@ nlohmann::json _scriptToJson(ieml::structure::Script::Ptr script,
         {"multiplicity", script->get_multiplicity()},
         {"singular_sequences", singular_sequences},
         {"script_type", type._to_string()},
+        {"index", index},
 
         // if defined, point to the word
         {"definition", word_json},
@@ -285,8 +287,18 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
             category_hierarchies.push_back(serializeCategoryHierarchy(*context, table));
         }
         
-        for (auto it: sregister.defined_script())
-            elements[it.second->uid()] = _scriptToJson(it.second, *context, default_range);
+        // ignore null script and order
+        ieml::structure::Script::Set ordered;
+        for (auto it: sregister.defined_script()) {
+            if (it.second->is_nullscript()) continue;
+            ordered.insert(it.second);
+        }
+
+        size_t i = 0;
+        for (auto it : ordered) {
+            elements[it->uid()] = _scriptToJson(it, i, *context, default_range);
+            i++;
+        }
 
         // serialize table after scripts so all the tables are created in script register
         for (const auto& it: sregister.get_tables()) {
