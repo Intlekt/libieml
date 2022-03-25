@@ -35,7 +35,7 @@ public:
         if (begin != end) 
             children = (*begin)->check_path_node(ctx, next_role, begin + 1, end);
 
-        std::shared_ptr<ieml::structure::PathTree> current;
+        ieml::structure::PathTree::Ptr current;
         auto last_children = children;
 
         for (auto it_node = node_list.rbegin(); it_node != node_list.rend(); ++it_node) {

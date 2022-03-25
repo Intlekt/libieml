@@ -3,8 +3,7 @@
 
 #include "structure/path/PathTree.h"
 #include "structure/link/Link.h"
-#include "structure/link/function/WordCondition.h"
-#include "structure/link/function/WordDomain.h"
+#include "structure/link/function/WordFunction.h"
 
 namespace ieml::structure {
 
@@ -26,14 +25,15 @@ public:
 
     void register_function(
         const Link::Ptr& link, 
-        WordDomain&& domain,
-        WordCondition::Ptr&& condition
+        WordFunction&& function
     );
+    
+    const auto& getLinks() const {return links_;}
+    auto getFunctions(const Link::Ptr& link) const { return word_functions_.equal_range(link);}
 
 private:
     std::unordered_map<PathTree::Ptr, Link::Ptr> links_; 
-    std::unordered_map<Link::Ptr, std::pair<WordDomain, WordCondition::Ptr>> word_functions_; 
+    std::unordered_multimap<Link::Ptr, WordFunction> word_functions_; 
 };
-
 
 }

@@ -22,7 +22,7 @@ public:
 
     size_t getDimensionIndex() const {return dimension_index_;};
 
-    ieml::structure::PathTree::Set check_dimension_definitions(ieml::parser::ParserContextManager& ctx, const std::shared_ptr<ieml::structure::PathTree>& paradigm) const;
+    ieml::structure::PathTree::Set check_dimension_definitions(ieml::parser::ParserContextManager& ctx, const ieml::structure::PathTree::Ptr& paradigm) const;
 
 private:
     const size_t dimension_index_;

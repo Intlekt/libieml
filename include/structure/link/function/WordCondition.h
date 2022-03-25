@@ -2,6 +2,7 @@
 
 #include "structure/script/MultiplicativeScript.h"
 #include "structure/script/ScriptRegister.h"
+#include "structure/Word.h"
 #include "ast/Constants.h"
 #include "ast/macro_utils.h"
 
@@ -16,7 +17,7 @@ class WordCondition {
 public:
     IEML_DECLARE_PTR_TYPE_STRUCTURE(WordCondition)
 
-    typedef std::unordered_map<std::string, const MultiplicativeScript*> VariableValuation;
+    typedef std::unordered_map<std::string, Word::Ptr> VariableValuation;
 
     virtual bool evaluate(ScriptRegister& sreg, const VariableValuation& valuation) const = 0;
 
@@ -71,7 +72,18 @@ public:
         target_layer_(source_layer - accessors_.size()) {}
 
     Script::Ptr access(ScriptRegister& sreg, const WordCondition::VariableValuation& valuation) const {
-        MultiplicativeScript::Ptr curr = valuation.find(variable_name_)->second;
+        Script::Ptr s = valuation.find(variable_name_)->second->getScript();
+    
+        if (s->get_type() == +ScriptType::PRIMITIVE) {
+            // source_layer_ == target_layer_ == 0
+            return s;
+        }
+        if (s->get_type() != +ScriptType::MULTIPLICATION) {
+            throw "Variable has to be a multiplicative script";
+        }
+
+        MultiplicativeScript::Ptr curr = dynamic_cast<MultiplicativeScript::Ptr>(s);
+
         for (auto a : accessors_) {
             Script::Ptr script;
             switch (a) {
@@ -90,6 +102,9 @@ public:
 
             if (script->is_nullscript())
                 return sreg.get_nullscript(target_layer_);
+
+            if (script->get_type() == +ScriptType::PRIMITIVE)
+                return script;
 
             curr = dynamic_cast<MultiplicativeScript::Ptr>(script);
         }

@@ -64,7 +64,7 @@ std::pair<nlohmann::json, nlohmann::json> ieml::parser::errorManagerToJson(const
     return {error_list, warning_list};
 }
 
-nlohmann::json ieml::parser::categoryToJson(std::shared_ptr<ieml::structure::PathTree> category, 
+nlohmann::json ieml::parser::categoryToJson(ieml::structure::PathTree::Ptr category, 
                                             ieml::parser::ParserContextManager& ctx,
                                             ieml::relation::RelationGraph::Register& register_,
                                             ieml::relation::RelationGraph::Graph& graph) {

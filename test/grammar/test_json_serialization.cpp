@@ -179,7 +179,7 @@ TEST(ieml_grammar_test_case, composition_graph_json_serialization) {
 
 TEST(ieml_grammar_test_case, unique_id_pathtree) {
     std::string h0, h1;
-    std::shared_ptr<ieml::structure::PathTree> p0, p1;
+    ieml::structure::PathTree::Ptr p0, p1;
     {
         ieml::parser::IEMLParser parser(R"(@rootparadigm type:CATEGORY "O:M:.". @rootparadigm type:INFLECTION "E:O:.". @inflection en:noun class:VERB "E:A:.". @node en:valid node (0 ~noun #"a.").)");                                         
         try {                                                           

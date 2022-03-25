@@ -74,4 +74,6 @@ void IEMLParser::parse() {
         context_->resetLanguage();
         parser->second->getProgram()->check_program(*context_);
     }
+
+    context_->registerLinkInstances();
 }

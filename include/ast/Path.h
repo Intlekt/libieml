@@ -27,7 +27,7 @@ public:
         return os.str();
     }
 
-    std::shared_ptr<ieml::structure::PathTree> check_path(parser::ParserContextManager& ctx) {
+    ieml::structure::PathTree::Ptr check_path(parser::ParserContextManager& ctx) {
         if (path_nodes_.size() == 0) return nullptr;
 
         auto begin = path_nodes_.begin();

@@ -74,5 +74,17 @@ PartialPathTree::Optional LinkDeclaration::_check_phrase(ieml::parser::ParserCon
         inflection
     );
 
+    // register schema
+    const auto schema_args = phrase_set->getReferenceSchemaArguments();
+    if (!schema_args) {
+        ctx.getErrorManager().visitorError(
+            getCharRange(), 
+            "Incoherent reference schema in link phrase."
+        );
+        return {};
+    }
+
+    ctx.getReferenceSchemaRegister().register_schema(*schema_args);
+
     return phrase_set;
 }

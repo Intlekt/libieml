@@ -68,6 +68,19 @@ public:
         return script_parser_.get_or_parse(&script_register_, s, "", 0, 0); 
     };
 
+    void registerLinkInstances() {
+        for (const auto& link: link_register_.getLinks()) {
+            const auto& range = link_register_.getFunctions(link.second);
+            for (auto it = range.first; it != range.second; it++) {
+                // for each function
+                for (const auto& valuation : it->second.getValues(script_register_, word_register_)) {
+                    const auto& schema = reference_schema_register_.get_schema(link.first);
+                    const auto& ref_values = schema.reference_values_from_valuation(valuation);
+                    reference_schema_register_.create_instance(link.first, ref_values);
+                }
+            }
+        }
+    }
 private:
     std::shared_ptr<structure::LanguageType> default_language_;
 

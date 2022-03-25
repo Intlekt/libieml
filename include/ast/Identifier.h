@@ -46,7 +46,7 @@ public:
         return PartialPathTree(structure::PathTree::singular_sequences(phrase), {});
     };
 
-    std::optional<std::shared_ptr<ieml::structure::PathTree>> check_paradigm(parser::ParserContextManager& ctx) const {
+    std::optional<ieml::structure::PathTree::Ptr> check_paradigm(parser::ParserContextManager& ctx) const {
         auto phrase = ctx.getCategoryRegister().resolve_category(structure::LanguageString(ctx.getLanguage(), name_));
 
         if (phrase == nullptr) {

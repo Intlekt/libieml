@@ -21,6 +21,7 @@ else()
                 structure/test_word.cpp
                 structure/test_script.cpp
                 structure/test_table.cpp
+                structure/test_link.cpp
                 relation/test_composition.cpp
                 relation/test_inclusion.cpp
                 relation/test_graph.cpp)

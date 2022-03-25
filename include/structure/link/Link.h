@@ -6,9 +6,11 @@
 #include "structure/path/PathNode.h"
 #include "structure/path/PathTree.h"
 
+namespace ieml::parser {
+    class ParserContextManager;
+}
 
 namespace ieml::structure {
-
 class LinkRegister;
 
 class Link {

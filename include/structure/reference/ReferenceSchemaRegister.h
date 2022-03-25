@@ -23,9 +23,11 @@ public:
     ReferenceSchemaRegister(const ReferenceSchemaRegister&) = delete;
     ReferenceSchemaRegister& operator=(ReferenceSchemaRegister&) = delete;
 
-
-    void register_schema(const PathTree::Ptr& path_tree, ReferenceSchema&& schema) {
-        schemas_.insert({path_tree, std::move(schema)});
+    void register_schema(const ReferenceSchema::Arguments& args) {
+        schemas_.insert({
+            std::get<0>(args), 
+            ReferenceSchema(args)
+        });
     }
 
     bool is_defined(const PathTree::Ptr& path_tree) const {
@@ -37,8 +39,15 @@ public:
         return it->second;
     }
 
+    void create_instance(const PathTree::Ptr& path_tree, const std::vector<ReferenceValue>& values) {
+        const auto& it = schemas_.find(path_tree);
+        it->second.define(values);
+    }
+
 private:    
-    std::unordered_map<PathTree::Ptr, const ReferenceSchema> schemas_;
+    std::unordered_map<PathTree::Ptr, ReferenceSchema> schemas_;
+
+
 };
 
 

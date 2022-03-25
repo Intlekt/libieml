@@ -60,5 +60,5 @@ void FunctionDeclaration::check_declaration(ieml::parser::ParserContextManager& 
 
     // test function not already exists ?
     
-    ctx.getLinkRegister().register_function(link_def, std::move(*domain), std::move(*condition));
+    ctx.getLinkRegister().register_function(link_def, ieml::structure::WordFunction(std::move(*domain), std::move(*condition)));
 }

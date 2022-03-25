@@ -19,7 +19,7 @@ std::string DimensionDefinition::to_string() const {
 }
 
 ieml::structure::PathTree::Set DimensionDefinition::check_dimension_definitions(ieml::parser::ParserContextManager& ctx, 
-                                                                                const std::shared_ptr<ieml::structure::PathTree>& paradigm) const {
+                                                                                const ieml::structure::PathTree::Ptr& paradigm) const {
     bool valid = true;
     ieml::structure::PathTree::Set res;
     for (auto& path: paths_) {
