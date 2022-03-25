@@ -43,24 +43,35 @@ public:
         variables_(variables) {}
     
     LanguageType language() const {return language_;}
-    std::string value(const std::unordered_map<std::string, std::string>& variable_to_value) const {
+
+    typedef std::unordered_map<std::string, std::string> Valuation;
+
+    std::string value_str(const Valuation& variable_to_value) const {
         std::ostringstream os;
         os << fillers_[0];
         for (size_t i = 0; i < variables_.size(); i++) {
             const auto& v = variable_to_value.find(variables_[i]);
-            if (v == variable_to_value.end())
-                throw "Missing argument " + variables_[i];
-            os << " " << v->second << " " << fillers_[i + 1];
+            std::string val;
+            if (v == variable_to_value.end()) {
+                val = "($missing$)";
+            } else {
+                val = v->second;
+            }
+            os << " " << val << " " << fillers_[i + 1];
         }
         return os.str();
     }
 
+    LanguageString getLanguageString(const Valuation& variable_to_value) const {
+        return LanguageString(language_, value_str(variable_to_value));
+    }
+
     std::string to_string() const {
-        std::unordered_map<std::string, std::string> mapping;
+        Valuation mapping;
         for (const auto& v : variables_)
             mapping.insert({v, v});
 
-        return value(mapping);
+        return value_str(mapping);
     }
 
     bool operator==(const TemplateLanguageString& rhs) const {

@@ -271,6 +271,15 @@ PathTree::Ptr PathTree::Register::build_paradigm(const PathTree::Vector& paradig
     return get_or_create(std::make_shared<structure::ParadigmPathNode>(), children);
 }
 
+PathTree::Ptr PathTree::Register::build_phrase_word(const CategoryWord::Ptr word, const InflectionPathNode::Ptr inflection) {
+    auto w_pt = get_or_create(std::make_shared<WordPathNode>(word), PathTree::Set{});
+    if (inflection)
+        w_pt = get_or_create(inflection, PathTree::Set{w_pt});
+    w_pt = get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), PathTree::Set{w_pt});
+    return get_or_create(std::make_shared<RootPathNode>(), PathTree::Set{w_pt});
+}
+
+
 bool PathTree::is_contained_singular(const PathTree::Ptr& path_tree) const {
     if (*node_ != *path_tree->node_) return false;
     if (children_.size() == 0) return true;

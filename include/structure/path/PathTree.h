@@ -130,6 +130,9 @@ public:
          */
         PathTree::Ptr build_paradigm(const PathTree::Vector&);
 
+
+        PathTree::Ptr build_phrase_word(const CategoryWord::Ptr, const InflectionPathNode::Ptr);
+
     private:
         struct eqKey {
             bool operator()(const Key& a, const Key& b) const {

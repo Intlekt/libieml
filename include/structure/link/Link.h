@@ -12,6 +12,8 @@ namespace ieml::parser {
 
 namespace ieml::structure {
 class LinkRegister;
+class WordRegister;
+class CategoryRegister;
 
 class Link {
 public:
@@ -23,10 +25,13 @@ public:
 
     friend class LinkRegister;
 
+    typedef std::unordered_map<std::string, Word::Ptr> WordValuation;
+
     const LinkArgumentDefinition& getArguments() const {return arguments_;};
 
     bool canDescribeWord() const {return phrase_tree_inflection_ != nullptr;}
 
+    const Name getNameForValuation(PathTree::Register& preg, CategoryRegister& creg, WordRegister& wreg, const WordValuation& valuation) const;
 private:
     Link(const LinkArgumentDefinition& arguments,
          const TemplateName& template_language_string,
@@ -41,7 +46,7 @@ private:
     const TemplateName template_language_string_;
     
     // can be null => in that case the link does not works between words.
-    const PathNode::Ptr phrase_tree_inflection_;
+    const InflectionPathNode::Ptr phrase_tree_inflection_;
     
     const PathTree::Ptr path_tree_;
 };

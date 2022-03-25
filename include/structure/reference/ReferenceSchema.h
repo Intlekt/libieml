@@ -45,6 +45,14 @@ public:
 
     const std::list<std::vector<ReferenceValue>>& getInstances() const {return data_store_;}
 
+    WordCondition::VariableValuation valuation_from_reference_values(std::vector<ReferenceValue> references) const {
+        WordCondition::VariableValuation res;
+        for (size_t i = 0; i < argument_names_.size(); i++) {
+            res.insert({argument_names_[i], references[i].getWord()});
+        }
+        return res;
+    }
+
     std::vector<ReferenceValue> reference_values_from_valuation(WordCondition::VariableValuation valuation) const {
         std::vector<ReferenceValue> res;
         for (const auto& name: argument_names_) {

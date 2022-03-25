@@ -53,8 +53,11 @@ public:
         std::unordered_set<std::string> variables_set;
 
         std::string curr;
+        bool first = true;
         for (const auto& v: content_) {
             if(v.first == SType::STRING) {
+                if (first) first = false;
+                else       curr += " ";
                 curr += v.second;
             } else {
                 variables.push_back(v.second);
@@ -62,6 +65,7 @@ public:
 
                 fillers.push_back(curr);
                 curr = "";
+                first = true;
             }
         }
         fillers.push_back(curr);
