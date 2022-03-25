@@ -6,7 +6,7 @@ void ieml::relation::buildInclusionRelationGraph(RelationGraph& graph,
                                                  const ieml::structure::CategoryRegister& creg, 
                                                  __attribute__((unused)) const ieml::structure::WordRegister& wreg) {
 
-    auto is_phrase = [&creg](const std::shared_ptr<ieml::structure::PathTree>& t){
+    auto is_phrase = [&creg](const ieml::structure::PathTree::Ptr& t){
         return t->is_phrase() && creg.category_is_defined(t);
     };
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "structure/Constants.h"
+#include "ast/macro_utils.h"
 
 #include <memory>
 #include <exception>
@@ -15,6 +16,8 @@ class PathTree;
 
 class Element {
 public:
+    IEML_DECLARE_PTR_TYPE_STRUCTURE(Element)
+
     virtual ~Element() = default;
 
     virtual ElementType getElementType() const = 0;

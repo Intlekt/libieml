@@ -10,7 +10,7 @@ namespace ieml::AST {
 
 class InflectionListParadigm: virtual public AST, public IInflectionList {
 public:
-    InflectionListParadigm(std::shared_ptr<CharRange>&& char_range,
+    InflectionListParadigm(CharRange::Ptr&& char_range,
                            std::vector<std::shared_ptr<IInflectionList>>&& inflection_lists) : 
         AST(std::move(char_range)),
         inflection_lists_(std::move(inflection_lists)) {}

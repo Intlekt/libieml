@@ -9,7 +9,7 @@ namespace ieml::AST {
 
 class AuxiliaryDeclaration: public virtual AST, public ToolWordDeclaration {
 public:
-    AuxiliaryDeclaration(std::shared_ptr<CharRange>&& char_range, 
+    AuxiliaryDeclaration(CharRange::Ptr&& char_range, 
                          std::vector<std::shared_ptr<LanguageString>>&& translations,
                          std::shared_ptr<RoleType>&& accepted_role_type,
                          std::shared_ptr<Word>&& word) : 

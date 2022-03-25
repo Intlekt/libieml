@@ -7,11 +7,15 @@
 
 #include "ast/CharRange.h"
 
+#include "ast/macro_utils.h"
+
 namespace ieml::AST {
 
 class AST {
 public:
-    AST(std::shared_ptr<const CharRange>&& char_range) : char_range_(std::move(char_range)) {};
+    IEML_DECLARE_PTR_TYPE_AST(AST)
+
+    AST(CharRange::Ptr&& char_range) : char_range_(std::move(char_range)) {};
     virtual ~AST() = default;
 
     virtual std::string to_string() const = 0;
@@ -19,7 +23,7 @@ public:
     const CharRange& getCharRange() const {return *char_range_;}
 
 private:
-    const std::shared_ptr<const CharRange> char_range_;
+    const CharRange::Ptr char_range_;
 };
 
 }

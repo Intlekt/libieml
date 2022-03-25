@@ -10,7 +10,7 @@ namespace ieml::AST {
 
 class RootParadigmDeclaration: public virtual AST, public IDeclaration {
 public:
-    RootParadigmDeclaration(std::shared_ptr<CharRange>&& char_range, 
+    RootParadigmDeclaration(CharRange::Ptr&& char_range, 
                             std::shared_ptr<Identifier>&& root_type,
                             std::shared_ptr<Word>&& word) : 
         AST(std::move(char_range)),          

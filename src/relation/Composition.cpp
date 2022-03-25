@@ -14,10 +14,10 @@ void ieml::relation::buildCompositionRelationGraph(RelationGraph& graph,
                                                    const ieml::structure::WordRegister& wreg) {
     
 
-    auto is_phrase = [&creg](const std::shared_ptr<ieml::structure::PathTree>& t){
+    auto is_phrase = [&creg](const ieml::structure::PathTree::Ptr& t){
         return t->is_phrase() && creg.category_is_defined(t);
     };
-    // auto is_inflection = [&wreg](const std::shared_ptr<ieml::structure::PathTree>& t){
+    // auto is_inflection = [&wreg](const ieml::structure::PathTree::Ptr& t){
     //     return t->is_inflection() && wreg.inflection_is_defined(std::dynamic_pointer_cast<ieml::structure::InflectionPathNode>(t->getNode()));
     // };
 

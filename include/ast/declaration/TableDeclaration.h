@@ -6,11 +6,11 @@
 
 
 namespace ieml::AST {
-class TableDeclaration : public virtual IDeclaration {
+class TableDeclaration : public virtual AST, public virtual IDeclaration {
 public:
 
     TableDeclaration(
-        std::shared_ptr<CharRange>&& char_range,
+        CharRange::Ptr&& char_range,
         std::vector<std::shared_ptr<InvariantParanodeMapping>>&& mapping) : 
         AST(std::move(char_range)),
         IDeclaration(DeclarationType::TABLE),

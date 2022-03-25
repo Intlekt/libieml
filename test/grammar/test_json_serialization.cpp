@@ -48,6 +48,7 @@ TEST(ieml_grammar_test_case, json_serialization) {
         ASSERT_TRUE(res.contains("warnings"));
         ASSERT_TRUE(res.contains("language"));
         ASSERT_TRUE(res.contains("category_hierarchies"));
+        ASSERT_TRUE(res.contains("instances"));
 
         // check that all the id that are defined in the json are present
         for (nlohmann::json::iterator it = res["elements"].begin(); it != res["elements"].end(); ++it) {
@@ -82,6 +83,9 @@ TEST(ieml_grammar_test_case, json_serialization) {
                 if (!v["table"].is_null()) {
                     ASSERT_TRUE(res["tables"].contains(v["table"])) << "Missing table " + std::string(v["table"]) + " of " + it.key() + " in file " + std::string(file_path.path());
                 }
+
+                for (auto ref: v["instances"])
+                    EXPECT_TRUE(res["instances"].contains(ref)) << "Not containing instance " + std::string(ref) + " of " + it.key() + " in file " + std::string(file_path.path());
             }
 
             if (v["type"] == "SCRIPT") {
@@ -150,6 +154,15 @@ TEST(ieml_grammar_test_case, json_serialization) {
             }
         
         }
+
+        for (nlohmann::json::iterator it = res["instances"].begin(); it != res["instances"].end(); ++it) {
+            auto v = it.value();
+
+            ASSERT_TRUE(v.contains("id")) << "Missing key id in instance " + std::string(it.key());
+            ASSERT_TRUE(v.contains("translations")) << "Missing key translations in instance " + std::string(it.key());
+            ASSERT_TRUE(v.contains("link")) << "Missing key link in instance " + std::string(it.key());
+            ASSERT_TRUE(res["elements"].contains(v["link"])) << "Missing link in element for instance " + std::string(it.key());
+        }
     }
 }
 
@@ -179,7 +192,7 @@ TEST(ieml_grammar_test_case, composition_graph_json_serialization) {
 
 TEST(ieml_grammar_test_case, unique_id_pathtree) {
     std::string h0, h1;
-    std::shared_ptr<ieml::structure::PathTree> p0, p1;
+    ieml::structure::PathTree::Ptr p0, p1;
     {
         ieml::parser::IEMLParser parser(R"(@rootparadigm type:CATEGORY "O:M:.". @rootparadigm type:INFLECTION "E:O:.". @inflection en:noun class:VERB "E:A:.". @node en:valid node (0 ~noun #"a.").)");                                         
         try {                                                           

@@ -6,6 +6,14 @@ CLASS_MARK : 'class:';
 ROLE_MARK : 'role:';
 TYPE_MARK : 'type:';
 
+ARGUMENTS_MARK : 'args:';
+PHRASE_WORD_INFLECTION_MARK: 'phraseWordInflection:';
+LANGUAGE_STRING_TEMPLATE_MARK : 'template-'[a-z][a-z]':';
+LINK_MARK : 'link:';
+DOMAIN_MARK : 'domain:';
+CONDITION_MARK: 'condition:';
+
+
 DIMENSION_MARK       : [1-3]'d:';
    
 STRING               : '"'(~'"'|'\\"')*'"';
@@ -28,7 +36,7 @@ REFERENCE_CLOSE      : '>' ;
 SEMANTIC_ACCENT      : '!' ;
    
 DECLARATION_MARK     : '@' ;
-DECLARATION_END      : '.' ;
+DOT                  : '.' ;
     
 PARADIGM_START       : '{' ;
 PARADIGM_END         : '}' ;
@@ -39,6 +47,7 @@ PARENTHESIS_END      : ')';
 COMMA                : ',';
 
 MAPPING              : '->';
+EQUAL                : '==';
 
 VARIABLE             : '$'[0-9a-zA-Z]+;
 
@@ -47,6 +56,7 @@ INTEGER              : [0-9]+ ;
 COMMENT              : '//' ~( '\r' | '\n' )* -> skip;
 WS                   : [ \t\n] -> skip ;
    
+FUNCTION             : '@function';
 LANGUAGE             : '@language';
 COMPONENT            : '@component';
 NODE                 : '@node';

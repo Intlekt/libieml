@@ -7,7 +7,7 @@
 
 
 
-std::shared_ptr<ieml::structure::PathTree> ieml::parser::parsePath(parser::ParserContextManager& ctx, const std::string& input_str, bool error_stdout) {
+ieml::structure::PathTree::Ptr ieml::parser::parsePath(parser::ParserContextManager& ctx, const std::string& input_str, bool error_stdout) {
     antlr4::ANTLRInputStream input(input_str);
     IEMLParserErrorListener error_listener(error_stdout);
     auto antlr_listener = error_listener.getANTLR4ErrorListener("");

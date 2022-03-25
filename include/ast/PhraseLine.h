@@ -60,7 +60,7 @@ private:
 
 class SimplePhraseLine : public PhraseLine {
 public:
-    SimplePhraseLine(std::shared_ptr<CharRange>&& char_range,
+    SimplePhraseLine(CharRange::Ptr&& char_range,
                      std::shared_ptr<RoleType>&& role_type,
                      bool accentuation,
                      std::shared_ptr<AuxiliarySubPhraseLine>&& auxiliary_subline) : 
@@ -83,7 +83,7 @@ private:
 
 class JunctionPhraseLine : public PhraseLine, public IJunctionList<AuxiliarySubPhraseLine, structure::AuxiliaryJunctionIndexPathNode, structure::AuxiliaryJunctionPathNode, structure::RoleType> {
 public:
-    JunctionPhraseLine(std::shared_ptr<CharRange>&& char_range,
+    JunctionPhraseLine(CharRange::Ptr&& char_range,
                        std::vector<std::shared_ptr<AuxiliarySubPhraseLine>>&& sub_phrases,
                        std::shared_ptr<IJunction>&& junction_identifier,
                        std::shared_ptr<RoleType>&& role_type,

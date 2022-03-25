@@ -8,7 +8,7 @@ namespace ieml::AST {
 
 class JunctionDeclaration: public ToolWordDeclaration {
 public:
-    JunctionDeclaration(std::shared_ptr<CharRange>&& char_range, 
+    JunctionDeclaration(CharRange::Ptr&& char_range, 
                         std::vector<std::shared_ptr<LanguageString>>&& translations,
                         std::shared_ptr<Word>&& word) : 
         AST(std::move(char_range)),

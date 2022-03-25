@@ -9,7 +9,7 @@ namespace ieml::AST {
 
 class WordDeclaration: public virtual AST, public IDeclaration {
 public:
-    WordDeclaration(std::shared_ptr<CharRange>&& char_range, 
+    WordDeclaration(CharRange::Ptr&& char_range, 
                     std::shared_ptr<Word>&& word) : 
         AST(std::move(char_range)),          
         IDeclaration(DeclarationType::WORD), 

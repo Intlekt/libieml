@@ -10,7 +10,7 @@ namespace ieml::AST {
 
 class Junction: virtual public AST, public IJunction {
 public:
-    Junction(std::shared_ptr<CharRange>&& char_range,
+    Junction(CharRange::Ptr&& char_range,
               std::shared_ptr<Identifier>&& identifier) : 
         AST(std::move(char_range)),
         identifier_(std::move(identifier)) {}
@@ -40,7 +40,7 @@ private:
 
 class WordJunction: virtual public AST, public IJunction {
 public:
-    WordJunction(std::shared_ptr<CharRange>&& char_range,
+    WordJunction(CharRange::Ptr&& char_range,
                  std::shared_ptr<Word>&& word) : 
         AST(std::move(char_range)),
         word_(std::move(word)) {}

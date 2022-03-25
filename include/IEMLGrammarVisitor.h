@@ -28,7 +28,6 @@ public:
   virtual antlrcpp::Any visitComponentDeclaration(IEMLParserGrammar::ComponentDeclarationContext *ctx) override;
   virtual antlrcpp::Any visitNodeDeclaration(IEMLParserGrammar::NodeDeclarationContext *context) override;
   virtual antlrcpp::Any visitParanodeDeclaration(IEMLParserGrammar::ParanodeDeclarationContext *context) override;
-  virtual antlrcpp::Any visitLinkDeclaration(IEMLParserGrammar::LinkDeclarationContext *context) override;
   virtual antlrcpp::Any visitWordDeclaration(IEMLParserGrammar::WordDeclarationContext *context) override;
   virtual antlrcpp::Any visitInflectionDeclaration(IEMLParserGrammar::InflectionDeclarationContext *context) override;
   virtual antlrcpp::Any visitAuxiliaryDeclaration(IEMLParserGrammar::AuxiliaryDeclarationContext *context) override;
@@ -36,7 +35,9 @@ public:
   virtual antlrcpp::Any visitLanguageDeclaration(IEMLParserGrammar::LanguageDeclarationContext *context) override;
   virtual antlrcpp::Any visitTableDeclaration(IEMLParserGrammar::TableDeclarationContext *context) override;
   virtual antlrcpp::Any visitRootParadigmDeclaration(IEMLParserGrammar::RootParadigmDeclarationContext *context) override;
-  
+  virtual antlrcpp::Any visitLinkDeclaration(IEMLParserGrammar::LinkDeclarationContext *context) override;
+  virtual antlrcpp::Any visitFunctionDeclaration(IEMLParserGrammar::FunctionDeclarationContext *context) override;
+
   /**
    * PHRASE
    */
@@ -105,6 +106,7 @@ public:
    *  LANGUAGE STRING
    */
   virtual antlrcpp::Any visitLanguage_string(IEMLParserGrammar::Language_stringContext *ctx) override;
+  virtual antlrcpp::Any visitTemplate_language_string(IEMLParserGrammar::Template_language_stringContext *context) override;
 
   /**
    *  IDENTIFIER
@@ -150,6 +152,22 @@ public:
   virtual antlrcpp::Any visitVariable(IEMLParserGrammar::VariableContext *context) override;
 
   /**
+   * WORD FUNCTION DOMAIN
+   */
+  virtual antlrcpp::Any visitWord_domain_list(IEMLParserGrammar::Word_domain_listContext *context) override;
+  virtual antlrcpp::Any visitWord_variable_domain(IEMLParserGrammar::Word_variable_domainContext *context) override;
+  
+  /**
+   * WORD FUNCTION CONDITION
+   */
+  virtual antlrcpp::Any visitWord_condition_function__word_condition(IEMLParserGrammar::Word_condition_function__word_conditionContext *context) override;
+  virtual antlrcpp::Any visitWord_condition_function__parenthesis(IEMLParserGrammar::Word_condition_function__parenthesisContext *context) override;
+  virtual antlrcpp::Any visitWord_condition_function__operator(IEMLParserGrammar::Word_condition_function__operatorContext *context) override;
+  virtual antlrcpp::Any visitWord_condition(IEMLParserGrammar::Word_conditionContext *context) override;
+  virtual antlrcpp::Any visitWord_accessor__word_accessor(IEMLParserGrammar::Word_accessor__word_accessorContext *context) override;
+  virtual antlrcpp::Any visitWord_accessor__variable(IEMLParserGrammar::Word_accessor__variableContext *context) override;
+
+  /**
    *  REFERENCE
    */
   virtual antlrcpp::Any visitReference(IEMLParserGrammar::ReferenceContext *ctx) override;
@@ -160,6 +178,12 @@ public:
   virtual antlrcpp::Any visitReference_value__identifier(IEMLParserGrammar::Reference_value__identifierContext *ctx) override;
   virtual antlrcpp::Any visitReference_value__STRING(IEMLParserGrammar::Reference_value__STRINGContext *ctx) override;
   virtual antlrcpp::Any visitReference_value__phrase(IEMLParserGrammar::Reference_value__phraseContext *ctx) override;
+
+  /**
+   * LINK ARGUMENTS
+   */
+  virtual antlrcpp::Any visitLink_arguments(IEMLParserGrammar::Link_argumentsContext *context) override;
+
 };
 
 }

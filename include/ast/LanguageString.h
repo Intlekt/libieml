@@ -13,7 +13,7 @@ namespace ieml::AST {
 
 class LanguageString: virtual public AST {
 public:
-    LanguageString(std::shared_ptr<CharRange>&& char_range, 
+    LanguageString(CharRange::Ptr&& char_range, 
                    std::shared_ptr<Identifier>&& language_type, 
                    std::shared_ptr<Identifier>&& identifier) : 
         AST(std::move(char_range)), 

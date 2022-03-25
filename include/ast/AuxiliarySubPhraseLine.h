@@ -56,7 +56,7 @@ private:
 
 class SimpleAuxiliarySubPhraseLine : public AuxiliarySubPhraseLine {
 public:
-    SimpleAuxiliarySubPhraseLine(std::shared_ptr<CharRange>&& char_range,
+    SimpleAuxiliarySubPhraseLine(CharRange::Ptr&& char_range,
                                  std::shared_ptr<IAuxiliary>&& auxiliary,
                                  std::shared_ptr<InflectedCategory>&& flexed_category) : 
         AST(std::move(char_range)),
@@ -82,7 +82,7 @@ class JunctionAuxiliarySubPhraseLine :
     public AuxiliarySubPhraseLine, 
     public IJunctionList<InflectedCategory, structure::InflectionJunctionIndexPathNode, structure::InflectionJunctionPathNode, structure::RoleType> {
 public:
-    JunctionAuxiliarySubPhraseLine(std::shared_ptr<CharRange>&& char_range,
+    JunctionAuxiliarySubPhraseLine(CharRange::Ptr&& char_range,
                                    std::shared_ptr<IAuxiliary>&& auxiliary,
                                    std::vector<std::shared_ptr<InflectedCategory>>&& flexed_categories,
                                    std::shared_ptr<IJunction>&& junction_type) :

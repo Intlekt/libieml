@@ -11,7 +11,7 @@ namespace ieml::AST {
 
 class Auxiliary: virtual public AST, public IAuxiliary {
 public:
-    Auxiliary(std::shared_ptr<CharRange>&& char_range,
+    Auxiliary(CharRange::Ptr&& char_range,
               std::shared_ptr<Identifier>&& identifier) : 
         AST(std::move(char_range)),
         identifier_(std::move(identifier)) {}
@@ -49,7 +49,7 @@ private:
 
 class WordAuxiliary: virtual public AST, public IAuxiliary {
 public:
-    WordAuxiliary(std::shared_ptr<CharRange>&& char_range,
+    WordAuxiliary(CharRange::Ptr&& char_range,
                   std::shared_ptr<Word>&& word) : 
         AST(std::move(char_range)),
         word_(std::move(word)) {}

@@ -12,7 +12,7 @@ namespace ieml::AST {
 
 class InflectionList: virtual public AST, public IInflectionList {
 public:
-    InflectionList(std::shared_ptr<CharRange>&& char_range,
+    InflectionList(CharRange::Ptr&& char_range,
                    std::vector<std::shared_ptr<Identifier>>&& inflections) : 
         AST(std::move(char_range)),
         inflections_(std::move(inflections)) {}
@@ -72,7 +72,7 @@ private:
 
 class WordInflectionList: virtual public AST, public IInflectionList {
 public:
-    WordInflectionList(std::shared_ptr<CharRange>&& char_range,
+    WordInflectionList(CharRange::Ptr&& char_range,
                        std::vector<std::shared_ptr<Word>>&& words) : 
         AST(std::move(char_range)),
         words_(std::move(words)) {}

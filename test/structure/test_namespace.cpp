@@ -26,7 +26,7 @@ TEST(ieml_structure_test_case, namespace) {
         p
     );
 
-    std::shared_ptr<PathTree> res = n.resolve(l);
+    PathTree::Ptr res = n.resolve(l);
 
     EXPECT_EQ(res, p);
 }
@@ -53,7 +53,7 @@ TEST(ieml_structure_test_case, namespace_multiple_traduction) {
         );
     }
 
-    std::shared_ptr<PathTree> res = n.resolve(l0);
+    PathTree::Ptr res = n.resolve(l0);
     EXPECT_EQ(res, p);
     res = n.resolve(l1);
     EXPECT_EQ(res, p);

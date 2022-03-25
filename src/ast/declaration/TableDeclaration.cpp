@@ -12,13 +12,13 @@ std::string TableDeclaration::to_string() const {
 
 void TableDeclaration::check_declaration(ieml::parser::ParserContextManager& ctx) const {
     // the paradigm at the top of the paradigm hierarchy
-    std::shared_ptr<ieml::structure::PathTree> root;
+    ieml::structure::PathTree::Ptr root;
 
     // the mapping between singular sequences of root or one of its descendent paradigms to other paradigmatic path trees.
     ieml::structure::TableDefinition::InvariantMapping invariant_to_paradigm;
     
     // the currently opened singular sequences leafs of the paradigm hierarchy
-    std::unordered_set<std::shared_ptr<ieml::structure::PathTree>> accepted_invariant;
+    std::unordered_set<ieml::structure::PathTree::Ptr> accepted_invariant;
     
     bool failed = false;
 

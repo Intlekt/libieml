@@ -14,7 +14,9 @@
 namespace ieml::AST {
 class Identifier : virtual public AST, public ICategory, public IReferenceValue {
 public:
-    Identifier(std::shared_ptr<CharRange>&& char_range, 
+    IEML_DECLARE_PTR_TYPE_AST(Identifier)
+
+    Identifier(CharRange::Ptr&& char_range, 
                std::string name) : 
         AST(std::move(char_range)),
         ICategory(),
@@ -44,7 +46,7 @@ public:
         return PartialPathTree(structure::PathTree::singular_sequences(phrase), {});
     };
 
-    std::optional<std::shared_ptr<ieml::structure::PathTree>> check_paradigm(parser::ParserContextManager& ctx) const {
+    std::optional<ieml::structure::PathTree::Ptr> check_paradigm(parser::ParserContextManager& ctx) const {
         auto phrase = ctx.getCategoryRegister().resolve_category(structure::LanguageString(ctx.getLanguage(), name_));
 
         if (phrase == nullptr) {

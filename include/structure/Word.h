@@ -10,14 +10,14 @@
 #include "structure/Element.h"
 
 #include "structure/script/Script.h"
-
+#include "ast/macro_utils.h"
 
 namespace ieml::structure {
 class Word : public Element {
 public:
-    Word(const Script* s): script_(s) {}
+    IEML_DECLARE_PTR_TYPE_STRUCTURE(Word)
 
-    typedef std::shared_ptr<Word> Ptr;
+    Word(const Script* s): script_(s) {}
 
     virtual ElementType getElementType() const override {return ElementType::WORD;};
 
@@ -56,6 +56,8 @@ private:
 
 class CategoryWord: public Word {
 public:
+    IEML_DECLARE_PTR_TYPE_STRUCTURE(CategoryWord)
+
     CategoryWord(const Script* s): Word(s) {}
     virtual WordType getWordType() const {return WordType::CATEGORY;};
 };

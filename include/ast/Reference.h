@@ -16,7 +16,7 @@ namespace AST {
 
 class Reference : virtual public AST {
 public:
-    Reference(std::shared_ptr<CharRange>&& char_range,
+    Reference(CharRange::Ptr&& char_range,
               std::shared_ptr<Variable>&& variable) : 
         AST(std::move(char_range)),
         variable_(std::move(variable)) {};

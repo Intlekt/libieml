@@ -15,14 +15,14 @@ public:
     ParadigmRegister(const ParadigmRegister&) = delete;
     ParadigmRegister& operator=(ParadigmRegister&) = delete;
 
-    void define_paradigm(PathTree::Register& reg, const std::shared_ptr<PathTree>& paradigm, const std::vector<ieml::structure::PathTree::Set> dimension_paths) {
+    void define_paradigm(PathTree::Register& reg, const PathTree::Ptr& paradigm, const std::vector<ieml::structure::PathTree::Set> dimension_paths) {
         auto invariant = reg.buildFromPaths(reg.invariant_paths(paradigm));
         
         paradigms_.insert({paradigm, buildFromPathTree(reg, paradigm, dimension_paths)});
         invariant_to_paradigm_.insert({invariant, paradigm});
     }
 
-    bool is_defined(const std::shared_ptr<PathTree>& paradigm) {
+    bool is_defined(const PathTree::Ptr& paradigm) {
         return paradigms_.find(paradigm) != paradigms_.end();
     }
 
@@ -30,9 +30,9 @@ public:
      * @brief Return the paradigm associated with the invariant if defined, else return nullptr.
      * 
      * @param node 
-     * @return std::shared_ptr<PathTree> 
+     * @return PathTree::Ptr 
      */
-    PathTree::Set resolve_paradigms(const std::shared_ptr<PathTree>& node) const {
+    PathTree::Set resolve_paradigms(const PathTree::Ptr& node) const {
         auto it = invariant_to_paradigm_.find(node);
         
         PathTree::Set res;
@@ -44,7 +44,7 @@ public:
         return res;
     }
 
-    const PathTree::TablePtr& get_table(const std::shared_ptr<PathTree>& paradigm) const {
+    const PathTree::TablePtr& get_table(const PathTree::Ptr& paradigm) const {
         return paradigms_.find(paradigm)->second;
     }
 

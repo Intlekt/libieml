@@ -5,7 +5,6 @@
 #include <utility>
 #include <boost/graph/graph_traits.hpp>
 #include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/dijkstra_shortest_paths.hpp>
 
 #include "structure/path/PathTree.h"
 
@@ -17,6 +16,8 @@ BETTER_ENUM(RelationType, char, COMPOSITION, INCLUSION, LINK)
 
 class RelationAttribute {
 public:
+    virtual ~RelationAttribute() = default;
+
     virtual RelationType getRelationType() const = 0;
 
     virtual nlohmann::json to_json() const = 0;

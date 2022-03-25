@@ -11,7 +11,7 @@
 namespace ieml::AST {
 class DimensionDefinition: public virtual AST {
 public:
-    DimensionDefinition(std::shared_ptr<CharRange>&& char_range,
+    DimensionDefinition(CharRange::Ptr&& char_range,
                         size_t dimension_index,
                         std::vector<std::shared_ptr<Path>>&& paths) :
         AST(std::move(char_range)),
@@ -22,7 +22,7 @@ public:
 
     size_t getDimensionIndex() const {return dimension_index_;};
 
-    ieml::structure::PathTree::Set check_dimension_definitions(ieml::parser::ParserContextManager& ctx, const std::shared_ptr<ieml::structure::PathTree>& paradigm) const;
+    ieml::structure::PathTree::Set check_dimension_definitions(ieml::parser::ParserContextManager& ctx, const ieml::structure::PathTree::Ptr& paradigm) const;
 
 private:
     const size_t dimension_index_;

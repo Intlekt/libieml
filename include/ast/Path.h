@@ -13,7 +13,7 @@ namespace ieml::AST {
 
 class Path : public virtual AST {
 public:
-    Path(std::shared_ptr<CharRange>&& char_range,
+    Path(CharRange::Ptr&& char_range,
          std::vector<std::shared_ptr<PathNode>>&& path_nodes) : 
         AST(std::move(char_range)),
         path_nodes_(std::move(path_nodes)) {}
@@ -27,7 +27,7 @@ public:
         return os.str();
     }
 
-    std::shared_ptr<ieml::structure::PathTree> check_path(parser::ParserContextManager& ctx) {
+    ieml::structure::PathTree::Ptr check_path(parser::ParserContextManager& ctx) {
         if (path_nodes_.size() == 0) return nullptr;
 
         auto begin = path_nodes_.begin();

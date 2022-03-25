@@ -9,7 +9,9 @@ namespace ieml::AST {
 
 class RoleType: public virtual AST {
 public:
-    RoleType(std::shared_ptr<CharRange>&& char_range) : AST(std::move(char_range)) {}
+    IEML_DECLARE_PTR_TYPE_AST(RoleType)
+
+    RoleType(CharRange::Ptr&& char_range) : AST(std::move(char_range)) {}
 
     virtual std::optional<structure::RoleType> check_role_type(parser::ParserContextManager& ctx) const = 0;
 };
@@ -17,7 +19,9 @@ public:
 
 class IntegerRoleType: public virtual AST, public RoleType {
 public:
-    IntegerRoleType(std::shared_ptr<CharRange>&& char_range,
+    IEML_DECLARE_PTR_TYPE_AST(IntegerRoleType)
+
+    IntegerRoleType(CharRange::Ptr&& char_range,
                     size_t role_type) : 
         AST(std::move(char_range)),
         RoleType(nullptr),
@@ -46,7 +50,9 @@ private:
 
 class IdentifierRoleType: public virtual AST, public RoleType {
 public:
-    IdentifierRoleType(std::shared_ptr<CharRange>&& char_range,
+    IEML_DECLARE_PTR_TYPE_AST(IdentifierRoleType)
+
+    IdentifierRoleType(CharRange::Ptr&& char_range,
                        const std::shared_ptr<Identifier>&& role_type) : 
         AST(std::move(char_range)),
         RoleType(nullptr),

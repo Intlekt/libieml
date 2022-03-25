@@ -13,10 +13,13 @@
 #include "structure/Constants.h"
 #include "structure/LanguageString.h"
 
+#include "ast/macro_utils.h"
+
 namespace ieml::structure {
 
 class Name : public std::unordered_multimap<LanguageType, LanguageString> {
 public:
+    IEML_DECLARE_PTR_TYPE_STRUCTURE(Name)
 
     typedef std::unordered_multiset<LanguageString> Traductions;
 
@@ -28,6 +31,23 @@ public:
     }
 private:
     static std::unordered_multimap<LanguageType, LanguageString> build_traductions(std::unordered_multiset<LanguageString> traductions);
+};
+
+class TemplateName : public std::unordered_multimap<LanguageType, TemplateLanguageString> {
+public:
+
+    typedef std::unordered_multiset<TemplateLanguageString> TemplateTraductions;
+
+    TemplateName(TemplateTraductions traductions) : 
+         std::unordered_multimap<LanguageType, TemplateLanguageString>(build_traductions(traductions)) {}
+    
+    bool operator==(const TemplateName& rhs) const {
+        return size() == rhs.size() && std::equal(begin(), end(), rhs.begin());
+    }
+
+    Name getNameForValuation(std::unordered_map<std::string, Name::Ptr>) const;
+private:
+    static std::unordered_multimap<LanguageType, TemplateLanguageString> build_traductions(std::unordered_multiset<TemplateLanguageString> traductions);
 };
 
 template<typename V>
@@ -48,7 +68,7 @@ public:
         }
         return nullptr;
     };
-    
+
 private:
     std::unordered_map<LanguageString, std::shared_ptr<V>> store_;
 };
