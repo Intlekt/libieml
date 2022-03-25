@@ -95,7 +95,8 @@ TEST(ieml_grammar_test_case, json_serialization) {
                 ASSERT_TRUE(v.contains("singular_sequences")) << "Missing singular_sequences field for script";
                 ASSERT_TRUE(v.contains("script_type")) << "Missing script_type field for script";
                 ASSERT_TRUE(v.contains("definition")) << "Missing definition field for script";
-                ASSERT_TRUE(v.contains("declaration_type")) << "Missing declaration_type field for word";
+                ASSERT_TRUE(v.contains("declaration_type")) << "Missing declaration_type field for script";
+                ASSERT_TRUE(v.contains("index")) << "Missing index field for script";
 
                 ASSERT_EQ(v["multiplicity"], v["singular_sequences"].size());
 

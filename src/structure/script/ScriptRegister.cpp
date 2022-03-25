@@ -5,8 +5,24 @@ using namespace ieml::structure;
 
 
 const MultiplicativeScript* ScriptRegister::get_or_create_multiplication(const MultiplicativeScript::Children& children) {
+    // MultiplicativeScript::Children norm;
+    // // replace right handside of E: with null script
+    // size_t i = 0;
+    // for (;i < 2; i++) {
+    //     if (children[2 - i]->is_nullscript() || children[2 - i] == primitives_['E']) 
+    //         norm[2 - i] = null_scripts_[0];
+    //     else {
+    //         norm[2 - i] = children[2 - i];
+    //         break;
+    //     }
+    // }
+    // for (;i < 3; i++) {
+    //     norm[2 - i] = children[2 - i];
+    // }
+
     auto it = multiplicative_scripts_.find(children);
     if (it == multiplicative_scripts_.end()) {
+
         const auto script = new MultiplicativeScript(*this, children);
         multiplicative_scripts_.insert({children, script});
         define_script(script);

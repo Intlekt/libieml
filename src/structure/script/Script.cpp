@@ -4,6 +4,8 @@
 #include "structure/script/NullScript.h"
 #include "structure/script/PrimitiveScript.h"
 
+#include <iostream>
+
 
 using namespace ieml::structure;
 
@@ -53,5 +55,7 @@ int Script::comp_element_(const Element & other) const {
     const auto diff_canonical = get_canonical().compare(o.get_canonical());
     if (diff_canonical != 0) return diff_canonical;
 
-    throw std::runtime_error("Cannot compare scripts " + to_string() + " with " + o.to_string());
+    // std::cout << "Cannot compare scripts " + to_string() + " with " + o.to_string() << std::endl;
+    return str_.size() < o.str_.size() ? -1 : 1;
+    // throw std::runtime_error("Cannot compare scripts " + to_string() + " with " + o.to_string());
 }
