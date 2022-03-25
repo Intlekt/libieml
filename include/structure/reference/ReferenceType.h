@@ -25,6 +25,8 @@ public:
         return std::dynamic_pointer_cast<Word>(element_);
     }
 
+    std::string hash() const {return element_->uid();}
+
 private:
     const ReferenceType type_;
     const Element::Ptr element_;

@@ -679,3 +679,28 @@
 0 #inference,
 4 *by #conditional determination
 ).
+
+
+@link 
+	args: ($A, $B)
+	en: test link
+	template-en: $A test linked $B
+	phraseWordInflection: ~verb
+	(
+		0 #combine <$A>,
+		1 #combine <$B>
+	) .
+
+@rootparadigm type:category "O:O:.".
+
+@node en: wowo (0 ~verb #"wo.").
+@node en: wawa (0 ~verb #"wa.").
+@node en: wuwu (0 ~verb #"wu.").
+@node en: wewe (0 ~verb #"we.").
+
+@function
+	type: word
+	link: test link
+	domain: ($A in "O:O:.", $B in "O:O:.")
+	condition: $A.substance == $B.attribute
+.

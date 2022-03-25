@@ -61,6 +61,13 @@ public:
         return res;
     }
 
+    std::string uid(std::vector<ReferenceValue> instance) const {
+        size_t res = 0;
+        hash_combine(res, path_tree_);
+        for (const auto& r: instance)
+            hash_combine(res, r.hash());
+        return "instance_" + std::to_string(res);
+    }
 private:
 
     ReferenceSchema(const Arguments& args) : 

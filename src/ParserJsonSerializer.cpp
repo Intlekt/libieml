@@ -113,6 +113,14 @@ nlohmann::json ieml::parser::categoryToJson(ieml::structure::PathTree::Ptr categ
         paradigms.push_back(paradigm->uid());
     }
 
+    nlohmann::json instances = nlohmann::json::array();
+    if (ctx.getReferenceSchemaRegister().is_defined(category)) {
+        const auto& r = ctx.getReferenceSchemaRegister().get_schema(category);
+        for (const auto& i : r.getInstances()) {
+            instances.push_back(r.uid(i));
+        }
+    }
+
     return {
         {"id", category->uid()},
         {"range", charRangeToJson(range)},
@@ -128,7 +136,8 @@ nlohmann::json ieml::parser::categoryToJson(ieml::structure::PathTree::Ptr categ
         {"invariant", invariant},
         {"paradigms", paradigms},
 
-        {"table", table}
+        {"table", table},
+        {"instances", instances}
     };
 }
 
@@ -240,12 +249,15 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
     nlohmann::json elements = nlohmann::json::object();
     nlohmann::json tables = nlohmann::json::object();
     nlohmann::json category_hierarchies = nlohmann::json::array();
+    nlohmann::json instances = nlohmann::json::object();
 
     if (context) {
         auto& cregister = context->getCategoryRegister();
         auto& wregister = context->getWordRegister();
         auto& sregister = context->getScriptRegister();
         auto& pregister = context->getParadigmRegister();
+        auto& lregister = context->getLinkRegister();
+        auto& rregister = context->getReferenceSchemaRegister();
 
         const CharRange default_range(parser.getDefaultFileId(), 0, 0, 0, 0);
 
@@ -284,6 +296,21 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
         for (const auto& it: pregister.get_tables()) {
             tables[it.second->uid()] = tableToJson(it.second);
         }
+
+        for (const auto& it: lregister.getLinks()) {
+            const auto r = rregister.get_schema(it.first);
+            for (const auto& i : r.getInstances()) {
+                const auto id = r.uid(i);
+                const auto valuation = r.valuation_from_reference_values(i);
+                const auto name = it.second->getNameForValuation(context->getPathTreeRegister(), cregister, wregister, valuation);
+
+                instances[id] = {
+                    {"id", id},
+                    {"link", it.first->uid()},
+                    {"translations", nameToJson(name)}
+                };
+            }
+        }
     }
 
     return {
@@ -292,6 +319,9 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser& parser) {
         {"language", language._to_string()},
         {"elements", elements},
         {"tables", tables},
+        
+        {"instances", instances},
+
         {"category_hierarchies", category_hierarchies}
     };
 }
