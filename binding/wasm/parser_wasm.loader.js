@@ -1,4 +1,6 @@
-export function loadWorker() {
+export {loadWorker, loadWorker as default};
+
+function loadWorker() {
     var worker = null;
     if (window && window.Worker) {
         worker = new Promise((resolve, reject) => {
