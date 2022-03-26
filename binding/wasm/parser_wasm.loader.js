@@ -27,27 +27,46 @@ function init_worker(w) {
         w.onmessage = (event) => {
             if (event['data']['action'] == 'loaded') 
                 resolve();
+            else if (event['data']['action'] == 'parse_project_result') 
+                resolve_parse(event['data']);
             else 
                 throw Error("Expected loaded event !");
         }
     })
 }
 
-function parse_project(w, file_ids, file_contents) {    
+
+var _id_to_parse_promise = {};
+
+function resolve_parse(event_data) {
+    const id = event_data['id'];
+    if (!(id in _id_to_parse_promise)) {
+        throw Error("Got an invalid parse id. No parse job queued with this id.")
+    }
+
+    const [resolve, reject] = _id_to_parse_promise[id];
+    
+    if (event_data['success'])
+        resolve(JSON.parse(event_data['data']));
+    else
+        reject();
+    
+    delete _id_to_parse_promise[id];
+}
+
+function parse_project(w, file_ids, file_contents) {
+    const id = "" + Math.floor(Math.random() * 1000000000);
+
     return new Promise((resolve, reject) => {
         w.postMessage({
             action: "parse_project",
             data: {
+                id,
                 file_ids, 
                 file_contents
             }
         });
-    
-        w.onmessage = (event) => {
-            if (event['data']['action'] == 'parse_project_result') 
-                resolve(JSON.parse(event['data']['data']));
-            else (event['data']['action'] == 'parse_project_error')
-                reject();
-        };
+
+        _id_to_parse_promise[id] = [resolve, reject];
     })
 }
