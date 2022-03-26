@@ -4,27 +4,59 @@
 
     <textarea id="area"></textarea>
     <div id="result"></div>
-
-    <script src='/build_wasm/binding/wasm/parser_wasm.js'></script>
+<!-- 
+    <script src='parser_wasm.js'></script>
     <script>
-        Module.onRuntimeInitialized = () => {
+
+        document.getElementById('area').addEventListener('change', (e)=>{
+            const file_ids = new Module.StringList();
+            file_ids.push_back("");
+
+            const file_contents = new Module.StringList();
+            file_contents.push_back(e.target.value);
+
+            var res;
+            try {
+                res = Module.parse_project(file_ids, file_contents);
+            } catch (e) {
+                console.error("Parser error !")
+                return;
+            }
+            document.getElementById('result').textContent = res;
+        })
+    </script> -->
+
+    <!-- <script type="module">
+        import Parser from "./parser_wasm.js";
+
+        Parser().then(() => {
             document.getElementById('area').addEventListener('change', (e)=>{
-                console.log(e.target.value);
-                const file_ids = new Module.StringList();
+                const file_ids = new parser.StringList();
                 file_ids.push_back("");
 
-                const file_contents = new Module.StringList();
+                const file_contents = new parser.StringList();
                 file_contents.push_back(e.target.value);
+
                 var res;
                 try {
-                    res = Module.parse_project(file_ids, file_contents);
+                    res = parser.parse_project(file_ids, file_contents);
                 } catch (e) {
                     console.error("Parser error !")
                     return;
                 }
                 document.getElementById('result').textContent = res;
             })
-          }
+        })
+    </script> -->
+    <script type="module">
+        import {loadWorker} from "./parser_wasm.loader.js"
+        loadWorker().then((worker) => {
+            document.getElementById('area').addEventListener('change', (e)=>{
+                worker.parse_project([""], [e.target.value]).then((res) => {
+                    document.getElementById('result').textContent = JSON.stringify(res);
+                })
+            })
+        });
     </script>
 </body>
 </html>
