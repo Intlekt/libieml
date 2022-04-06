@@ -3,8 +3,21 @@
 ## Installation
 
 ```
-git clone --recurse-submodules git@github.com:Intlekt/libieml.git
+git clone git@github.com:Intlekt/libieml.git
 ```
+
+If you plan to work on the parser in addition of the frontend or the api, we suggest you to look at repository [ieml-project](https://github.com/Intlekt/ieml-project) instead.
+
+## Build
+
+### Dockerized
+
+```bash
+docker-compose up --build --force-recreate build_python
+docker-compose up --build --force-recreate build_wasm
+```
+
+### Native
 
 ### Dependencies
 
@@ -94,7 +107,9 @@ emmake make
 
 ## Tests
 
-### In Docker
+### Dockerized
+
+Uses images built from [repo](https://github.com/Intlekt/dockers-config).
 
 ```bash
 docker-compose up --build --force-recreate test

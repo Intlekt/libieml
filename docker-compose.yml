@@ -4,3 +4,11 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile_run_test
+  build_python:
+    build:
+      context: .
+      dockerfile: ./Dockerfile_build_python
+  build_wasm:
+    build:
+      context: .
+      dockerfile: ./Dockerfile_build_wasm

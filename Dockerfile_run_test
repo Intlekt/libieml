@@ -1,9 +1,6 @@
 ARG NB_CORES=1
 FROM alpine:3.15
-
 WORKDIR /libieml
-RUN apk update && apk add --no-cache pkgconfig libuuid openjdk11 cmake git g++ make util-linux-dev
-
 
 COPY CMakeLists.txt /libieml/CMakeLists.txt
 COPY IEMLConfig.h.in /libieml/IEMLConfig.h.in
@@ -14,6 +11,7 @@ COPY src /libieml/src
 COPY test /libieml/test
 COPY assets /libieml/assets
 
+RUN apk update && apk add --no-cache pkgconfig libuuid openjdk11 cmake git g++ make util-linux-dev
 RUN mkdir build && \
     cd build && \
     cmake -DBUILD_TEST:BOOL=TRUE ..&& \

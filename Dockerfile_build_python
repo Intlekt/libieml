@@ -1,23 +1,18 @@
 ARG NB_CORES=1
-
-# Build a python wheel from the libieml folder
-# the wheel will be at /libieml/dist/pyieml-0.0.1-cp38-cp38-linux_x86_64.whl
-FROM python:3.8-slim AS build_libieml
-
+FROM ghcr.io/intlekt/intlket_python_builder:latest AS build_libieml
 WORKDIR /libieml
-
-RUN apt-get update && \
-    apt-get install -y git g++ cmake default-jre pkg-config uuid-dev 
 
 COPY CMakeLists.txt /libieml/CMakeLists.txt
 COPY IEMLConfig.h.in /libieml/IEMLConfig.h.in
-COPY setup.py /libieml/setup.py
-COPY binding/python /libieml/binding/python
 COPY cmake /libieml/cmake 
 COPY thirdparty /libieml/thirdparty 
 COPY include /libieml/include
 COPY src /libieml/src
+COPY binding/python /libieml/binding/python
+COPY setup.py /libieml/setup.py
 
+# Build a python wheel from the libieml folder
+# the wheel will be at /libieml/dist/pyieml-0.0.1-cp38-cp38-linux_x86_64.whl
 RUN CMAKE_BUILD_PARALLEL_LEVEL=$NB_CORES python setup.py bdist_wheel
 
 CMD ["ls", "/libieml/dist/pyieml-0.0.1-cp38-cp38-linux_x86_64.whl"]
