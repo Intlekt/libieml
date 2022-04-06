@@ -1,29 +1,59 @@
-name: Validate PR
+name: Validate
 
 on:
   push:
     branches:
       - master
-  
+
   pull_request:
     branches:
       - master
-      
+
   workflow_dispatch:
     branches:
-      - "**"
+      - '**'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  # build:
+  #   runs-on: ubuntu-latest
 
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         submodules: 'recursive'
+
+  #     - name: Build the Test Docker Image
+  #       run: docker build . --file Dockerfile_build_all_run_test --tag test_image
+
+  #     - name: Run the Test Docker Image
+  #       run: docker run test_image
+
+  build_python:
+    name: Build Binding Python
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: 'recursive'
+      - name: Build
+        run: docker-compose up --build build_python
 
-      - name: Build the Test Docker Image
-        run: docker build . --file Dockerfile_build_all_run_test --tag test_image
+  build_wasm:
+    name: Build Wasm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Build
+        run: docker-compose up --build build_wasm
 
-      - name: Run the Test Docker Image
-        run: docker run test_image
+  run_tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Tests
+        run: docker-compose up --build test

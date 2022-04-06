@@ -1,14 +1,7 @@
 ARG NB_CORES=1
-
-# build WASM target using emscripten 
-# the generated .js and .wasm are generated in /libieml/build/binding/wasm/parser_wasm.{js,wasm}
-FROM emscripten/emsdk:3.1.7 AS build_wasm
+FROM ghcr.io/intlekt/intlket_wasm_builder:latest AS build_wasm
 WORKDIR /libieml
 
-RUN apt-get update && \
-    apt-get install -y default-jre git
-
-# library basic
 COPY CMakeLists.txt /libieml/CMakeLists.txt
 COPY IEMLConfig.h.in /libieml/IEMLConfig.h.in
 COPY cmake /libieml/cmake 
@@ -20,6 +13,8 @@ COPY binding/wasm /libieml/binding/wasm
 # need to add this pkg-config file because emscripten do not provide it and antlr needs it
 COPY binding/wasm/uuid.pc $EMSDK/upstream/emscripten/cache/sysroot/lib/pkgconfig/
 
+# build WASM target using emscripten 
+# the generated .js and .wasm are generated in /libieml/build/binding/wasm/parser_wasm.{js,wasm}
 RUN mkdir build && \
     cd build && \
     emcmake cmake -DBUILD_WASM:bool=True .. &&\
