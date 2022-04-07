@@ -12,3 +12,5 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile_build_wasm
+    volumes:
+      - ./build:/libieml/build

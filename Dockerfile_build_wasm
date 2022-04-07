@@ -8,16 +8,12 @@ COPY cmake /libieml/cmake
 COPY thirdparty /libieml/thirdparty 
 COPY include /libieml/include
 COPY src /libieml/src
+COPY build_wasm.sh /libieml/build_wasm.sh
 # wasm related
 COPY binding/wasm /libieml/binding/wasm
 # need to add this pkg-config file because emscripten do not provide it and antlr needs it
 COPY binding/wasm/uuid.pc $EMSDK/upstream/emscripten/cache/sysroot/lib/pkgconfig/
 
-# build WASM target using emscripten 
-# the generated .js and .wasm are generated in /libieml/build/binding/wasm/parser_wasm.{js,wasm}
-RUN mkdir build && \
-    cd build && \
-    emcmake cmake -DBUILD_WASM:bool=True .. &&\
-    emmake make -j $NB_CORES
+VOLUME ["/libieml/build"]
 
-CMD ["ls", "/libieml/build/binding/wasm/"]
+CMD ["bash", "./build_wasm.sh"]
