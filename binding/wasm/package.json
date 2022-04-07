@@ -1,0 +1,14 @@
+{
+  "name": "@intlekt/parser-wasm",
+  "version": "2.37.3",
+  "description": "",
+  "main": "parser_wasm.loader.js",
+  "scripts": {
+    "build": "node build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "Thibault Friedrich",
+  "private": false,
+  "license": "ISC"
+}

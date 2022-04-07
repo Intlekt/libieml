@@ -1,10 +1,9 @@
 <html>
-<head></head>
-<body style="display: grid;grid-template-columns: 50% auto;">
-
+  <head></head>
+  <body style="display: grid; grid-template-columns: 50% auto">
     <textarea id="area"></textarea>
     <div id="result"></div>
-<!-- 
+    <!-- 
     <script src='parser_wasm.js'></script>
     <script>
 
@@ -49,14 +48,14 @@
         })
     </script> -->
     <script type="module">
-        import {loadWorker} from "./parser_wasm.loader.js"
-        loadWorker().then((worker) => {
-            document.getElementById('area').addEventListener('change', (e)=>{
-                worker.parse_project([""], [e.target.value]).then((res) => {
-                    document.getElementById('result').textContent = JSON.stringify(res);
-                })
-            })
-        });
+      import { loadWorker } from './parser_wasm.loader.js'
+      loadWorker().then(worker => {
+        document.getElementById('area').addEventListener('change', e => {
+          worker.parse_project([''], [e.target.value]).then(res => {
+            document.getElementById('result').textContent = JSON.stringify(res)
+          })
+        })
+      })
     </script>
-</body>
+  </body>
 </html>
