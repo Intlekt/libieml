@@ -1,5 +1,5 @@
 ARG NB_CORES=1
-FROM alpine:3.15
+FROM ghcr.io/intlekt/intlekt_test_builder:latest AS build_test
 WORKDIR /libieml
 
 COPY CMakeLists.txt /libieml/CMakeLists.txt
@@ -11,7 +11,6 @@ COPY src /libieml/src
 COPY test /libieml/test
 COPY assets /libieml/assets
 
-RUN apk update && apk add --no-cache pkgconfig libuuid openjdk11 cmake git g++ make util-linux-dev
 RUN mkdir build && \
     cd build && \
     cmake -DBUILD_TEST:BOOL=TRUE ..&& \

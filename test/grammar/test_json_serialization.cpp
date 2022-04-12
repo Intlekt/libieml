@@ -314,3 +314,38 @@ TEST(ieml_grammar_test_case, unique_id_word)
 
     EXPECT_EQ(h0, h1);
 }
+
+TEST(ieml_grammar_test_case, has_phrase_words)
+{
+    ieml::parser::IEMLParser parser(R"(@rootparadigm type:category "O:O:.". @node en:test (0 #"we."). @node en:test2 (0 #"we.", 1 #"wa.").)");
+    try
+    {
+        parser.parse();
+        auto res = ieml::parser::parserToJson(parser);
+
+        // check that all the id that are defined in the json are present
+        for (nlohmann::json::iterator it = res["elements"].begin(); it != res["elements"].end(); ++it)
+        {
+            auto v = it.value();
+
+            // if (v["type"] == "SCRIPT" && v["str"] == "we.")
+            // {
+            //     ASSERT_TRUE(v.contains("phrase_words"));
+            //     // EXPECT_EQ(v["phrase_words"][0], );
+            // }
+
+            if (v["type"] == "WORD")
+            {
+                ASSERT_TRUE(v.contains("phrase_words"));
+                // ASSERT_TRUE(v.contains("phrase_words"));
+
+                EXPECT_NE(v["phrase_words"][0], nullptr);
+                // EXPECT_TRUE(v["phrase_words"][0].contains('category_'));
+            }
+        }
+    }
+    catch (std::exception &e)
+    {
+        EXPECT_TRUE(false) << e.what();
+    }
+}
