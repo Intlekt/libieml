@@ -1,5 +1,5 @@
 ARG NB_CORES=1
-FROM ghcr.io/intlekt/intlket_wasm_builder:latest AS build_wasm
+FROM ghcr.io/intlekt/intlekt_wasm_builder:latest AS build_wasm
 WORKDIR /libieml
 
 COPY CMakeLists.txt /libieml/CMakeLists.txt
