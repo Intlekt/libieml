@@ -1,5 +1,5 @@
 ARG NB_CORES=1
-FROM ghcr.io/intlekt/intlket_python_builder:latest AS build_libieml
+FROM ghcr.io/intlekt/intlekt_python_builder:latest AS build_libieml
 WORKDIR /libieml
 
 COPY CMakeLists.txt /libieml/CMakeLists.txt
