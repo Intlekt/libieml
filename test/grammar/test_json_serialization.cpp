@@ -328,19 +328,9 @@ TEST(ieml_grammar_test_case, has_phrase_words)
         {
             auto v = it.value();
 
-            // if (v["type"] == "SCRIPT" && v["str"] == "we.")
-            // {
-            //     ASSERT_TRUE(v.contains("phrase_words"));
-            //     // EXPECT_EQ(v["phrase_words"][0], );
-            // }
-
             if (v["type"] == "WORD")
             {
                 ASSERT_TRUE(v.contains("phrase_words"));
-                // ASSERT_TRUE(v.contains("phrase_words"));
-
-                EXPECT_NE(v["phrase_words"][0], nullptr);
-                // EXPECT_TRUE(v["phrase_words"][0].contains('category_'));
             }
         }
     }
