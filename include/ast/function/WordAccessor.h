@@ -35,7 +35,11 @@ public:
     virtual std::optional<WordAccessorArgs> check_accessor(
         ieml::parser::ParserContextManager& ctx, 
         const ieml::structure::Link::Ptr& link,
-        const ieml::structure::WordDomain& domain) const override;
+        const ieml::structure::WordDomain& domain) const override {
+            const auto res = word_->check_script(ctx);
+            if (!res) return {};
+
+        };
 
     private:
     const Word::Ptr word_;
