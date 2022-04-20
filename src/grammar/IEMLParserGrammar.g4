@@ -81,8 +81,12 @@ word_condition_function : PARENTHESIS_START word_condition_function_=word_condit
 
 word_condition : left_accessor=word_accessor EQUAL right_accessor=word_accessor;
 
-word_accessor : word_accessor_=word_accessor DOT accessor=IDENTIFIER        # word_accessor__word_accessor
-              | variable_=variable                                          # word_accessor__variable
+word_accessor : accessor_=word_accessor_variable # word_accessor__variable
+							| word_literal=word # word_accessor__literal
+							;
+
+word_accessor_variable : word_accessor_=word_accessor_variable DOT accessor=IDENTIFIER        # word_accessor_variable__word_accessor
+              | variable_=variable                                          # word_accessor_variable__variable
               ;
 
 
