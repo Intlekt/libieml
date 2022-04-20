@@ -23,6 +23,25 @@ public:
         const ieml::structure::WordDomain& domain) const = 0;
 };
 
+class WordLiteralAccessor : public virtual AST, public virtual WordAccessor {
+public:
+    IEML_DECLARE_PTR_TYPE_AST(WordLiteralAccessor)
+
+    WordLiteralAccessor(CharRange::Ptr&& char_range, Word::Ptr&& word):
+        AST(std::move(char_range)), WordAccessor(nullptr), word_(std::move(word)) {}
+
+    virtual std::string to_string() const override {return word_->to_string();}
+
+    virtual std::optional<WordAccessorArgs> check_accessor(
+        ieml::parser::ParserContextManager& ctx, 
+        const ieml::structure::Link::Ptr& link,
+        const ieml::structure::WordDomain& domain) const override;
+
+    private:
+    const Word::Ptr word_;
+};
+
+
 
 class MultiplicativeWordAccessor : public virtual AST, public WordAccessor {
 public:

@@ -164,8 +164,11 @@ public:
   virtual antlrcpp::Any visitWord_condition_function__parenthesis(IEMLParserGrammar::Word_condition_function__parenthesisContext *context) override;
   virtual antlrcpp::Any visitWord_condition_function__operator(IEMLParserGrammar::Word_condition_function__operatorContext *context) override;
   virtual antlrcpp::Any visitWord_condition(IEMLParserGrammar::Word_conditionContext *context) override;
-  virtual antlrcpp::Any visitWord_accessor__word_accessor(IEMLParserGrammar::Word_accessor__word_accessorContext *context) override;
+  
   virtual antlrcpp::Any visitWord_accessor__variable(IEMLParserGrammar::Word_accessor__variableContext *context) override;
+  virtual antlrcpp::Any visitWord_accessor__literal(IEMLParserGrammar::Word_accessor__literalContext *context) override;
+  virtual antlrcpp::Any visitWord_accessor_variable__word_accessor(IEMLParserGrammar::Word_accessor_variable__word_accessorContext *context) override;
+  virtual antlrcpp::Any visitWord_accessor_variable__variable(IEMLParserGrammar::Word_accessor_variable__variableContext *context) override;
 
   /**
    *  REFERENCE
