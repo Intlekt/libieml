@@ -865,7 +865,23 @@ antlrcpp::Any IEMLGrammarVisitor::visitWord_condition(IEMLParserGrammar::Word_co
                         std::move(right_accessor))
 }
 
-antlrcpp::Any IEMLGrammarVisitor::visitWord_accessor__word_accessor(IEMLParserGrammar::Word_accessor__word_accessorContext *ctx) {
+antlrcpp::Any IEMLGrammarVisitor::visitWord_accessor__variable(IEMLParserGrammar::Word_accessor__variableContext *ctx) {
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, accessor_, "Invalid variable for word accessor definition.", true);
+  CAST_OR_RETURN_IF_NULL(ctx, WordAccessor, accessor_, WordAccessor);
+
+  RETURN_VISITOR_RESULT_MOVE(WordAccessor, std::move(accessor_));
+}
+ 
+antlrcpp::Any IEMLGrammarVisitor::visitWord_accessor__literal(IEMLParserGrammar::Word_accessor__literalContext *ctx) {
+  CHECK_SYNTAX_ERROR(error_listener_, ctx, word_literal, "Invalid literal for word accessor definition.", true);
+  CAST_OR_RETURN_IF_NULL(ctx, Word, word_literal, WordAccessor);
+
+  RETURN_VISITOR_RESULT(WordAccessor,
+                        WordLiteralAccessor,
+                        std::move(word_literal));  
+}
+
+antlrcpp::Any IEMLGrammarVisitor::visitWord_accessor_variable__word_accessor(IEMLParserGrammar::Word_accessor_variable__word_accessorContext *ctx) {
   CHECK_SYNTAX_ERROR(error_listener_, ctx, word_accessor_, "Invalid source operand in word accessor definition.", true);
 
   if (!ctx->accessor) {
@@ -887,7 +903,7 @@ antlrcpp::Any IEMLGrammarVisitor::visitWord_accessor__word_accessor(IEMLParserGr
                         *accessor);
 
 }
-antlrcpp::Any IEMLGrammarVisitor::visitWord_accessor__variable(IEMLParserGrammar::Word_accessor__variableContext *ctx) {
+antlrcpp::Any IEMLGrammarVisitor::visitWord_accessor_variable__variable(IEMLParserGrammar::Word_accessor_variable__variableContext *ctx) {
   CHECK_SYNTAX_ERROR(error_listener_, ctx, variable_, "Invalid variable in word accessor definition.", true);
   CAST_OR_RETURN_IF_NULL(ctx, Variable, variable_, WordAccessor);
 
