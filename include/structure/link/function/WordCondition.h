@@ -63,15 +63,32 @@ private:
 
 class WordAccessor {
 public:
-    WordAccessor(const std::string& variable_name,
-                 size_t source_layer,
-                 const std::vector<AST::WordAccessorType>& accessors) :
+
+    enum Type {VARIABLE, LITERAL};
+
+    IEML_DECLARE_PTR_TYPE_STRUCTURE(WordAccessor)
+
+    virtual Script::Ptr access(ScriptRegister& sreg, const WordCondition::VariableValuation& valuation) const = 0;
+
+    virtual Type getType() const = 0;
+};
+
+class VariableWordAccessor : public WordAccessor {
+public:
+    IEML_DECLARE_PTR_TYPE_STRUCTURE(VariableWordAccessor)
+
+
+    VariableWordAccessor(const std::string& variable_name,
+                         size_t source_layer,
+                         const std::vector<AST::WordAccessorType>& accessors) :
         variable_name_(variable_name),
         accessors_(accessors),
         source_layer_(source_layer),
         target_layer_(source_layer - accessors_.size()) {}
 
-    Script::Ptr access(ScriptRegister& sreg, const WordCondition::VariableValuation& valuation) const {
+    virtual Type getType() const override {return Type::VARIABLE;}
+
+    virtual Script::Ptr access(ScriptRegister& sreg, const WordCondition::VariableValuation& valuation) const override {
         Script::Ptr s = valuation.find(variable_name_)->second->getScript();
     
         if (s->get_type() == +ScriptType::PRIMITIVE) {
@@ -116,36 +133,56 @@ public:
         return variable_name_;
     };
 
-
 private:
     const std::string variable_name_;
     const std::vector<AST::WordAccessorType> accessors_;
 
     const size_t source_layer_;
     const size_t target_layer_;
+
 };
 
+class LiteralWordAccessor : public WordAccessor {
+public:
+    LiteralWordAccessor(Script::Ptr script) : script_(script) {}
 
+    virtual Type getType() const override {return Type::LITERAL;}
+
+    virtual Script::Ptr access(ScriptRegister&, const WordCondition::VariableValuation&) const override {
+        return script_;
+    }
+
+private:
+    const Script::Ptr script_;
+};
 
 class EqualWordCondition : public WordCondition {
 public:
-    EqualWordCondition(WordAccessor&& left, WordAccessor&& right) :
+    EqualWordCondition(WordAccessor::Ptr&& left, WordAccessor::Ptr&& right) :
         left_(std::move(left)),
         right_(std::move(right)) {}
 
     virtual bool evaluate(ScriptRegister& sreg, const VariableValuation& valuation) const override {
-        const auto v_l = left_.access(sreg, valuation);
-        const auto v_r = right_.access(sreg, valuation);
+        const auto v_l = left_->access(sreg, valuation);
+        const auto v_r = right_->access(sreg, valuation);
         return v_l == v_r;
     };
 
     virtual std::unordered_set<std::string> getVariableNameSet() const override {
-        return {left_.getVariableName(), right_.getVariableName()};
+        std::unordered_set<std::string> res;
+        if (left_->getType() == WordAccessor::Type::VARIABLE) {
+            res.insert(std::dynamic_pointer_cast<VariableWordAccessor>(left_)->getVariableName());
+        }
+        if (right_->getType() == WordAccessor::Type::VARIABLE) {
+            res.insert(std::dynamic_pointer_cast<VariableWordAccessor>(right_)->getVariableName());
+        }
+
+        return res;
     };
 
 private:
-    const WordAccessor left_;
-    const WordAccessor right_;
+    const WordAccessor::Ptr left_;
+    const WordAccessor::Ptr right_;
 
 };
 

@@ -139,6 +139,7 @@ TEST(ieml_grammar_test_case, link_declaration_no_inflection)                    
 TEST(ieml_grammar_test_case, link_declaration_repeated_variable)                     TEST_PARSE_NO_ERRORS(LINK_DECLARATION_PREFIX R"(@link args:($A, $B) en:test template-en: $A test $B $B (0 #"wa."<$A>, 1 #"we."<$B>, 2 #"we."<$B>).)");
 
 TEST(ieml_grammar_test_case, word_function)                                          TEST_PARSE_NO_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $B.attribute and $A.attribute == $B.substance.)");
+TEST(ieml_grammar_test_case, word_function_literal)                                  TEST_PARSE_NO_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $B.attribute and $A.attribute == "S:".)");
 
 // ERRORS
 TEST(ieml_grammar_test_case, no_root)                                                TEST_PARSE_ERRORS(R"(@rootparadigm type:inflection "O:M:.".@rootparadigm type:category "O:O:.". @inflection en:noun class:NOUN "a.". @component en:test (1 ~noun #"wa.") .)");
@@ -212,6 +213,7 @@ TEST(ieml_grammar_test_case, invalid_word_function_too_many_condition)          
 TEST(ieml_grammar_test_case, invalid_word_function_invalid_condition)                TEST_PARSE_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance and $B.substance.)");
 TEST(ieml_grammar_test_case, invalid_word_function_invalid_missing_args)             TEST_PARSE_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $A.substance.)");
 TEST(ieml_grammar_test_case, invalid_word_function_invalid_extra_args)               TEST_PARSE_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $B.attribute and $A.attribute == $C.substance.)");
+TEST(ieml_grammar_test_case, invalid_word_function_invalid_literal)                  TEST_PARSE_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $B.attribute and $A.attribute == "test".)");
 
 
 // WARNINGS

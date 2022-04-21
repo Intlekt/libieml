@@ -15,7 +15,29 @@ public:
     WordAccessor(CharRange::Ptr&& char_range):
         AST(std::move(char_range)) {}
 
-    typedef std::pair<std::string, std::vector<WordAccessorType>> WordAccessorArgs;
+
+    struct WordAccessorArgs {
+        enum Type {VARIABLE = 0, LITERAL = 1};
+
+        WordAccessorArgs(structure::Script::Ptr script) : 
+            type_(Type::LITERAL), 
+            name_(),
+            accessors_(),
+            script_(script) {}
+        
+        WordAccessorArgs(const std::string& name, 
+                         const std::vector<WordAccessorType>& accessors) : 
+            type_(Type::VARIABLE), 
+            name_(name),
+            accessors_(accessors),
+            script_(nullptr) {}
+
+
+        const Type type_;
+        const std::string name_;
+        const std::vector<WordAccessorType> accessors_;
+        const structure::Script::Ptr script_;
+    };
 
     virtual std::optional<WordAccessorArgs> check_accessor(
         ieml::parser::ParserContextManager& ctx, 
@@ -34,11 +56,11 @@ public:
 
     virtual std::optional<WordAccessorArgs> check_accessor(
         ieml::parser::ParserContextManager& ctx, 
-        const ieml::structure::Link::Ptr& link,
-        const ieml::structure::WordDomain& domain) const override {
+        const ieml::structure::Link::Ptr&,
+        const ieml::structure::WordDomain&) const override {
             const auto res = word_->check_script(ctx);
             if (!res) return {};
-
+            return WordAccessorArgs(res);
         };
 
     private:
@@ -69,9 +91,10 @@ public:
         const auto res = accessor_->check_accessor(ctx, link, domain);
         if (!res) return {};
 
-        auto res_pos = res->second;
+        auto res_pos = res->accessors_;
         res_pos.push_back(position_);
-        return std::pair{res->first, res_pos};
+        
+        return WordAccessorArgs(res->name_, res_pos);
     }
 
 private:
@@ -98,7 +121,8 @@ public:
         const ieml::structure::Link::Ptr&,
         const ieml::structure::WordDomain&) const override {
 
-        return std::pair{variable_->getName(), std::vector<WordAccessorType>{}};
+        return WordAccessorArgs(variable_->getName(), std::vector<WordAccessorType>{});
+
     }
 
 private:

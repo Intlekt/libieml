@@ -73,3 +73,53 @@ TEST(ieml_structure_test_case, link_word_function_create_instance) {
         ASSERT_NE(name.begin()->second.value(),  "");
     }
 }
+
+
+TEST(ieml_structure_test_case, link_word_function_create_instance_with_literal) {
+    PARSE_NO_ERRORS(R"(
+        @rootparadigm type:category "O:O:." .
+
+        @rootparadigm type:inflection "M:".
+        @inflection en: noun class:VERB "S:".
+
+        @node en: wa (0 ~noun #"wa.").
+        @node en: we (0 ~noun #"we.").
+        @node en: wo (0 ~noun #"wo.").
+        @node en: wu (0 ~noun #"wu.").
+
+        @link
+            args: ($A)
+            en: link
+            template-en: $A linked
+            phraseWordInflection: ~noun
+            (
+                0 #"wa." <$A>
+            )
+        .
+
+        @function 
+            type:word 
+            link:link 
+            domain:($A in "O:O:.") 
+            condition: $A.attribute == "U:"
+        .
+    )");
+
+    const auto& ctx = parser.getContext();
+
+    auto& refreg = ctx->getReferenceSchemaRegister();
+    auto& linkreg = ctx->getLinkRegister();
+    auto& creg = ctx->getCategoryRegister();
+    auto& wreg = ctx->getWordRegister();
+    auto& preg = ctx->getPathTreeRegister();
+
+    const auto pt = creg.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "link"));
+    ASSERT_NE(pt, nullptr);
+
+    ASSERT_TRUE(refreg.is_defined(pt));
+    const auto& schema = refreg.get_schema(pt);
+
+    const auto& refs = schema.getInstances();
+    ASSERT_EQ(refs.size(), 2);
+
+}

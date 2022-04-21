@@ -26,43 +26,77 @@ public:
         const auto right = right_->check_accessor(ctx, link, domain);
         if (!left || !right) return {};
 
-        const auto l_dom = domain.find(left->first);
-        if (l_dom == domain.end()) {
-            ctx.getErrorManager().visitorError(
-                left_->getCharRange(),
-                "Variable not defined : " + left->first + "."
+        size_t l_layer_comp = 0;
+        size_t r_layer_comp = 0;
+
+        ieml::structure::WordAccessor::Ptr l_accessor;
+        ieml::structure::WordAccessor::Ptr r_accessor;
+
+        if (left->type_ == WordAccessor::WordAccessorArgs::Type::LITERAL) {
+            l_layer_comp = left->script_->get_layer();
+            l_accessor = std::make_shared<ieml::structure::LiteralWordAccessor>(
+                left->script_
             );
-            return {};
+        } else {
+            const auto l_dom = domain.find(left->name_);
+            if (l_dom == domain.end()) {
+                ctx.getErrorManager().visitorError(
+                    left_->getCharRange(),
+                    "Variable not defined : " + left->name_ + "."
+                );
+                return {};
+            }
+
+            const auto l_layer = l_dom->second->get_layer();
+            if (l_layer < left->accessors_.size()) {
+                ctx.getErrorManager().visitorError(
+                    left_->getCharRange(),
+                    "Left operand has a negative layer."
+                );
+                return {};
+            }
+
+            l_layer_comp = l_layer - left->accessors_.size();
+
+            l_accessor = std::make_shared<ieml::structure::VariableWordAccessor>(
+                left->name_,
+                l_layer,
+                left->accessors_
+            );
         }
 
-        const auto l_layer = l_dom->second->get_layer();
-        if (l_layer < left->second.size()) {
-            ctx.getErrorManager().visitorError(
-                left_->getCharRange(),
-                "Left operand has a negative layer."
+        if (right->type_ == WordAccessor::WordAccessorArgs::Type::LITERAL) {
+            r_layer_comp = right->script_->get_layer();
+            r_accessor = std::make_shared<ieml::structure::LiteralWordAccessor>(
+                right->script_
             );
-            return {};
-        }
-        const auto l_layer_comp = l_layer - left->second.size();
+        } else {
+            const auto r_dom = domain.find(right->name_);
+            if (r_dom == domain.end()) {
+                ctx.getErrorManager().visitorError(
+                    right_->getCharRange(),
+                    "Variable not defined : " + right->name_ + "."
+                );
+                return {};
+            }
 
-        const auto r_dom = domain.find(right->first);
-        if (r_dom == domain.end()) {
-            ctx.getErrorManager().visitorError(
-                right_->getCharRange(),
-                "Variable not defined : " + right->first + "."
+            const auto r_layer = r_dom->second->get_layer();
+            if (r_layer < right->accessors_.size()) {
+                ctx.getErrorManager().visitorError(
+                    right_->getCharRange(),
+                    "Right operand has a negative layer."
+                );
+                return {};
+            }
+            r_layer_comp = r_layer - right->accessors_.size();
+            
+            r_accessor = std::make_shared<ieml::structure::VariableWordAccessor>(
+                right->name_,
+                r_layer,
+                right->accessors_
             );
-            return {};
-        }
 
-        const auto r_layer = r_dom->second->get_layer();
-        if (r_layer < right->second.size()) {
-            ctx.getErrorManager().visitorError(
-                right_->getCharRange(),
-                "Right operand has a negative layer."
-            );
-            return {};
         }
-        const auto r_layer_comp = r_layer - right->second.size();
 
         if (l_layer_comp != r_layer_comp) {
             ctx.getErrorManager().visitorError(
@@ -73,16 +107,8 @@ public:
         }
 
         return std::make_shared<ieml::structure::EqualWordCondition>(
-            ieml::structure::WordAccessor(
-                left->first,
-                l_layer,
-                left->second
-            ),
-            ieml::structure::WordAccessor(
-                right->first,
-                r_layer,
-                right->second
-            )
+            std::move(l_accessor),
+            std::move(r_accessor)
         );
     }
 
