@@ -1,3 +1,5 @@
+// NOT USED, JUST FOR EXAMPLE
+
 self.addEventListener('message', event => {
   const action = event['data']['action']
 
