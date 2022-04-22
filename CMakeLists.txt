@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-project(IEML VERSION 0.1)
+project(IEML VERSION 0.2.0)
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 LIST( APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
+
+# transfer version to config.h
+configure_file(${CMAKE_SOURCE_DIR}/cmake/config.h.cmake ${CMAKE_SOURCE_DIR}/include/config.h)
+
 
 # set(BUILD_TEST True)
 # set(BUILD_CHECK_ERRORS True)

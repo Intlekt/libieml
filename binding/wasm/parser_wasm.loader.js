@@ -1,3 +1,5 @@
+// NOT USED, JUST FOR EXAMPLE
+
 export function loadWorker() {
   var worker = null
   if (window && window.Worker) {
