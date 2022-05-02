@@ -4,6 +4,9 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile_run_test
+    volumes:
+      # - ./build_test:/libieml/build
+      - ./build_cache:/libieml/build_cache
   build_python:
     build:
       context: .
@@ -13,4 +16,5 @@ services:
       context: .
       dockerfile: ./Dockerfile_build_wasm
     volumes:
-      - ./build:/libieml/build
+      - ./build_wasm:/libieml/build
+      - ./build_cache:/libieml/build_cache
