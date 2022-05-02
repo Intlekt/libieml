@@ -3,3 +3,5 @@ build
 dist
 pyieml.egg-info
 venv
+build_cache
+build_wasm

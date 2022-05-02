@@ -11,9 +11,7 @@ COPY src /libieml/src
 COPY test /libieml/test
 COPY assets /libieml/assets
 
-RUN mkdir build && \
+CMD mkdir -p build && \
     cd build && \
     cmake -DBUILD_TEST:BOOL=TRUE ..&& \
-    cmake --build . -j $NB_CORES
-
-CMD ["/libieml/build/test/libieml_test"]
+    cmake --build . -j $NB_CORES && /libieml/build/test/libieml_test

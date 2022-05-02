@@ -9,5 +9,7 @@ pyieml.egg-info
 venv
 assets/erroneous_files
 build_cache
+build_test
 binding/wasm/parser_wasm.js
 binding/wasm/parser_wasm.wasm
+include/config.h
