@@ -133,7 +133,8 @@ nlohmann::json ieml::parser::categoryToJson(ieml::structure::PathTree::Ptr categ
         }
     }
 
-    std::string wordId = category->get_phrase_word()->uid();
+    ieml::structure::Word::Ptr word = category->get_phrase_word();
+    std::string wordId = word != nullptr ? word->uid() : "";
 
     return {
         {"id", category->uid()},

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 # set the project name
 project(IEML VERSION 0.3.0)
-# set(MSVC true)
+
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -43,7 +43,6 @@ if (DEFINED BUILD_TEST OR DEFINED BUILD_PYBIND11 OR DEFINED BUILD_WASM)
 
     if (DEFINED BUILD_TEST)
         message("Building libieml ctest")
-        # set(CMAKE_CXX_FLAGS "-mmacosx-version-min=12.0")
         add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/googletest-release-1.11.0)
         # test section
         add_subdirectory(test)
