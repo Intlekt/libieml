@@ -133,6 +133,9 @@ nlohmann::json ieml::parser::categoryToJson(ieml::structure::PathTree::Ptr categ
         }
     }
 
+    ieml::structure::Word::Ptr word = category->get_phrase_word();
+    std::string wordId = word != nullptr ? word->uid() : "";
+
     return {
         {"id", category->uid()},
         {"range", charRangeToJson(range)},
@@ -149,7 +152,8 @@ nlohmann::json ieml::parser::categoryToJson(ieml::structure::PathTree::Ptr categ
         {"paradigms", paradigms},
 
         {"table", table},
-        {"instances", instances}};
+        {"instances", instances},
+        {"wordId", wordId}};
 }
 
 template <class WordType>
