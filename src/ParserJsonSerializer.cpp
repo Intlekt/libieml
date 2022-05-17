@@ -241,6 +241,35 @@ nlohmann::json _scriptToJson(ieml::structure::Script::Ptr script,
     return res;
 }
 
+nlohmann::json _instanceToJson(ieml::structure::Link::Ptr link, ieml::structure::PathTree::Ptr element, std::vector<ieml::structure::ReferenceValue> instance,
+ieml::structure:: ReferenceSchema schema,
+                               ieml::parser::ParserContextManager &context)
+{
+
+    auto &cregister = context.getCategoryRegister();
+    auto &wregister = context.getWordRegister();
+    auto &rregister = context.getReferenceSchemaRegister();
+
+    const auto id = schema.uid(instance);
+    const auto valuation = schema.valuation_from_reference_values(instance);
+    const auto name = link->getNameForValuation(context.getPathTreeRegister(), cregister, wregister, valuation);
+
+    nlohmann::json linkedWordIds = nlohmann::json::object();
+
+    for (auto it : valuation)
+    {
+        linkedWordIds[it.first] = it.second->uid();
+    }
+
+    nlohmann::json res = {
+        {"id", id},
+        {"link", element->uid()},
+        {"translations", nameToJson(name)},
+        {"linkedWordIds", linkedWordIds}};
+
+    return res;
+}
+
 nlohmann::json ieml::parser::serializeCategoryHierarchy(ieml::parser::ParserContextManager &ctx,
                                                         const ieml::structure::TableDefinition::Ptr &table)
 {
@@ -337,17 +366,13 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser &parser)
 
         for (const auto &it : lregister.getLinks())
         {
-            const auto r = rregister.get_schema(it.first);
-            for (const auto &i : r.getInstances())
+            const auto schema = rregister.get_schema(it.first);
+            for (const auto &i : schema.getInstances())
             {
-                const auto id = r.uid(i);
-                const auto valuation = r.valuation_from_reference_values(i);
-                const auto name = it.second->getNameForValuation(context->getPathTreeRegister(), cregister, wregister, valuation);
+                const auto id = schema.uid(i);
 
-                instances[id] = {
-                    {"id", id},
-                    {"link", it.first->uid()},
-                    {"translations", nameToJson(name)}};
+                instances[schema.uid(i)] = _instanceToJson(it.second, it.first, i, schema, *context);      
+
             }
         }
     }
