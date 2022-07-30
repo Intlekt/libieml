@@ -64,12 +64,17 @@ PathTree::Ptr PathTree::Register::buildFromPaths(const PathTree::Set &paths)
 
     const auto &node = (*paths.begin())->getNode();
 
+    // all of subpaths node must be of same type
+    // Not : we ignore the first node of the path. The path without the first node is called
+    // subpath. The first node of the path must be the same for all paths
     PathType path_type(PathType::ROOT);
     if ((*paths.begin())->getChildren().size() != 0)
         path_type = (*(*paths.begin())->getChildren().begin())->getNode()->getPathType();
 
-    std::unordered_map<PathNode *, PathTree::Set> children_paths;
+    // Map the first node of each subpath to the subpath set that have the node as prefix
+    std::unordered_map<PathNode::Ptr, PathTree::Set, PathNode::HashFunctor, PathNode::EqualityFunctor> children_paths;
 
+    // Group subpaths by first node
     for (auto path : paths)
     {
         if (*path->getNode() != *node)
@@ -82,19 +87,19 @@ PathTree::Ptr PathTree::Register::buildFromPaths(const PathTree::Set &paths)
             if (subpath->getNode()->getPathType() != path_type)
                 throw std::invalid_argument("All subpath does not share the same path type: had '" + std::string(path_type._to_string()) + "', got '" + std::string(subpath->getNode()->getPathType()._to_string()) + "'.");
 
-            if (children_paths.count(subpath->getNode().get()) < 1)
+            if (children_paths.count(subpath->getNode()) < 1)
             {
-                children_paths.insert({subpath->getNode().get(), {subpath}});
+                children_paths.insert({subpath->getNode(), {subpath}});
             }
             else
             {
-                children_paths[subpath->getNode().get()].insert(subpath);
+                children_paths[subpath->getNode()].insert(subpath);
             }
         }
     }
 
     Set children;
-
+    // then build all sub path tree
     for (auto paths : children_paths)
     {
         children.insert(buildFromPaths(paths.second));

@@ -195,7 +195,7 @@ std::string InflectionPathNode::to_string() const {
     std::ostringstream os;
     for (auto& inflection: inflections_)
         os << "~" << inflection->to_string();
-    
+
     return os.str();
 }
 
@@ -205,4 +205,9 @@ bool WordPathNode::accept_next(__attribute__((unused)) const PathNode& next) con
 PathType WordPathNode::getPathType() const {return PathType::WORD;}
 std::string WordPathNode::to_string() const {
     return word_->to_string();
+}
+
+
+size_t PathNode::HashFunctor::operator()(const ieml::structure::PathNode::Ptr& a) const {
+    return std::hash<ieml::structure::PathNode>()(*a);
 }

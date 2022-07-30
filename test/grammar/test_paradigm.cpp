@@ -35,7 +35,7 @@ TEST(ieml_grammar_test_case, paradigm_definition) {
 };
 
 TEST(ieml_grammar_test_case, paradigm_definition_2d) {
-    PARSE_NO_ERRORS(R"(@word "a.". @word "b.". 
+    PARSE_NO_ERRORS(R"(@word "a.". @word "b.".
                        @node en:invariant (0 #"a.").
                        @node en:node0 (0 #"a.", 1 #"a.", 2 #"a.").
                        @node en:node1 (0 #"a.", 1 #"b.", 2 #"a.").
@@ -59,7 +59,7 @@ TEST(ieml_grammar_test_case, paradigm_definition_2d) {
     ASSERT_NE(node2, nullptr);
     ASSERT_NE(node3, nullptr);
 
-    ASSERT_EQ(ieml::structure::PathTree::singular_sequences(paradigm), 
+    ASSERT_EQ(ieml::structure::PathTree::singular_sequences(paradigm),
               ieml::structure::PathTree::Vector({node0, node1, node2, node3}));
 };
 
@@ -83,7 +83,7 @@ TEST(ieml_grammar_test_case, paradigm_register) {
 
 
 TEST(ieml_grammar_test_case, paradigm_dimension_definition) {
-    PARSE_NO_ERRORS(R"(@word "a.". @word "b.". 
+    PARSE_NO_ERRORS(R"(@word "a.". @word "b.".
                        @node en:invariant (0 #"a.").
                        @node en:node0 (0 #"a.", 1 #"a.", 2 #"a.").
                        @node en:node1 (0 #"a.", 1 #"a.", 2 #"b.").
@@ -114,4 +114,13 @@ TEST(ieml_grammar_test_case, paradigm_dimension_definition) {
     ASSERT_EQ(table->at(0, {0, 1, 0}), node1);
     ASSERT_EQ(table->at(0, {1, 0, 0}), node2);
     ASSERT_EQ(table->at(0, {1, 1, 0}), node3);
+}
+
+
+TEST(ieml_grammar_test_case, no_regression_missing_invariant) {
+    PARSE_NO_ERRORS(R"(@word "a.". @word "b.".
+                       @node en:node0 (0 #"a.").
+                       @node en:node1 (0 #"a.", 1 #"a.").
+                       @node en:invariant (0 #node0, 1 #node1).
+                       @paranode en:paranode 1d:/#/4 (0 #node0, 1 #node1, 4 {#"b.";#"a."}).)");
 }

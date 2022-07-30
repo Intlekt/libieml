@@ -48,12 +48,24 @@ public:
     virtual std::shared_ptr<JunctionWord> getJunctionType() const {throw std::invalid_argument("No JunctionWord defined for " +std::string(getPathType()._to_string())+ " path node.");};
 
     virtual std::shared_ptr<AuxiliaryWord> getAuxialiryType() const {throw std::invalid_argument("No AuxiliaryWord defined for " +std::string(getPathType()._to_string())+ " path node.");};
-    virtual const std::set<std::shared_ptr<InflectionWord>>& getInflections() const {throw std::invalid_argument("No InflectionWords defined for " +std::string(getPathType()._to_string())+ " path node.");}; 
+    virtual const std::set<std::shared_ptr<InflectionWord>>& getInflections() const {throw std::invalid_argument("No InflectionWords defined for " +std::string(getPathType()._to_string())+ " path node.");};
     virtual const std::shared_ptr<CategoryWord> getCategoryWord() const {throw std::invalid_argument("No CategoryWord defined for " +std::string(getPathType()._to_string())+ " path node.");};
 
 
     typedef std::set<std::shared_ptr<PathNode>> Set;
     typedef std::vector<std::shared_ptr<PathNode>> Vector;
+
+
+    struct HashFunctor {
+        size_t operator()(const ieml::structure::PathNode::Ptr& a) const;
+    };
+
+    struct EqualityFunctor {
+        bool operator()(const ieml::structure::PathNode::Ptr& a, const ieml::structure::PathNode::Ptr& b) const {
+            return *a == *b;
+        }
+    };
+
 
 private:
     virtual int comp(const PathNode& a) const = 0;
@@ -123,7 +135,7 @@ class JunctionPathNode : public PathNode {
 public:
     JunctionPathNode(std::shared_ptr<JunctionWord> junction_type) : junction_type_(junction_type) {}
     virtual std::string to_string() const override;
-    
+
     virtual std::shared_ptr<JunctionWord> getJunctionType() const override {return junction_type_;};
     virtual const std::set<std::shared_ptr<Word>> getWords() const override {return {junction_type_};};
 
@@ -239,7 +251,7 @@ public:
         return std::set<std::shared_ptr<Word>>(inflections_.begin(), inflections_.end());
     };
 
-    virtual const std::set<std::shared_ptr<InflectionWord>>& getInflections() const override {return inflections_;}; 
+    virtual const std::set<std::shared_ptr<InflectionWord>>& getInflections() const override {return inflections_;};
 
 private:
     virtual int comp(const PathNode& a) const override {
