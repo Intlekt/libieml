@@ -19,8 +19,14 @@ jobs:
           submodules: 'recursive'
       - name: Build
         run: docker-compose up --build build_wasm
+      - name: Create a temporary artifact downloads folder
+        run: mkdir downloads
+      - name: Add artifacts to publish to the temp folder
+        run: |
+          cp build_wasm/binding/wasm/parser_wasm.js downloads
+          cp build_wasm/binding/wasm/parser_wasm.wasm downloads
       - name: Use the Upload Artifact GitHub Action
         uses: actions/upload-artifact@v2
         with: 
           name: wasm-files
-          path: build_wasm
+          path: downloads
