@@ -1,0 +1,26 @@
+name: Build Artefacts
+
+on:
+  push:
+    branches:
+      - master
+
+  workflow_dispatch:
+    branches:
+      - '**'
+
+jobs:
+  build_wasm:
+    name: Build Wasm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Build
+        run: docker-compose up --build build_wasm
+      - name: Use the Upload Artifact GitHub Action
+        uses: actions/upload-artifact@v2
+        with: 
+          name: wasm-files
+          path: build_wasm
