@@ -242,13 +242,12 @@ nlohmann::json _scriptToJson(ieml::structure::Script::Ptr script,
 }
 
 nlohmann::json _instanceToJson(ieml::structure::Link::Ptr link, ieml::structure::PathTree::Ptr element, std::vector<ieml::structure::ReferenceValue> instance,
-ieml::structure:: ReferenceSchema schema,
+                               ieml::structure::ReferenceSchema schema,
                                ieml::parser::ParserContextManager &context)
 {
 
     auto &cregister = context.getCategoryRegister();
     auto &wregister = context.getWordRegister();
-    auto &rregister = context.getReferenceSchemaRegister();
 
     const auto id = schema.uid(instance);
     const auto valuation = schema.valuation_from_reference_values(instance);
@@ -371,8 +370,7 @@ nlohmann::json ieml::parser::parserToJson(const IEMLParser &parser)
             {
                 const auto id = schema.uid(i);
 
-                instances[schema.uid(i)] = _instanceToJson(it.second, it.first, i, schema, *context);      
-
+                instances[schema.uid(i)] = _instanceToJson(it.second, it.first, i, schema, *context);
             }
         }
     }

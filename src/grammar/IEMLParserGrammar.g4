@@ -79,7 +79,9 @@ word_condition_function : PARENTHESIS_START word_condition_function_=word_condit
                         | word_condition_=word_condition                                                             # word_condition_function__word_condition
                         ;
 
-word_condition : left_accessor=word_accessor EQUAL right_accessor=word_accessor;
+word_condition : left_accessor=word_accessor EQUAL    right_accessor=word_accessor        # word_condition__equal
+               | left_accessor=word_accessor NOTEQUAL right_accessor=word_accessor        # word_condition__not_equal
+               ;
 
 word_accessor : accessor_=word_accessor_variable # word_accessor__variable
 							| word_literal=word # word_accessor__literal

@@ -140,6 +140,7 @@ TEST(ieml_grammar_test_case, link_declaration_repeated_variable)                
 
 TEST(ieml_grammar_test_case, word_function)                                          TEST_PARSE_NO_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $B.attribute and $A.attribute == $B.substance.)");
 TEST(ieml_grammar_test_case, word_function_literal)                                  TEST_PARSE_NO_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $B.attribute and $A.attribute == "S:".)");
+TEST(ieml_grammar_test_case, word_function_inequality)                               TEST_PARSE_NO_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance != $B.attribute.)");
 
 // ERRORS
 TEST(ieml_grammar_test_case, no_root)                                                TEST_PARSE_ERRORS(R"(@rootparadigm type:inflection "O:M:.".@rootparadigm type:category "O:O:.". @inflection en:noun class:NOUN "a.". @component en:test (1 ~noun #"wa.") .)");

@@ -163,7 +163,8 @@ public:
   virtual antlrcpp::Any visitWord_condition_function__word_condition(IEMLParserGrammar::Word_condition_function__word_conditionContext *context) override;
   virtual antlrcpp::Any visitWord_condition_function__parenthesis(IEMLParserGrammar::Word_condition_function__parenthesisContext *context) override;
   virtual antlrcpp::Any visitWord_condition_function__operator(IEMLParserGrammar::Word_condition_function__operatorContext *context) override;
-  virtual antlrcpp::Any visitWord_condition(IEMLParserGrammar::Word_conditionContext *context) override;
+  virtual antlrcpp::Any visitWord_condition__equal(IEMLParserGrammar::Word_condition__equalContext *context) override;
+  virtual antlrcpp::Any visitWord_condition__not_equal(IEMLParserGrammar::Word_condition__not_equalContext *context) override;
   
   virtual antlrcpp::Any visitWord_accessor__variable(IEMLParserGrammar::Word_accessor__variableContext *context) override;
   virtual antlrcpp::Any visitWord_accessor__literal(IEMLParserGrammar::Word_accessor__literalContext *context) override;
