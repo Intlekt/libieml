@@ -202,3 +202,80 @@ TEST(ieml_structure_test_case, link_word_auxiliary)
     const auto &refs = schema.getInstances();
     ASSERT_EQ(refs.size(), 4); // 4 auxiliary of the paradigm has been declared
 }
+
+TEST(ieml_structure_test_case, link_word_inequality)
+{
+    PARSE_NO_ERRORS(R"(
+        @rootparadigm type:auxiliary "E:.-F:.M:M:.-l.-'".
+        @word "A:".
+
+        @rootparadigm type:inflection "M:".
+        @inflection en: noun class:VERB "S:".
+
+        @auxiliary 
+            en:in
+            role:6
+            "E:.-T:.f.-l.-'".
+
+        @auxiliary 
+            fr:sous
+            en:under
+            role:6
+            "E:.-U:.f.-l.-'".
+
+        @auxiliary 
+            fr:fond
+            fr:base
+            fr:cul
+            en:bottom
+            en:basis
+            role:6
+            "E:.-U:.l.-l.-'".
+
+        @auxiliary 
+            fr:vers l'avant
+            en:ahead
+            en:to the front
+            role:6
+            "E:.-A:.s.-l.-'".
+
+        @link
+            args:($A, $B)
+            en:contains
+            template-en:$A est dans $B
+            template-fr:$A is in $B
+            phraseWordInflection: ~noun 
+            
+            (
+                0 #"A:",
+                1 #"A:" <$A>,
+                8 #"A:" <$B>
+            ).
+
+        @function
+            type:word
+            link:contains
+            domain:($A in "E:.-F:.M:M:.-l.-'", $B in "E:.-F:.M:M:.-l.-'")
+            condition:
+            (
+                $A != $B
+            ).
+    )");
+
+    const auto &ctx = parser.getContext();
+
+    auto &refreg = ctx->getReferenceSchemaRegister();
+    auto &linkreg = ctx->getLinkRegister();
+    auto &creg = ctx->getCategoryRegister();
+    auto &wreg = ctx->getWordRegister();
+    auto &preg = ctx->getPathTreeRegister();
+
+    const auto pt = creg.resolve_category(ieml::structure::LanguageString(ieml::structure::LanguageType::EN, "contains"));
+    ASSERT_NE(pt, nullptr);
+
+    ASSERT_TRUE(refreg.is_defined(pt));
+    const auto &schema = refreg.get_schema(pt);
+
+    const auto &refs = schema.getInstances();
+    ASSERT_EQ(refs.size(), 12); // 12 number of distincts couples in a set of size 4 (there are 4 nodes considered for a binary link)
+}

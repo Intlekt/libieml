@@ -32,7 +32,11 @@ JUNCTION_CLOSE       : ']' ;
      
 REFERENCE_OPEN       : '<' ;
 REFERENCE_CLOSE      : '>' ;
-     
+
+EQUAL                : '==';
+NOTEQUAL             : '!=';
+
+
 SEMANTIC_ACCENT      : '!' ;
    
 DECLARATION_MARK     : '@' ;
@@ -47,7 +51,6 @@ PARENTHESIS_END      : ')';
 COMMA                : ',';
 
 MAPPING              : '->';
-EQUAL                : '==';
 
 VARIABLE             : '$'[0-9a-zA-Z]+;
 
