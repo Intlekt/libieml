@@ -13,21 +13,22 @@
 
 #include "utils_testing.h"
 
-
 using namespace ieml::structure;
 
-#define PARSE_PATH_VALID(s, ctx) {                                          \
-    auto p = ieml::parser::parsePath(ctx, s, true);                         \
-    EXPECT_NE(p, nullptr) << "Unable to parse path : " << s;                \
-    if (p) {                                                                \
-        EXPECT_TRUE(p->is_path());                                          \
-        EXPECT_EQ(p->to_string_path(), s);                                  \
-        EXPECT_NO_THROW(p->is_valid()) << "Invalid path parsed : " << s;    \
-    }                                                                       \
-}
+#define PARSE_PATH_VALID(s, ctx)                                             \
+    {                                                                        \
+        auto p = ieml::parser::parsePath(ctx, s, true);                      \
+        EXPECT_NE(p, nullptr) << "Unable to parse path : " << s;             \
+        if (p)                                                               \
+        {                                                                    \
+            EXPECT_TRUE(p->is_path());                                       \
+            EXPECT_EQ(p->to_string_path(), s);                               \
+            EXPECT_NO_THROW(p->is_valid()) << "Invalid path parsed : " << s; \
+        }                                                                    \
+    }
 
-
-TEST(ieml_structure_test_case, path_serialization) {
+TEST(ieml_structure_test_case, path_serialization)
+{
     PathTree::Register reg;
     ScriptRegister sreg;
 
@@ -53,7 +54,8 @@ TEST(ieml_structure_test_case, path_serialization) {
         auto path = reg.get_or_create(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>(ieml::testing::parse_script(&sreg, "wa."))));
         auto path1 = reg.get_or_create(std::make_shared<InflectionPathNode>(plr_sing), {path});
         auto path2 = reg.get_or_create(std::make_shared<AuxiliaryPathNode>(
-            std::make_shared<AuxiliaryWord>(ieml::testing::parse_script(&sreg, "wa."), RoleType::ROOT)), {path1});
+                                           std::make_shared<AuxiliaryWord>(ieml::testing::parse_script(&sreg, "wa."), RoleType::ROOT)),
+                                       {path1});
         auto path3 = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT), {path2});
 
         EXPECT_TRUE(path3->is_valid()) << "Invalid argument should not have been thrown on path.";
@@ -69,13 +71,13 @@ TEST(ieml_structure_test_case, path_serialization) {
         EXPECT_TRUE(path4->is_valid()) << "Invalid argument should not have been thrown on path.";
         EXPECT_EQ(path4->to_string_path(), R"(/0/*"wa."/&"E:E:A:."/[0]/"wa.")") << "Invalid path serialization";
     }
-
 }
 
-TEST(ieml_structure_test_case, path_from_string) {
+TEST(ieml_structure_test_case, path_from_string)
+{
     ieml::parser::IEMLParserErrorListener error_listener;
     ieml::parser::ParserContextManager ctx(&error_listener);
-    auto& wregister = ctx.getWordRegister();
+    auto &wregister = ctx.getWordRegister();
     auto sreg = &ctx.getScriptRegister();
     auto script = ieml::testing::parse_script(&ctx.getScriptRegister(), "wa.");
     wregister.declare_script(script, WordType::CATEGORY);
@@ -95,7 +97,8 @@ TEST(ieml_structure_test_case, path_from_string) {
     EXPECT_EQ(*ieml::parser::parsePath(ctx, "/#/0"), *ieml::parser::parsePath(ctx, "/#/0"));
 }
 
-TEST(ieml_structure_test_case, path_invalid) {
+TEST(ieml_structure_test_case, path_invalid)
+{
     PathTree::Register reg;
     ScriptRegister sreg;
 
@@ -114,8 +117,8 @@ TEST(ieml_structure_test_case, path_invalid) {
     }
 }
 
-
-TEST(ieml_structure_test_case, path_tree_comparison) {
+TEST(ieml_structure_test_case, path_tree_comparison)
+{
     PathTree::Register reg;
 
     auto tree1 = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT));
@@ -133,7 +136,8 @@ TEST(ieml_structure_test_case, path_tree_comparison) {
     EXPECT_GE(*tree2, *tree1);
     EXPECT_GT(*tree2, *tree1);
 }
-TEST(ieml_structure_test_case, path_tree_building) {
+TEST(ieml_structure_test_case, path_tree_building)
+{
     ScriptRegister sreg;
     {
         PathTree::Register reg;
@@ -164,7 +168,8 @@ TEST(ieml_structure_test_case, path_tree_building) {
     }
 }
 
-TEST(ieml_structure_test_case, path_tree_building_error) {
+TEST(ieml_structure_test_case, path_tree_building_error)
+{
     ScriptRegister sreg;
     PathTree::Register reg;
     {
@@ -175,17 +180,17 @@ TEST(ieml_structure_test_case, path_tree_building_error) {
     {
 
         auto a = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT),
-            {reg.get_or_create(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>(ieml::testing::parse_script(&sreg, "wa."), RoleType::ROOT)))});
+                                   {reg.get_or_create(std::make_shared<AuxiliaryPathNode>(std::make_shared<AuxiliaryWord>(ieml::testing::parse_script(&sreg, "wa."), RoleType::ROOT)))});
 
         auto b = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT),
-            {reg.get_or_create(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>(ieml::testing::parse_script(&sreg, "wa."))))});
+                                   {reg.get_or_create(std::make_shared<WordPathNode>(std::make_shared<CategoryWord>(ieml::testing::parse_script(&sreg, "wa."))))});
 
         EXPECT_THROW(reg.buildFromPaths({a, b}), std::invalid_argument);
     }
-
 }
 
-TEST(ieml_structure_test_case, path_tree_register) {
+TEST(ieml_structure_test_case, path_tree_register)
+{
     PathTree::Register reg;
 
     auto a = reg.get_or_create(std::make_shared<RoleNumberPathNode>(RoleType::ROOT));
@@ -231,8 +236,8 @@ TEST(ieml_structure_test_case, path_tree_register) {
     }
 }
 
-
-TEST(ieml_structure_test_case, path_tree_invariant) {
+TEST(ieml_structure_test_case, path_tree_invariant)
+{
     PARSE_NO_ERRORS(R"(@word "wa.". @word "a.". @word "b.". @node en:root (0 #"wa."). @node en:node0 (0 #"wa.", 1 #"a."). @node en:node1 (0 #"wa.", 1 #"b.").)");
     auto context = parser.getContext();
 
@@ -247,8 +252,8 @@ TEST(ieml_structure_test_case, path_tree_invariant) {
     auto reg = context->getPathTreeRegister();
 
     auto paradigm = reg.get_or_create(std::make_shared<ParadigmPathNode>(),
-            {reg.get_or_create(std::make_shared<ParadigmIndexPathNode>(0), {node0}),
-             reg.get_or_create(std::make_shared<ParadigmIndexPathNode>(1), {node1})});
+                                      {reg.get_or_create(std::make_shared<ParadigmIndexPathNode>(0), {node0}),
+                                       reg.get_or_create(std::make_shared<ParadigmIndexPathNode>(1), {node1})});
 
     ASSERT_NE(paradigm, nullptr);
 
@@ -262,10 +267,11 @@ TEST(ieml_structure_test_case, path_tree_invariant) {
     EXPECT_EQ(invariant, root);
 }
 
-TEST(ieml_structure_test_case, path_prefix) {
+TEST(ieml_structure_test_case, path_prefix)
+{
     ieml::parser::IEMLParserErrorListener error_listener;
     ieml::parser::ParserContextManager ctx(&error_listener);
-    auto& wregister = ctx.getWordRegister();
+    auto &wregister = ctx.getWordRegister();
     auto script = ieml::testing::parse_script(&ctx.getScriptRegister(), "wa.");
     wregister.declare_script(script, WordType::CATEGORY);
     wregister.define_word(std::make_shared<CategoryWord>(script));
@@ -284,10 +290,11 @@ TEST(ieml_structure_test_case, path_prefix) {
     EXPECT_FALSE(p0->is_prefix(p1));
 }
 
-TEST(ieml_structure_test_case, path_factorize_sub_phrase) {
+TEST(ieml_structure_test_case, path_factorize_sub_phrase)
+{
     ieml::parser::IEMLParserErrorListener error_listener;
     ieml::parser::ParserContextManager ctx(&error_listener);
-    auto& wregister = ctx.getWordRegister();
+    auto &wregister = ctx.getWordRegister();
 
     auto script = ieml::testing::parse_script(&ctx.getScriptRegister(), "a.");
     wregister.declare_script(script, WordType::CATEGORY);
@@ -308,10 +315,11 @@ TEST(ieml_structure_test_case, path_factorize_sub_phrase) {
     ASSERT_EQ(pt->getChildren().size(), 2); // two children of phrase : role 0 and role 1. Role 1 is factorized
 }
 
-TEST(ieml_structure_test_case, path_is_contained) {
+TEST(ieml_structure_test_case, path_is_contained)
+{
     ieml::parser::IEMLParserErrorListener error_listener;
     ieml::parser::ParserContextManager ctx(&error_listener);
-    auto& wregister = ctx.getWordRegister();
+    auto &wregister = ctx.getWordRegister();
     auto script = ieml::testing::parse_script(&ctx.getScriptRegister(), "wa.");
     wregister.declare_script(script, WordType::CATEGORY);
     wregister.define_word(std::make_shared<CategoryWord>(script));
@@ -323,9 +331,32 @@ TEST(ieml_structure_test_case, path_is_contained) {
 
     EXPECT_FALSE(p0->is_contained(p1));
 
-
     p0 = ieml::parser::parsePath(ctx, R"(/#/0)", true);
     p1 = ieml::parser::parsePath(ctx, R"(/#/1/"wa.")", true);
 
     EXPECT_FALSE(p0->is_contained(p1));
+}
+
+TEST(ieml_structure_test_case, invariant_ignore_variation_path_of_paranode)
+{
+    // the path /#/1/#/1/"b." is shared by the ss, but the invariant should only be (0 #"a.")
+    PARSE_NO_ERRORS(R"(@word "a.". @word "b.". @word "c.". @word "d.".
+                @node en:var1 (0 #"d.", 1 #"b.").
+                @node en:var2 (0 #"c.", 1 #"b.").
+                @node en:ss1 (0 #"a.", 1 #var1).
+                @node en:ss2 (0 #"a.", 1 #var2).)");
+    auto context = parser.getContext();
+    auto ss1 = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::EN, "ss1"));
+    auto ss2 = context->getCategoryRegister().resolve_category(LanguageString(LanguageType::EN, "ss2"));
+
+    auto reg = context->getPathTreeRegister();
+
+    auto paranode = reg.build_paradigm({ss1, ss2});
+    auto path = ieml::parser::parsePath(*context, R"(/#/0/"a.")", true);
+    auto path2 = ieml::parser::parsePath(*context, R"(/#/0/"a.")", true);
+
+    auto invariant_p = reg.invariant_paths(paranode);
+
+    ASSERT_EQ(PathTree::Set{path2}, PathTree::Set{path});
+    ASSERT_EQ(invariant_p, PathTree::Set{path});
 }
