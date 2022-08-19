@@ -277,7 +277,7 @@ PathTree::Set PathTree::Register::invariant_paths(const PathTree::Ptr &paradigm)
     // then all paths starting with this role prefix are present in the invariant
 
     // 1 construire tous les prefix -> list des paths contenues dedans.
-    // Un prefix est defini par la suite de pathnode jusqua tomber sur un pathnode de type Role
+    // Un prefix est defini par la suite de pathnode jusqu'a tomber sur un pathnode de type Role
     PathTree::Vector singular_sequences = PathTree::singular_sequences(paradigm);
     auto it = singular_sequences.begin();
 
