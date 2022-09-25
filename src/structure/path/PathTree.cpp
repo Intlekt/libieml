@@ -272,71 +272,97 @@ PathTree::Set PathTree::Register::paths(const PathTree::Ptr &pt)
 
 PathTree::Set PathTree::Register::invariant_paths(const PathTree::Ptr &paradigm)
 {
-    // if all paths with the same role prefix are present in all of the singular sequence,
-    // and no other path start with this role prefix in any singular sequence,
-    // then all paths starting with this role prefix are present in the invariant
-
-    // 1 construire tous les prefix -> list des paths contenues dedans.
-    // Un prefix est defini par la suite de pathnode jusqu'a tomber sur un pathnode de type Role
+    // For all ss
     PathTree::Vector singular_sequences = PathTree::singular_sequences(paradigm);
-    auto it = singular_sequences.begin();
 
-    std::unordered_map<PathTree::Ptr, PathTree::Ptr> prefix_to_subtree;
+    std::unordered_map<PathTree::Ptr, PathTree::Set> prefix_to_subSS;
 
-    auto is_role = [](const PathTree::Ptr &pt)
-    { return pt->is_role(); };
-
-    auto subtrees = (*it)->find_sub_tree(
-        *this,
-        is_role,
-        is_role);
-    for (auto pair : subtrees)
+    bool first = true;
+    for (PathTree::Ptr ss : singular_sequences)
     {
-        // append the role number at the end of the prefix (not included by default)
-        auto path = this->concat(pair.first, this->get_or_create(pair.second->getNode()));
-        prefix_to_subtree.insert({path, *pair.second->getChildren().begin()});
-    }
-    ++it;
-    while (it != singular_sequences.end())
-    {
-        auto subtrees = (*it)->find_sub_tree(
+        // Get all sub phrase or word (all sub #), skipping the first one (the root)
+        const auto is_phrase_or_word = [ss](const PathTree::Ptr &pt)
+        { return ss != pt && (pt->is_phrase() || pt->is_word()); };
+
+        auto subtrees = ss->find_sub_tree(
             *this,
-            is_role,
-            is_role);
+            is_phrase_or_word,
+            is_phrase_or_word);
 
-        std::unordered_map<PathTree::Ptr, PathTree::Ptr> prefix_to_subtree_curr;
-
-        for (auto pair : subtrees)
+        if (first)
         {
-            // append the role number at the end of the prefix (not included by default)
-            auto path = this->concat(pair.first, this->get_or_create(pair.second->getNode()));
-            prefix_to_subtree_curr.insert({path, *pair.second->getChildren().begin()});
+            first = false;
+            for (auto pair : subtrees)
+            {
+                prefix_to_subSS.insert({pair.first, PathTree::Set{pair.second}});
+            }
         }
-
-        std::unordered_map<PathTree::Ptr, PathTree::Ptr> prefix_to_subtree_new;
-
-        for (auto it_old = prefix_to_subtree.begin(); it_old != prefix_to_subtree.end(); it_old++)
+        else
         {
-            auto value_it = prefix_to_subtree_curr.find(it_old->first);
+            std::unordered_map<PathTree::Ptr, PathTree::Set> prefix_to_subSS_next;
 
-            if (value_it == prefix_to_subtree_curr.end())
+            for (auto pair : subtrees)
             {
-                continue;
-            }
-            if (value_it->second != it_old->second)
-            {
-                continue;
+                const auto it = prefix_to_subSS.find(pair.first);
+
+                // if the prefix is not present we drop the prefix key
+                if (it == prefix_to_subSS.end())
+                {
+                    continue;
+                }
+
+                it->second.insert(pair.second);
+                prefix_to_subSS_next.insert({it->first, it->second});
             }
 
-            prefix_to_subtree_new.insert(*it_old);
+            prefix_to_subSS = prefix_to_subSS_next;
         }
+    }
 
-        prefix_to_subtree = prefix_to_subtree_new;
-        ++it;
+    std::unordered_map<PathTree::Ptr, PathTree::Ptr> prefix_to_subinvariant;
+
+    for (auto pair : prefix_to_subSS)
+    {
+        if (pair.second.size() == 1)
+        {
+            // if only one subtree exists at this prefix
+            prefix_to_subinvariant.insert({pair.first, *pair.second.begin()});
+        }
+        else
+        {
+            bool drop = false;
+            PathTree::Vector subphrases;
+            // muliple subtree at this prefix
+            for (auto subtree : pair.second)
+            {
+                if (subtree->is_word())
+                {
+                    // if any of the subtree is a word, we drop the prefix
+                    drop = true;
+                    break;
+                }
+
+                subphrases.push_back(subtree);
+            }
+
+            if (!drop)
+            {
+                // recurse to build the subinvariant
+                const auto invariant = buildFromPaths(invariant_paths(build_paradigm(subphrases)));
+                if (invariant != nullptr)
+                {
+                    if (invariant->is_valid())
+                    {
+                        // if the invariant is a valid path tree (no root is missing), otherwise it is nullptr
+                        prefix_to_subinvariant.insert({pair.first, invariant});
+                    }
+                }
+            }
+        }
     }
 
     PathTree::Set paths;
-    for (auto pair : prefix_to_subtree)
+    for (auto pair : prefix_to_subinvariant)
     {
         for (auto path : this->paths(this->concat(pair.first, pair.second)))
         {
@@ -346,6 +372,83 @@ PathTree::Set PathTree::Register::invariant_paths(const PathTree::Ptr &paradigm)
 
     return paths;
 }
+
+// PathTree::Set PathTree::Register::invariant_paths2(const PathTree::Ptr &paradigm)
+// {
+//     // if all paths with the same role prefix are present in all of the singular sequence,
+//     // and no other path start with this role prefix in any singular sequence,
+//     // then all paths starting with this role prefix are present in the invariant
+
+//     // 1 construire tous les prefix -> list des paths contenues dedans.
+//     // Un prefix est defini par la suite de pathnode jusqu'a tomber sur un pathnode de type Role
+//     PathTree::Vector singular_sequences = PathTree::singular_sequences(paradigm);
+//     auto it = singular_sequences.begin();
+
+//     std::unordered_map<PathTree::Ptr, PathTree::Ptr> prefix_to_subtree;
+
+//     auto is_role = [](const PathTree::Ptr &pt)
+//     { return pt->is_role(); };
+
+//     auto subtrees = (*it)->find_sub_tree(
+//         *this,
+//         is_role,
+//         is_role);
+//     for (auto pair : subtrees)
+//     {
+//         // append the role number at the end of the prefix (not included by default)
+//         auto path = this->concat(pair.first, this->get_or_create(pair.second->getNode()));
+//         prefix_to_subtree.insert({path, *pair.second->getChildren().begin()});
+//     }
+//     ++it;
+//     while (it != singular_sequences.end())
+//     {
+//         auto subtrees = (*it)->find_sub_tree(
+//             *this,
+//             is_role,
+//             is_role);
+
+//         std::unordered_map<PathTree::Ptr, PathTree::Ptr> prefix_to_subtree_curr;
+
+//         for (auto pair : subtrees)
+//         {
+//             // append the role number at the end of the prefix (not included by default)
+//             auto path = this->concat(pair.first, this->get_or_create(pair.second->getNode()));
+//             prefix_to_subtree_curr.insert({path, *pair.second->getChildren().begin()});
+//         }
+
+//         std::unordered_map<PathTree::Ptr, PathTree::Ptr> prefix_to_subtree_new;
+
+//         for (auto it_old = prefix_to_subtree.begin(); it_old != prefix_to_subtree.end(); it_old++)
+//         {
+//             auto value_it = prefix_to_subtree_curr.find(it_old->first);
+
+//             if (value_it == prefix_to_subtree_curr.end())
+//             {
+//                 continue;
+//             }
+//             if (value_it->second != it_old->second)
+//             {
+//                 continue;
+//             }
+
+//             prefix_to_subtree_new.insert(*it_old);
+//         }
+
+//         prefix_to_subtree = prefix_to_subtree_new;
+//         ++it;
+//     }
+
+//     PathTree::Set paths;
+//     for (auto pair : prefix_to_subtree)
+//     {
+//         for (auto path : this->paths(this->concat(pair.first, pair.second)))
+//         {
+//             paths.insert(path);
+//         }
+//     }
+
+//     return paths;
+// }
 
 PathTree::Set PathTree::Register::singular_sequence_intersection(const PathTree::Ptr &paradigm)
 {
@@ -479,9 +582,25 @@ bool PathTree::is_valid() const
     }
 
     // ensure that the phrase has at least a root role
-    // if (is_phrase()) {
+    if (is_phrase())
+    {
+        const auto roles = get_all_roles();
 
-    // }
+        bool has_root = false;
+        for (const auto &role : roles)
+        {
+            if (role == +RoleType::ROOT)
+            {
+                has_root = true;
+                break;
+            }
+        }
+
+        if (!has_root)
+        {
+            return false;
+        }
+    }
 
     if (children_.size() != 0)
     {
@@ -494,6 +613,25 @@ bool PathTree::is_valid() const
         }
     }
     return true;
+}
+
+std::vector<RoleType> PathTree::get_all_roles() const
+{
+    if (!is_phrase())
+    {
+        throw std::invalid_argument("Cannot gather roles for non-phrase PathTree.");
+    }
+
+    std::vector<RoleType> roles;
+    for (const auto &child : children_)
+    {
+        if (child->is_role())
+        {
+            roles.push_back(child->getNode()->getRoleType());
+        }
+    }
+
+    return roles;
 }
 
 int PathTree::comp(const std::shared_ptr<PathNode> &nodeA, const PathTree::Set &childrenA,
