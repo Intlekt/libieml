@@ -272,7 +272,6 @@ PathTree::Set PathTree::Register::paths(const PathTree::Ptr &pt)
 
 PathTree::Set PathTree::Register::invariant_paths(const PathTree::Ptr &paradigm)
 {
-    // For all ss
     PathTree::Vector singular_sequences = PathTree::singular_sequences(paradigm);
 
     std::unordered_map<PathTree::Ptr, PathTree::Set> prefix_to_subSS;
@@ -372,83 +371,6 @@ PathTree::Set PathTree::Register::invariant_paths(const PathTree::Ptr &paradigm)
 
     return paths;
 }
-
-// PathTree::Set PathTree::Register::invariant_paths2(const PathTree::Ptr &paradigm)
-// {
-//     // if all paths with the same role prefix are present in all of the singular sequence,
-//     // and no other path start with this role prefix in any singular sequence,
-//     // then all paths starting with this role prefix are present in the invariant
-
-//     // 1 construire tous les prefix -> list des paths contenues dedans.
-//     // Un prefix est defini par la suite de pathnode jusqu'a tomber sur un pathnode de type Role
-//     PathTree::Vector singular_sequences = PathTree::singular_sequences(paradigm);
-//     auto it = singular_sequences.begin();
-
-//     std::unordered_map<PathTree::Ptr, PathTree::Ptr> prefix_to_subtree;
-
-//     auto is_role = [](const PathTree::Ptr &pt)
-//     { return pt->is_role(); };
-
-//     auto subtrees = (*it)->find_sub_tree(
-//         *this,
-//         is_role,
-//         is_role);
-//     for (auto pair : subtrees)
-//     {
-//         // append the role number at the end of the prefix (not included by default)
-//         auto path = this->concat(pair.first, this->get_or_create(pair.second->getNode()));
-//         prefix_to_subtree.insert({path, *pair.second->getChildren().begin()});
-//     }
-//     ++it;
-//     while (it != singular_sequences.end())
-//     {
-//         auto subtrees = (*it)->find_sub_tree(
-//             *this,
-//             is_role,
-//             is_role);
-
-//         std::unordered_map<PathTree::Ptr, PathTree::Ptr> prefix_to_subtree_curr;
-
-//         for (auto pair : subtrees)
-//         {
-//             // append the role number at the end of the prefix (not included by default)
-//             auto path = this->concat(pair.first, this->get_or_create(pair.second->getNode()));
-//             prefix_to_subtree_curr.insert({path, *pair.second->getChildren().begin()});
-//         }
-
-//         std::unordered_map<PathTree::Ptr, PathTree::Ptr> prefix_to_subtree_new;
-
-//         for (auto it_old = prefix_to_subtree.begin(); it_old != prefix_to_subtree.end(); it_old++)
-//         {
-//             auto value_it = prefix_to_subtree_curr.find(it_old->first);
-
-//             if (value_it == prefix_to_subtree_curr.end())
-//             {
-//                 continue;
-//             }
-//             if (value_it->second != it_old->second)
-//             {
-//                 continue;
-//             }
-
-//             prefix_to_subtree_new.insert(*it_old);
-//         }
-
-//         prefix_to_subtree = prefix_to_subtree_new;
-//         ++it;
-//     }
-
-//     PathTree::Set paths;
-//     for (auto pair : prefix_to_subtree)
-//     {
-//         for (auto path : this->paths(this->concat(pair.first, pair.second)))
-//         {
-//             paths.insert(path);
-//         }
-//     }
-
-//     return paths;
-// }
 
 PathTree::Set PathTree::Register::singular_sequence_intersection(const PathTree::Ptr &paradigm)
 {
