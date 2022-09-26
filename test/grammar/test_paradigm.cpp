@@ -139,4 +139,12 @@ TEST(ieml_grammar_test_case, no_regression_missing_invariant)
                        @node en:invariant (0 #"a.", 1 #"b.").
                        @paranode en:paradigm 1d: /#/2 (0 #"a.", 1 #"b.", 2 {#var1; #var2}).)");
     }
+    {
+        // the variation is in a sub phrase
+        PARSE_NO_ERRORS(R"(@word "a.". @word "b.". @word "c.". @word "d.".
+                       @node en:var1 (0 #"d.", 1 #"b.").
+                       @node en:var2 (0 #"c.", 1 #"b.").
+                       @node en:invariant (0 #"a.", 1 #"b.", 2 #(0 #"a.")).
+                       @paranode en:paradigm 1d: /#/2 (0 #"a.", 1 #"b.", 2 #(0 #"a.", 1 {#var1; #var2})).)");
+    }
 }

@@ -120,7 +120,7 @@ namespace ieml::structure
 
             /**
              * @brief Return the invariant path Set of a PathTree.
-             *        This correspond to the path tree without the roles containing a variation group.
+             *        This correspond to the path tree without the roles, at any subphrase depth, containing a variation group.
              *
              * @return Set
              */
@@ -255,6 +255,13 @@ namespace ieml::structure
                 r += (*children_.begin())->to_string_path();
             return r;
         }
+
+        /**
+         * @brief Get the all roles for a root node. If the PathTree is not a root node, throws invalid_argument error. Note: not supporting phrase junctions.
+         *
+         * @return std::vector<RoleType>
+         */
+        std::vector<RoleType> get_all_roles() const;
 
     private:
         PathTree(const std::shared_ptr<PathNode> &node, const Set &children) : node_(node), children_(children), hash_(hash_internal(node, children)), nb_paths_(count_paths(children)) {}
