@@ -120,11 +120,7 @@ namespace ieml::structure
 
             /**
              * @brief Return the invariant path Set of a PathTree.
-<<<<<<< HEAD
              *        This correspond to the path tree without the roles, at any subphrase depth, containing a variation group.
-=======
-             *        This correspond to the path tree without the roles containing a variation group.
->>>>>>> origin/master
              *
              * @return Set
              */
