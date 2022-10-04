@@ -148,3 +148,16 @@ TEST(ieml_grammar_test_case, no_regression_missing_invariant)
                        @paranode en:paradigm 1d: /#/2 (0 #"a.", 1 #"b.", 2 #(0 #"a.", 1 {#var1; #var2})).)");
     }
 }
+
+TEST(ieml_grammar_test_case, no_regression_crash_order_of_definition)
+{
+    PARSE_NO_ERRORS(R"(
+        @word "A:A:A:.".
+        @word "B:B:B:.".
+        @word "T:T:T:.".
+
+        @node en:invariant (0 #"A:A:A:.").
+        @paranode en:paranode 1d:/#/1 (0 #"A:A:A:.", 1 { #(0 #"B:B:B:.") ; #(0 #"T:T:T:.")}).
+        @node en:should not crash (0 #(0 #"B:B:B:.")).
+    )");
+}
