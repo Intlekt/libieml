@@ -120,11 +120,20 @@ namespace ieml::structure
 
             /**
              * @brief Return the invariant path Set of a PathTree.
-             *        This correspond to the path tree without the roles, at any subphrase depth, containing a variation group.
+             *        This correspond to the path tree without the roles containing a variation group.
+             *        This method does not account for nested subphrases.
              *
              * @return Set
              */
             Set invariant_paths(const PathTree::Ptr &);
+
+            /**
+             * @brief Return the invariant path Set of a PathTree.
+             *        This correspond to the path tree without the roles, at any subphrase depth, containing a variation group.
+             *
+             * @return Set
+             */
+            Set invariant_paths2(const PathTree::Ptr &);
 
             /**
              * @brief For a singular sequence, return the same as paths. For a paradigm, return the intersection
