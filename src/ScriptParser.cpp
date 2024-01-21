@@ -1,15 +1,13 @@
 #include "ScriptParser.h"
 #include "ScriptGrammarVisitor.h"
-
+#include "utils.h"
 
 using namespace ieml::parser;
 
-
-
-ScriptParser::ScriptParser() {
+ScriptParser::ScriptParser()
+{
     visitor_ = std::make_shared<ScriptGrammarVisitor>(nullptr); // no error listener yet for contextual error
     input_ = std::make_unique<antlr4::ANTLRInputStream>(std::string(""));
-
 
     lexer_ = std::make_unique<script_generated::ScriptLexerGrammar>(input_.get());
     lexer_->removeErrorListeners();
@@ -26,20 +24,20 @@ ScriptParser::ScriptParser() {
     parser_->getInterpreter<atn::ParserATNSimulator>()->setPredictionMode(atn::PredictionMode::SLL);
 }
 
-const ieml::structure::Script* ScriptParser::get_or_parse(
-        ieml::structure::ScriptRegister* reg,
-        const std::string& input_str, 
-        const std::string& file_id, 
-        const size_t line_offset, 
-        const size_t char_offset) {
-    
+const ieml::structure::Script *ScriptParser::get_or_parse(
+    ieml::structure::ScriptRegister *reg,
+    const std::string &input_str,
+    const std::string &file_id,
+    const size_t line_offset,
+    const size_t char_offset)
+{
+
     auto script = reg->get_defined_script_by_string(input_str);
     if (script)
         return script;
 
-    std::string reversed(input_str);
     // parse the string reversed
-    std::reverse(reversed.begin(), reversed.end());
+    std::string reversed = UTF8StringReverser::reverse(input_str);
 
     input_->load(reversed);
     antlr_error_listener_.clear();
@@ -52,15 +50,14 @@ const ieml::structure::Script* ScriptParser::get_or_parse(
     const auto parse_tree = parser_->script();
     if (antlr_error_listener_.has_error())
         return nullptr;
-    
+
     auto script_ast_any = visitor_->visit_with_offset(reg, parse_tree, file_id, line_offset, char_offset);
     if (script_ast_any.isNull())
         return nullptr; // input is not matched ex: empty string
 
-    auto script_ast = std::move(script_ast_any.as<ScriptGrammarVisitor::VisitorResult<const ieml::structure::Script*>>());
+    auto script_ast = std::move(script_ast_any.as<ScriptGrammarVisitor::VisitorResult<const ieml::structure::Script *>>());
     if (script_ast.isError())
         return nullptr;
-    
+
     return script_ast.value();
 }
-

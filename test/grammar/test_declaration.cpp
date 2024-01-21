@@ -215,7 +215,7 @@ TEST(ieml_grammar_test_case, invalid_word_function_invalid_condition)           
 TEST(ieml_grammar_test_case, invalid_word_function_invalid_missing_args)             TEST_PARSE_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $A.substance.)");
 TEST(ieml_grammar_test_case, invalid_word_function_invalid_extra_args)               TEST_PARSE_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $B.attribute and $A.attribute == $C.substance.)");
 TEST(ieml_grammar_test_case, invalid_word_function_invalid_literal)                  TEST_PARSE_ERRORS(WORD_FUNCTION_DECLARATION_PREFIX R"(@function type:word link:test domain:($A in "M:M:.", $B in "M:M:.") condition: $A.substance == $B.attribute and $A.attribute == "test".)");
-
+TEST(ieml_grammar_test_case, invalid_script_not_closed_with_an_accent)               TEST_PARSE_ERRORS(R"(@node fr:e (0 ~noun #"A:). @node fr:é (0 ~noun #"B:").)");
 
 // WARNINGS
 TEST(ieml_grammar_test_case, test_warning_missing_singular_sequence)                 TEST_PARSE_WARNINGS(R"(@rootparadigm type:category "O:O:.".  @node en:inv0 (0 #"wa."). @paranode en:para0 1d:/#/1 (0 #"wa.", 1 {#"wa.";#"we."}).)");
