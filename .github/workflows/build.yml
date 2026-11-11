@@ -6,19 +6,17 @@ on:
       - master
 
   workflow_dispatch:
-    branches:
-      - '**'
 
 jobs:
   build_wasm:
     name: Build Wasm
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
         with:
           submodules: 'recursive'
       - name: Build
-        run: docker-compose up --build build_wasm
+        run: docker compose up --build --exit-code-from build_wasm build_wasm
       - name: Create a temporary artifact downloads folder
         run: mkdir downloads
       - name: Add artifacts to publish to the temp folder
@@ -26,7 +24,7 @@ jobs:
           cp build_wasm/binding/wasm/parser_wasm.js downloads
           cp build_wasm/binding/wasm/parser_wasm.wasm downloads
       - name: Use the Upload Artifact GitHub Action
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v7
         with: 
           name: wasm-files
           path: downloads

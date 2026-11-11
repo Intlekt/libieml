@@ -2,15 +2,13 @@ name: Release
 
 on:
   workflow_dispatch:
-    tags:
-      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
         with:
           submodules: 'recursive'
 
@@ -20,8 +18,8 @@ jobs:
       - name: Copy files to local host
         run: >
           id=$(docker create build_image) &&
-          docker cp $id:/dist dist &&
-          docker rm -v $id
+          docker cp "$id":/dist dist &&
+          docker rm -v "$id"
 
       - name: Create release
         uses: ncipollo/release-action@v1
